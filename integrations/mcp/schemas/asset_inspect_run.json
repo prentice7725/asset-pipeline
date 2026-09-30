@@ -1,0 +1,14 @@
+{
+  "properties": {
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id"
+  ],
+  "title": "asset_inspect_runArguments",
+  "type": "object",
+  "additionalProperties": false
+}

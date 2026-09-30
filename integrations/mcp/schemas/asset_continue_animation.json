@@ -1,0 +1,37 @@
+{
+  "properties": {
+    "asset_reference": {
+      "title": "Asset Reference",
+      "type": "string"
+    },
+    "action": {
+      "title": "Action",
+      "type": "string"
+    },
+    "output_class": {
+      "default": "PIXEL_ANIMATION",
+      "title": "Output Class",
+      "type": "string"
+    },
+    "animation_constraints": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Animation Constraints"
+    }
+  },
+  "required": [
+    "asset_reference",
+    "action"
+  ],
+  "title": "asset_continue_animationArguments",
+  "type": "object",
+  "additionalProperties": false
+}

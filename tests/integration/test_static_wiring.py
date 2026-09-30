@@ -29,6 +29,18 @@ def test_static_fixture_reaches_review_then_real_aseprite(monkeypatch, tmp_path)
     assert manifest['status'] == 'EXPORT_READY_REVIEW_REQUIRED'
     assert manifest['qa_results'][-1]['pixel_integrity']['exact_rgba_match']
     assert not manifest['game_ready']
+    from assetpipe.manifests import write
+    from assetpipe.pipelines.pixel_static.approval import approve_static, validate_approval
+    write(path, manifest)
+    with pytest.raises(ValueError, match='Aseprite review'):
+        approve_static(run, reviewed_by='fixture reviewer', reason='wiring benchmark', aseprite_reviewed=False)
+    approval = approve_static(run, reviewed_by='automated fixture regression', reason='Real Aseprite roundtrip benchmark only', aseprite_reviewed=True)
+    master = manifest['static_validation']['export']
+    assert validate_approval(master, approval)['status'] == 'APPROVED_STATIC_MASTER'
+    # Revalidate referenced evidence even when the approved image is unchanged.
+    review.write_text('{}', encoding='utf-8')
+    with pytest.raises(ValueError, match='evidence changed'):
+        validate_approval(master, approval)
 
 def test_pixel_failure_prevents_aseprite(monkeypatch, tmp_path):
     source = ROOT / 'tests/assets/downscaled_illustration.png'
@@ -41,3 +53,21 @@ def test_pixel_failure_prevents_aseprite(monkeypatch, tmp_path):
     assert not (run / '050_resolution').exists()
     assert not (run / '060_aseprite').exists()
     assert json.loads((run / 'run_manifest.json').read_text())['status'] == 'FAILED'
+    from assetpipe.pipelines.pixel_static.approval import approve_static
+    with pytest.raises(ValueError, match='passing'):
+        approve_static(run, reviewed_by='reviewer', reason='cannot approve failure', aseprite_reviewed=True)
+    assert not (run / 'approval_record.json').exists()
+
+
+def test_hash_only_approval_cannot_enter_animation(tmp_path):
+    import hashlib
+    from assetpipe.brief import load
+    from assetpipe.pipelines.pixel_animation import preflight
+    source = ROOT / 'tests/assets/true_pixel_art.png'
+    approval = tmp_path / 'approval.json'
+    approval.write_text(json.dumps({'status': 'APPROVED_STATIC_MASTER', 'approved_export_sha256': hashlib.sha256(source.read_bytes()).hexdigest()}))
+    brief = load(ROOT / 'examples/pixel_animation_smoke.yaml')
+    brief['production']['static_master'] = str(source)
+    brief['production']['approval_record'] = str(approval)
+    with pytest.raises(ValueError, match='provenance'):
+        preflight(brief)

@@ -5,3 +5,4 @@ __pycache__/
 workspace/
 route_decision.json
 *.pyc
+config/mcp_adapter.local.yaml

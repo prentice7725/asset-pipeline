@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "subject"
+  ],
+  "properties": {
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "composition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "environment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lighting": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mood": {
+      "type": "string",
+      "minLength": 1
+    },
+    "appearance": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "style": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "negative": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "textInImage": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "aspectRatio": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*:[1-9][0-9]*$"
+    },
+    "styleSources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "description"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "pattern": "^https?://"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

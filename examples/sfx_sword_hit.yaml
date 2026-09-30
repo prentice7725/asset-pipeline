@@ -1,0 +1,39 @@
+asset_id: sword_hit
+asset_type: sound_effect
+output_class: SFX
+purpose: game asset candidate
+source:
+  type: PROMPT
+  paths: []
+  references: []
+identity:
+  canonical_traits: []
+  visual_traits: []
+constraints:
+  resolution: null
+  transparency: null
+  palette: []
+  silhouette: null
+  style: null
+animation:
+  action: null
+  frame_target: null
+  motion_constraints: []
+workflow_preferences: {}
+forbidden_elements: []
+unspecified_elements:
+- identity
+- resolution
+- palette
+- silhouette
+- style
+source_notes:
+- classification: EXPLICIT
+  text: A single metallic sword impact, sharp clang with a short ringing decay, dry
+    close recording, no music, no speech.
+  source: user input
+prompt: A single metallic sword impact, sharp clang with a short ringing decay, dry
+  close recording, no music, no speech.
+project_id: game-a
+audio:
+  duration_seconds: 3

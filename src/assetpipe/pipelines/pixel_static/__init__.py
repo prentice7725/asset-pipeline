@@ -50,6 +50,8 @@ def export_reviewed(config, run_dir, review_path, manifest):
         raise ValueError('Resolution report changed since review')
     report = json.loads(report_path.read_text(encoding='utf-8'))
     row = next(r for r in report['candidates'] if r['logical_height'] == review['selected_resolution'])
+    if row.get('status') != 'AUTO_PASS_REVIEW_REQUIRED':
+        raise ValueError('Selected resolution candidate did not pass')
     candidate = Path(row['image'])
     if hashlib.sha256(candidate.read_bytes()).hexdigest() != row['sha256']:
         raise ValueError('Reviewed candidate hash changed')
@@ -60,5 +62,16 @@ def export_reviewed(config, run_dir, review_path, manifest):
     export = AsepriteProvider(config).export([candidate], directory / '060_aseprite', manifest['asset_id'])
     manifest['qa_results'].append(export)
     manifest['outputs'] += [export['master'], export['sprite_sheet'], export['json_metadata']]
+    manifest['static_validation'] = {
+        'resolution_review': str(Path(review_path).resolve()),
+        'resolution_review_sha256': hashlib.sha256(Path(review_path).read_bytes()).hexdigest(),
+        'resolution_report_sha256': hashlib.sha256(report_path.read_bytes()).hexdigest(),
+        'candidate': str(candidate.resolve()),
+        'candidate_sha256': hashlib.sha256(candidate.read_bytes()).hexdigest(),
+        'export': str(Path(export['sprite_sheet']).resolve()),
+        'export_sha256': hashlib.sha256(Path(export['sprite_sheet']).read_bytes()).hexdigest(),
+        'aseprite_master': str(Path(export['master']).resolve()),
+        'aseprite_master_sha256': hashlib.sha256(Path(export['master']).read_bytes()).hexdigest(),
+    }
     manifest['status'] = 'EXPORT_READY_REVIEW_REQUIRED'
     return manifest

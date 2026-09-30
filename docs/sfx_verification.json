@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "tests_passed": 82,
+  "real_cli_smoke": "workspace/sfx-smoke/runs/sword_hit/dd98f4ab3ce1/run_manifest.json",
+  "real_mcp_smoke": "workspace\\plugin_runs\\sfx-mcp-smoke\\runs\\door_knock\\60ced251bbb246c0a84a8f1bc1e5b447\\run_manifest.json",
+  "audio_qa": {
+    "step": "basic_audio_qa",
+    "status": "PASS",
+    "sample_rate": 44100,
+    "channels": 2,
+    "duration_seconds": 2.043356009070295,
+    "requested_duration_seconds": 2.0,
+    "peak": 0.83984375,
+    "rms": 0.03753446787595749,
+    "clipped_sample_fraction": 0.0,
+    "reasons": [],
+    "listening_review": "REQUIRED",
+    "sha256": "52258bd91527eb6e29bae381fe626752d425d207c9da64d041168bcc1dc75937"
+  },
+  "listening_approval": "NOT_APPROVED",
+  "template_adaptation": "Direct prompt, optional reprompt removed, existing core graph retained, lossless output"
+}

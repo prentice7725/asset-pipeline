@@ -1,0 +1,6 @@
+# Paths are relative to this trusted configuration file, not to tool arguments.
+core_root: ..
+source_roots:
+  - ../examples
+  - ../tests/fixtures
+output_root: ../workspace/plugin_runs

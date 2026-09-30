@@ -1,0 +1,119 @@
+{
+  "properties": {
+    "request_text": {
+      "title": "Request Text",
+      "type": "string"
+    },
+    "requested_output_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Requested Output Type"
+    },
+    "asset_id": {
+      "default": "asset",
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "source_document_paths": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Document Paths"
+    },
+    "reference_image": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reference Image"
+    },
+    "action": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Action"
+    },
+    "prepared_brief": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Prepared Brief"
+    },
+    "workflow_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Workflow Id"
+    },
+    "project_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project Id"
+    },
+    "duration_seconds": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Duration Seconds"
+    }
+  },
+  "required": [
+    "request_text"
+  ],
+  "title": "asset_build_briefArguments",
+  "type": "object",
+  "additionalProperties": false
+}

@@ -8,10 +8,15 @@ def route(brief, registry):
     reusable_motion = bool(brief.get('production', {}).get('motion_reference'))
     required = []
     if not reusable_motion:
-        required.append('character_reference' if brief['source']['type'] == 'REFERENCE_IMAGE' else 'text_to_image')
+        required.append('text_to_audio' if brief['output_class'] == 'SFX' else 'character_reference' if brief['source']['type'] == 'REFERENCE_IMAGE' else 'text_to_image')
+    if brief['output_class'] == 'SFX' and brief['source']['type'] == 'REFERENCE_IMAGE':
+        raise ValueError('SFX workflow supports text only')
     if brief['constraints']['transparency'] is True and brief['output_class'] == 'NONPIXEL_IMAGE':
         required.append('transparent_output')
-    if (brief.get('negative_prompt') or brief['forbidden_elements']) and brief['output_class'] in {'NONPIXEL_IMAGE', 'PIXEL_STATIC'}:
+    spec = brief.get('prompt_spec', {})
+    if spec.get('textInImage'):
+        required.append('text_rendering')
+    if (brief.get('negative_prompt') or brief['forbidden_elements'] or spec.get('negative')) and brief['output_class'] in {'NONPIXEL_IMAGE', 'PIXEL_STATIC', 'SFX'}:
         required.append('negative_prompt')
     candidates = []
     rejections = {}
@@ -39,4 +44,4 @@ def route(brief, registry):
     return {'selected_workflow': key, 'output_class': brief['output_class'], 'matching_tags': matching,
         'selection_reason': 'explicit compatible workflow' if requested else 'ACTIVE capability match, tags, priority',
         'fallback_candidates': [row[0] for row in candidates[1:]], 'rejected_candidates': rejections,
-        'execution_mode': 'REUSE_MOTION_REFERENCE' if reusable_motion else 'GENERATE'}
+        'execution_mode': 'REUSE_MOTION_REFERENCE' if reusable_motion else 'GENERATE', 'required_capabilities': required}

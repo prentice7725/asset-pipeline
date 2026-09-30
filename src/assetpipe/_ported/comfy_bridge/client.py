@@ -156,7 +156,7 @@ class ComfyClient:
                         node_output = outputs.get(node_id, {}) if isinstance(outputs, dict) else {}
                         if not isinstance(node_output, dict):
                             continue
-                        for output_key in ("images", "gifs", "videos"):
+                        for output_key in ("images", "gifs", "videos", "audio"):
                             assets = node_output.get(output_key, [])
                             for asset in assets if isinstance(assets, list) else []:
                                 if isinstance(asset, dict) and isinstance(asset.get("filename"), str):

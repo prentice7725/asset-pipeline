@@ -14,13 +14,18 @@ def main(argv=None):
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
+    prompt_parser = commands.add_parser('compile-prompt', help='Compile canonical PromptSpec for the selected workflow without generating')
+    prompt_parser.add_argument('--brief', required=True, type=Path)
+    prompt_parser.add_argument('--output', required=True, type=Path)
     run = commands.add_parser('create')
     run.add_argument('--brief', type=Path)
-    run.add_argument('--type', choices=['pixel-static', 'pixel-animation', 'nonpixel-image', 'nonpixel-animation'])
+    run.add_argument('--type', choices=['pixel-static', 'pixel-animation', 'nonpixel-image', 'nonpixel-animation', 'sfx'])
+    run.add_argument('--duration', type=float, help='SFX duration in seconds (1–30; default 5)')
     run.add_argument('--prompt', default='')
     run.add_argument('--reference', type=Path)
     run.add_argument('--action')
     run.add_argument('--asset-id', default='asset')
+    run.add_argument('--project', help='Project folder ID; otherwise use brief project_id or default')
     run.add_argument('--workflow')
     run.add_argument('--preset')
     run.add_argument('--seed', type=int)
@@ -36,6 +41,11 @@ def main(argv=None):
     resume = commands.add_parser('export-static')
     resume.add_argument('--run', required=True, type=Path)
     resume.add_argument('--resolution-review', required=True, type=Path)
+    approve = commands.add_parser('approve-static', help='Approve only a validated static export after explicit Aseprite review')
+    approve.add_argument('--run', required=True, type=Path)
+    approve.add_argument('--reviewed-by', required=True)
+    approve.add_argument('--reason', required=True)
+    approve.add_argument('--aseprite-reviewed', action='store_true', required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == 'brief':
@@ -50,10 +60,23 @@ def main(argv=None):
                     if note['source'] not in sources:
                         raise ValueError('Every document source note must identify an existing supplied source')
                 write(args.output, brief)
+        elif args.command == 'compile-prompt':
+            from ..prompts import compile_prompt, workflow_values
+            brief = load(args.brief)
+            registry = load_registry(args.root)
+            workflow = registry[route(brief, registry)['selected_workflow']]
+            compiled = compile_prompt(brief, workflow, args.root)
+            compiled['workflow_inputs'] = workflow_values(compiled, workflow, brief)
+            compiled['workflow_name'] = workflow['workflow_name']
+            write(args.output, compiled)
+            print(args.output)
         elif args.command == 'route':
             decision = route(load(args.brief), load_registry(args.root))
             write(args.output, decision)
             print(json.dumps(decision, indent=2))
+        elif args.command == 'approve-static':
+            from ..pipelines.pixel_static.approval import approve_static
+            print(approve_static(args.run, reviewed_by=args.reviewed_by, reason=args.reason, aseprite_reviewed=args.aseprite_reviewed))
         elif args.command == 'export-static':
             from ..pipelines.pixel_static import export_reviewed
             from .._ported.config import load_config
@@ -76,6 +99,12 @@ def main(argv=None):
             brief = load(args.brief) if args.brief else make(asset_id=args.asset_id, output_class=args.type.upper().replace('-', '_'), prompt=args.prompt, reference=args.reference, action=args.action)
             if args.workflow:
                 brief['workflow_preferences']['id'] = args.workflow
+            if args.project:
+                brief['project_id'] = args.project
+            if args.duration is not None:
+                if brief['output_class'] != 'SFX':
+                    raise ValueError('--duration is only supported for SFX')
+                brief['audio'] = {'duration_seconds': args.duration}
             if args.preset:
                 brief['workflow_preferences']['preset'] = args.preset
             print(create(brief, args.root, args.output, args.seed))

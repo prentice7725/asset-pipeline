@@ -1,0 +1,8 @@
+{
+  "name": "asset-pipeline",
+  "version": "0.1.0",
+  "description": "Create validated game-ready visual assets from prompts, reference images, or project design sources using registered local production workflows.",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {"displayName": "Asset Pipeline"}
+}

@@ -12,9 +12,10 @@ from . import pixel_animation, pixel_static, nonpixel_image, nonpixel_animation
 def create(brief, root, output=None, seed=None):
     validate(brief)
     root = Path(root).resolve()
-    directory = Path(output).resolve() if output else root / 'workspace/runs' / brief['asset_id'] / uuid4().hex[:12]
+    project_id = brief.get('project_id', 'default')
+    directory = Path(output).resolve() if output else root / 'workspace' / project_id / 'runs' / brief['asset_id'] / uuid4().hex[:12]
     directory.mkdir(parents=True, exist_ok=False)
-    manifest = {'schema_version': 1, 'asset_id': brief['asset_id'], 'input_type': brief['source']['type'], 'asset_brief': brief,
+    manifest = {'schema_version': 1, 'project_id': project_id, 'asset_id': brief['asset_id'], 'input_type': brief['source']['type'], 'asset_brief': brief,
         'output_class': brief['output_class'], 'workflow': {}, 'generation': {}, 'pipeline_steps': [], 'qa_results': [],
         'outputs': [], 'timestamps': {'started': now()}, 'status': 'RUNNING', 'game_ready': False}
     path = directory / 'run_manifest.json'
@@ -31,7 +32,10 @@ def create(brief, root, output=None, seed=None):
         write(path, manifest)
         config = load_config(root / 'config/pipeline.yaml')
         kind = brief['output_class']
-        if kind == 'PIXEL_ANIMATION':
+        if kind == 'SFX':
+            from .sfx import run
+            run(brief, workflow, config, directory, manifest, chosen_seed)
+        elif kind == 'PIXEL_ANIMATION':
             pixel_animation.run(brief, config, directory, manifest)
         elif kind == 'PIXEL_STATIC':
             pixel_static.run(brief, workflow, config, directory, manifest, chosen_seed)
@@ -44,10 +48,16 @@ def create(brief, root, output=None, seed=None):
         manifest['error'] = str(exc)
         raise
     finally:
+        compiled_path = directory / '010_generation/compiled_prompt.json'
+        if compiled_path.exists():
+            manifest['generation']['compiled_prompt'] = json.loads(compiled_path.read_text(encoding='utf-8'))
         generation = directory / '010_generation/generation.json'
         if generation.exists():
             generated = json.loads(generation.read_text(encoding='utf-8'))
             manifest['generation'].update({'seed': generated['seed'], 'prompt': generated['prompt'], 'negative_prompt': generated['negative_prompt'], 'comfy_prompt_id': generated['prompt_id'], 'resolution': [generated['generation_parameters'].get('width'), generated['generation_parameters'].get('height')], 'parameters': generated['generation_parameters']})
+            if brief['output_class'] == 'SFX':
+                manifest['generation'].pop('resolution', None)
+                manifest['generation']['duration_seconds'] = generated['generation_parameters']['duration_seconds']
         manifest['timestamps']['finished'] = now()
         write(path, manifest)
     return path

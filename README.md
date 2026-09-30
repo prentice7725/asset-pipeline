@@ -1,219 +1,207 @@
 # Asset Pipeline
 
-Asset Pipeline is a workflow-driven production toolkit that turns prompts,
-reference images, and project design sources into validated game-ready visual
-assets using ComfyUI, deterministic post-processing, and Aseprite.
+프롬프트, 레퍼런스 이미지, 프로젝트 기획문서를 바탕으로 게임용 이미지와 효과음 후보를 만드는 Python CLI 도구입니다. ComfyUI 생성, 후처리·검증, Aseprite 내보내기를 연결합니다.
 
-The Python CLI, **`assetpipe`**, connects generation, quality gates, and export.
-Generated images remain candidates, motion videos remain references, and pixel
-exports require final review in Aseprite before use in a game.
+**생성 결과는 자동 승인하지 않습니다.** 픽셀 캐릭터는 검증을 통과한 후보만 검토 후 Static Master로 승인하며, SFX도 기본 검증 후 직접 들어봐야 합니다. 실패한 단계는 중단하고 기록을 보존합니다.
 
-## Current status
+## 지원 기능과 현재 상태
 
-**v0.1 bootstrap verified:** 47 tests passed in the original Windows environment,
-including real Aseprite round trips. The pixel animation smoke reproduced all
-eight legacy frames with identical RGBA values. Real ComfyUI image generation
-and a document-to-brief routing smoke also passed.
-
-These are local validation results; external tools, models, and benchmark runs
-are not bundled. See [acceptance evidence](docs/bootstrap_status.json).
-
-| Output class | Available behavior |
+| 출력 유형 | 동작 |
 | --- | --- |
-| `PIXEL_STATIC` | Candidate generation, analysis, binary-alpha refinement, Pixel and Resolution Gates, then reviewed Aseprite export. |
-| `PIXEL_ANIMATION` | Approved static master + existing reviewed motion, verified eight-frame character-local walk pixelization, palette projection, Pixel Gate, and Aseprite export. |
-| `NONPIXEL_IMAGE` | ComfyUI generation, basic image QA, and output for visual review. |
-| `NONPIXEL_ANIMATION` | Experimental pipeline contract; production execution is unavailable in v0.1. |
+| `PIXEL_STATIC` | 픽셀 후보 생성 → 분석 → 안전한 알파 처리 → Pixel Gate → 해상도 검토 → Aseprite 내보내기 → 명시적 승인 |
+| `PIXEL_ANIMATION` | 승인된 Static Master와 기존 검토된 모션을 사용한 8프레임 걷기 제작, 팔레트·Pixel Gate 검증, Aseprite 내보내기 |
+| `NONPIXEL_IMAGE` | ComfyUI 이미지 생성과 기본 QA. 최종 시각 검토 필요 |
+| `NONPIXEL_ANIMATION` | 실험적 계약만 제공. 실제 생산 실행은 미지원 |
+| `SFX` | Stable Audio 3 Medium 효과음 생성, 원본 FLAC·PCM WAV 저장, 기본 오디오 QA. 청취 검토 필수 |
 
-## Requirements
+현재 로컬 환경에서 **테스트 82개**가 통과했습니다. 초기 마이그레이션에서는 실제 Aseprite 왕복 검증과 기존 애니메이션 8프레임 RGBA 완전 일치를 확인했습니다. 이후 Krea2 생성과 SFX의 실제 CLI·MCP 생성도 검증했습니다.
 
-- Python **3.11 or newer**.
-- ComfyUI running at the configured endpoint (default: `http://127.0.0.1:8188`).
-- Models and custom nodes required by the selected workflow.
-- Aseprite with CLI/Lua support for pixel mastering and export.
-- FFmpeg on `PATH` for the verified direct animation path.
+검증 근거: [초기 검증](docs/bootstrap_status.json), [프롬프트 검증](docs/prompt_spec_verification.json), [SFX 검증](docs/sfx_verification.json), [플러그인 상태](docs/plugin/STATUS.json).
+외부 프로그램, 모델 가중치와 로컬 벤치마크 자료는 저장소에 포함하지 않습니다.
 
-The registry describes the original validated installation. Check workflow model
-names and nodes against your installation before generating. Model weights,
-Aseprite, generated images/videos, and legacy benchmark data are not distributed.
+## 설치
 
-## Quick start
+필요한 환경:
 
-### Install on Windows
+- Python 3.11 이상
+- 설정된 주소에서 실행 중인 ComfyUI. 기본 주소는 `http://127.0.0.1:8188`
+- 선택한 workflow의 모델과 노드
+- 픽셀 마스터 제작·내보내기용 Aseprite
+- 애니메이션 디코딩과 SFX WAV 변환용 FFmpeg. `PATH`에서 실행 가능해야 함
+
+Windows PowerShell에서 설치합니다.
 
 ```powershell
 git clone https://github.com/prentice7725/asset-pipeline.git
 cd asset-pipeline
 py -3.11 -m venv .venv
 .venv\Scripts\Activate.ps1
-python -m pip install -e ".[dev,motion]"
+python -m pip install -e ".[dev,motion,mcp]"
 assetpipe --help
 ```
 
-Without activation, use `.venv\Scripts\python.exe` and
-`.venv\Scripts\assetpipe.exe` directly. External integration was verified on
-Windows; other operating systems are unverified.
+가상환경을 활성화하지 않으면 `.venv\Scripts\python.exe`와 `.venv\Scripts\assetpipe.exe`를 직접 사용하세요. 외부 연동은 Windows에서 검증했으며 다른 운영체제는 아직 검증하지 않았습니다.
 
-### Configure providers
+[config/pipeline.yaml](config/pipeline.yaml)에서 ComfyUI 주소와 제한 시간을 설정합니다. Aseprite는 `aseprite.executable` 또는 `ASEPRITE_PATH`로 지정할 수 있으며, `PATH`와 일반 설치 위치도 탐색합니다. workflow 그래프는 Python 코드와 분리해 [config/workflows](config/workflows)에 둡니다.
 
-Edit [config/pipeline.yaml](config/pipeline.yaml) for the ComfyUI URL and timeouts.
-Set `aseprite.executable` or `ASEPRITE_PATH` for Aseprite; discovery also checks
-`PATH` and common installation locations. Keep workflow graphs under
-[config/workflows](config/workflows), separate from Python code.
+## Codex에서 사용하기
 
-### Generate a nonpixel image candidate
-
-With the registered Anima Base model installed and ComfyUI running:
+현재는 로컬 MCP 연결로 사용할 수 있습니다. 저장소가 `C:\workspace\asset-pipeline`에 있다면:
 
 ```powershell
-assetpipe create --type nonpixel-image --asset-id scout --workflow anima_base --preset smoke --seed 101 --prompt "fantasy scout, short brown hair, blue cloak, light armor, dagger"
+Copy-Item config\mcp_adapter.example.yaml config\mcp_adapter.local.yaml
+codex mcp add asset-pipeline -- "C:\workspace\asset-pipeline\.venv\Scripts\assetpipe-mcp.exe" --config "C:\workspace\asset-pipeline\config\mcp_adapter.local.yaml"
 ```
 
-The command prints the run manifest path. Outputs and reports are retained under
-`workspace/runs/<asset_id>/<run_id>/`. Review the image before using it in a game.
+로컬 설정이 이미 있으면 복사하지 마세요. 설정 파일의 `source_roots`에 작업할 프로젝트·애셋 폴더를 추가합니다. 여러 폴더는 YAML 목록으로 지정합니다.
 
-### Route a document-backed brief without generation
+```yaml
+core_root: ..
+source_roots:
+  - C:/workspace/game-a
+  - C:/workspace/game-b
+  - ../examples
+output_root: ../workspace/plugin_runs
+```
+
+상대 경로는 설정 파일이 있는 폴더를 기준으로 해석합니다. 소스 폴더는 미리 존재해야 합니다. 설정 후 Codex를 재시작하고 다음처럼 요청합니다.
+
+> asset-pipeline의 asset_capabilities로 준비 상태를 확인해줘.
+>
+> game-a 프로젝트에 칼 충돌 효과음을 3초로 만들어줘. 음악과 목소리는 없이.
+
+MCP는 기존 코어를 호출하는 6개 도구를 제공합니다: `asset_capabilities`, `asset_build_brief`, `asset_route`, `asset_generate`, `asset_continue_animation`, `asset_inspect_run`.
+서버는 Codex가 실행하며, 이미지·오디오 생성 시 ComfyUI는 실행돼 있어야 합니다.
+
+[로컬 설치 안내](docs/plugin/LOCAL_SETUP.md)와 [도구 계약](docs/plugin/MCP_TOOL_CONTRACT.md)을 참고하세요. 플러그인 패키지는 만들었지만 공식 Plugin Creator 검증과 실제 플러그인 호스트 설치는 아직 미완료입니다. 로컬 MCP SDK 검증과 구분하며, 공개 플러그인 배포나 원격 서비스는 포함하지 않습니다.
+
+## 프로젝트별 저장
+
+Brief에 `project_id`를 지정하거나 CLI에서 `--project game-a`를 사용합니다. 생략하면 `default`를 사용하며 소스 경로로 프로젝트를 추측하지 않습니다.
+
+```text
+MCP: output_root/프로젝트ID/runs/애셋ID/실행ID/
+CLI: workspace/프로젝트ID/runs/애셋ID/실행ID/
+```
+
+MCP 요청 기록은 `output_root/프로젝트ID/requests/`에 저장합니다. 이어서 만드는 애니메이션도 원래 프로젝트를 유지합니다. CLI의 명시적 `--output`은 지정 경로를 그대로 사용합니다.
+프로젝트 ID는 영문·숫자로 시작하고 영문·숫자·하이픈·밑줄만 사용하며 최대 64자입니다.
+
+## 이미지와 효과음 생성
+
+일반 이미지 후보:
+
+```powershell
+assetpipe create --type nonpixel-image --project game-a --asset-id scout --workflow anima_base --preset smoke --seed 101 --prompt "fantasy scout, short brown hair, blue cloak, light armor, dagger"
+```
+
+효과음 후보:
+
+```powershell
+assetpipe create --type sfx --project game-a --asset-id sword_hit --duration 3 --prompt "A single metallic sword impact, sharp clang with a short ringing decay, dry close recording, no music, no speech."
+```
+
+SFX 길이는 1–30초이며 기본값은 5초입니다. 현재 `audio_stable_audio_3_medium`은 직접 텍스트 입력 경로로 연결하며 선택적 Qwen 확장 단계는 제외합니다. 원본 FLAC과 16-bit PCM WAV, 길이·무음·피크·RMS 등의 QA 기록을 보존합니다. 통과 후에도 청취 검토가 필요합니다. [SFX 사용 안내](docs/SFX.md).
+
+모든 생성 명령은 실행 manifest 경로를 출력합니다. 저장소 밖에서 실행할 때는 하위 명령 앞에 `assetpipe --root <저장소 경로>`를 지정하세요.
+
+## Asset Brief와 공통 프롬프트
+
+입력은 [Asset Brief 스키마](schemas/asset_brief.schema.json)를 통과합니다. 프로젝트·애셋 ID, 목적, 출처, 캐릭터 정본 특징, 제약, 애니메이션 요구, workflow 선호, 금지 요소와 미정 항목을 기록합니다.
+
+문서 근거는 `EXPLICIT`(명시), `DERIVED`(근거 있는 해석), `UNSPECIFIED`(미정)로 구분합니다. 미정 내용을 정본으로 자동 확정하지 않으며 프로젝트 문서가 정본입니다.
 
 ```powershell
 assetpipe brief from-docs tests/fixtures/character_test.md --prepared examples/character_test_brief.yaml --output workspace/document_brief.json
 assetpipe route --brief workspace/document_brief.json --output workspace/document_route.json
 ```
 
-This document example is self-contained. Codex or a human reads project sources
-and prepares the brief. `from-docs` validates that prepared brief and its source
-paths; it does not automatically interpret documents or invent canonical traits.
+Codex 또는 사람이 문서를 읽고 Brief를 준비합니다. `from-docs`는 준비된 Brief와 출처 경로를 검증하며, 문서 내용을 자동 해석하지 않습니다.
 
-Run commands from the repository root, or supply `assetpipe --root <repository>`
-before the subcommand when working from another directory.
-
-## Asset Brief and routing
-
-All input passes through the [Asset Brief schema](schemas/asset_brief.schema.json).
-The brief records asset ID/type, output class, purpose, sources, canonical and
-visual traits, constraints, animation requirements, workflow preferences,
-forbidden elements, unknowns, and source notes.
-
-Document facts are classified as **EXPLICIT**, **DERIVED**, or **UNSPECIFIED**.
-Unknowns never become canon automatically. Project documents remain the source
-of truth; Asset Pipeline does not own project settings or resolve canon conflicts.
+프롬프트는 **공통 PromptSpec → 모델별 어댑터 → ComfyUI workflow**로 연결합니다. Anima·Krea2 어댑터는 특징과 제약을 보존하고 모델 전용 접두어를 프로파일에서 관리합니다. Tomohi의 트리거 워드는 `tomohi`입니다.
 
 ```powershell
-assetpipe create --brief examples/character_test_brief.yaml
-assetpipe brief schema --output schemas/asset_brief.schema.json
+assetpipe compile-prompt --brief examples/prompt_spec_courier.yaml --output workspace/compiled.json
+assetpipe create --brief examples/prompt_spec_courier.yaml --project game-a
 ```
 
-[config/workflow_registry.yaml](config/workflow_registry.yaml) declares output
-classes, capabilities, tags, priority, status, workflow files, and model inventory.
-The router checks output class and capabilities, then matching tags, status
-eligibility, and priority. Compatible explicit workflow selection takes precedence.
+Krea 스타일 문구는 선택한 설명과 출처 URL을 기록할 수 있습니다. [한국어 PromptSpec 안내](docs/PROMPT_SPEC.md)를 참고하세요. Qwen·Flux·SDXL 어댑터는 아직 연결하지 않았습니다.
 
-| Status | Selection policy |
+## Workflow 선택
+
+[workflow registry](config/workflow_registry.yaml)에 출력 유형, 기능, 태그, 우선순위, 상태, 파일과 모델을 등록합니다. 라우터는 출력 유형과 기능을 확인하고 태그·상태·우선순위로 선택합니다. 호환되는 명시적 workflow 지정은 우선합니다.
+
+| 상태 | 선택 규칙 |
 | --- | --- |
-| `ACTIVE` | Eligible for automatic selection. |
-| `VALIDATED` | Available when explicitly requested. |
-| `EXPERIMENTAL` | Requires explicit workflow ID and `allow_experimental: true` in the brief. |
-| `REJECTED` | Never executed. |
+| `ACTIVE` | 자동 선택 가능 |
+| `VALIDATED` | 명시적으로 지정하면 사용 가능 |
+| `EXPERIMENTAL` | workflow ID와 `allow_experimental: true`가 필요 |
+| `REJECTED` | 실행 금지 |
 
-The registry includes Anima + Pixelate x4 VAE for static pixel candidates,
-Anima Base and Krea2 Base for nonpixel images, and experimental Tomohi.
-Unsupported reference input or capabilities cause an error rather than silently
-being dropped. `route_decision.json` records reasons and fallback candidates.
+지원하지 않는 레퍼런스·negative prompt·이미지 속 글자 요구는 조용히 버리지 않고 차단합니다. 선택 근거와 대체 후보는 `route_decision.json`에 기록합니다.
 
-## Pixel production
-
-### Static assets
+## 픽셀 검증과 Static Master 승인
 
 ```text
-Brief → Router → ComfyUI candidate → Analyzer → Safe Refiner
-      → Pixel Gate → Resolution Gate → reviewed Aseprite master → export
+Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리
+      → Pixel Gate → 해상도 검토 → Aseprite 내보내기 → 명시적 승인
 ```
 
 ```powershell
-assetpipe create --type pixel-static --asset-id warrior --prompt "sword wielding fantasy warrior"
+assetpipe create --type pixel-static --project game-a --asset-id warrior --prompt "sword wielding fantasy warrior"
 ```
 
-Automatic static refinement is limited to binary alpha. Failed gates lock
-export; review-required states pause the run. Identity, clothing, equipment,
-and silhouette semantics are never automatically redesigned.
+자동 변경은 바이너리 알파 처리로 제한합니다. 캐릭터 정체성·의상·장비·실루엣 의미를 자동으로 다시 디자인하지 않습니다. Pixel Gate가 실패하면 중단하고 내보내기를 차단합니다. 검토 대기 후보도 자동 진행하지 않습니다.
 
-For a run at `RESOLUTION_REVIEW_REQUIRED`, record a passing review with
-`assetpipe.pixel.resolution.record_resolution_review`, including selected height,
-reviewer, and reason. Export the hash-verified candidate with:
+`RESOLUTION_REVIEW_REQUIRED` 상태에서는 `assetpipe.pixel.resolution.record_resolution_review`로 통과 후보의 해상도·검토자·사유를 기록합니다. 이후:
 
 ```powershell
-assetpipe export-static --run workspace/runs/<asset_id>/<run_id> --resolution-review <review.json>
+assetpipe export-static --run <실행 폴더> --resolution-review <검토 기록.json>
+assetpipe approve-static --run <실행 폴더> --aseprite-reviewed --reviewed-by "<검토자>" --reason "<Aseprite 검토 결과>"
 ```
 
-### Pixel animation
+`approve-static`은 통과한 정적 내보내기와 명시적 Aseprite 검토에 한해 `approval_record.json`을 만듭니다. 승인 기록은 검증 manifest, 해상도 보고서·검토 기록, 후보, Aseprite 마스터와 내보낸 이미지의 해시에 연결합니다. 근거가 바뀌면 승인은 무효이며, 상태·이미지 해시만 적힌 기존 승인 기록은 충분하지 않습니다.
+
+## 픽셀 애니메이션
 
 ```text
-Approved static master + existing reviewed motion
-  → semantic frames → CHARACTER_LOCAL_DIRECT → exact master palette
-  → Pixel Gate → Aseprite → sprite sheet
+승인된 Static Master + 기존 검토된 모션
+  → 의미별 프레임 선택 → CHARACTER_LOCAL_DIRECT → 마스터 팔레트
+  → Pixel Gate → Aseprite → 스프라이트 시트
 ```
 
-Supply a prepared brief with `production.static_master`, `approval_record`,
-`motion_reference`, `selection`, and `direct_profile`. Approval must match the
-static master SHA-256; reviewed semantic selections must identify the supplied
-video. New motion generation is not automatically dispatched in v0.1.
+Brief의 `production`에 `static_master`, `approval_record`, `motion_reference`, `selection`, `direct_profile`을 지정합니다. 진입 시 승인 근거를 다시 검증하며 새 모션 생성은 자동 실행하지 않습니다.
 
-The verified `blue_tunic_white_matte_v1` profile supports eight reviewed walk
-phases with a blue-tunic character and white reference background. It retains
-one shared-scale downsample followed by binary alpha and exact palette projection.
-FFmpeg reproduces the legacy RGB conversion; OpenCV conversion changes pixels
-and is not substituted in this path. This is not a universal anchoring algorithm.
+현재 검증된 `blue_tunic_white_matte_v1`은 파란 튜닉 캐릭터와 흰 레퍼런스 배경의 검토된 8프레임 걷기만 지원합니다. 범용 캐릭터·동작 복원 알고리즘이 아닙니다. 기존 픽셀 연산과 FFmpeg 색 변환을 보존합니다.
 
-[examples/pixel_animation_smoke.yaml](examples/pixel_animation_smoke.yaml) references
-an adjacent legacy `pixel-pipeline` checkout. Its approved master and motion data
-are not bundled; adapt paths to your approved inputs before running.
+[마이그레이션 예제](examples/pixel_animation_smoke.yaml)는 인접한 기존 `pixel-pipeline`의 자료를 참조합니다. 해당 자료는 배포하지 않으며, 강화된 승인 규칙을 적용하려면 검토된 정적 내보내기에서 새 승인 기록을 만들어야 합니다.
 
-Aseprite verifies exact RGBA round trips, frame count, timing, tags, and metadata.
-Exports remain `EXPORT_READY_REVIEW_REQUIRED` with `game_ready: false` until final
-human review. Pixel Art Fixer remains optional recovery policy only; articulated
-reconstruction and pose recreation are excluded from production defaults.
+Aseprite는 RGBA 왕복 일치, 프레임 수·시간·태그·메타데이터를 검증합니다. 애니메이션 결과도 최종 검토가 필요하며 `game_ready: false`로 남습니다. Pixel Art Fixer는 선택적 복구 정책으로만 유지합니다.
 
-## Run records
+## 실행 기록과 개발
 
-Every create attempt writes `run_manifest.json`, including failures. Runs retain
-routing decisions, workflow hashes/versions, models/LoRAs, seed, prompts,
-resolution, ComfyUI prompt ID, pipeline steps, QA, outputs, and timestamps.
-Intermediate files are preserved and existing run directories are never overwritten.
-Manifests support reproduction and QA; they do not replace project canon.
-
-Generated files and local publication backups under `workspace/` are Git-ignored.
-
-## Development
+실패를 포함한 생성 시도마다 `run_manifest.json`을 기록합니다. workflow 해시·버전, 모델·LoRA, seed, 실제 프롬프트·파라미터, ComfyUI 실행 ID, 단계별 상태, QA, 출력과 시간을 보존합니다. 중간 파일을 삭제하거나 기존 실행 폴더를 덮어쓰지 않습니다.
+생성물과 로컬 설정은 Git 추적에서 제외합니다.
 
 ```powershell
-python -m pip install -e ".[dev,motion]"
 python -m pytest
 assetpipe --help
 ```
 
-Real Aseprite tests skip when Aseprite is unavailable. Exact animation regression
-skips when the local legacy benchmark is absent. Unit tests do not require a
-running ComfyUI server.
+Aseprite가 없으면 실제 Aseprite 테스트를 건너뛰며, 로컬 벤치마크가 없으면 해당 애니메이션 회귀 검증을 건너뜁니다. 단위 테스트에는 실행 중인 ComfyUI가 필요하지 않습니다.
 
 ```text
 src/assetpipe/
-  brief/ router/ registry/     # Input contract and workflow selection
-  providers/                  # ComfyUI and Aseprite adapters
-  pipelines/                  # Four output-class paths
-  pixel/ motion/              # Pixel and motion interfaces
-  manifests/ cli/             # Run records and CLI
-  _ported/                    # Preserved verified implementations
-config/                       # Provider settings and workflows
-schemas/ examples/ tests/ docs/
+  brief/ router/ registry/     # 입력 계약과 workflow 선택
+  prompts/                    # 공통 프롬프트와 모델별 컴파일
+  providers/ pipelines/       # 외부 도구 연결과 생산 경로
+  pixel/ motion/              # 픽셀·모션 인터페이스
+  manifests/ cli/             # 실행 기록과 CLI
+  _ported/                    # 이식한 검증 구현
+integrations/mcp/             # 로컬 MCP 어댑터
+plugin/                      # 플러그인 지침과 참조 자료
+config/ schemas/ examples/ tests/ docs/
 ```
 
-[Migration inventory](docs/migration_inventory.json) records source hashes and
-adaptations. Bootstrap scripts require the original adjacent legacy checkout and
-local benchmark inputs. They are migration utilities, not installation steps;
-do not rerun them over an active installation.
-
-## Scope
-
-v0.1 is a minimum workflow-driven CLI foundation. GUI, web UI, MCP server,
-cloud deployment, database, model research, automatic art direction, and general
-animation reconstruction are outside its scope. Further features require a
-separate milestone.
+[마이그레이션 목록](docs/migration_inventory.json)은 원본 해시와 변경 내용을 기록합니다. bootstrap 스크립트는 기존 저장소와 로컬 벤치마크가 필요한 마이그레이션 도구이며 일반 설치 단계가 아닙니다.
+GUI·웹 UI·클라우드 배포·DB·범용 애니메이션 복원은 현재 범위에 포함하지 않습니다.

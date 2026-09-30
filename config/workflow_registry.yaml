@@ -2,6 +2,7 @@ schema_version: 1
 registry_version: 1.0.0
 workflows:
   anima_pixelate_x4_vae:
+    model_profile: anima-pixel
     output_class: PIXEL_STATIC
     engine: comfyui
     workflow_file: config/workflows/anima_mushroom_courier_production.json
@@ -67,6 +68,7 @@ workflows:
       status: PASS
       missing: []
   anima_base:
+    model_profile: anima-base
     output_class: NONPIXEL_IMAGE
     engine: comfyui
     workflow_file: config/workflows/baseline_anima_api.json
@@ -129,6 +131,7 @@ workflows:
       status: PASS
       missing: []
   tomohi_character:
+    model_profile: anima-tomohi
     output_class: NONPIXEL_IMAGE
     engine: comfyui
     workflow_file: config/workflows/anima_tomohi_api.json
@@ -154,7 +157,7 @@ workflows:
     loras:
     - file: tomohi2.safetensors
       weight: 1.0
-      trigger: (@tomohi)
+      trigger: tomohi
     capabilities:
       text_to_image: true
       image_to_image: false
@@ -163,7 +166,7 @@ workflows:
       motion_conditioning: false
       image_to_video: false
       negative_prompt: true
-    prompt_prefix: (@tomohi)
+    prompt_prefix: tomohi
     presets:
       character_portrait:
         width: 512
@@ -192,6 +195,7 @@ workflows:
       status: PASS
       missing: []
   krea2_base:
+    model_profile: krea2
     output_class: NONPIXEL_IMAGE
     engine: comfyui
     workflow_file: config/workflows/krea2_turbo_api.json
@@ -333,3 +337,27 @@ workflows:
     installation_check:
       status: PASS
       missing: []
+  audio_stable_audio_3_medium:
+    output_class: SFX
+    engine: comfyui
+    workflow_file: config/workflows/audio_stable_audio_3_medium.json
+    workflow_name: audio_stable_audio_3_medium
+    status: ACTIVE
+    priority: 100
+    tags:
+    - sfx
+    - audio
+    - sound_effect
+    models:
+      checkpoints:
+      - stable_audio_3_medium.safetensors
+      text_encoders:
+      - t5gemma_b_b_ul2.safetensors
+      loras: []
+    capabilities:
+      text_to_audio: true
+      negative_prompt: false
+      audio_reference: false
+    validation:
+      status: REAL_GENERATION_AND_AUDIO_QA_PASS
+      evidence: docs/sfx_verification.json

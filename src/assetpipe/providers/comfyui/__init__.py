@@ -6,16 +6,13 @@ class ComfyUIProvider:
         self.config = config
 
     def generate(self, brief, workflow, output, seed):
-        preset = brief['workflow_preferences'].get('preset', workflow.get('default_preset'))
-        if preset not in workflow.get('presets', {}):
-            raise ValueError(f'Unknown workflow preset: {preset}')
-        values = {**workflow.get('presets', {}).get(preset, {}), **workflow.get('workflow_inputs', {})}
-        if brief['constraints']['resolution']:
-            values['width'], values['height'] = brief['constraints']['resolution']
-        prompt = brief.get('prompt') or ', '.join(brief['identity']['canonical_traits'] + brief['identity']['visual_traits'])
-        if not prompt.strip():
-            raise ValueError('Prepared brief must supply prompt or explicit visual traits')
-        prompt = ', '.join(filter(None, [workflow.get('prompt_prefix'), prompt]))
+        from ...prompts import compile_prompt, workflow_values
+        from ...manifests import write
+        compiled = compile_prompt(brief, workflow, self.config.root)
+        values = workflow_values(compiled, workflow, brief)
         from pathlib import Path
         reference = Path(brief['source']['paths'][0]) if brief['source']['type'] == 'REFERENCE_IMAGE' else None
-        return run_workflow(self.config, workflow_name=workflow['workflow_name'], prompt=prompt, negative_prompt=brief.get('negative_prompt', ', '.join(brief['forbidden_elements'])), seed=seed, input_image=reference, output_dir=output, workflow_inputs=values, filename_prefix=f'assetpipe/{brief["asset_id"]}')
+        try:
+            return run_workflow(self.config, workflow_name=workflow['workflow_name'], prompt=compiled['positive'], negative_prompt=compiled['negative'], seed=seed, input_image=reference, output_dir=output, workflow_inputs=values, filename_prefix=f'assetpipe/{brief["asset_id"]}')
+        finally:
+            write(output / 'compiled_prompt.json', compiled)

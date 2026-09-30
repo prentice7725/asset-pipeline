@@ -11,3 +11,10 @@ Safe operations must not redesign identity, clothing, equipment, or silhouette s
 The verified direct profile requires explicit blue-tunic/white-background compatibility; never infer it.
 Run `.venv/Scripts/python -m pip install -e ".[dev,motion]"`, `.venv/Scripts/python -m pytest`, and `assetpipe --help`.
 Stop at ASSET_PIPELINE_V0_1_BOOTSTRAP_PASS. New features require a separate user request.
+
+The user-authorized Plugin M0 milestone permits a local thin MCP adapter under
+integrations/mcp and instructions/reference packaging under plugin. Read
+docs/plugin/M0_DIRECTIVE.md for this milestone. Keep production algorithms in
+assetpipe, expose exactly six high-level tools, restrict model paths to configured
+roots, and preserve all QA/review gates. No public plugin publishing or cloud service.
+Do not claim Plugin Creator validation passed unless the official creator actually ran.

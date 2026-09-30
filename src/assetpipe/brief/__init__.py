@@ -2,13 +2,15 @@ from pathlib import Path
 import json
 import yaml
 from jsonschema import Draft202012Validator
+from ..prompts import SCHEMA as PROMPT_SPEC_SCHEMA
 
-OUTPUT_CLASSES = ['PIXEL_STATIC', 'PIXEL_ANIMATION', 'NONPIXEL_IMAGE', 'NONPIXEL_ANIMATION']
+OUTPUT_CLASSES = ['PIXEL_STATIC', 'PIXEL_ANIMATION', 'NONPIXEL_IMAGE', 'NONPIXEL_ANIMATION', 'SFX']
 STRINGS = {'type': 'array', 'items': {'type': 'string'}}
 def obj(properties, required=()):
     return {'type': 'object', 'properties': properties, 'required': list(required), 'additionalProperties': False}
 
 SCHEMA = obj({
+    'project_id': {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'},
     'asset_id': {'type': 'string', 'pattern': '^[A-Za-z0-9_-]+$'},
     'asset_type': {'type': 'string', 'minLength': 1},
     'output_class': {'enum': OUTPUT_CLASSES},
@@ -20,7 +22,8 @@ SCHEMA = obj({
     'workflow_preferences': obj({'id': {'type': ['string', 'null']}, 'tags': STRINGS, 'preset': {'type': 'string'}, 'allow_experimental': {'type': 'boolean'}}),
     'forbidden_elements': STRINGS, 'unspecified_elements': STRINGS,
     'source_notes': {'type': 'array', 'items': obj({'classification': {'enum': ['EXPLICIT', 'DERIVED', 'UNSPECIFIED']}, 'text': {'type': 'string'}, 'source': {'type': 'string'}}, ['classification', 'text', 'source'])},
-    'prompt': {'type': 'string'}, 'negative_prompt': {'type': 'string'},
+    'prompt': {'type': 'string'}, 'negative_prompt': {'type': 'string'}, 'prompt_spec': PROMPT_SPEC_SCHEMA,
+    'audio': obj({'duration_seconds': {'type': 'number', 'minimum': 1, 'maximum': 30}}, ['duration_seconds']),
     'production': obj({'static_master': {'type': 'string'}, 'approval_record': {'type': 'string'}, 'motion_reference': {'type': 'string'}, 'source_frames': {'type': 'string'}, 'selection': {'type': 'string'}, 'direct_profile': {'type': 'string'}}),
 }, ['asset_id', 'asset_type', 'output_class', 'purpose', 'source', 'identity', 'constraints', 'animation', 'workflow_preferences', 'forbidden_elements', 'unspecified_elements', 'source_notes'])
 SCHEMA['$schema'] = 'https://json-schema.org/draft/2020-12/schema'
@@ -29,11 +32,14 @@ def validate(brief):
     errors = sorted(Draft202012Validator(SCHEMA).iter_errors(brief), key=lambda e: str(e.path))
     if errors:
         raise ValueError('; '.join(f'{".".join(map(str, e.path)) or "brief"}: {e.message}' for e in errors))
+    project = brief.get('project_id', 'default')
+    if project.upper() in {'CON', 'PRN', 'AUX', 'NUL', *[f'COM{i}' for i in range(10)], *[f'LPT{i}' for i in range(10)]}:
+        raise ValueError('project_id cannot be a reserved Windows directory name')
     if brief['output_class'].endswith('ANIMATION') and not brief['animation']['action']:
         raise ValueError('Animation requires an explicit action')
     if brief['source']['type'] != 'PROMPT' and not brief['source']['paths']:
         raise ValueError('Reference/document sources require paths')
-    if brief['source']['type'] == 'PROMPT' and not brief.get('prompt', '').strip():
+    if brief['source']['type'] == 'PROMPT' and not brief.get('prompt', '').strip() and not brief.get('prompt_spec', {}).get('subject', '').strip():
         raise ValueError('Prompt source requires a nonempty prompt')
     return brief
 

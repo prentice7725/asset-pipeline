@@ -1,0 +1,18 @@
+{
+  "status": "INSTALLED_ADAPTERS_VERIFIED",
+  "adapters": ["anima", "krea2"],
+  "tests": {"passed": 65},
+  "real_krea2_smoke": {
+    "manifest": "workspace/prompt_spec_krea2_smoke_02/run_manifest.json",
+    "seed": 20260930,
+    "resolution": [512, 512],
+    "basic_image_qa": "PASS",
+    "result": "CANDIDATE_READY_REVIEW_REQUIRED",
+    "game_ready": false
+  },
+  "initial_failure_preserved": "workspace/prompt_spec_krea2_smoke/run_manifest.json",
+  "style_gallery": "https://kreastyles.thetacursed.com/",
+  "style_gallery_import": "EXPLICIT_DESCRIPTION_AND_URL_ONLY",
+  "uninstalled_adapters": ["qwen-image", "flux", "sdxl"],
+  "visual_style_fidelity": "HUMAN_REVIEW_REQUIRED"
+}

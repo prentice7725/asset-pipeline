@@ -1,0 +1,15 @@
+{
+  "properties": {
+    "brief": {
+      "additionalProperties": true,
+      "title": "Brief",
+      "type": "object"
+    }
+  },
+  "required": [
+    "brief"
+  ],
+  "title": "asset_routeArguments",
+  "type": "object",
+  "additionalProperties": false
+}

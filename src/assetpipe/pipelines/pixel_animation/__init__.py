@@ -9,16 +9,14 @@ from ...providers.aseprite import AsepriteProvider
 from ...manifests import write
 from ...motion.extractor import decode_direct_reference
 
-def run(brief, config, directory, manifest):
+def preflight(brief):
     production = brief.get('production', {})
     required = ['static_master', 'approval_record', 'motion_reference', 'selection', 'direct_profile']
     if any(not production.get(k) for k in required):
         raise ValueError('Pixel animation requires approved static master, approval record, existing motion reference, reviewed semantic selection, and explicit direct_profile')
     master = Path(production['static_master'])
-    approval = json.loads(Path(production['approval_record']).read_text(encoding='utf-8'))
-    digest = hashlib.sha256(master.read_bytes()).hexdigest()
-    if approval.get('status') != 'APPROVED_STATIC_MASTER' or approval.get('approved_export_sha256') != digest:
-        raise ValueError('Static master approval/hash gate failed')
+    from ..pixel_static.approval import validate_approval
+    validate_approval(master, production['approval_record'])
     selection = json.loads(Path(production['selection']).read_text(encoding='utf-8'))
     phases = ['CONTACT_A', 'DOWN_A', 'PASSING_A', 'UP_A', 'CONTACT_B', 'DOWN_B', 'PASSING_B', 'UP_B']
     rows = selection.get('selection', [])
@@ -34,6 +32,12 @@ def run(brief, config, directory, manifest):
     video = Path(production['motion_reference']).resolve()
     if Path(selection.get('source_video', '')).resolve() != video:
         raise ValueError('Semantic selection source video mismatch')
+    if production['direct_profile'] != 'blue_tunic_white_matte_v1':
+        raise ValueError('Unknown verified direct profile')
+    return production, master, video, indices
+
+def run(brief, config, directory, manifest):
+    production, master, video, indices = preflight(brief)
     canvas = brief['constraints']['resolution'] or [160, 160]
     with Image.open(master) as opened:
         colors = sorted(set(opened.convert('RGBA').getdata()))

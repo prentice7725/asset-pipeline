@@ -1,0 +1,31 @@
+{
+  "milestone": "ASSET_PIPELINE_PLUGIN_M0",
+  "status": "PENDING_EXTERNAL_VALIDATION",
+  "bootstrap_precondition": "ASSET_PIPELINE_V0_1_BOOTSTRAP_PASS",
+  "regression_tests": {
+    "status": "PASS",
+    "passed": 82
+  },
+  "real_mcp_smokes": {
+    "capabilities": "PASS",
+    "nonpixel_image": "PASS_REVIEW_REQUIRED",
+    "existing_pixel_animation": "PASS_8_OF_8_EXACT_RGBA",
+    "document_brief_route": "PASS",
+    "local_evidence": "workspace/plugin_m0/1790774368/smoke_report.json",
+    "scope": "Pre-provenance-enforcement milestone; legacy animation approval must be migrated before replay"
+  },
+  "skill_validation": "PASS",
+  "package_layout_validation": "PASS_LOCAL_COMPATIBILITY_LAYOUT",
+  "package": "workspace/plugin_m0/package/asset-pipeline-plugin-m0.zip",
+  "package_sha256": "eae86e7311286371cec7a40d8999e4b6333cc96e82c3477cc48f4d5f75d0ca3c",
+  "plugin_creator_validation": "NOT_RUN_CREATOR_UNAVAILABLE",
+  "codex_plugin_host_integration": "NOT_VERIFIED",
+  "chatgpt_plugin_host_integration": "NOT_VERIFIED",
+  "public_plugin_submission": false,
+  "pass_marker_written": false,
+  "remaining_gates": [
+    "Official Plugin Creator validation",
+    "Actual target-host plugin integration"
+  ],
+  "sfx_extension": "REAL_CLI_AND_MCP_GENERATION_QA_PASS_LISTENING_REQUIRED"
+}

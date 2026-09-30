@@ -1,0 +1,25 @@
+schema_version: 1
+profiles:
+  anima-base:
+    prompt_adapter: anima
+    positive_prefix: []
+    defaults: {}
+    sources:
+      - https://huggingface.co/circlestone-labs/Anima
+  anima-pixel:
+    prompt_adapter: anima
+    positive_prefix: [pixel art, chibi]
+    defaults: {}
+    sources:
+      - https://huggingface.co/circlestone-labs/Anima
+  anima-tomohi:
+    prompt_adapter: anima
+    positive_prefix: [tomohi]
+    defaults: {}
+    trigger_source: user-confirmed
+  krea2:
+    prompt_adapter: krea2
+    defaults: {}
+    sources:
+      - https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
+    community_style_reference: https://kreastyles.thetacursed.com/

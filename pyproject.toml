@@ -13,14 +13,17 @@ dependencies = ["Pillow>=10", "PyYAML>=6", "jsonschema>=4.18", "numpy>=1.24"]
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 motion = ["opencv-python>=4.8"]
+mcp = ["mcp>=1.20,<2"]
 
 [project.scripts]
 assetpipe = "assetpipe.cli:main"
+assetpipe-mcp = "integrations.mcp.server:main"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["src", "."]
+include = ["assetpipe*", "integrations", "integrations.mcp", "integrations.mcp.server", "integrations.mcp.tools"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["src"]
+testpaths = ["tests", "integrations/mcp/tests"]
+pythonpath = ["src", "."]
 addopts = "-ra"
