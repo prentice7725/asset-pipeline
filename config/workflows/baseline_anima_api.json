@@ -1,0 +1,166 @@
+{
+  "workflow_version": "1.0.0",
+  "description": "Anima Base v1 stable core-node baseline reconstructed from the workflow embedded in the supplied PNG; generated PNGs are concept candidates.",
+  "source_image_sha256": "0d65333d1b1de76c19e2f82afa01c538307adc8b1faed7f5ce13f91c2c96d86b",
+  "source_api_sha256": "8bba675b0b7075b5bc2bb03577c9c57585741889396fa9328747347c851f2d55",
+  "api_prompt": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "anima-base-v1.0.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_06b_base.safetensors",
+        "type": "stable_diffusion",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "1girl, black hair, long hair, black eyes, classroom, The girl is stretching",
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "score_1, score_2, score_3, worst quality, lowres, old, bad hands, bad anatomy",
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 768,
+        "height": 1152,
+        "batch_size": 1
+      }
+    },
+    "7": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "seed": 585498459405142,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler_name": "er_sde",
+        "scheduler": "simple",
+        "positive": [
+          "4",
+          0
+        ],
+        "negative": [
+          "5",
+          0
+        ],
+        "latent_image": [
+          "6",
+          0
+        ],
+        "denoise": 1.0
+      }
+    },
+    "8": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "7",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "filename_prefix": "pixelpipe/baseline_anima"
+      }
+    }
+  },
+  "bindings": {
+    "prompt": {
+      "node": "4",
+      "input": "text"
+    },
+    "negative_prompt": {
+      "node": "5",
+      "input": "text"
+    },
+    "width": {
+      "node": "6",
+      "input": "width"
+    },
+    "height": {
+      "node": "6",
+      "input": "height"
+    },
+    "steps": {
+      "node": "7",
+      "input": "steps"
+    },
+    "cfg": {
+      "node": "7",
+      "input": "cfg"
+    },
+    "sampler": {
+      "node": "7",
+      "input": "sampler_name"
+    },
+    "scheduler": {
+      "node": "7",
+      "input": "scheduler"
+    },
+    "seed": {
+      "node": "7",
+      "input": "seed"
+    },
+    "filename_prefix": {
+      "node": "9",
+      "input": "filename_prefix"
+    }
+  },
+  "models": {
+    "diffusion": "anima-base-v1.0.safetensors",
+    "text_encoder": "qwen_3_06b_base.safetensors",
+    "vae": "qwen_image_vae.safetensors",
+    "loras": []
+  },
+  "defaults": {
+    "width": 768,
+    "height": 1152,
+    "steps": 30,
+    "cfg": 4.0,
+    "sampler": "er_sde",
+    "scheduler": "simple"
+  },
+  "output_nodes": [
+    "9"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "command": ".venv/Scripts/python.exe -m pytest -q",
+  "exit_code": 0,
+  "stdout": "...............................................                          [100%]\n47 passed in 15.74s\n",
+  "stderr": "",
+  "timestamp": "2026-09-30T12:50:40.954636+00:00"
+}

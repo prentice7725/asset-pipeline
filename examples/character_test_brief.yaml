@@ -1,0 +1,59 @@
+asset_id: scout_document_fixture
+asset_type: character
+output_class: NONPIXEL_IMAGE
+purpose: game asset candidate
+source:
+  type: DOCUMENTS
+  paths:
+  - ../tests/fixtures/character_test.md
+  references: []
+identity:
+  canonical_traits:
+  - fantasy scout
+  - short brown hair
+  - blue cloak
+  - light armor
+  - dagger
+  visual_traits: []
+constraints:
+  resolution: null
+  transparency: null
+  palette: []
+  silhouette: null
+  style: null
+animation:
+  action: null
+  frame_target: null
+  motion_constraints: []
+workflow_preferences:
+  id: anima_base
+  tags:
+  - character
+  - fantasy
+forbidden_elements:
+- heavy armor
+unspecified_elements:
+- face details
+- resolution
+- palette
+- silhouette
+source_notes:
+- classification: EXPLICIT
+  text: fantasy scout
+  source: ../tests/fixtures/character_test.md
+- classification: EXPLICIT
+  text: short brown hair
+  source: ../tests/fixtures/character_test.md
+- classification: EXPLICIT
+  text: blue cloak
+  source: ../tests/fixtures/character_test.md
+- classification: EXPLICIT
+  text: light armor
+  source: ../tests/fixtures/character_test.md
+- classification: EXPLICIT
+  text: dagger
+  source: ../tests/fixtures/character_test.md
+- classification: EXPLICIT
+  text: no heavy armor
+  source: ../tests/fixtures/character_test.md
+prompt: fantasy scout, short brown hair, blue cloak, light armor, dagger

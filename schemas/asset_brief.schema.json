@@ -1,0 +1,271 @@
+{
+  "type": "object",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "asset_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "output_class": {
+      "enum": [
+        "PIXEL_STATIC",
+        "PIXEL_ANIMATION",
+        "NONPIXEL_IMAGE",
+        "NONPIXEL_ANIMATION"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "PROMPT",
+            "REFERENCE_IMAGE",
+            "DOCUMENTS"
+          ]
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "paths",
+        "references"
+      ],
+      "additionalProperties": false
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "canonical_traits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "visual_traits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "canonical_traits",
+        "visual_traits"
+      ],
+      "additionalProperties": false
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "resolution": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ]
+        },
+        "transparency": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "palette": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "silhouette": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "style": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "resolution",
+        "transparency",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "additionalProperties": false
+    },
+    "animation": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frame_target": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "motion_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "action",
+        "frame_target",
+        "motion_constraints"
+      ],
+      "additionalProperties": false
+    },
+    "workflow_preferences": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "preset": {
+          "type": "string"
+        },
+        "allow_experimental": {
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "forbidden_elements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unspecified_elements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_notes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "classification": {
+            "enum": [
+              "EXPLICIT",
+              "DERIVED",
+              "UNSPECIFIED"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "classification",
+          "text",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "negative_prompt": {
+      "type": "string"
+    },
+    "production": {
+      "type": "object",
+      "properties": {
+        "static_master": {
+          "type": "string"
+        },
+        "approval_record": {
+          "type": "string"
+        },
+        "motion_reference": {
+          "type": "string"
+        },
+        "source_frames": {
+          "type": "string"
+        },
+        "selection": {
+          "type": "string"
+        },
+        "direct_profile": {
+          "type": "string"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "asset_id",
+    "asset_type",
+    "output_class",
+    "purpose",
+    "source",
+    "identity",
+    "constraints",
+    "animation",
+    "workflow_preferences",
+    "forbidden_elements",
+    "unspecified_elements",
+    "source_notes"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

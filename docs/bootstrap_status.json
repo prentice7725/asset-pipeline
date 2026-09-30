@@ -1,0 +1,81 @@
+{
+  "status": "ASSET_PIPELINE_V0_1_BOOTSTRAP_PASS",
+  "completed_at": "2026-09-30T12:50:40.966932+00:00",
+  "gates": {
+    "Repository bootstrap": {
+      "status": "PASS",
+      "evidence": "Editable install and assetpipe --help; Git initialized"
+    },
+    "Workflow Registry": {
+      "status": "PASS",
+      "evidence": "docs/provider_preflight.json; actual ComfyUI object_info model/node names"
+    },
+    "Asset Brief schema": {
+      "status": "PASS",
+      "evidence": "schemas/asset_brief.schema.json; validation tests"
+    },
+    "Router": {
+      "status": "PASS",
+      "evidence": "tests/unit/test_assetpipe.py; status/capability/tag/priority/rejection tests"
+    },
+    "ComfyUI Provider": {
+      "status": "PASS",
+      "evidence": "workspace/smokes/nonpixel/010_generation/generation.json"
+    },
+    "Aseprite Provider": {
+      "status": "PASS",
+      "evidence": "workspace/smokes/pixel_attempt_05/040_aseprite/aseprite_report.json"
+    },
+    "PIXEL_STATIC wiring": {
+      "status": "PASS",
+      "evidence": "tests/integration/test_static_wiring.py; existing candidate fixture, real Aseprite, resolution-review lock and failed-gate stop"
+    },
+    "PIXEL_ANIMATION wiring": {
+      "status": "PASS",
+      "evidence": "workspace/smokes/pixel_attempt_05/run_manifest.json"
+    },
+    "NONPIXEL_IMAGE wiring": {
+      "status": "PASS",
+      "evidence": "workspace/smokes/nonpixel/run_manifest.json"
+    },
+    "Document to Asset Brief smoke": {
+      "status": "PASS",
+      "evidence": "workspace/smokes/document_brief.json; workspace/smokes/document_route.json"
+    },
+    "Pixel E2E smoke": {
+      "status": "PASS",
+      "evidence": "docs/pixel_regression.json; eight exact legacy RGBA frames, Pixel Gate and actual Aseprite export"
+    },
+    "Non-pixel E2E smoke": {
+      "status": "PASS",
+      "evidence": "workspace/smokes/nonpixel/run_manifest.json"
+    },
+    "Tests": {
+      "status": "PASS",
+      "evidence": "docs/test_report.json"
+    },
+    "README": {
+      "status": "PASS",
+      "evidence": "README.md"
+    }
+  },
+  "limitations": [
+    "NONPIXEL_ANIMATION is SUPPORTED_EXPERIMENTAL contract only",
+    "Direct animation profile currently supports eight reviewed blue-tunic/white-background walk frames; no universal anchoring claim",
+    "Pixel animation v0.1 consumes existing reviewed motion; new motion-generation requests require prepared provider inputs and are not auto-dispatched",
+    "Static wiring uses an established fixture for gate/export validation; no additional pixel generation was run",
+    "Exports and generated images remain review-required, game_ready=false",
+    "No old run artifacts were imported; benchmark inputs reference the preserved legacy source",
+    "Legacy repository has no HEAD commit; migration records source file hashes"
+  ],
+  "migration_defects_resolved": [
+    "Preview helper canvas globals",
+    "OpenCV vs FFmpeg decode RGB mismatch"
+  ],
+  "failed_attempts_preserved": [
+    "workspace/smokes/pixel",
+    "workspace/smokes/pixel_attempt_02",
+    "workspace/smokes/pixel_attempt_03"
+  ],
+  "stop_rule": "v0.1 complete; no additional features added"
+}

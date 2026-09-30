@@ -1,0 +1,43 @@
+asset_id: sword_warrior_benchmark
+asset_type: character
+output_class: PIXEL_ANIMATION
+purpose: game asset candidate
+source:
+  type: REFERENCE_IMAGE
+  paths:
+  - ../../pixel-pipeline/workspace/runs/sword_warrior_001/phase13_static_master/approved/static_master_export.png
+  references: []
+identity:
+  canonical_traits: []
+  visual_traits: []
+constraints:
+  resolution:
+  - 160
+  - 160
+  transparency: null
+  palette: []
+  silhouette: null
+  style: null
+animation:
+  action: walk
+  frame_target: 8
+  motion_constraints: []
+workflow_preferences: {}
+forbidden_elements: []
+unspecified_elements:
+- identity
+- resolution
+- palette
+- silhouette
+- style
+source_notes:
+- classification: EXPLICIT
+  text: Provided reference image
+  source: user input
+prompt: ''
+production:
+  static_master: ../../pixel-pipeline/workspace/runs/sword_warrior_001/phase13_static_master/approved/static_master_export.png
+  approval_record: ../../pixel-pipeline/workspace/runs/sword_warrior_001/phase13_static_master/approved/approval_record.json
+  motion_reference: ../../pixel-pipeline/workspace/runs/sword_warrior_001/phase13_walk_reference/attempt_02/010_generation/001_minimax_h3_walk_00002.mp4
+  selection: ../../pixel-pipeline/workspace/runs/sword_warrior_001/phase13_step3_direct_walk/attempt_05/semantic_frame_selection.json
+  direct_profile: blue_tunic_white_matte_v1

@@ -1,0 +1,36 @@
+comfyui:
+  base_url: http://127.0.0.1:8188
+  request_timeout_seconds: 30
+  execution_timeout_seconds: 1800
+  poll_interval_seconds: 1.0
+workspace:
+  input: workspace/input
+  intermediate: workspace/intermediate
+  output: workspace/output
+  reports: workspace/reports
+  runs: workspace/runs
+pixel:
+  max_colors: 32
+  alpha_mode: binary
+  alpha_threshold: 128
+  gradient_suspicion_threshold: 0.18
+aseprite:
+  executable: null
+  timeout_seconds: 120
+motion_extractor:
+  sample_fps: 12
+  blur_soft_min: 18
+  blur_reject_min: 12
+  near_duplicate_hamming: 0
+  foreground_threshold: 28
+animation:
+  canvas_size:
+  - 160
+  - 160
+  background_color_tolerance: 2
+  background_reference_opacity: 96
+  motion_reference_background_tolerance: 28
+  walk:
+    frame_duration_ms: 90
+    reference_opacity: 128
+    max_iterations_per_frame: 4

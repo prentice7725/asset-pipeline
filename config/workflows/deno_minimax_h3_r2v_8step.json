@@ -1,0 +1,246 @@
+{
+  "description": "MiniMax H3 Ref2VA with DENO 8-step Acc LoRA. Derived from Deno_minimax_8_step_turbo_R2V_fixed.json; 768x768, 56 frames at 24 fps for pipeline compatibility. SageAttention KJ patch is active in the sampler path.",
+  "source_workflow": "Deno_minimax_8_step_turbo_R2V_fixed.json",
+  "workflow_version": "deno-r2v-8step-v1",
+  "models": {
+    "diffusion": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "acc_lora": "MiniMax-H3-Ref2VA-Acc-8Step.safetensors",
+    "video_vae": "minimax_h3_video_vae_fp16.safetensors",
+    "audio_vae": "minimax_h3_audio_vae_fp32.safetensors"
+  },
+  "defaults": {
+    "width": 768,
+    "height": 768,
+    "length": 56,
+    "steps": 8,
+    "fps": 24
+  },
+  "api_prompt": {
+    "119": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+      }
+    },
+    "120": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+      }
+    },
+    "129": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 0
+      }
+    },
+    "122": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "125",
+          0
+        ],
+        "vae": [
+          "119",
+          0
+        ]
+      }
+    },
+    "125": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "129",
+          0
+        ],
+        "guider": [
+          "126",
+          0
+        ],
+        "sampler": [
+          "184",
+          0
+        ],
+        "sigmas": [
+          "185",
+          0
+        ],
+        "latent_image": [
+          "141",
+          1
+        ]
+      }
+    },
+    "121": {
+      "class_type": "VAEDecodeAudio",
+      "inputs": {
+        "samples": [
+          "125",
+          0
+        ],
+        "vae": [
+          "120",
+          0
+        ]
+      }
+    },
+    "142": {
+      "class_type": "DenoMiniMaxH3ReferenceImageLoader",
+      "inputs": {
+        "image_paths": ""
+      }
+    },
+    "128": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+        "type": "minimax",
+        "device": "default"
+      }
+    },
+    "126": {
+      "class_type": "BasicGuider",
+      "inputs": {
+        "model": [
+          "183",
+          0
+        ],
+        "conditioning": [
+          "141",
+          0
+        ]
+      }
+    },
+    "184": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler"
+      }
+    },
+    "185": {
+      "class_type": "BasicScheduler",
+      "inputs": {
+        "model": [
+          "190",
+          0
+        ],
+        "scheduler": "simple",
+        "steps": 8,
+        "denoise": 1.0
+      }
+    },
+    "141": {
+      "class_type": "DenoMiniMaxH3ReferenceToVideo",
+      "inputs": {
+        "clip": [
+          "128",
+          0
+        ],
+        "vae": [
+          "119",
+          0
+        ],
+        "audio_vae": [
+          "120",
+          0
+        ],
+        "ref_images": [
+          "142",
+          0
+        ],
+        "ref_image_size": "match",
+        "prompt": "",
+        "width": 768,
+        "height": 768,
+        "length": 56
+      }
+    },
+    "144": {
+      "class_type": "VHS_VideoCombine",
+      "inputs": {
+        "images": [
+          "122",
+          0
+        ],
+        "audio": [
+          "121",
+          0
+        ],
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "pixelpipe/deno_minimax_h3_r2v_8step",
+        "format": "video/h264-mp4",
+        "pingpong": false,
+        "save_output": true,
+        "pix_fmt": "yuv420p",
+        "crf": 15,
+        "save_metadata": true,
+        "trim_to_audio": false
+      }
+    },
+    "127": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "183": {
+      "class_type": "DenoMiniMaxH3AccLoader",
+      "inputs": {
+        "model": [
+          "127",
+          0
+        ],
+        "acc_lora": "MiniMax-H3-Ref2VA-Acc-8Step.safetensors"
+      }
+    },
+    "190": {
+      "class_type": "PathchSageAttentionKJ",
+      "inputs": {
+        "model": [
+          "183",
+          0
+        ],
+        "sage_attention": "auto",
+        "allow_compile": false
+      }
+    }
+  },
+  "bindings": {
+    "prompt": {
+      "node": "141",
+      "input": "prompt",
+      "required": true
+    },
+    "seed": {
+      "node": "129",
+      "input": "noise_seed"
+    },
+    "input_image": {
+      "node": "142",
+      "input": "image_paths",
+      "required": true
+    },
+    "filename_prefix": {
+      "node": "144",
+      "input": "filename_prefix"
+    },
+    "width": {
+      "node": "141",
+      "input": "width"
+    },
+    "height": {
+      "node": "141",
+      "input": "height"
+    },
+    "length": {
+      "node": "141",
+      "input": "length"
+    }
+  },
+  "output_nodes": [
+    "144"
+  ]
+}

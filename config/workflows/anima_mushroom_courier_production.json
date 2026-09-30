@@ -1,0 +1,164 @@
+{
+  "workflow_version": "1.0.0",
+  "description": "Mushroom Courier production candidate: Anima Base, Pixelate x4 VAE, no LoRA; production candidate only, not the baseline Anima workflow.",
+  "models": {
+    "diffusion": "anima-base-v1.0.safetensors",
+    "text_encoder": "qwen_3_06b_base.safetensors",
+    "vae": "pixelateX4VAEForAnima_animaV10.safetensors",
+    "loras": []
+  },
+  "api_prompt": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "anima-base-v1.0.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_06b_base.safetensors",
+        "type": "stable_diffusion",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "pixelateX4VAEForAnima_animaV10.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "pixel art, chibi, white background, simple background, 1girl, solo, full body, centered, standing, front view, neutral pose, feet visible",
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "realistic, photorealistic, 3d, multiple characters, scenery, complex background, text, watermark, logo, cropped, out of frame",
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 512,
+        "height": 512,
+        "batch_size": 1
+      }
+    },
+    "8": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "seed": 2718281828,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler_name": "er_sde",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ],
+        "denoise": 1.0
+      }
+    },
+    "9": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "8",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "9",
+          0
+        ],
+        "filename_prefix": "pixelpipe/characters/mushroom_courier/production_candidate"
+      }
+    }
+  },
+  "bindings": {
+    "prompt": {
+      "node": "5",
+      "input": "text"
+    },
+    "negative_prompt": {
+      "node": "6",
+      "input": "text"
+    },
+    "seed": {
+      "node": "8",
+      "input": "seed"
+    },
+    "width": {
+      "node": "7",
+      "input": "width"
+    },
+    "height": {
+      "node": "7",
+      "input": "height"
+    },
+    "steps": {
+      "node": "8",
+      "input": "steps"
+    },
+    "cfg": {
+      "node": "8",
+      "input": "cfg"
+    },
+    "sampler": {
+      "node": "8",
+      "input": "sampler_name"
+    },
+    "scheduler": {
+      "node": "8",
+      "input": "scheduler"
+    },
+    "filename_prefix": {
+      "node": "10",
+      "input": "filename_prefix"
+    }
+  },
+  "defaults": {
+    "width": 512,
+    "height": 512,
+    "steps": 30,
+    "cfg": 4.0,
+    "sampler": "er_sde",
+    "scheduler": "simple"
+  },
+  "output_nodes": [
+    "10"
+  ]
+}

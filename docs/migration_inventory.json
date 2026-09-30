@@ -1,0 +1,298 @@
+{
+  "legacy_head": null,
+  "legacy_head_reason": "Repository has no commits; source hashes identify migration inputs.",
+  "files": [
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/config.py",
+      "destination": "src/assetpipe/_ported/config.py",
+      "source_sha256": "540ba4c0db651dd8b29afac2197ef531077de4dd4eee092c50c50bc2e890b53b",
+      "destination_sha256": "540ba4c0db651dd8b29afac2197ef531077de4dd4eee092c50c50bc2e890b53b",
+      "final_destination_sha256": "540ba4c0db651dd8b29afac2197ef531077de4dd4eee092c50c50bc2e890b53b"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/errors.py",
+      "destination": "src/assetpipe/_ported/errors.py",
+      "source_sha256": "52fe35b4d125e51dd47cd487817b3756feb93c52146909c7cc4a025fb347d693",
+      "destination_sha256": "52fe35b4d125e51dd47cd487817b3756feb93c52146909c7cc4a025fb347d693",
+      "final_destination_sha256": "52fe35b4d125e51dd47cd487817b3756feb93c52146909c7cc4a025fb347d693"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/comfy_bridge/client.py",
+      "destination": "src/assetpipe/_ported/comfy_bridge/client.py",
+      "source_sha256": "8a79125038865499249ad14b6dafdc7e0c06db6775ba5208a874129d7029235a",
+      "destination_sha256": "8a79125038865499249ad14b6dafdc7e0c06db6775ba5208a874129d7029235a",
+      "final_destination_sha256": "8a79125038865499249ad14b6dafdc7e0c06db6775ba5208a874129d7029235a"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/comfy_bridge/runner.py",
+      "destination": "src/assetpipe/_ported/comfy_bridge/runner.py",
+      "source_sha256": "00b58e4e4a50922aca4bd01de5ecf9c9726f161c8176702585f4c8a16b94d202",
+      "destination_sha256": "00b58e4e4a50922aca4bd01de5ecf9c9726f161c8176702585f4c8a16b94d202",
+      "final_destination_sha256": "00b58e4e4a50922aca4bd01de5ecf9c9726f161c8176702585f4c8a16b94d202"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/comfy_bridge/workflow_loader.py",
+      "destination": "src/assetpipe/_ported/comfy_bridge/workflow_loader.py",
+      "source_sha256": "7c92c721f7ba4556592e75581f697d229c567f926868ca48270b789e31fa2a7e",
+      "destination_sha256": "7c92c721f7ba4556592e75581f697d229c567f926868ca48270b789e31fa2a7e",
+      "final_destination_sha256": "7c92c721f7ba4556592e75581f697d229c567f926868ca48270b789e31fa2a7e"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/aseprite_bridge/runner.py",
+      "destination": "src/assetpipe/_ported/aseprite_bridge/runner.py",
+      "source_sha256": "6f818de969a8fa823e9aa57fa7969857f4bf5987a29c22353d70af71e5abd919",
+      "destination_sha256": "6f818de969a8fa823e9aa57fa7969857f4bf5987a29c22353d70af71e5abd919",
+      "final_destination_sha256": "6f818de969a8fa823e9aa57fa7969857f4bf5987a29c22353d70af71e5abd919"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/pixel_gate/analyzer.py",
+      "destination": "src/assetpipe/_ported/pixel_gate/analyzer.py",
+      "source_sha256": "2d039486ec8dc83da2e9dd050bffe08d204b4f57d4457c9530446d032470dd62",
+      "destination_sha256": "2d039486ec8dc83da2e9dd050bffe08d204b4f57d4457c9530446d032470dd62",
+      "final_destination_sha256": "2d039486ec8dc83da2e9dd050bffe08d204b4f57d4457c9530446d032470dd62"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/pixel_gate/refiner.py",
+      "destination": "src/assetpipe/_ported/pixel_gate/refiner.py",
+      "source_sha256": "28542ac17e10bf5932c0c40bac1e408ef8f653b965647ddf6aa28f61299ac923",
+      "destination_sha256": "28542ac17e10bf5932c0c40bac1e408ef8f653b965647ddf6aa28f61299ac923",
+      "final_destination_sha256": "28542ac17e10bf5932c0c40bac1e408ef8f653b965647ddf6aa28f61299ac923"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/pixel_gate/resolution.py",
+      "destination": "src/assetpipe/_ported/pixel_gate/resolution.py",
+      "source_sha256": "adae2632b1cf2c5ee508b062c314411de9dfbbcb945ea6e1a0fb384fe1ce209c",
+      "destination_sha256": "adae2632b1cf2c5ee508b062c314411de9dfbbcb945ea6e1a0fb384fe1ce209c",
+      "final_destination_sha256": "adae2632b1cf2c5ee508b062c314411de9dfbbcb945ea6e1a0fb384fe1ce209c"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/pixel_gate/report.py",
+      "destination": "src/assetpipe/_ported/pixel_gate/report.py",
+      "source_sha256": "ba5102559ee902daa891984e49cff8b3314781a3e14df49d624f6945c448864a",
+      "destination_sha256": "ba5102559ee902daa891984e49cff8b3314781a3e14df49d624f6945c448864a",
+      "final_destination_sha256": "ba5102559ee902daa891984e49cff8b3314781a3e14df49d624f6945c448864a"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/pixel_gate/subject_refiner.py",
+      "destination": "src/assetpipe/_ported/pixel_gate/subject_refiner.py",
+      "source_sha256": "03c330dfa20838758fa0f0f9a69dd7de46c4eaf4073c948a6c914aa1730ab703",
+      "destination_sha256": "03c330dfa20838758fa0f0f9a69dd7de46c4eaf4073c948a6c914aa1730ab703",
+      "final_destination_sha256": "03c330dfa20838758fa0f0f9a69dd7de46c4eaf4073c948a6c914aa1730ab703"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/motion_extractor/extract.py",
+      "destination": "src/assetpipe/_ported/motion_extractor/extract.py",
+      "source_sha256": "ecc2eed556587bb74ad4394e4cbddf9b71ccecf3db5928e822769f6d34201ecf",
+      "destination_sha256": "ecc2eed556587bb74ad4394e4cbddf9b71ccecf3db5928e822769f6d34201ecf",
+      "final_destination_sha256": "ecc2eed556587bb74ad4394e4cbddf9b71ccecf3db5928e822769f6d34201ecf"
+    },
+    {
+      "source": "../pixel-pipeline/src/pixel_pipeline/motion_extractor/keyframes.py",
+      "destination": "src/assetpipe/_ported/motion_extractor/keyframes.py",
+      "source_sha256": "22fd04bdef38c5b001481e1363db5f96a0a21ff034027f42264805ecd6417589",
+      "destination_sha256": "22fd04bdef38c5b001481e1363db5f96a0a21ff034027f42264805ecd6417589",
+      "final_destination_sha256": "22fd04bdef38c5b001481e1363db5f96a0a21ff034027f42264805ecd6417589"
+    },
+    {
+      "source": "../pixel-pipeline/scripts/aseprite/build_master.lua",
+      "destination": "scripts/aseprite/build_master.lua",
+      "source_sha256": "6268244eeefa1a90694c2f4604a186d0d8ce04ade2d231de594f351c70578495",
+      "destination_sha256": "6268244eeefa1a90694c2f4604a186d0d8ce04ade2d231de594f351c70578495",
+      "final_destination_sha256": "6268244eeefa1a90694c2f4604a186d0d8ce04ade2d231de594f351c70578495"
+    },
+    {
+      "source": "../pixel-pipeline/scripts/aseprite/build_game_master.lua",
+      "destination": "scripts/aseprite/build_game_master.lua",
+      "source_sha256": "741ab08c8b8104fe902d028114c891265b2c8b6402feee588048bbc17c59f6c2",
+      "destination_sha256": "741ab08c8b8104fe902d028114c891265b2c8b6402feee588048bbc17c59f6c2",
+      "final_destination_sha256": "741ab08c8b8104fe902d028114c891265b2c8b6402feee588048bbc17c59f6c2"
+    },
+    {
+      "source": "../pixel-pipeline/scripts/aseprite/build_animation_scaffold.lua",
+      "destination": "scripts/aseprite/build_animation_scaffold.lua",
+      "source_sha256": "6545e9bd13d4619c4a4447815b5c957a79485bb008d952717c016827d32c6ea4",
+      "destination_sha256": "6545e9bd13d4619c4a4447815b5c957a79485bb008d952717c016827d32c6ea4",
+      "final_destination_sha256": "6545e9bd13d4619c4a4447815b5c957a79485bb008d952717c016827d32c6ea4"
+    },
+    {
+      "source": "../pixel-pipeline/scripts/aseprite/apply_animation_frames.lua",
+      "destination": "scripts/aseprite/apply_animation_frames.lua",
+      "source_sha256": "67f4b29d79d096a4bb47b07fc57171ddea0ffa1c8af3a108c82b0dd952fbf465",
+      "destination_sha256": "67f4b29d79d096a4bb47b07fc57171ddea0ffa1c8af3a108c82b0dd952fbf465",
+      "final_destination_sha256": "67f4b29d79d096a4bb47b07fc57171ddea0ffa1c8af3a108c82b0dd952fbf465"
+    },
+    {
+      "source": "../pixel-pipeline/config/workflows/baseline_anima_api.json",
+      "destination": "config/workflows/baseline_anima_api.json",
+      "source_sha256": "1dc73e1689cc2e26c9aa894734052b695a37d50344f2e60dfa0ede6cb74e81fb",
+      "destination_sha256": "1dc73e1689cc2e26c9aa894734052b695a37d50344f2e60dfa0ede6cb74e81fb",
+      "final_destination_sha256": "f58d08f940bfdb3bdb5f05aa61af75533b19d9544a34d6b25d4c63f9d4104c97"
+    },
+    {
+      "source": "../pixel-pipeline/config/workflows/anima_mushroom_courier_production.json",
+      "destination": "config/workflows/anima_mushroom_courier_production.json",
+      "source_sha256": "90a3e726a60f5dac787f42fa2144a58b41d039d106982df02d9ba4f38de0de13",
+      "destination_sha256": "90a3e726a60f5dac787f42fa2144a58b41d039d106982df02d9ba4f38de0de13",
+      "final_destination_sha256": "de1d031aad7181b96fc176f243a53ee7f4caf58e92c86023ee1be185c60e01a2"
+    },
+    {
+      "source": "../pixel-pipeline/config/workflows/anima_tomohi_api.json",
+      "destination": "config/workflows/anima_tomohi_api.json",
+      "source_sha256": "091054a1b643c238ec9e7d41f0539abd9a9fa4193ead5d01247a8980b49e257a",
+      "destination_sha256": "091054a1b643c238ec9e7d41f0539abd9a9fa4193ead5d01247a8980b49e257a",
+      "final_destination_sha256": "091054a1b643c238ec9e7d41f0539abd9a9fa4193ead5d01247a8980b49e257a"
+    },
+    {
+      "source": "../pixel-pipeline/config/workflows/krea2_turbo_api.json",
+      "destination": "config/workflows/krea2_turbo_api.json",
+      "source_sha256": "c6b53b182bf692e4987a10eeb957259f3d0cd41d833fa40c0e2e6e0c8309cef3",
+      "destination_sha256": "c6b53b182bf692e4987a10eeb957259f3d0cd41d833fa40c0e2e6e0c8309cef3",
+      "final_destination_sha256": "0401943016f4e58e33050d36ef723251a1a4d2da0ca789800a501b06c10850d3"
+    },
+    {
+      "source": "../pixel-pipeline/config/workflows/deno_minimax_h3_r2v_8step.json",
+      "destination": "config/workflows/deno_minimax_h3_r2v_8step.json",
+      "source_sha256": "93993033246c7fef3ba19117f7a219950ec7fd3f062cff69ba684ae6b2e9ab26",
+      "destination_sha256": "93993033246c7fef3ba19117f7a219950ec7fd3f062cff69ba684ae6b2e9ab26",
+      "final_destination_sha256": "93993033246c7fef3ba19117f7a219950ec7fd3f062cff69ba684ae6b2e9ab26"
+    },
+    {
+      "source": "../pixel-pipeline/config/workflows/concept_character.json",
+      "destination": "config/workflows/concept_character.json",
+      "source_sha256": "ce50ae9b0f6a5ded627de87af98cee954e069d5b1aed4a92c0bd741fccb95bc7",
+      "destination_sha256": "ce50ae9b0f6a5ded627de87af98cee954e069d5b1aed4a92c0bd741fccb95bc7",
+      "final_destination_sha256": "7b25954ee8dcf29b58f575e505b59f2c4c26ad0895fc08429c885ceba3f5312d"
+    },
+    {
+      "source": "../pixel-pipeline/config/pipeline.yaml",
+      "destination": "config/pipeline.yaml",
+      "source_sha256": "eec31597e56b7b043a4ddb73a0db26c5525114a94fd556522e73bd736d72dc56",
+      "destination_sha256": "eec31597e56b7b043a4ddb73a0db26c5525114a94fd556522e73bd736d72dc56",
+      "final_destination_sha256": "272afb96cb4290f6310ed85597787879fb95a0094c0d0a8955340d9afa6601e3"
+    },
+    {
+      "source": "../pixel-pipeline/config/workflow_registry.yaml",
+      "destination": "config/workflow_registry.yaml",
+      "source_sha256": "270e09a0f55d32775510f2f29bb36f2ced2b178745d452d9782597444fac1bcf",
+      "destination_sha256": "270e09a0f55d32775510f2f29bb36f2ced2b178745d452d9782597444fac1bcf",
+      "final_destination_sha256": "2c75f8983849621cedb56caf5cebec6b1626328d8dab060f2bcb26c15c2afcc6"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_pixel_analyzer.py",
+      "destination": "tests/test_pixel_analyzer.py",
+      "source_sha256": "87b674dfc786e50a87fce3c5e92a42a922af79b876bda4fa2f4ab2fe3fe3c8aa",
+      "destination_sha256": "7f2a12ed3aa36ce1ab12f6267bb9f9fe4e5298b9cec984f999e73db789737f43",
+      "final_destination_sha256": "7f2a12ed3aa36ce1ab12f6267bb9f9fe4e5298b9cec984f999e73db789737f43"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_refiner.py",
+      "destination": "tests/test_refiner.py",
+      "source_sha256": "35bc760ee949765203d1ae38b60d57406d2f4d5819e10f28e92d0d42ac3bc004",
+      "destination_sha256": "a0fb915a7b7dd57b30dfbbad232449d03c5e57eaa59b12a8ae9c5817fb444ebb",
+      "final_destination_sha256": "a0fb915a7b7dd57b30dfbbad232449d03c5e57eaa59b12a8ae9c5817fb444ebb"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_subject_refiner.py",
+      "destination": "tests/test_subject_refiner.py",
+      "source_sha256": "1f1e34dbcdbb4caaedce9f6e1a776fb08e0c07ccadd68ff7141536ef23443247",
+      "destination_sha256": "f40c834d50d9e419ecbf4057f95db600f3cdaa9daf7ba7b38e0aa64456b2f698",
+      "final_destination_sha256": "f40c834d50d9e419ecbf4057f95db600f3cdaa9daf7ba7b38e0aa64456b2f698"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_resolution_gate.py",
+      "destination": "tests/test_resolution_gate.py",
+      "source_sha256": "488c5aedf6d475295106d535a852eec900e675a4bc4d0b71bd2f8c4bbf1def68",
+      "destination_sha256": "78a38c72318b12fc4b56d74693047c5cf35a8351ca5c174c1c0e81170b96bcfe",
+      "final_destination_sha256": "78a38c72318b12fc4b56d74693047c5cf35a8351ca5c174c1c0e81170b96bcfe"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_motion_extractor.py",
+      "destination": "tests/test_motion_extractor.py",
+      "source_sha256": "2d6ad1a70816cdea32cbdd4d0f69b0a54a9870fc5581d7c7013ad38e094f5f79",
+      "destination_sha256": "ed5e39d07dda147fb7a37a83873cf3261de3bdd2a901fbf2a3bea5994e8fc6f0",
+      "final_destination_sha256": "c4fe9ea8ebbdc001cc30c905085dd4b3b30e07469ab9446f33f945a84a929728"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_motion_keyframes.py",
+      "destination": "tests/test_motion_keyframes.py",
+      "source_sha256": "32ec243312e2436daca7956af3c8cf18898f5742eda3a662be19809c31666a63",
+      "destination_sha256": "0741a606977fb61419a2b8001a45014a5594076c232d1014a7320ad3de741c98",
+      "final_destination_sha256": "0741a606977fb61419a2b8001a45014a5594076c232d1014a7320ad3de741c98"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_aseprite_bridge.py",
+      "destination": "tests/test_aseprite_bridge.py",
+      "source_sha256": "af0eb84ed6fbdab46aa60ee25b196b38dcb77a6fb9b10eb70725ca298ef35a69",
+      "destination_sha256": "68794df8bfb17d0a9fa33687f49696e42972ff591eda2c3d50f2f244f9efad74",
+      "final_destination_sha256": "68794df8bfb17d0a9fa33687f49696e42972ff591eda2c3d50f2f244f9efad74"
+    },
+    {
+      "source": "../pixel-pipeline/tests/test_comfy_workflows.py",
+      "destination": "tests/test_comfy_workflows.py",
+      "source_sha256": "508b4e3608fce516e405f00b39fd1f2ac210bf79080278d8af1608909046bc84",
+      "destination_sha256": "f3342b630b2be118c74e21f3c408930114f622900c536f9c77ce0d64e20f8e2f",
+      "final_destination_sha256": "f3342b630b2be118c74e21f3c408930114f622900c536f9c77ce0d64e20f8e2f"
+    },
+    {
+      "source": "../pixel-pipeline/tests/assets/downscaled_illustration.png",
+      "destination": "tests/assets/downscaled_illustration.png",
+      "source_sha256": "456ada972d5c201beac56fdfec78b54ba9e19d2d8bed1ef606cc6ab4fc014f4c",
+      "destination_sha256": "456ada972d5c201beac56fdfec78b54ba9e19d2d8bed1ef606cc6ab4fc014f4c",
+      "final_destination_sha256": "456ada972d5c201beac56fdfec78b54ba9e19d2d8bed1ef606cc6ab4fc014f4c"
+    },
+    {
+      "source": "../pixel-pipeline/tests/assets/resolution_gate_insignia_mask.png",
+      "destination": "tests/assets/resolution_gate_insignia_mask.png",
+      "source_sha256": "8156be543361a6436159ec696c3370573ac7609ecc255a737aa3f83f67964bb2",
+      "destination_sha256": "8156be543361a6436159ec696c3370573ac7609ecc255a737aa3f83f67964bb2",
+      "final_destination_sha256": "8156be543361a6436159ec696c3370573ac7609ecc255a737aa3f83f67964bb2"
+    },
+    {
+      "source": "../pixel-pipeline/tests/assets/resolution_gate_source.png",
+      "destination": "tests/assets/resolution_gate_source.png",
+      "source_sha256": "0d6fc60bbc0541399dbf4393df2f29e762f86cfc20a584144ac9aacea4ec90b4",
+      "destination_sha256": "0d6fc60bbc0541399dbf4393df2f29e762f86cfc20a584144ac9aacea4ec90b4",
+      "final_destination_sha256": "0d6fc60bbc0541399dbf4393df2f29e762f86cfc20a584144ac9aacea4ec90b4"
+    },
+    {
+      "source": "../pixel-pipeline/tests/assets/true_pixel_art.png",
+      "destination": "tests/assets/true_pixel_art.png",
+      "source_sha256": "fd8390e16212612c1606e097b6e59e92a90538cb1d5a339ad72daacc0baf5801",
+      "destination_sha256": "fd8390e16212612c1606e097b6e59e92a90538cb1d5a339ad72daacc0baf5801",
+      "final_destination_sha256": "fd8390e16212612c1606e097b6e59e92a90538cb1d5a339ad72daacc0baf5801"
+    },
+    {
+      "source": "../pixel-pipeline/workspace/runs/sword_warrior_001/phase13_step3_direct_walk/attempt_05/run_direct_pixelization.py",
+      "destination": "src\\assetpipe\\pixel\\direct\\ported.py",
+      "source_sha256": "6ff915d8d3ee565f6ac8b8cabcedabd06642de9bd493858ec544f889f12e6fb0",
+      "adaptation": "Function parameters replace run-path globals; master canvas/color-count preconditions generalized; arithmetic unchanged; explicit verified profile required.",
+      "final_destination_sha256": "219717c15b2c23318220cad898626790e53753d0c54eb8e23144cdd515be16aa"
+    }
+  ],
+  "test_adaptations": [
+    "Changed package import paths",
+    "Excluded legacy character-orchestrator manifest attachment test; new run manifests have dedicated coverage",
+    "Copied generic palette fixture required by refiner regression"
+  ],
+  "direct_adaptations": [
+    "Removed path-derived globals; explicit parameters",
+    "Preview helpers derive canvas from frames",
+    "Named verified profile; no implicit identity anchoring",
+    "Preserved FFmpeg RGB conversion after OpenCV migration defect",
+    "Preserved pixel arithmetic; eight frame RGBA regression exact"
+  ],
+  "ported_algorithm_source_hashes_unchanged": true,
+  "external_registry_changes_detected": [
+    {
+      "source": "../pixel-pipeline/config/workflow_registry.yaml",
+      "copied_snapshot_sha256": "270e09a0f55d32775510f2f29bb36f2ced2b178745d452d9782597444fac1bcf",
+      "current_sha256": "b1c53ffdae7e66cafe6f9ac9169e47c84a119fdbe1a39ed4e9aace7eeb9f812e",
+      "note": "Registry changed outside migration; current installed workflow graphs independently verified. Legacy registry not overwritten."
+    }
+  ],
+  "publication_adaptations": [
+    "Machine-specific metadata paths normalized to repository-relative paths",
+    "Document source notes resolve relative to the prepared brief",
+    "Approval rejection test uses a self-contained temporary master"
+  ]
+}

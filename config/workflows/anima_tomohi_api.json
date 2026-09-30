@@ -1,0 +1,194 @@
+{
+  "description": "Independent experimental general-image workflow for the supplied Tomohi Anima LoRA. The training base filename is taken from safetensors metadata; weights must be supplied explicitly until validated.",
+  "workflow_version": "0.1.0",
+  "family": "anima",
+  "role": "general_image_generation",
+  "api_prompt": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "anima_aestheticV11.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_06b_base.safetensors",
+        "type": "stable_diffusion",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "(masterpiece, best quality, highres, amazing quality, incredibly absurdres, extremely detailed, very awa, year 2025, newest, perfect anatomy, score_9), (@tomohi), 1girl, solo, loli, young, cute, petite, bishoujo, (furude rika:1.4), [saturated, painterly], A highly aesthetic Pixiv style illustration, clean composition, sharp focus on facial expressions, high-quality digital art, featuring subtle, location",
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "worst quality, low quality, bad quality, lowres, jpeg artifacts, unfinished, one-hour drawing challenge, artistic error, noise, watermark, cropped, score_1, score_2, score_3, censored, steam censor, multiple views, 3d, photorealistic, sketch, retro artstyle, abstract, ryuukishi07 \\(style\\), bad anatomy, bad proportions, disfigured, malformed, mutation, twisted, amputee, long neck, wrong head size, bad hands, missing fingers, extra limbs, extra digit, fused fingers, old, ugly, furry, guro, body horror, contortion, webbed hands, disembodied hand, unclear fingertips, glowing pupils, mismatched pupils, wrinkles, bad hand structure, dislocation, gross proportions, deformed, strabismus, monochrome, too many fingers, bkub \\(style\\), translucent hair, blush, eyeliner, extra toes, narrow waist, nail polish, mosaic censoring, ear blush, zun \\(style\\), artist collaboration, short hair",
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "7": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "10",
+          0
+        ],
+        "seed": 3320345352,
+        "steps": 30,
+        "cfg": 5.0,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "4",
+          0
+        ],
+        "negative": [
+          "5",
+          0
+        ],
+        "latent_image": [
+          "6",
+          0
+        ],
+        "denoise": 1.0
+      }
+    },
+    "8": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "7",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "filename_prefix": "pixelpipe/anima_tomohi"
+      }
+    },
+    "10": {
+      "class_type": "LoraLoaderModelOnly",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "lora_name": "tomohi2.safetensors",
+        "strength_model": 1.0
+      }
+    }
+  },
+  "bindings": {
+    "prompt": {
+      "node": "4",
+      "input": "text",
+      "required": true
+    },
+    "negative_prompt": {
+      "node": "5",
+      "input": "text"
+    },
+    "width": {
+      "node": "6",
+      "input": "width"
+    },
+    "height": {
+      "node": "6",
+      "input": "height"
+    },
+    "seed": {
+      "node": "7",
+      "input": "seed",
+      "required": true
+    },
+    "steps": {
+      "node": "7",
+      "input": "steps"
+    },
+    "cfg": {
+      "node": "7",
+      "input": "cfg"
+    },
+    "sampler": {
+      "node": "7",
+      "input": "sampler_name"
+    },
+    "scheduler": {
+      "node": "7",
+      "input": "scheduler"
+    },
+    "lora_strength": {
+      "node": "10",
+      "input": "strength_model",
+      "required": false
+    },
+    "filename_prefix": {
+      "node": "9",
+      "input": "filename_prefix"
+    }
+  },
+  "models": {
+    "diffusion": "anima_aestheticV11.safetensors",
+    "text_encoder": "qwen_3_06b_base.safetensors",
+    "vae": "qwen_image_vae.safetensors",
+    "lora": "tomohi2.safetensors",
+    "lora_sha256": "5fda52a96ddaedbb9418bf1b9858d1a937ef13f3eebd6782eca209cc0dbba087"
+  },
+  "defaults": {
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "cfg": 5.0,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "lora_strength": 1.0
+  },
+  "output_nodes": [
+    "9"
+  ],
+  "source_image_sha256": "2ca83922c238a803252166006cc24e504c9104de2ac8c78ee31f6a9c6f00b7b9",
+  "source_lora_metadata": {
+    "positive_prompt_includes_trigger": "(@tomohi)",
+    "lora_weight": 1.0,
+    "base_model": "anima_aestheticV11.safetensors",
+    "base_model_hash_prefix": "3c1868387a",
+    "lora_hash_prefix": "ecdf50c6b78a"
+  }
+}

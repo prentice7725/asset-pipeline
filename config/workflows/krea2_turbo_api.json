@@ -1,0 +1,205 @@
+{
+  "workflow_version": "1.0.0",
+  "description": "API form of the installed Comfy-Org Krea-2 Turbo text-to-image workflow. Direct prompt path; the saved workflow's prompt enhancement switch is off. Optional Darkbrush LoRA switch is retained and off by default.",
+  "source_workflow": "image_krea2_turbo_t2i.json",
+  "source_workflow_sha256": "42b132bc25c0d5b3f4c7c85bb708836e0aa07179f69aae87f6df580ae95fc333",
+  "source_subgraph": "Text to Image (Krea-2 Turbo)",
+  "source_choices": {
+    "prompt_enhance": false,
+    "lora_default": false,
+    "negative_conditioning": "ConditioningZeroOut"
+  },
+  "models": {
+    "diffusion": "krea2_turbo_fp8_scaled.safetensors",
+    "text_encoder": "qwen3vl_4b_fp8_scaled.safetensors",
+    "vae": "qwen_image_vae.safetensors",
+    "lora": "krea2_darkbrush.safetensors"
+  },
+  "api_prompt": {
+    "10": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "krea2_turbo_fp8_scaled.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "11": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen3vl_4b_fp8_scaled.safetensors",
+        "type": "krea2",
+        "device": "default"
+      }
+    },
+    "12": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "",
+        "clip": [
+          "11",
+          0
+        ]
+      }
+    },
+    "13": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "6",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "15": {
+      "class_type": "LoraLoaderModelOnly",
+      "inputs": {
+        "model": [
+          "10",
+          0
+        ],
+        "lora_name": "krea2_darkbrush.safetensors",
+        "strength_model": 1.0
+      }
+    },
+    "22": {
+      "class_type": "ComfySwitchNode",
+      "inputs": {
+        "switch": false,
+        "on_false": [
+          "10",
+          0
+        ],
+        "on_true": [
+          "15",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "22",
+          0
+        ],
+        "seed": 594361197674106,
+        "steps": 8,
+        "cfg": 1.0,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "6",
+          0
+        ],
+        "negative": [
+          "13",
+          0
+        ],
+        "latent_image": [
+          "5",
+          0
+        ],
+        "denoise": 1.0
+      }
+    },
+    "8": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "3",
+          0
+        ],
+        "vae": [
+          "12",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "filename_prefix": "pixelpipe/krea2_turbo"
+      }
+    }
+  },
+  "bindings": {
+    "prompt": {
+      "node": "6",
+      "input": "text",
+      "required": true
+    },
+    "width": {
+      "node": "5",
+      "input": "width"
+    },
+    "height": {
+      "node": "5",
+      "input": "height"
+    },
+    "seed": {
+      "node": "3",
+      "input": "seed",
+      "required": true
+    },
+    "steps": {
+      "node": "3",
+      "input": "steps"
+    },
+    "cfg": {
+      "node": "3",
+      "input": "cfg"
+    },
+    "sampler": {
+      "node": "3",
+      "input": "sampler_name"
+    },
+    "scheduler": {
+      "node": "3",
+      "input": "scheduler"
+    },
+    "enable_lora": {
+      "node": "22",
+      "input": "switch"
+    },
+    "lora_strength": {
+      "node": "15",
+      "input": "strength_model"
+    },
+    "filename_prefix": {
+      "node": "9",
+      "input": "filename_prefix"
+    }
+  },
+  "defaults": {
+    "width": 1024,
+    "height": 1024,
+    "steps": 8,
+    "cfg": 1.0,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "enable_lora": false,
+    "lora_strength": 1.0,
+    "prompt_enhance": false
+  },
+  "output_nodes": [
+    "9"
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "description": "Local Qwen Image 2.1 text-to-image workflow for concept exploration. Outputs remain Pixel Candidates.",
+  "api_prompt": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "type": "qwen_image"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3.1
+      }
+    },
+    "5": {
+      "class_type": "TextEncodeQwenImage21",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "prompt": "",
+        "negative_prompt": "",
+        "resolution": 512,
+        "images": []
+      }
+    },
+    "6": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "seed": 0,
+        "steps": 8,
+        "cfg": 4.0,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "5",
+          1
+        ],
+        "latent_image": [
+          "5",
+          2
+        ],
+        "denoise": 1.0
+      }
+    },
+    "7": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "6",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "8": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "7",
+          0
+        ],
+        "filename_prefix": "pixelpipe/concept_character"
+      }
+    }
+  },
+  "bindings": {
+    "prompt": {
+      "node": "5",
+      "input": "prompt"
+    },
+    "negative_prompt": {
+      "node": "5",
+      "input": "negative_prompt"
+    },
+    "seed": {
+      "node": "6",
+      "input": "seed"
+    },
+    "filename_prefix": {
+      "node": "8",
+      "input": "filename_prefix"
+    }
+  },
+  "output_nodes": [
+    "8"
+  ]
+}

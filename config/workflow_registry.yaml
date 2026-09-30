@@ -1,0 +1,335 @@
+schema_version: 1
+registry_version: 1.0.0
+workflows:
+  anima_pixelate_x4_vae:
+    output_class: PIXEL_STATIC
+    engine: comfyui
+    workflow_file: config/workflows/anima_mushroom_courier_production.json
+    workflow_name: anima_mushroom_courier_production
+    status: ACTIVE
+    priority: 100
+    tags:
+    - character
+    - pixel
+    - static
+    - chibi
+    - low_postprocess_cost
+    models:
+      diffusion_models:
+      - anima-base-v1.0.safetensors
+      text_encoders:
+      - qwen_3_06b_base.safetensors
+      vae:
+      - pixelateX4VAEForAnima_animaV10.safetensors
+      loras: []
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: true
+    prompt_prefix: pixel art, chibi
+    presets:
+      character_portrait:
+        width: 512
+        height: 768
+        steps: 30
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+      full_body_character:
+        width: 512
+        height: 512
+        steps: 30
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+      smoke:
+        width: 256
+        height: 256
+        steps: 8
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+    default_preset: character_portrait
+    post_pipeline:
+    - pixel_analyzer_candidate_report
+    - safe_refiner_binary_alpha_only
+    - resolution_gate_review_required
+    - aseprite_static_master_after_human_review
+    validation:
+      status: PRIOR_COMPARATIVE_VALIDATION
+      evidence: docs/anima_exp_elin_sprite_notes.md
+      router_smoke: PENDING
+    installation_check:
+      status: PASS
+      missing: []
+  anima_base:
+    output_class: NONPIXEL_IMAGE
+    engine: comfyui
+    workflow_file: config/workflows/baseline_anima_api.json
+    workflow_name: baseline_anima_api
+    status: ACTIVE
+    priority: 50
+    tags:
+    - character
+    - illustration
+    - anime
+    - general
+    - portrait
+    - fantasy
+    models:
+      diffusion_models:
+      - anima-base-v1.0.safetensors
+      text_encoders:
+      - qwen_3_06b_base.safetensors
+      vae:
+      - qwen_image_vae.safetensors
+      loras: []
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: true
+    presets:
+      character_portrait:
+        width: 512
+        height: 768
+        steps: 24
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+      concept_art:
+        width: 768
+        height: 768
+        steps: 30
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+      smoke:
+        width: 256
+        height: 384
+        steps: 8
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+    default_preset: character_portrait
+    post_pipeline:
+    - image_qa
+    validation:
+      status: PRIOR_BASELINE_VALIDATION
+      evidence: docs/baseline_anima_notes.md
+      router_smoke: PENDING
+    installation_check:
+      status: PASS
+      missing: []
+  tomohi_character:
+    output_class: NONPIXEL_IMAGE
+    engine: comfyui
+    workflow_file: config/workflows/anima_tomohi_api.json
+    workflow_name: anima_tomohi_api
+    status: EXPERIMENTAL
+    selection: explicit_only
+    priority: 70
+    tags:
+    - character
+    - anime
+    - portrait
+    - stylized
+    - tomohi
+    models:
+      diffusion_models:
+      - anima_aestheticV11.safetensors
+      text_encoders:
+      - qwen_3_06b_base.safetensors
+      vae:
+      - qwen_image_vae.safetensors
+      loras:
+      - tomohi2.safetensors
+    loras:
+    - file: tomohi2.safetensors
+      weight: 1.0
+      trigger: (@tomohi)
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: true
+    prompt_prefix: (@tomohi)
+    presets:
+      character_portrait:
+        width: 512
+        height: 768
+        steps: 24
+        cfg: 5.0
+        sampler: euler
+        scheduler: simple
+        lora_strength: 1.0
+      smoke:
+        width: 256
+        height: 384
+        steps: 8
+        cfg: 5.0
+        sampler: euler
+        scheduler: simple
+        lora_strength: 1.0
+    default_preset: character_portrait
+    post_pipeline:
+    - image_qa
+    validation:
+      status: PRIOR_THREE_SEED_VALIDATION
+      evidence: workspace/experiments/anima_tomohi/validation_status.json
+      router_smoke: PENDING
+    installation_check:
+      status: PASS
+      missing: []
+  krea2_base:
+    output_class: NONPIXEL_IMAGE
+    engine: comfyui
+    workflow_file: config/workflows/krea2_turbo_api.json
+    workflow_name: krea2_turbo_api
+    status: ACTIVE
+    priority: 60
+    tags:
+    - character
+    - illustration
+    - polished
+    - fantasy
+    - concept
+    models:
+      diffusion_models:
+      - krea2_turbo_fp8_scaled.safetensors
+      text_encoders:
+      - qwen3vl_4b_fp8_scaled.safetensors
+      vae:
+      - qwen_image_vae.safetensors
+      loras: []
+    workflow_inputs:
+      enable_lora: false
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: false
+    presets:
+      character_portrait:
+        width: 1024
+        height: 1024
+        steps: 8
+        cfg: 1.0
+        sampler: euler
+        scheduler: simple
+      concept_art:
+        width: 1024
+        height: 1024
+        steps: 8
+        cfg: 1.0
+        sampler: euler
+        scheduler: simple
+      smoke:
+        width: 512
+        height: 512
+        steps: 8
+        cfg: 1.0
+        sampler: euler
+        scheduler: simple
+    default_preset: character_portrait
+    post_pipeline:
+    - image_qa
+    source_workflow: image_krea2_turbo_t2i.json
+    source_workflow_sha256: 42b132bc25c0d5b3f4c7c85bb708836e0aa07179f69aae87f6df580ae95fc333
+    validation:
+      status: INSTALLED_SOURCE_WORKFLOW
+      router_smoke: PENDING
+    installation_check:
+      status: PASS
+      missing: []
+  minimax_character_motion_reference:
+    output_class: PIXEL_ANIMATION
+    engine: comfyui
+    workflow_file: config/workflows/deno_minimax_h3_r2v_8step.json
+    workflow_name: deno_minimax_h3_r2v_8step
+    status: ACTIVE
+    priority: 100
+    tags:
+    - character
+    - pixel
+    - animation
+    - motion_reference
+    - minimax
+    - sageattention
+    models:
+      diffusion_models:
+      - minimax_h3_ref2va_pruned_int8_convrot.safetensors
+      text_encoders:
+      - qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+      vae:
+      - minimax_h3_video_vae_fp16.safetensors
+      - minimax_h3_audio_vae_fp32.safetensors
+      loras:
+      - MiniMax-H3-Ref2VA-Acc-8Step.safetensors
+    capabilities:
+      text_to_image: false
+      image_to_image: false
+      character_reference: true
+      transparent_output: false
+      motion_conditioning: true
+      image_to_video: true
+      negative_prompt: false
+      requires_approved_static_master: true
+    dispatch:
+      command: pixelpipe character motion-reference
+      action_required: true
+      workflow_selection_from_character_job: true
+    post_pipeline:
+    - semantic_frame_selection
+    - character_local_direct_pixelization
+    - static_master_palette_and_identity_correction
+    - pixel_gate
+    - aseprite_animation_master
+    validation:
+      status: EXISTING_PIPELINE_INTEGRATION
+      evidence: config/workflows/deno_minimax_h3_r2v_8step.json
+      pixel_art_fixer: OPTIONAL_RECOVERY_ONLY
+      independent_per_frame_detection: PROHIBITED
+    installation_check:
+      status: PASS
+      missing: []
+  nonpixel_motion_contract:
+    output_class: NONPIXEL_ANIMATION
+    engine: comfyui
+    workflow_file: config/workflows/deno_minimax_h3_r2v_8step.json
+    workflow_name: deno_minimax_h3_r2v_8step
+    status: EXPERIMENTAL
+    priority: 0
+    tags:
+    - character
+    - animation
+    models:
+      diffusion_models:
+      - minimax_h3_ref2va_pruned_int8_convrot.safetensors
+      text_encoders:
+      - qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+      vae:
+      - minimax_h3_video_vae_fp16.safetensors
+      - minimax_h3_audio_vae_fp32.safetensors
+      loras:
+      - MiniMax-H3-Ref2VA-Acc-8Step.safetensors
+    capabilities:
+      character_reference: true
+      text_to_image: false
+    support: SUPPORTED_EXPERIMENTAL
+    installation_check:
+      status: PASS
+      missing: []
