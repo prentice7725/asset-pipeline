@@ -1,0 +1,75 @@
+{
+  "milestone": "ASSET_PIPELINE_M1_NONPIXEL_MULTI_PROVIDER",
+  "status": "IMPLEMENTED_REAL_E2E_NOT_VERIFIED",
+  "completion_declared": false,
+  "completion_blockers": [
+    "codex_imagegen: real image generation not verified (Codex CLI not logged in in the verification environment)",
+    "grok_imagine: real image generation not verified (Grok CLI not signed in in the verification environment)"
+  ],
+  "base": {
+    "branch": "main",
+    "commit": "2060a71e24d8ad6c5b537ac882cd5d5b82e39387"
+  },
+  "regression": {
+    "before": {
+      "passed": 79,
+      "failed": 2,
+      "skipped": 7
+    },
+    "after": {
+      "passed": 132,
+      "failed": 2,
+      "skipped": 7
+    },
+    "new_tests": 53,
+    "preexisting_failures": [
+      "tests/test_aseprite_bridge.py::test_executable_discovery_uses_config_then_environment_then_path",
+      "tests/test_refiner.py::test_normal_true_pixel_art_is_unchanged"
+    ],
+    "note": "The failing set is identical before and after this change; both fail on unmodified main in the Linux verification environment. Their cause is outside M1 scope and was not investigated.",
+    "environment": "Linux, Python 3.11, opencv installed, Aseprite absent, no ComfyUI"
+  },
+  "mcp_contract": {
+    "tool_count": 6,
+    "verified_with": "real assetpipe-mcp stdio server via the MCP client",
+    "request_schemas_changed": false
+  },
+  "provider_diagnosis": {
+    "environment": "verification sandbox (no Codex/Grok login, no ComfyUI)",
+    "comfyui": {
+      "status": "UNAVAILABLE",
+      "block_code": "COMFYUI_UNREACHABLE"
+    },
+    "codex_cli": {
+      "status": "BLOCKED",
+      "block_code": "AUTH_NOT_CONFIGURED",
+      "cli_version": "codex-cli 0.159.3",
+      "image_generation_feature": "ENABLED"
+    },
+    "grok_cli": {
+      "status": "BLOCKED",
+      "block_code": "AUTH_NOT_CONFIGURED",
+      "cli_version": "grok 1.0.46 (2765805b9442)"
+    },
+    "note": "Diagnosis ran against the real installed CLIs and correctly reported that neither is authenticated. generation_probe is NOT_RUN by design."
+  },
+  "real_e2e": {
+    "codex_imagegen": "NOT_RUN_BLOCKED",
+    "grok_imagine": "NOT_RUN_BLOCKED",
+    "reason": "Neither CLI is authenticated in the verification environment and no API key was supplied. No generation request was sent, and no key was searched for or substituted.",
+    "how_to_run": "python scripts/provider_e2e.py --provider <codex_imagegen|grok_imagine> --confirm-paid-request",
+    "evidence_dir": "workspace/m1_e2e/"
+  },
+  "registry": {
+    "codex_imagegen": "EXPERIMENTAL/explicit_only",
+    "grok_imagine": "EXPERIMENTAL/explicit_only",
+    "active_promotion": "blocked by loader until REAL_GENERATION_VERIFIED evidence exists"
+  },
+  "unverified": [
+    "Real image generation by either CLI",
+    "Codex image output location ($CODEX_HOME/generated_images) and behavior under --sandbox read-only",
+    "Grok --permission-mode dontAsk --allow image_gen approval behavior and output JSON shape",
+    "Grok image_edit path",
+    "Windows execution (.cmd launchers)"
+  ]
+}

@@ -10,7 +10,7 @@
 | --- | --- |
 | `PIXEL_STATIC` | 픽셀 후보 생성 → 분석 → 안전한 알파 처리 → Pixel Gate → 해상도 검토 → Aseprite 내보내기 → 명시적 승인 |
 | `PIXEL_ANIMATION` | 승인된 Static Master와 기존 검토된 모션을 사용한 8프레임 걷기 제작, 팔레트·Pixel Gate 검증, Aseprite 내보내기 |
-| `NONPIXEL_IMAGE` | ComfyUI 이미지 생성과 기본 QA. 최종 시각 검토 필요 |
+| `NONPIXEL_IMAGE` | ComfyUI 이미지 생성과 기본 QA. 최종 시각 검토 필요. Codex CLI·Grok CLI는 명시 선택하는 실험 provider ([M1](#nonpixel-이미지-provider-comfyui-codex-cli-grok-cli)) |
 | `NONPIXEL_ANIMATION` | 실험적 계약만 제공. 실제 생산 실행은 미지원 |
 | `SFX` | Stable Audio 3 Medium 효과음 생성, 원본 FLAC·PCM WAV 저장, 기본 오디오 QA. 청취 검토 필수 |
 
@@ -144,6 +144,145 @@ assetpipe create --type sfx --project game-a --asset-id sword_hit --duration 3 -
 SFX 길이는 1–30초이며 기본값은 5초입니다. 현재 `audio_stable_audio_3_medium`은 직접 텍스트 입력 경로로 연결하며 선택적 Qwen 확장 단계는 제외합니다. 원본 FLAC과 16-bit PCM WAV, 길이·무음·피크·RMS 등의 QA 기록을 보존합니다. 통과 후에도 청취 검토가 필요합니다. [SFX 사용 안내](docs/SFX.md).
 
 모든 생성 명령은 실행 manifest 경로를 출력합니다. 저장소 밖에서 실행할 때는 하위 명령 앞에 `assetpipe --root <저장소 경로>`를 지정하세요.
+
+## NONPIXEL 이미지 provider (ComfyUI · Codex CLI · Grok CLI)
+
+`NONPIXEL_IMAGE`는 세 가지 생성 provider를 같은 인터페이스로 지원합니다. 어느 쪽이든 같은 브리프·라우터 preflight, 같은 이미지 QA, 같은 `CANDIDATE_READY_REVIEW_REQUIRED` 검토 게이트를 통과해야 합니다. Pixel·SFX 경로는 바뀌지 않았습니다.
+
+| provider | workflow ID | 사용 도구 | 상태 | 선택 방법 |
+| --- | --- | --- | --- | --- |
+| ComfyUI | `anima_base`, `krea2_base` 등 | JSON workflow | `ACTIVE` | 자동 라우팅 또는 ID 지정 |
+| Codex CLI | `codex_imagegen` | `codex exec` 내장 `image_gen` | `EXPERIMENTAL`, `explicit_only` | ID 지정 + `allow_experimental` |
+| Grok CLI | `grok_imagine` | Grok Build 내장 `image_gen` / `image_edit` | `EXPERIMENTAL`, `explicit_only` | ID 지정 + `allow_experimental` |
+
+> **현재 검증 수준.** 단위 테스트(가짜 CLI 사용)와 실제 CLI 상태 진단까지만 확인했습니다. **실제 이미지 생성(E2E)은 아직 한 번도 검증하지 못했습니다.** 그래서 두 CLI provider는 `ACTIVE`로 올리지 않았고 자동 선택되지 않습니다. 근거는 [M1 상태 기록](docs/m1/STATUS.json)과 [상세 설명](docs/m1/PROVIDERS.md)을 보세요.
+
+### 로컬 설치
+
+두 CLI는 이 저장소가 설치해 주지 않습니다. 각자 설치하고 로그인해야 합니다.
+
+```powershell
+npm install -g @openai/codex      # Codex CLI
+codex login                       # ChatGPT 계정 로그인
+
+npm install -g @xai-official/grok # Grok Build CLI
+grok login                        # 브라우저가 없으면: grok login --device-code
+```
+
+`assetpipe`는 계정 로그인 상태만 사용합니다. 로그인되어 있지 않으면 **API 키를 찾아 우회하지 않고** `BLOCKED`로 멈춥니다. Grok은 예외적으로 `XAI_API_KEY` 환경변수를 쓸 수 있으며, registry의 `backend.auth`에 `mode: env_api_key`와 변수 이름을 직접 적었을 때만 동작합니다(아래 "격리와 보안" 참고).
+
+실행 파일이 `PATH`에 없으면 [config/pipeline.yaml](config/pipeline.yaml)의 `providers.codex_cli.executable` / `providers.grok_cli.executable`에 경로를 적습니다.
+
+### 상태 진단
+
+진단은 과금 요청을 만들지 않습니다. provider마다 독립적으로 확인하며, 하나가 실패해도 다른 결과에 영향을 주지 않습니다.
+
+```powershell
+assetpipe providers                       # 세 provider 모두
+assetpipe providers --provider codex_cli  # 하나만
+```
+
+MCP에서는 `asset_capabilities`의 `provider_readiness`로 같은 정보를 볼 수 있습니다(도구 6개 계약은 그대로입니다).
+
+| 상태 | 뜻 | 조치 |
+| --- | --- | --- |
+| `AVAILABLE` | 설치·로그인 확인됨. 생성 요청을 시도할 수 있음 | 실제 생성은 요청해 봐야 확정됨 |
+| `BLOCKED` | 설치는 됐지만 사용자 조치가 필요함(로그인 안 됨 등) | `codex login` / `grok login` |
+| `UNAVAILABLE` | 실행 파일이 없거나 실행할 수 없음, 이미지 기능이 꺼져 있음 | 설치 또는 경로 설정 |
+
+`AVAILABLE`은 "생성에 성공했다"는 뜻이 아닙니다. Codex는 `codex features list`로 `image_generation` 기능이 켜져 있는지 확인하지만, 진단의 `generation_probe`는 항상 `NOT_RUN`이며, Grok의 도구별 가용성(`image_gen`/`image_edit`)은 `NOT_PROBED`로 표시됩니다. 도구 목록을 과금 없이 조회할 방법이 없기 때문입니다.
+
+### 사용
+
+```powershell
+assetpipe create --type nonpixel-image --project game-a --asset-id fox `
+  --workflow codex_imagegen --allow-experimental `
+  --prompt "a small fox scout with a red scarf, flat colors"
+```
+
+레퍼런스 이미지로 편집하려면 Grok의 `image_edit`를 씁니다(Codex는 아직 레퍼런스를 지원하지 않아 라우터가 차단합니다).
+
+```powershell
+assetpipe create --type nonpixel-image --asset-id fox --reference ref.png `
+  --prompt "same fox, add a blue cloak" --workflow grok_imagine --allow-experimental
+```
+
+MCP 클라이언트(Codex·Claude Code)에서는 준비한 브리프의 `workflow_preferences`에 `id`와 `allow_experimental: true`를 지정합니다. CLI provider는 자동 선택되지 않으며, 사용자가 명시한 workflow ID로만 선택됩니다.
+
+### 프롬프트와 금지 요소
+
+PromptSpec은 provider별 프롬프트로 컴파일되며 `canonical_traits`, `visual_traits`, `style`, `silhouette`, `forbidden_elements`를 모두 보존합니다. CLI provider는 이 항목을 라벨이 붙은 자연어 문단으로 전달합니다. 컴파일 결과는 `assetpipe compile-prompt`로 미리 볼 수 있습니다.
+
+| 구분 | 의미 | 대상 |
+| --- | --- | --- |
+| 네이티브 negative prompt (`negative_prompt`) | 모델이 별도 입력으로 받아 억제함 | ComfyUI의 Anima 계열 |
+| 자연어 금지 지시 (`negative_prompt_instruction`) | "다음을 포함하지 마라"는 문장일 뿐 **보장되지 않음** | Codex CLI, Grok CLI |
+
+자연어 지시는 manifest에 `negative_prompt_mode: NATURAL_LANGUAGE_INSTRUCTION`으로 기록되고, QA 보고서의 `review_required`에 금지 요소와 정본 특징이 사람 검토 항목으로 남습니다. 자동으로 준수 여부를 판정하지 않습니다.
+
+### 지원하지 않는 것
+
+CLI provider는 아래를 보장하지 못합니다. 요청에 이런 조건이 있으면 조용히 무시하지 않고 **라우터가 과금 전에 차단**하거나 **QA가 실패 처리**합니다.
+
+| 항목 | 처리 |
+| --- | --- |
+| `seed`, 정확한 재현 | 미지원. manifest에 `seed: null`, `seed_support: UNSUPPORTED`로 기록하고 사용자가 지정한 값은 `requested_seed`로만 남김 |
+| 정확한 해상도(`constraints.resolution`) | 라우터가 `exact_resolution` 부족으로 차단 |
+| 투명 배경 | 라우터가 `transparent_output` 부족으로 차단 |
+| 이미지 속 글자 | 라우터가 `text_rendering` 부족으로 차단 |
+| 종횡비 | Grok은 지원 목록 밖이면 요청 전에 중단, 그 외는 결과를 QA가 3% 허용 오차로 검사 |
+
+### 격리와 보안
+
+- **작업 폴더**: 시스템 임시 폴더(프로젝트·git 트리 밖)에 일회용으로 만들고 실행 후 삭제합니다. 모델은 이 안에 복사된 파일만 볼 수 있으며, 프로젝트 문서·소스 경로는 전달하지 않습니다.
+- **환경변수**: 허용목록(`PATH`, `HOME` 등 실행에 필요한 최소 항목)만 자식 프로세스에 넘깁니다. 프록시나 API 키가 필요하면 `providers.<id>.pass_env`에 **이름만** 적습니다. manifest에는 값이 아니라 이름만 기록합니다.
+- **프롬프트**: 명령줄 인자가 아니라 stdin/파일로 전달합니다.
+- **로그**: 키·토큰·`Bearer` 등 비밀로 보이는 값은 마스킹한 사본만 저장합니다.
+- **재귀 차단**: 자식 프로세스에는 `ASSETPIPE_PROVIDER_DEPTH=1`을 설정하고, 이 값이 있으면 `assetpipe create`와 `assetpipe-mcp`가 시작 즉시 `RECURSION_BLOCKED`로 거부합니다. Codex는 `--ignore-user-config`로 사용자 설정(MCP 서버 포함)을 읽지 않고 `--sandbox read-only`로 실행합니다.
+- **Grok 인증 방식별 차이**: 로그인 모드는 인증 저장소가 실제 홈에 있어 홈을 그대로 쓰되, 외부 훅·MCP·스킬 가져오기를 끄고 허용 도구를 이미지 도구 하나로 제한합니다. `env_api_key` 모드는 `GROK_HOME`을 빈 임시 폴더로 바꿔 사용자 플러그인·MCP가 아예 로드되지 않습니다.
+- **registry 인자 검증**: `backend.cli_args`에 `--always-approve`, `--sandbox`, `-c`, `--cwd` 등 격리·승인 정책을 약화하는 인자는 쓸 수 없습니다.
+
+### 사용량과 비용
+
+- 생성 요청 1회는 이미지 1장을 만들려는 **한 번의 CLI 실행**입니다. 타임아웃·실패 시에도 자동으로 다시 시도하지 않습니다(중복 과금 방지).
+- 다른 provider로 자동 전환(fallback)하지 않습니다. 실패하면 오류 코드와 함께 멈추고, 다시 시도할지는 사용자가 정합니다.
+- 사용량이 계정 플랜에서 차감되는지, 과금되는지는 로그인 방식과 계정 정책에 따릅니다. 이 도구는 잔여 한도를 조회하지 않습니다. CLI가 사용량 정보를 출력하면 `usage`로 기록하고, 아니면 `usage_support: NOT_REPORTED`로 표시합니다.
+- 진단(`assetpipe providers`, `asset_capabilities`)은 생성 요청을 만들지 않습니다.
+
+### 실패 모드
+
+실패해도 provider 기록(진단·로그·타이밍)은 manifest의 `generation.provider`에 남고, `outputs`는 비어 있으며 `game_ready`는 `false`입니다. `BLOCKED`/`UNAVAILABLE`은 manifest `status`에도 그대로 기록됩니다.
+
+| 오류 코드 | manifest 상태 | 의미와 조치 |
+| --- | --- | --- |
+| `EXECUTABLE_NOT_FOUND`, `CLI_NOT_RUNNABLE`, `IMAGE_FEATURE_DISABLED` | `UNAVAILABLE` | CLI 설치·경로 설정, Codex 이미지 기능 활성화 |
+| `AUTH_NOT_CONFIGURED` | `BLOCKED` | 로그인(`codex login` / `grok login`) 또는 API 키 환경변수 설정 |
+| `RECURSION_BLOCKED` | 없음(실행 폴더·manifest를 만들기 전에 거부) | 생성 CLI 안에서 assetpipe를 다시 호출함. 의도한 동작이 아니면 CLI의 플러그인·MCP 설정 확인 |
+| `ASPECT_RATIO_UNSUPPORTED`, `REFERENCE_UNSUPPORTED` | `FAILED` | 요청 전에 중단됨. 브리프 조건 조정 |
+| `TIMEOUT` | `FAILED` | 시간 초과 후 프로세스 종료. **재시도하지 않음**. 계정에서 요청이 처리됐을 수 있으니 확인 후 직접 재실행 |
+| `CLI_EXIT_NONZERO` | `FAILED` | CLI 비정상 종료. `stderr.log`(마스킹됨) 확인 |
+| `REFUSED` | `FAILED` | CLI가 생성을 거절함. 프롬프트·금지 요소 검토 |
+| `OUTPUT_MISSING` | `FAILED` | 종료는 정상인데 이미지 파일이 없음. 로그 확인 |
+| `OUTPUT_AMBIGUOUS` | `FAILED` | 이미지가 둘 이상 생겨 어느 것인지 판단하지 않음. `orphan_outputs`에서 직접 확인 |
+| QA 실패 | `FAILED` | 해상도·종횡비·투명도 불충족. 원본은 `rejected_outputs`에 보존, 자동 통과 없음 |
+
+### 기록되는 정보
+
+`run_manifest.json`의 `generation.provider`에는 provider ID·엔진·도구·모델(설정값과 CLI가 보고한 값)·CLI 버전·인증 방식(종류만, 비밀 제외)·실행 상태·소요 시간·요청/세션 ID와 사용량(CLI가 보고할 때만)·전송한 프롬프트의 해시와 파일·실제 명령(`argv`)과 전달한 환경변수 이름·원본 이미지의 경로와 SHA-256이 들어갑니다. 원본 이미지는 CLI가 저장한 위치에서 복사해 `010_generation/<codex_cli 또는 grok_cli>/raw/`에 보존하며 원래 위치는 건드리지 않습니다.
+
+### ACTIVE 승격 조건
+
+실제 생성이 검증되지 않은 CLI provider는 registry에서 `ACTIVE`가 될 수 없고, 로더가 거부합니다. 다음을 모두 만족해야 합니다.
+
+1. 로그인한 환경에서 `python scripts/provider_e2e.py --provider codex_imagegen --confirm-paid-request` (또는 `grok_imagine`)를 실행해 `REAL_GENERATION_VERIFIED` 증거를 만든다. 계정 사용량이 소모됩니다.
+2. 생성된 이미지를 사람이 직접 확인한다.
+3. 증거 JSON을 `docs/m1/`에 커밋하고 registry의 `validation.status`를 `REAL_GENERATION_VERIFIED`, `validation.evidence`를 그 경로로 바꾼다.
+
+승격 후에도 `selection: explicit_only`는 별도 판단 전까지 유지하세요. 스크립트는 `status`를 자동으로 바꾸지 않습니다.
+
+### Windows 참고
+
+Codex·Grok은 npm으로 설치하면 `.cmd` 실행 파일이 생깁니다. 이 저장소는 셸 없이 인자 목록으로 실행하며 프롬프트를 stdin/파일로 넘기므로 `.cmd`도 동작하도록 만들었지만, **Windows에서의 실제 실행은 검증하지 못했습니다**(개발·테스트는 Linux).
 
 ## Asset Brief와 공통 프롬프트
 
