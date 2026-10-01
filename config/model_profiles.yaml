@@ -23,3 +23,11 @@ profiles:
     sources:
       - https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
     community_style_reference: https://kreastyles.thetacursed.com/
+  codex-imagegen:
+    prompt_adapter: natural_language
+    defaults: {}
+    notes: Codex CLI 내장 image_gen 도구용 자연어 프롬프트. 네이티브 negative prompt와 seed는 없다.
+  grok-imagine:
+    prompt_adapter: natural_language
+    defaults: {}
+    notes: Grok Build CLI 내장 image_gen/image_edit 도구용 자연어 프롬프트. 네이티브 negative prompt와 seed는 없다.
