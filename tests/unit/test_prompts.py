@@ -35,6 +35,18 @@ def test_adapters_preserve_requirements_without_mutating_canon():
     assert value == original
 
 
+def test_prompt_spec_keeps_brief_style_and_silhouette_constraints():
+    value = brief()
+    value['constraints']['style'] = 'watercolor illustration'
+    value['constraints']['silhouette'] = 'large triangular hat'
+    workflow = load_registry(ROOT)['krea2_base']
+    compiled = compile_prompt(value, workflow, ROOT)
+    assert 'watercolor illustration' in compiled['prompt_spec']['style']
+    assert 'large triangular hat' in compiled['prompt_spec']['constraints']
+    assert 'watercolor illustration' in compiled['positive']
+    assert 'large triangular hat' in compiled['positive']
+
+
 def test_unsupported_requirements_block_routing():
     registry = load_registry(ROOT)
     value = brief()
