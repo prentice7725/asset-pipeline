@@ -47,7 +47,7 @@ output_root/
     requests/
 ```
 
-Codex에는 “game-a 프로젝트로 이 캐릭터를 만들어줘”라고 요청하면 됩니다.
+Codex나 Claude Code에는 “game-a 프로젝트로 이 캐릭터를 만들어줘”라고 요청하면 됩니다.
 `asset_build_brief`의 `project_id` 또는 준비된 Brief의 `project_id`로 전달합니다.
 애니메이션을 이어서 만들 때도 기존 Brief의 프로젝트를 유지합니다.
 프로젝트를 생략하면 `default` 폴더에 저장하며, 소스 경로로 프로젝트를 추측하지 않습니다.
@@ -87,6 +87,24 @@ CLI의 기본 저장 위치는 `workspace/game-a/runs/애셋ID/실행ID/`이며,
 `args = ["--config", "<로컬 설정 파일의 절대 경로>"]`를 지정할 수 있습니다.
 설정 후 클라이언트를 다시 시작해 연결 설정을 불러옵니다.
 
+### Claude Code
+
+위 두 가지(`PATH`, `ASSETPIPE_MCP_CONFIG`)를 적용한 터미널에서 `claude`를 실행한 뒤 설치합니다.
+
+```text
+/plugin marketplace add <asset-pipeline 저장소 경로 또는 prentice7725/asset-pipeline>
+/plugin install asset-pipeline@asset-pipeline
+```
+
+플러그인 없이 MCP 서버만 연결하려면 절대 경로를 직접 지정합니다.
+
+```powershell
+claude mcp add asset-pipeline --scope user -- "<.venv\Scripts\assetpipe-mcp.exe 절대 경로>" --config "<로컬 설정 파일의 절대 경로>"
+```
+
+`/mcp` 또는 `claude mcp list`로 연결 상태를 확인합니다.
+플러그인으로 설치하면 서버 이름이 `plugin:asset-pipeline:asset_pipeline`으로 표시됩니다.
+
 ComfyUI는 로컬에서 실행하고 Aseprite와 FFmpeg도 설치해 두세요.
 `asset_capabilities` 도구로 환경 준비 상태를 확인할 수 있습니다.
 모델이나 노드가 빠져 있으면 실제 생성이 실패할 수 있으며,
@@ -94,7 +112,9 @@ ComfyUI는 로컬에서 실행하고 Aseprite와 FFmpeg도 설치해 두세요.
 
 ## 패키지 형식과 남은 검증
 
-패키지는 OpenAI가 지원하는 `.codex-plugin/plugin.json`과 `.mcp.json` 호환 구조를 사용합니다.
+패키지는 OpenAI가 지원하는 `.codex-plugin/plugin.json`과 Claude Code의 `.claude-plugin/plugin.json`을
+함께 두고, 두 매니페스트가 같은 `skills/`와 `.mcp.json`을 사용합니다.
+Claude Code 쪽은 `claude plugin validate`, 로컬 마켓플레이스 설치, MCP 서버 연결까지 Linux에서 확인했습니다.
 [공식 패키징 문서](https://developers.openai.com/plugins/build/plugins)에서는
 Plugin Creator를 통한 로컬 마켓플레이스 연결과 등록된 ChatGPT 앱 연결을 설명합니다.
 현재 환경에서는 Creator를 사용할 수 없어 마켓플레이스나 계정 설정을 변경하지 않았습니다.

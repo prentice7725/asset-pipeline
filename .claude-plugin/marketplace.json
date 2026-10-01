@@ -1,0 +1,17 @@
+{
+  "name": "asset-pipeline",
+  "owner": {
+    "name": "prentice7725"
+  },
+  "metadata": {
+    "description": "Local Asset Pipeline plugin for Claude Code: production skill and six MCP tools."
+  },
+  "plugins": [
+    {
+      "name": "asset-pipeline",
+      "source": "./plugin",
+      "description": "Create validated game-ready visual assets from prompts, reference images, or project design sources using registered local production workflows.",
+      "version": "0.1.0"
+    }
+  ]
+}
