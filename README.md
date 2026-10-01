@@ -393,3 +393,7 @@ GUI·웹 UI·클라우드 배포·DB·범용 애니메이션 복원은 현재 �
 Codex와 Claude Code는 동일한 플러그인 스킬을 사용합니다.
 
 [설정·비교 생성·승인 계약](docs/m2/STYLE_INTELLIGENCE.md)을 참고하세요.
+
+## M2.6 offline recipe research
+
+See [prompt mining method](docs/style/PROMPT_MINING_METHOD.md) and [M2.5 validation handoff](docs/style/RECIPE_VALIDATION.md). `assetpipe mining` validates saved public metadata or compiles candidates without generation. Candidate recipes do not become production defaults.

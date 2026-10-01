@@ -48,3 +48,107 @@ styles:
         description: Official model prompting guidance; local cel-style proposal, not an official or approved style preset
         checked_at: '2026-10-01'
         authority: MODEL_AUTHOR
+  clean_anime_cel:
+    version: 1.0.0
+    status: UNTESTED
+    expression:
+    - 2D cel illustration
+    colors:
+    - project-controlled colors
+    linework:
+    - precise unbroken contours
+    shading:
+    - separate flat shadow shapes
+    texture:
+    - low surface noise
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://huggingface.co/circlestone-labs/Anima
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: anima_card
+      checked_at: '2026-10-01'
+    - url: https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: krea_prompting
+      checked_at: '2026-10-01'
+    - url: https://docs.novelai.net/en/image/tutorial-artstyles/
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: nai_media
+      checked_at: '2026-10-01'
+  storybook_gouache:
+    version: 1.0.0
+    status: UNTESTED
+    expression:
+    - illustrated storybook medium
+    colors:
+    - project-controlled color relationships
+    linework:
+    - soft painted contours
+    shading:
+    - opaque paint shading
+    texture:
+    - subtle dry-brush paper marks
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/main/app/data.js
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: explorer_selected
+      checked_at: '2026-10-01'
+  painterly_fantasy:
+    version: 1.0.0
+    status: UNTESTED
+    expression:
+    - fantasy painting medium
+    colors:
+    - project-controlled tonal relationships
+    linework:
+    - paint-defined edges
+    shading:
+    - layered painted value shapes
+    texture:
+    - visible restrained brushwork
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://huggingface.co/circlestone-labs/Anima
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: anima_card
+      checked_at: '2026-10-01'
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/main/app/data.js
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: explorer_selected
+      checked_at: '2026-10-01'
+  limited_palette_pixel:
+    version: 1.0.0
+    status: UNTESTED
+    expression:
+    - pixel-cluster illustration candidate
+    colors:
+    - project-defined limited palette
+    linework:
+    - intentional stepped contours
+    shading:
+    - discrete solid color clusters
+    texture:
+    - restrained pixel patterning
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://docs.novelai.net/en/image/tutorial-artstyles/
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: nai_media
+      checked_at: '2026-10-01'
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/main/app/data.js
+      description: Independent media analysis; source role is conceptual guidance,
+        not local validation
+      source_id: explorer_selected
+      checked_at: '2026-10-01'

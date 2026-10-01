@@ -52,9 +52,40 @@ def main(argv=None):
     approve.add_argument('--reviewed-by', required=True)
     approve.add_argument('--reason', required=True)
     approve.add_argument('--aseprite-reviewed', action='store_true', required=True)
+    mining = commands.add_parser('mining', help='Offline prompt research; no generation, downloads or approval')
+    mining_commands = mining.add_subparsers(dest='mining_command', required=True)
+    mining_validate = mining_commands.add_parser('validate')
+    mining_validate.add_argument('--candidates', type=Path)
+    mining_validate.add_argument('--output', type=Path, required=True)
+    mining_compile = mining_commands.add_parser('compile')
+    mining_compile.add_argument('--candidate-id', required=True)
+    mining_compile.add_argument('--brief', type=Path, required=True)
+    mining_compile.add_argument('--workflow', required=True)
+    mining_compile.add_argument('--output', type=Path, required=True)
+    ingest = mining_commands.add_parser('ingest-civitai', help='Validate saved public API JSON; no network calls')
+    ingest.add_argument('--input', type=Path, required=True)
+    ingest.add_argument('--versions', type=Path, required=True)
+    ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'brief':
+        if args.command == 'mining':
+            from ..prompt_mining import load_candidates, library, compile_candidate, normalize_civitai
+            if args.mining_command == 'validate':
+                candidates = load_candidates(args.root, args.candidates)
+                recipes = library(args.root)
+                report = {'status': 'OFFLINE_SCHEMA_VALID', 'candidates': len(candidates), 'recipes': len(recipes),
+                    'generation_requests': 0, 'golden_approved': 0}
+            elif args.mining_command == 'compile':
+                report = compile_candidate(args.root, args.candidate_id, load(args.brief), args.workflow)
+            else:
+                saved = json.loads(args.input.read_text(encoding='utf-8'))
+                versions = json.loads(args.versions.read_text(encoding='utf-8'))
+                if not isinstance(saved, dict) or not isinstance(saved.get('items'), list) or not isinstance(versions, dict):
+                    raise ValueError('Saved public API responses must be objects with items and version-id mappings')
+                report = normalize_civitai(saved['items'], versions)
+            write(args.output, report)
+            print(args.output)
+        elif args.command == 'brief':
             if args.brief_command == 'schema':
                 write(args.output, SCHEMA)
             else:

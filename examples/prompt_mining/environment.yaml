@@ -1,0 +1,41 @@
+asset_id: m26_environment
+asset_type: environment
+output_class: NONPIXEL_IMAGE
+purpose: game asset candidate
+source:
+  type: PROMPT
+  paths: []
+  references: []
+identity:
+  canonical_traits:
+  - one oak tree at the left
+  - shallow pond at the right
+  - empty stone courtyard
+  visual_traits: []
+constraints:
+  resolution:
+  - 768
+  - 768
+  transparency: null
+  palette: []
+  silhouette: open courtyard with tree and pond separated
+  style: null
+animation:
+  action: null
+  frame_target: null
+  motion_constraints: []
+workflow_preferences: {}
+forbidden_elements: []
+unspecified_elements:
+- identity
+- resolution
+- palette
+- silhouette
+- style
+source_notes:
+- classification: EXPLICIT
+  text: An empty stone courtyard with one oak tree at the left and a shallow pond
+    at the right.
+  source: user input
+prompt: An empty stone courtyard with one oak tree at the left and a shallow pond
+  at the right.
