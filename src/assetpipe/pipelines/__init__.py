@@ -22,8 +22,13 @@ def create(brief, root, output=None, seed=None):
     write(path, manifest)
     try:
         registry = load_registry(root)
-        decision = route(brief, registry)
+        # Keep CLI/direct execution on the same blocking preflight used by MCP.
+        # The import is local to avoid an import cycle while api.py imports pixel animation preflight.
+        from ..api import route_brief
+        decision = route_brief(brief, root)
         write(directory / 'route_decision.json', decision)
+        if decision['status'] == 'BLOCKED':
+            raise ValueError('; '.join(decision['missing_requirements']) or decision['reason'])
         workflow = registry[decision['selected_workflow']]
         manifest['workflow'] = {'id': decision['selected_workflow'], 'hash': workflow['hash'], 'version': workflow['version'], 'model': workflow['models'], 'loras': workflow.get('loras', workflow['models'].get('loras', []))}
         manifest['pipeline_steps'].append({'step': 'router', 'status': 'PASS', 'mode': decision['execution_mode']})
