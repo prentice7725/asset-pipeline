@@ -80,17 +80,26 @@ def natural_language_prompt(brief, spec):
 
 
 def compile_prompt(brief, workflow, root):
+    from ..styles import resolve_style, select_recipe, apply_style, public_selection
+    spec = from_brief(brief)
+    selection = resolve_style(brief, root)
+    explicit = brief['workflow_preferences'].get('id') == workflow['id'] or brief['workflow_preferences'].get('model_profile') == workflow.get('model_profile')
+    selection = select_recipe(selection, workflow, root, explicit=explicit)
+    spec = validate_spec(apply_style(spec, selection))
+    result = compile_spec(brief, workflow, root, spec, preserve_case=bool(selection))
+    if selection:
+        result['style_selection'] = public_selection(selection)
+    return result
+
+
+def compile_spec(brief, workflow, root, spec, *, preserve_case=False):
+    """Shared dialect compiler for validated offline specs; performs no routing or generation."""
     profiles = yaml.safe_load((Path(root) / 'config/model_profiles.yaml').read_text(encoding='utf-8'))
     profile_id = workflow.get('model_profile')
     if profile_id not in profiles['profiles']:
         raise ValueError('Workflow must declare a configured model_profile')
     profile = profiles['profiles'][profile_id]
-    spec = from_brief(brief)
-    from ..styles import resolve_style, select_recipe, apply_style, public_selection
-    selection = resolve_style(brief, root)
-    explicit = brief['workflow_preferences'].get('id') == workflow['id'] or brief['workflow_preferences'].get('model_profile') == profile_id
-    selection = select_recipe(selection, workflow, root, explicit=explicit)
-    spec = validate_spec(apply_style(spec, selection))
+    spec = validate_spec(spec)
     caps = workflow['capabilities']
     adapter = profile['prompt_adapter']
     native_negative = bool(caps.get('negative_prompt'))
@@ -107,7 +116,7 @@ def compile_prompt(brief, workflow, root):
     if adapter == 'natural_language':
         positive = natural_language_prompt(brief, spec)
     elif adapter == 'anima':
-        positive = ', '.join(profile.get('positive_prefix', []) + (fields if selection else [value.lower() for value in fields]))
+        positive = ', '.join(profile.get('positive_prefix', []) + (fields if preserve_case else [value.lower() for value in fields]))
     elif adapter == 'krea2':
         positive = '. '.join(value.rstrip('. ') for value in fields) + '.'
     else:
@@ -120,8 +129,6 @@ def compile_prompt(brief, workflow, root):
             'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(spec.get('negative', [])),
             'negative_mode': negative_mode, 'negative_instruction': list(spec.get('negative', [])) if instructed_negative else [],
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
-    if selection:
-        result['style_selection'] = public_selection(selection)
     return result
 
 

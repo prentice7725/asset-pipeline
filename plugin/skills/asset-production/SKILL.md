@@ -18,3 +18,5 @@ assetpipe engine owns all production algorithms and review gates.
 
 When tools are unavailable, report the missing local connection. Do not substitute
 arbitrary shell, image editing, or experimental recovery for the production path.
+
+For offline recipe research and validation handoff, read [Style Routing](../../references/STYLE_ROUTING.md).

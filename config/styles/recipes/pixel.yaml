@@ -1,0 +1,157 @@
+schema_version: 1
+recipes:
+  clean_anime_cel__anima_pixelate_x4_vae:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_clean_anime_cel
+    style_id: clean_anime_cel
+    style_sha256: ae85cb8600634688a655355fab8f8dd81234dfc43bcebbe74783ec55bb986665
+    workflow_id: anima_pixelate_x4_vae
+    output_class: PIXEL_STATIC
+    model_variant: BASE_PIXELATE_X4_FILENAME_ONLY
+    required_models:
+      diffusion_models: &id001
+      - anima-base-v1.0.safetensors
+      text_encoders: &id002
+      - qwen_3_06b_base.safetensors
+      vae: &id003
+      - pixelateX4VAEForAnima_animaV10.safetensors
+    required_loras: &id004 []
+    tags:
+    - cel shading
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - pixel_gate
+    - resolution_review
+    - aseprite_roundtrip
+    - static_master_human_review
+    pixel_experiment_group: DIRECT_PIXEL_CANDIDATE
+    logical_resolution: PROJECT_SOT_REQUIRED
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  storybook_gouache__anima_pixelate_x4_vae:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_storybook_gouache
+    style_id: storybook_gouache
+    style_sha256: e5bb7750d41464696be58314a068b8eaed625db3d7664c0dc7975af9a0f38258
+    workflow_id: anima_pixelate_x4_vae
+    output_class: PIXEL_STATIC
+    model_variant: BASE_PIXELATE_X4_FILENAME_ONLY
+    required_models:
+      diffusion_models: *id001
+      text_encoders: *id002
+      vae: *id003
+    required_loras: *id004
+    tags:
+    - gouache painting
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - pixel_gate
+    - resolution_review
+    - aseprite_roundtrip
+    - static_master_human_review
+    pixel_experiment_group: DIRECT_PIXEL_CANDIDATE
+    logical_resolution: PROJECT_SOT_REQUIRED
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  painterly_fantasy__anima_pixelate_x4_vae:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_painterly_fantasy
+    style_id: painterly_fantasy
+    style_sha256: 2a84e991711bc2847336e6540086549803f38163465ef9a6bb6da04629843c02
+    workflow_id: anima_pixelate_x4_vae
+    output_class: PIXEL_STATIC
+    model_variant: BASE_PIXELATE_X4_FILENAME_ONLY
+    required_models:
+      diffusion_models: *id001
+      text_encoders: *id002
+      vae: *id003
+    required_loras: *id004
+    tags:
+    - painting
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - pixel_gate
+    - resolution_review
+    - aseprite_roundtrip
+    - static_master_human_review
+    pixel_experiment_group: DIRECT_PIXEL_CANDIDATE
+    logical_resolution: PROJECT_SOT_REQUIRED
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  limited_palette_pixel__anima_pixelate_x4_vae:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_limited_palette_pixel
+    style_id: limited_palette_pixel
+    style_sha256: 269b53b097451f445aaa199cf2300934a2fc7b71f03a9640f4556ef3d93d306c
+    workflow_id: anima_pixelate_x4_vae
+    output_class: PIXEL_STATIC
+    model_variant: BASE_PIXELATE_X4_FILENAME_ONLY
+    required_models:
+      diffusion_models: *id001
+      text_encoders: *id002
+      vae: *id003
+    required_loras: *id004
+    tags:
+    - pixel art
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - pixel_gate
+    - resolution_review
+    - aseprite_roundtrip
+    - static_master_human_review
+    pixel_experiment_group: DIRECT_PIXEL_CANDIDATE
+    logical_resolution: PROJECT_SOT_REQUIRED
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion

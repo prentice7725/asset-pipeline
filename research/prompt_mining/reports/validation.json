@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "base_commit": "94606eab53d0b02763167c31646d079baf1dc68d",
+  "source_document_sha256": "bc3bee3f7c1dd3628210c578ed39c0866f8467f88fdfbf0e4fee84584f7926d8",
+  "full_suite": {
+    "passed": 192,
+    "failed": 0,
+    "skipped": 0,
+    "junit_sha256": "29452e7fac544e386a5001a87951b8f40d4026e07af97e26f69d07d1dc8ca8f2"
+  },
+  "research_module_after_two_additional_tests": {
+    "passed": 35,
+    "failed": 0
+  },
+  "legacy_eight_frame_exact_comparison": "PASS",
+  "protected_files": {
+    "config/workflow_registry.yaml": {
+      "unchanged": true,
+      "sha256": "37020ed24db8a05f54e3ba6b61d8ce9a6d393b933bf927e2db88060c9e230413"
+    },
+    "config/styles/model_recipes.yaml": {
+      "unchanged": true,
+      "sha256": "ef79fcb73bc9fed2d7e3001362a25b822c355f997721770071e4770cec64d78e"
+    },
+    "docs/pixel_regression.json": {
+      "unchanged": true,
+      "sha256": "15566b5e63cb9cce5f7b1eaa5510cdce6f1be97499b7dc566f3b08834a34ec19"
+    },
+    "integrations/mcp/schemas/asset_build_brief.json": {
+      "unchanged": true,
+      "sha256": "d0452ece5b826560b57535d62d5c0d86524777ace7afe2489fc2df218100f03a"
+    },
+    "integrations/mcp/schemas/asset_capabilities.json": {
+      "unchanged": true,
+      "sha256": "d1ff58338458f4bbad5aa8ae8ea9f79d55834f2b10a385fce79ccc1416222810"
+    },
+    "integrations/mcp/schemas/asset_continue_animation.json": {
+      "unchanged": true,
+      "sha256": "12bc2bf7873ec2c10d6191e62942ee5f37d245ca030db6b544ce89392cc994fa"
+    },
+    "integrations/mcp/schemas/asset_generate.json": {
+      "unchanged": true,
+      "sha256": "971942c0fcdc14fadbc6243140b6df61f113e0fd1eb17a4753377e0cc74e1e5d"
+    },
+    "integrations/mcp/schemas/asset_inspect_run.json": {
+      "unchanged": true,
+      "sha256": "8e28bc680e641b76ad7832c234da3203ef34fc0c17335363b981d3a993b4377c"
+    },
+    "integrations/mcp/schemas/asset_route.json": {
+      "unchanged": true,
+      "sha256": "172f276d28461d58fba2b396d95dbe5c2148fa0443d4210036012ff52e866efb"
+    }
+  },
+  "cli_smokes": [
+    "validate",
+    "compile",
+    "ingest-civitai_SYNTHETIC_FIXTURE_ONLY"
+  ],
+  "shared_skill_validation": "PASS",
+  "plugin_validation": "LOCAL_COMPATIBILITY_LAYOUT_PASS",
+  "official_plugin_creator": "NOT_RUN_CREATOR_UNAVAILABLE",
+  "new_generation_requests": 0,
+  "new_full_pipeline_runs": 0,
+  "golden_approved": 0
+}

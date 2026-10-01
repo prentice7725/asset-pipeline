@@ -1,0 +1,235 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,95}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "enum": [
+            "official",
+            "community",
+            "local_test"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https://",
+          "maxLength": 2000
+        },
+        "author": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "rights_review": {
+          "enum": [
+            "REVIEW_REQUIRED",
+            "REVIEWED_RESTRICTED",
+            "REVIEWED_PERMITTED"
+          ]
+        },
+        "source_model_family": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 1
+        },
+        "source_model_version": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "generation_metadata": {
+          "enum": [
+            "DOCUMENTED_GUIDANCE",
+            "VERIFIED_IMAGE_META",
+            "PARTIAL",
+            "MISSING"
+          ]
+        },
+        "supporting_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "origin",
+        "url",
+        "author",
+        "observed_at",
+        "rights_review",
+        "source_model_family",
+        "source_model_version",
+        "generation_metadata",
+        "supporting_source_ids"
+      ]
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,95}$"
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "linework": {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            "shading": {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            "palette": {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            "texture": {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            "camera": {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "linework",
+            "shading",
+            "palette",
+            "texture",
+            "camera"
+          ]
+        },
+        "subject_independent": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "dimensions",
+        "subject_independent"
+      ]
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "native_dialect": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 1
+        },
+        "required_models": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "maxItems": 50
+        },
+        "required_loras": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "maxItems": 50
+        },
+        "portability": {
+          "enum": [
+            "CANDIDATE",
+            "BLOCKED"
+          ]
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1
+          },
+          "maxItems": 50
+        },
+        "evidence_coverage": {
+          "enum": [
+            "INSUFFICIENT_EVIDENCE",
+            "TWO_AUTHORS_CONCEPTUAL_ONLY"
+          ]
+        }
+      },
+      "required": [
+        "native_dialect",
+        "required_models",
+        "required_loras",
+        "portability",
+        "blockers",
+        "evidence_coverage"
+      ]
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "research_state": {
+          "enum": [
+            "DISCOVERED",
+            "NORMALIZED"
+          ]
+        },
+        "local_test_state": {
+          "const": "NOT_RUN"
+        },
+        "pipeline_test_state": {
+          "const": "NOT_RUN"
+        },
+        "human_review": {
+          "const": "NOT_REVIEWED"
+        },
+        "golden_approved": {
+          "const": false
+        }
+      },
+      "required": [
+        "research_state",
+        "local_test_state",
+        "pipeline_test_state",
+        "human_review",
+        "golden_approved"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "style",
+    "compatibility",
+    "validation"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "M2.6 normalized research candidate, not a Golden Recipe"
+}

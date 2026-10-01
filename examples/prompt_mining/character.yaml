@@ -1,0 +1,41 @@
+asset_id: m26_character
+asset_type: character
+output_class: NONPIXEL_IMAGE
+purpose: game asset candidate
+source:
+  type: PROMPT
+  paths: []
+  references: []
+identity:
+  canonical_traits:
+  - orange fur
+  - RED scarf
+  - green backpack
+  visual_traits: []
+constraints:
+  resolution:
+  - 768
+  - 768
+  transparency: null
+  palette: []
+  silhouette: upright fox with one bushy tail
+  style: null
+animation:
+  action: null
+  frame_target: null
+  motion_constraints: []
+workflow_preferences: {}
+forbidden_elements: []
+unspecified_elements:
+- identity
+- resolution
+- palette
+- silhouette
+- style
+source_notes:
+- classification: EXPLICIT
+  text: Mira the orange fox courier, wearing a RED scarf and a green backpack. Show
+    the entire single character.
+  source: user input
+prompt: Mira the orange fox courier, wearing a RED scarf and a green backpack. Show
+  the entire single character.

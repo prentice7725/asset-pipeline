@@ -30,3 +30,5 @@ The user-authorized M2 milestone permits shared NONPIXEL_IMAGE Style Intelligenc
 config/styles and assetpipe.styles. Read docs/m2/STYLE_INTELLIGENCE.md. Preserve Visual SOT
 locks, explicit model choices, all QA gates and six MCP tools. Never fabricate style approval,
 quality scores or evidence; M2 tests cannot replace provider real-generation E2E.
+
+The user-authorized M2.6 milestone permits offline prompt mining, candidate recipes and source analysis. Read docs/style/PROMPT_MINING_METHOD.md and RECIPE_VALIDATION.md. Submit zero generations in this milestone; M2.5 real image and full pipeline validation follows with a separately authorized budget. Preserve production defaults, six MCP contracts, legacy pixel baseline and all review gates.

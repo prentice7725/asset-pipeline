@@ -1,0 +1,263 @@
+{
+  "milestone": "M2.5",
+  "capabilities": {
+    "supported_output_classes": [
+      "PIXEL_STATIC",
+      "PIXEL_ANIMATION",
+      "NONPIXEL_IMAGE",
+      "NONPIXEL_ANIMATION",
+      "SFX"
+    ],
+    "input_types": [
+      "DIRECT_PROMPT",
+      "REFERENCE_IMAGE",
+      "PROJECT_SOURCES"
+    ],
+    "active_workflows": {
+      "anima_pixelate_x4_vae": {
+        "output_class": "PIXEL_STATIC",
+        "capabilities": {
+          "text_to_image": true,
+          "image_to_image": false,
+          "character_reference": false,
+          "transparent_output": false,
+          "motion_conditioning": false,
+          "image_to_video": false,
+          "negative_prompt": true
+        },
+        "tags": [
+          "character",
+          "pixel",
+          "static",
+          "chibi",
+          "low_postprocess_cost"
+        ]
+      },
+      "anima_base": {
+        "output_class": "NONPIXEL_IMAGE",
+        "capabilities": {
+          "text_to_image": true,
+          "image_to_image": false,
+          "character_reference": false,
+          "transparent_output": false,
+          "motion_conditioning": false,
+          "image_to_video": false,
+          "negative_prompt": true,
+          "exact_resolution": true
+        },
+        "tags": [
+          "character",
+          "illustration",
+          "anime",
+          "general",
+          "portrait",
+          "fantasy"
+        ]
+      },
+      "krea2_base": {
+        "output_class": "NONPIXEL_IMAGE",
+        "capabilities": {
+          "text_to_image": true,
+          "image_to_image": false,
+          "character_reference": false,
+          "transparent_output": false,
+          "motion_conditioning": false,
+          "image_to_video": false,
+          "negative_prompt": false,
+          "exact_resolution": true
+        },
+        "tags": [
+          "character",
+          "illustration",
+          "polished",
+          "fantasy",
+          "concept"
+        ]
+      },
+      "minimax_character_motion_reference": {
+        "output_class": "PIXEL_ANIMATION",
+        "capabilities": {
+          "text_to_image": false,
+          "image_to_image": false,
+          "character_reference": true,
+          "transparent_output": false,
+          "motion_conditioning": true,
+          "image_to_video": true,
+          "negative_prompt": false,
+          "requires_approved_static_master": true
+        },
+        "tags": [
+          "character",
+          "pixel",
+          "animation",
+          "motion_reference",
+          "minimax",
+          "sageattention"
+        ]
+      },
+      "audio_stable_audio_3_medium": {
+        "output_class": "SFX",
+        "capabilities": {
+          "text_to_audio": true,
+          "negative_prompt": false,
+          "audio_reference": false
+        },
+        "tags": [
+          "sfx",
+          "audio",
+          "sound_effect"
+        ]
+      }
+    },
+    "providers": [
+      "comfyui",
+      "aseprite",
+      "codex_cli",
+      "grok_cli"
+    ],
+    "provider_readiness": {
+      "comfyui": {
+        "provider_id": "comfyui",
+        "engine": "comfyui",
+        "status": "AVAILABLE",
+        "reasons": [],
+        "details": {
+          "base_url": "http://127.0.0.1:8188",
+          "version": "0.38.1",
+          "generation_probe": "NOT_RUN"
+        },
+        "checked_at": "2026-10-01T13:05:31.245736+00:00"
+      },
+      "codex_cli": {
+        "provider_id": "codex_cli",
+        "engine": "codex_cli",
+        "status": "AVAILABLE",
+        "reasons": [],
+        "details": {
+          "generation_probe": "NOT_RUN",
+          "note": "Real generation is confirmed only by the E2E check",
+          "auth_mode": "chatgpt_login",
+          "executable": "C:\\nvm4w\\nodejs\\codex.CMD",
+          "cli_version": "codex-cli 0.159.3",
+          "image_generation_feature": "ENABLED",
+          "login_state": "LOGGED_IN",
+          "billing_hint": "Usage follows the logged-in account plan; this tool does not read quota"
+        },
+        "checked_at": "2026-10-01T13:05:31.153016+00:00"
+      },
+      "grok_cli": {
+        "provider_id": "grok_cli",
+        "engine": "grok_cli",
+        "status": "AVAILABLE",
+        "reasons": [],
+        "details": {
+          "generation_probe": "NOT_RUN",
+          "note": "Real generation is confirmed only by the E2E check",
+          "auth_mode": "cli_login",
+          "executable": "C:\\Users\\seung\\.grok\\bin\\grok.EXE",
+          "cli_version": "grok 1.0.46 (2765805b9442) [stable]",
+          "tools": {
+            "image_gen": "NOT_PROBED",
+            "image_edit": "NOT_PROBED"
+          },
+          "login_state": "AUTHENTICATED",
+          "billing_hint": "Usage follows the signed-in account; this tool does not read quota"
+        },
+        "checked_at": "2026-10-01T13:05:31.153016+00:00"
+      }
+    },
+    "external_cli_workflows": {
+      "codex_imagegen": {
+        "engine": "codex_cli",
+        "status": "EXPERIMENTAL",
+        "selection": "explicit_only",
+        "capabilities": {
+          "text_to_image": true,
+          "image_to_image": false,
+          "character_reference": false,
+          "transparent_output": false,
+          "motion_conditioning": false,
+          "image_to_video": false,
+          "negative_prompt": false,
+          "negative_prompt_instruction": true,
+          "text_rendering": false,
+          "exact_resolution": false,
+          "seed_control": false
+        },
+        "validation": "NOT_VERIFIED"
+      },
+      "grok_imagine": {
+        "engine": "grok_cli",
+        "status": "EXPERIMENTAL",
+        "selection": "explicit_only",
+        "capabilities": {
+          "text_to_image": true,
+          "image_to_image": true,
+          "character_reference": true,
+          "transparent_output": false,
+          "motion_conditioning": false,
+          "image_to_video": false,
+          "negative_prompt": false,
+          "negative_prompt_instruction": true,
+          "text_rendering": false,
+          "exact_resolution": false,
+          "seed_control": false
+        },
+        "validation": "NOT_VERIFIED"
+      }
+    },
+    "animation_actions": {
+      "PIXEL_ANIMATION": [
+        "walk"
+      ],
+      "NONPIXEL_ANIMATION": []
+    },
+    "optional_recovery": {
+      "pixel_art_fixer": "OPTIONAL_RECOVERY_NOT_AUTO_DISPATCHED"
+    },
+    "environment_readiness": {
+      "comfyui": {
+        "ready": true,
+        "version": "0.38.1"
+      },
+      "aseprite": {
+        "ready": true,
+        "version": "Aseprite 1.3.18.6-x64"
+      },
+      "ffmpeg": {
+        "ready": true
+      }
+    },
+    "limitations": [
+      "codex_cli/grok_cli are EXPERIMENTAL, NONPIXEL_IMAGE only; request them by workflow id with allow_experimental. Seed, exact resolution, transparency and native negative prompts are unsupported; no automatic fallback between providers",
+      "NONPIXEL_ANIMATION is contract-only",
+      "Eight reviewed blue-tunic/white-background walk phases only",
+      "Existing reviewed motion required; idle and attack are unsupported"
+    ]
+  },
+  "samples": [],
+  "budget": {
+    "limit": 12,
+    "reserved_requests": 0
+  },
+  "human_review": "REQUIRED",
+  "game_ready": false,
+  "golden_approved": 0,
+  "in_game_review": "IN_GAME_REVIEW_PENDING",
+  "role_qa": {
+    "tile": "ROLE_QA_UNVERIFIED",
+    "ui_icon": "ROLE_QA_UNVERIFIED"
+  },
+  "new_style_animation": "UNSUPPORTED",
+  "model_hash_status": "NOT_VERIFIED",
+  "source_reproduction": "NOT_CLAIMED",
+  "animation_regression": {
+    "status": "FAILED",
+    "error": "Static master approval lacks pipeline provenance and Aseprite review"
+  },
+  "status": "BLOCKED_REGRESSION_PREFLIGHT_FAILED",
+  "artifact_root": "workspace/style_lab/cohorts/20261001T130530758464Z",
+  "static_e2e": "NOT_RUN",
+  "nonpixel_e2e": "NOT_RUN",
+  "generation_requests": 0
+}

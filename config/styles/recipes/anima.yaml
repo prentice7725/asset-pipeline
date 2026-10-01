@@ -1,0 +1,285 @@
+schema_version: 1
+recipes:
+  clean_anime_cel__anima_base:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_clean_anime_cel
+    style_id: clean_anime_cel
+    style_sha256: ae85cb8600634688a655355fab8f8dd81234dfc43bcebbe74783ec55bb986665
+    workflow_id: anima_base
+    output_class: NONPIXEL_IMAGE
+    model_variant: BASE_FILENAME_ONLY
+    required_models:
+      diffusion_models: &id002
+      - anima-base-v1.0.safetensors
+      text_encoders: &id003
+      - qwen_3_06b_base.safetensors
+      vae: &id004
+      - qwen_image_vae.safetensors
+    required_loras: &id005 []
+    tags: &id001
+    - cel shading
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  clean_anime_cel__tomohi_character:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_clean_anime_cel
+    style_id: clean_anime_cel
+    style_sha256: ae85cb8600634688a655355fab8f8dd81234dfc43bcebbe74783ec55bb986665
+    workflow_id: tomohi_character
+    output_class: NONPIXEL_IMAGE
+    model_variant: AESTHETIC_V11_FILENAME_ONLY_TOMOHI_LORA_UNVERIFIED
+    required_models:
+      diffusion_models: &id006
+      - anima_aestheticV11.safetensors
+      text_encoders: &id007
+      - qwen_3_06b_base.safetensors
+      vae: &id008
+      - qwen_image_vae.safetensors
+    required_loras: &id009
+    - tomohi2.safetensors
+    tags: *id001
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  storybook_gouache__anima_base:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_storybook_gouache
+    style_id: storybook_gouache
+    style_sha256: e5bb7750d41464696be58314a068b8eaed625db3d7664c0dc7975af9a0f38258
+    workflow_id: anima_base
+    output_class: NONPIXEL_IMAGE
+    model_variant: BASE_FILENAME_ONLY
+    required_models:
+      diffusion_models: *id002
+      text_encoders: *id003
+      vae: *id004
+    required_loras: *id005
+    tags: &id010
+    - gouache painting
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  storybook_gouache__tomohi_character:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_storybook_gouache
+    style_id: storybook_gouache
+    style_sha256: e5bb7750d41464696be58314a068b8eaed625db3d7664c0dc7975af9a0f38258
+    workflow_id: tomohi_character
+    output_class: NONPIXEL_IMAGE
+    model_variant: AESTHETIC_V11_FILENAME_ONLY_TOMOHI_LORA_UNVERIFIED
+    required_models:
+      diffusion_models: *id006
+      text_encoders: *id007
+      vae: *id008
+    required_loras: *id009
+    tags: *id010
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  painterly_fantasy__anima_base:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_painterly_fantasy
+    style_id: painterly_fantasy
+    style_sha256: 2a84e991711bc2847336e6540086549803f38163465ef9a6bb6da04629843c02
+    workflow_id: anima_base
+    output_class: NONPIXEL_IMAGE
+    model_variant: BASE_FILENAME_ONLY
+    required_models:
+      diffusion_models: *id002
+      text_encoders: *id003
+      vae: *id004
+    required_loras: *id005
+    tags: &id011
+    - painting
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  painterly_fantasy__tomohi_character:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_painterly_fantasy
+    style_id: painterly_fantasy
+    style_sha256: 2a84e991711bc2847336e6540086549803f38163465ef9a6bb6da04629843c02
+    workflow_id: tomohi_character
+    output_class: NONPIXEL_IMAGE
+    model_variant: AESTHETIC_V11_FILENAME_ONLY_TOMOHI_LORA_UNVERIFIED
+    required_models:
+      diffusion_models: *id006
+      text_encoders: *id007
+      vae: *id008
+    required_loras: *id009
+    tags: *id011
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  limited_palette_pixel__anima_base:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_limited_palette_pixel
+    style_id: limited_palette_pixel
+    style_sha256: 269b53b097451f445aaa199cf2300934a2fc7b71f03a9640f4556ef3d93d306c
+    workflow_id: anima_base
+    output_class: NONPIXEL_IMAGE
+    model_variant: BASE_FILENAME_ONLY
+    required_models:
+      diffusion_models: *id002
+      text_encoders: *id003
+      vae: *id004
+    required_loras: *id005
+    tags: &id012
+    - pixel art
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion
+  limited_palette_pixel__tomohi_character:
+    version: 1.0.0
+    state: NORMALIZED
+    offline_only: true
+    candidate_id: mined_limited_palette_pixel
+    style_id: limited_palette_pixel
+    style_sha256: 269b53b097451f445aaa199cf2300934a2fc7b71f03a9640f4556ef3d93d306c
+    workflow_id: tomohi_character
+    output_class: NONPIXEL_IMAGE
+    model_variant: AESTHETIC_V11_FILENAME_ONLY_TOMOHI_LORA_UNVERIFIED
+    required_models:
+      diffusion_models: *id006
+      text_encoders: *id007
+      vae: *id008
+    required_loras: *id009
+    tags: *id012
+    phrases: []
+    dialect: tags_and_caption
+    production_state: NOT_RUN
+    approved_for: []
+    review_contract:
+    - canon
+    - style_consistency
+    - model_and_lora_hashes
+    - license_review
+    - basic_image_qa
+    - human_visual_review
+    pixel_experiment_group: NONPIXEL_SOURCE_NOT_PIXELIZED
+    logical_resolution: NOT_APPLICABLE
+    unsupported:
+    - tile_seamlessness
+    - ui_runtime_export
+    - generalized_animation
+    - automatic_golden_promotion

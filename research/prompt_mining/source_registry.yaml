@@ -1,0 +1,226 @@
+schema_version: 1
+observed_at: '2026-10-01'
+sources:
+  anima_card:
+    origin: official
+    url: https://huggingface.co/circlestone-labs/Anima
+    author: CircleStone Labs
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: anima
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Base/Aesthetic/Turbo are distinct; tags and captions are documented.
+      Local optimum is not established.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  anima_license:
+    origin: official
+    url: https://huggingface.co/circlestone-labs/Anima/raw/main/LICENSE.md
+    author: CircleStone Labs
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: anima
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: TEXT_OBSERVED_USE_CASE_REVIEW_REQUIRED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Model/derivative terms and output terms differ; use-case review remains
+      required.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  krea_prompting:
+    origin: official
+    url: https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
+    author: Krea AI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: krea2
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Natural-language captions and detailed descriptions; samples are published
+      for Turbo, not local reproduction evidence.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  krea_expansion:
+    origin: official
+    url: https://github.com/krea-ai/krea-2/blob/main/docs/expansion.txt
+    author: Krea AI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: krea2
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Preserve original objects, colors, actions and relationships without
+      adding inferred props.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  krea_license:
+    origin: official
+    url: https://github.com/krea-ai/krea-2/blob/main/LICENSE.md
+    author: Krea AI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: krea2
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: TEXT_OBSERVED_USE_CASE_REVIEW_REQUIRED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Repository license file observed; exact local weight distribution and
+      output rights still require separate review.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  nai_tags:
+    origin: official
+    url: https://docs.novelai.net/en/image/tags/
+    author: NovelAI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: novelai
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Tag concepts are reference knowledge, not an Anima compatibility certificate.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  nai_weighting:
+    origin: official
+    url: https://docs.novelai.net/en/image/strengthening-weakening/
+    author: NovelAI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: novelai
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Bracket and numeric emphasis is a model-specific dialect; no direct transfer.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  nai_media:
+    origin: official
+    url: https://docs.novelai.net/en/image/tutorial-artstyles/
+    author: NovelAI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: novelai
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Media categories include anime and digital pixel techniques; no local
+      quality implication.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  explorer_selected:
+    origin: community
+    url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/main/app/data.js
+    author: ThetaCursed
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: krea2
+    source_model_version: ''
+    generation_metadata: MISSING
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Selected entries a9ed4ef497f8, a17d48ae2ea5 and c6b1956bdb6f were read
+      as text. No image downloaded; independent descriptions only.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  civitai_images_docs:
+    origin: official
+    url: https://github.com/civitai/civitai-developer-docs/blob/main/site/reference/images.md
+    author: CivitAI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: multiple
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Public API supports metadata/resource IDs; missing metadata is not reconstructible.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  civitai_models_docs:
+    origin: official
+    url: https://github.com/civitai/civitai-developer-docs/blob/main/site/reference/models.md
+    author: CivitAI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: multiple
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Model/version identity and resource conditions require cross-checking.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
+  civitai_versions_docs:
+    origin: official
+    url: https://github.com/civitai/civitai-developer-docs/blob/main/site/reference/model-versions.md
+    author: CivitAI
+    author_review: PUBLIC_PUBLISHER_OBSERVED
+    observed_at: '2026-10-01'
+    access_state: READ
+    source_model_family: multiple
+    source_model_version: ''
+    generation_metadata: DOCUMENTED_GUIDANCE
+    rights_review: REVIEW_REQUIRED
+    license_status: NOT_RESOLVED
+    image_republication: NOT_AUTHORIZED
+    model_weights_rights: REVIEW_REQUIRED
+    output_rights: REVIEW_REQUIRED
+    summary: Saved version responses provide dependency identity and files/hashes.
+    evidence_kind: EXTERNAL_CLAIM
+    local_test_state: NOT_RUN
