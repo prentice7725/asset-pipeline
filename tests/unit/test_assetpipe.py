@@ -75,6 +75,20 @@ def test_failed_routing_preserves_manifest_without_provider_call(tmp_path):
     with pytest.raises(FileExistsError):
         create(value, ROOT, destination)
 
+def test_create_uses_same_document_preflight_as_mcp(tmp_path):
+    value = brief()
+    source = ROOT / 'tests/fixtures/character_test.md'
+    value['source'] = {'type': 'DOCUMENTS', 'paths': [str(source)], 'references': []}
+    value['source_notes'] = [{'classification': 'UNSPECIFIED', 'text': 'canon not extracted', 'source': str(source)}]
+    value['identity']['canonical_traits'] = []
+    destination = tmp_path / 'document_failure'
+    with pytest.raises(ValueError, match='Source-backed canonical traits'):
+        create(value, ROOT, destination)
+    manifest = json.loads((destination / 'run_manifest.json').read_text())
+    assert manifest['status'] == 'FAILED'
+    assert not (destination / '010_generation').exists()
+
+
 def test_negative_constraints_require_provider_capability():
     value = brief()
     value['forbidden_elements'] = ['heavy armor']

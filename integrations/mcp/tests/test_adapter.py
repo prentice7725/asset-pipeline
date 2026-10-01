@@ -97,6 +97,21 @@ def test_launch_uses_only_fixed_cli_and_manifest_model(adapter, monkeypatch):
     assert adapter.inspect(result['run_id'])['status'] == 'STARTING'
 
 
+def test_failed_child_without_manifest_is_reported(adapter, monkeypatch):
+    class Child:
+        pid = 123
+        def poll(self):
+            return 1
+    monkeypatch.setattr(subprocess, 'Popen', lambda *args, **kwargs: Child())
+    result = adapter.generate(brief=brief())
+    inspected = adapter.inspect(result['run_id'])
+    assert inspected['status'] == 'FAILED'
+    assert 'exited with code 1' in inspected['error']
+    receipt = adapter.output / 'default' / 'requests' / (result['run_id'] + '.json')
+    stored = json.loads(receipt.read_text())
+    assert stored['status'] == 'FAILED' and stored['exit_code'] == 1
+
+
 def test_projects_partition_runs_requests_and_inspection(adapter, monkeypatch):
     class Child:
         pid = 123
@@ -154,6 +169,20 @@ def test_six_tools_and_strict_arguments(adapter):
         asyncio.run(server.call_tool('asset_generate', {'command': 'arbitrary shell'}))
     with pytest.raises(Exception):
         asyncio.run(server.call_tool('asset_inspect_run', {'run_id': 3}))
+
+def test_continue_animation_reselects_workflow_after_output_class_change(adapter, monkeypatch):
+    value = brief()
+    value['workflow_preferences'] = {'id': 'krea2_base', 'preset': 'smoke', 'tags': ['general']}
+    source = adapter.output / 'image_brief.json'
+    source.write_text(json.dumps(value), encoding='utf-8')
+    monkeypatch.setattr(adapter, 'generate', lambda *, brief=None, **kwargs: brief)
+    result = adapter.continue_animation(str(source), 'walk', 'PIXEL_ANIMATION', {})
+    assert result['output_class'] == 'PIXEL_ANIMATION'
+    assert result['animation']['action'] == 'walk'
+    assert 'id' not in result['workflow_preferences']
+    assert 'preset' not in result['workflow_preferences']
+    assert result['workflow_preferences']['tags'] == ['general']
+
 
 def test_unsupported_animation_constraints_are_rejected(adapter):
     with pytest.raises(ValueError):

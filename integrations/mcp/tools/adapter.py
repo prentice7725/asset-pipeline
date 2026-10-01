@@ -27,6 +27,7 @@ class Adapter:
             raise ValueError('Configured source roots must be directories')
         self.output = (path.parent / values['output_root']).resolve()
         self.output.mkdir(parents=True, exist_ok=True)
+        self._children = {}
         status = json.loads((self.root / 'docs/bootstrap_status.json').read_text(encoding='utf-8'))
         if status.get('status') != 'ASSET_PIPELINE_V0_1_BOOTSTRAP_PASS':
             raise ValueError('Core bootstrap precondition has not passed')
@@ -119,6 +120,7 @@ class Adapter:
             with log_path.open('xb') as log:
                 child = subprocess.Popen(command, cwd=self.root, stdin=subprocess.DEVNULL, stdout=log, stderr=log,
                     shell=False, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            self._children[run_id] = child
             receipt.update({'pid': child.pid, 'log': str(log_path)})
             write(receipt_path, receipt)
         except Exception as exc:
@@ -140,8 +142,21 @@ class Adapter:
         receipt_path = self.output_path(matches[0])
         receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
         manifest = self.output_path(receipt['manifest'])
+        child = self._children.get(run_id)
         if not manifest.exists():
+            if receipt.get('status') == 'STARTING' and child is not None:
+                poll = getattr(child, 'poll', None)
+                exit_code = poll() if callable(poll) else None
+                if exit_code is not None:
+                    self._children.pop(run_id, None)
+                    receipt.update({'status': 'FAILED', 'exit_code': exit_code,
+                        'error': f'Generation process exited with code {exit_code} before writing run manifest'})
+                    write(receipt_path, receipt)
             return {'run_id': run_id, 'project_id': receipt.get('project_id', 'default'), 'status': receipt['status'], 'manifest': str(manifest), 'outputs': [], 'qa': [], 'review_items': [], 'error': receipt.get('error')}
+        if child is not None:
+            poll = getattr(child, 'poll', None)
+            if callable(poll) and poll() is not None:
+                self._children.pop(run_id, None)
         result = api.inspect_manifest(manifest)
         result['outputs'] = [str(self.output_path(p)) for p in result['outputs']]
         return {'run_id': run_id, 'project_id': receipt.get('project_id', 'default'), **result}
@@ -155,10 +170,15 @@ class Adapter:
         else:
             brief = load(self.source(reference))
         brief = copy.deepcopy(brief)
+        previous_output_class = brief['output_class']
         allowed = {'production', 'resolution', 'frame_target', 'motion_constraints'}
         if set(constraints) - allowed:
             raise ValueError('Unknown animation constraint')
         brief['output_class'] = output_class
+        if previous_output_class != output_class:
+            preferences = brief.setdefault('workflow_preferences', {})
+            preferences.pop('id', None)
+            preferences.pop('preset', None)
         brief['animation']['action'] = action
         if 'production' in constraints:
             brief['production'] = constraints['production']

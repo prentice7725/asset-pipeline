@@ -40,6 +40,13 @@ def from_brief(brief):
             spec['style'] = [brief['constraints']['style']]
         if brief['constraints'].get('silhouette'):
             spec['constraints'] = [brief['constraints']['silhouette']]
+    # Brief-level semantic constraints remain canonical even when PromptSpec is supplied.
+    style = brief['constraints'].get('style')
+    if style:
+        spec['style'] = list(dict.fromkeys(spec.get('style', []) + [style]))
+    silhouette = brief['constraints'].get('silhouette')
+    if silhouette:
+        spec['constraints'] = list(dict.fromkeys(spec.get('constraints', []) + [silhouette]))
     # Canon and forbidden requirements cannot disappear when the spec is provided.
     spec['appearance'] = list(dict.fromkeys(spec.get('appearance', []) + brief['identity']['canonical_traits'] + brief['identity']['visual_traits']))
     negative = list(brief['forbidden_elements'])
