@@ -1,5 +1,6 @@
 {
   "milestone": "M2.5",
+  "harness_version": 2,
   "capabilities": {
     "supported_output_classes": [
       "PIXEL_STATIC",
@@ -126,7 +127,7 @@
           "version": "0.38.1",
           "generation_probe": "NOT_RUN"
         },
-        "checked_at": "2026-10-01T13:05:31.245736+00:00"
+        "checked_at": "2026-10-01T13:17:21.000208+00:00"
       },
       "codex_cli": {
         "provider_id": "codex_cli",
@@ -143,7 +144,7 @@
           "login_state": "LOGGED_IN",
           "billing_hint": "Usage follows the logged-in account plan; this tool does not read quota"
         },
-        "checked_at": "2026-10-01T13:05:31.153016+00:00"
+        "checked_at": "2026-10-01T13:17:20.998196+00:00"
       },
       "grok_cli": {
         "provider_id": "grok_cli",
@@ -163,7 +164,7 @@
           "login_state": "AUTHENTICATED",
           "billing_hint": "Usage follows the signed-in account; this tool does not read quota"
         },
-        "checked_at": "2026-10-01T13:05:31.153016+00:00"
+        "checked_at": "2026-10-01T13:17:20.998196+00:00"
       }
     },
     "external_cli_workflows": {
@@ -235,29 +236,2610 @@
       "Existing reviewed motion required; idle and attack are unsupported"
     ]
   },
-  "samples": [],
+  "historical_regression": {
+    "status": "PASS",
+    "scope": "HISTORICAL_ARTIFACT_EQUIVALENCE_ONLY",
+    "frames": [
+      {
+        "name": "contact_a.png",
+        "new_sha256": "1ea646ad885239f45fc543a7295d4d361e69e1da3fba54ede0d9d5c52a5695a1",
+        "legacy_sha256": "1ea646ad885239f45fc543a7295d4d361e69e1da3fba54ede0d9d5c52a5695a1",
+        "exact_rgba": true
+      },
+      {
+        "name": "contact_b.png",
+        "new_sha256": "e26b3dfd796b058ce85e25854756c3d1ec7827ef2111b875da3e13c28c3b302d",
+        "legacy_sha256": "e26b3dfd796b058ce85e25854756c3d1ec7827ef2111b875da3e13c28c3b302d",
+        "exact_rgba": true
+      },
+      {
+        "name": "down_a.png",
+        "new_sha256": "f94c6c696d0af4a4e94b25be166c45f7b5d9b0e004e8ea66351472ba04e6cd53",
+        "legacy_sha256": "f94c6c696d0af4a4e94b25be166c45f7b5d9b0e004e8ea66351472ba04e6cd53",
+        "exact_rgba": true
+      },
+      {
+        "name": "down_b.png",
+        "new_sha256": "bdc5677d2f6364b57f0ab5cf5f8ab806d9829b6e89023657e9ef8b25565aeef1",
+        "legacy_sha256": "bdc5677d2f6364b57f0ab5cf5f8ab806d9829b6e89023657e9ef8b25565aeef1",
+        "exact_rgba": true
+      },
+      {
+        "name": "passing_a.png",
+        "new_sha256": "4db800df1949b638615764a1d8a82070ce2dc0ddc8b4605a2232acf758107531",
+        "legacy_sha256": "4db800df1949b638615764a1d8a82070ce2dc0ddc8b4605a2232acf758107531",
+        "exact_rgba": true
+      },
+      {
+        "name": "passing_b.png",
+        "new_sha256": "647f9b80ecdb9b700297353869dfcbcd82d8ac5523bbe4a0e99d89c50ca8d765",
+        "legacy_sha256": "647f9b80ecdb9b700297353869dfcbcd82d8ac5523bbe4a0e99d89c50ca8d765",
+        "exact_rgba": true
+      },
+      {
+        "name": "up_a.png",
+        "new_sha256": "d09574d21dc8358adc9c93f294a110214e8d49105a80d422e34daa4cad8cf64a",
+        "legacy_sha256": "d09574d21dc8358adc9c93f294a110214e8d49105a80d422e34daa4cad8cf64a",
+        "exact_rgba": true
+      },
+      {
+        "name": "up_b.png",
+        "new_sha256": "7a5b5b25b85d062d7a0ff7adffeb35c6e863ec362c4920cf6e3384ed12ccef11",
+        "legacy_sha256": "7a5b5b25b85d062d7a0ff7adffeb35c6e863ec362c4920cf6e3384ed12ccef11",
+        "exact_rgba": true
+      }
+    ],
+    "current_e2e_evidence": false
+  },
+  "static_integration": {
+    "status": "EXPORT_READY_REVIEW_REQUIRED",
+    "run_directory": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation",
+    "manifest": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\run_manifest.json",
+    "manifest_sha256": "6afa1494bec7c2c658b4687cbc49ebcc2bd66a776b1ab3d0ea44c4303665e9ef",
+    "qa_results": [
+      {
+        "status": "REVIEW_REQUIRED",
+        "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\010_existing_candidate\\source.png",
+        "resolution": {
+          "width": 128,
+          "height": 128,
+          "target_width": null,
+          "target_height": null,
+          "matches_target": null,
+          "interpolation_evidence": "LOW"
+        },
+        "alpha": {
+          "policy": "binary",
+          "transparent_pixels": 11884,
+          "opaque_pixels": 4500,
+          "semi_transparent_pixels": 0,
+          "unique_alpha_values": [
+            0,
+            255
+          ]
+        },
+        "palette": {
+          "unique_color_count": 32,
+          "max_colors": 32,
+          "color_budget_excess": 0,
+          "allowed_palette": null,
+          "off_palette_pixel_count": 0,
+          "off_palette_pixel_ratio": 0.0,
+          "distance_to_allowed_palette": {
+            "mean_nearest_rgb_distance": null,
+            "max_nearest_rgb_distance": null
+          }
+        },
+        "gradient_suspicion": {
+          "level": "LOW",
+          "unique_visible_colors": 32,
+          "small_rgb_step_ratio": 0.115119,
+          "small_rgb_step_edges": 651,
+          "differing_edges": 5655,
+          "small_step_distance_threshold": 24
+        },
+        "anti_alias_suspicion": {
+          "level": "LOW",
+          "suspected_pixels": 19,
+          "edge_pixels_examined": 2735,
+          "suspected_edge_pixel_ratio": 0.006947,
+          "method": "rare intermediate colors on high-contrast local edges; heuristic"
+        },
+        "silhouette": {
+          "measurable": true,
+          "method": "alpha",
+          "foreground_pixels": 4500,
+          "connected_component_count": 1,
+          "largest_component_ratio": 1.0,
+          "isolated_component_count": 0,
+          "isolated_pixel_count": 0,
+          "bounding_box": {
+            "x": 7,
+            "y": 3,
+            "width": 99,
+            "height": 120
+          }
+        },
+        "reasons": {
+          "failure": [],
+          "fix": [],
+          "review": [
+            "no target resolution was supplied"
+          ]
+        }
+      },
+      {
+        "status": "PASS",
+        "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\030_refiner\\refined.png",
+        "resolution": {
+          "width": 128,
+          "height": 128,
+          "target_width": 128,
+          "target_height": 128,
+          "matches_target": true,
+          "interpolation_evidence": "LOW"
+        },
+        "alpha": {
+          "policy": "binary",
+          "transparent_pixels": 11884,
+          "opaque_pixels": 4500,
+          "semi_transparent_pixels": 0,
+          "unique_alpha_values": [
+            0,
+            255
+          ]
+        },
+        "palette": {
+          "unique_color_count": 32,
+          "max_colors": 32,
+          "color_budget_excess": 0,
+          "allowed_palette": null,
+          "off_palette_pixel_count": 0,
+          "off_palette_pixel_ratio": 0.0,
+          "distance_to_allowed_palette": {
+            "mean_nearest_rgb_distance": null,
+            "max_nearest_rgb_distance": null
+          }
+        },
+        "gradient_suspicion": {
+          "level": "LOW",
+          "unique_visible_colors": 32,
+          "small_rgb_step_ratio": 0.115119,
+          "small_rgb_step_edges": 651,
+          "differing_edges": 5655,
+          "small_step_distance_threshold": 24
+        },
+        "anti_alias_suspicion": {
+          "level": "LOW",
+          "suspected_pixels": 19,
+          "edge_pixels_examined": 2735,
+          "suspected_edge_pixel_ratio": 0.006947,
+          "method": "rare intermediate colors on high-contrast local edges; heuristic"
+        },
+        "silhouette": {
+          "measurable": true,
+          "method": "alpha",
+          "foreground_pixels": 4500,
+          "connected_component_count": 1,
+          "largest_component_ratio": 1.0,
+          "isolated_component_count": 0,
+          "isolated_pixel_count": 0,
+          "bounding_box": {
+            "x": 7,
+            "y": 3,
+            "width": 99,
+            "height": 120
+          }
+        },
+        "reasons": {
+          "failure": [],
+          "fix": [],
+          "review": []
+        }
+      },
+      {
+        "schema_version": 1,
+        "status": "ANALYSIS_COMPLETE_REVIEW_REQUIRED",
+        "generated_at_utc": "2026-10-01T13:17:23.853531+00:00",
+        "source": {
+          "path": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\030_refiner\\refined.png",
+          "sha256": "48dd794f7d9584646b0ca7627a6ef05ac89dca98a3fc3eb6e575331f39a43e02",
+          "width": 128,
+          "height": 128
+        },
+        "profile": "asset_brief",
+        "thresholds": {
+          "silhouette_min_iou": 0.9,
+          "component_min_preservation": 0.8,
+          "palette_min_retention": 0.5
+        },
+        "features": [],
+        "recommended_minimum_for_review": 128,
+        "selected_resolution": null,
+        "reviewed": false,
+        "candidates": [
+          {
+            "width": 128,
+            "height": 128,
+            "status": "AUTO_PASS_REVIEW_REQUIRED",
+            "automatic_status": "AUTO_PASS_REVIEW_REQUIRED",
+            "silhouette_preservation_iou": 1.0,
+            "connected_components": {
+              "source": 1,
+              "candidate": 1,
+              "preservation": 1.0
+            },
+            "feature_area_preservation": [],
+            "small_feature_disappearance": [],
+            "palette_collapse": {
+              "source_unique_colors": 32,
+              "candidate_unique_colors": 32,
+              "retention": 1.0,
+              "collapsed_color_count": 0
+            },
+            "bounding_box": {
+              "source": {
+                "x": 7,
+                "y": 3,
+                "width": 99,
+                "height": 120
+              },
+              "candidate": {
+                "x": 7,
+                "y": 3,
+                "width": 99,
+                "height": 120
+              },
+              "change_from_scaled_source": {
+                "x": 0.0,
+                "y": 0.0,
+                "width": 0.0,
+                "height": 0.0
+              }
+            },
+            "foreground_occupancy": {
+              "source": 0.274658,
+              "candidate": 0.274658,
+              "change": 0.0
+            },
+            "reasons": [],
+            "logical_height": 128,
+            "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\050_resolution\\candidate_128.png",
+            "sha256": "48dd794f7d9584646b0ca7627a6ef05ac89dca98a3fc3eb6e575331f39a43e02"
+          }
+        ]
+      },
+      {
+        "status": "PASS",
+        "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\050_resolution\\candidate_128.png",
+        "resolution": {
+          "width": 128,
+          "height": 128,
+          "target_width": 128,
+          "target_height": 128,
+          "matches_target": true,
+          "interpolation_evidence": "LOW"
+        },
+        "alpha": {
+          "policy": "binary",
+          "transparent_pixels": 11884,
+          "opaque_pixels": 4500,
+          "semi_transparent_pixels": 0,
+          "unique_alpha_values": [
+            0,
+            255
+          ]
+        },
+        "palette": {
+          "unique_color_count": 32,
+          "max_colors": 32,
+          "color_budget_excess": 0,
+          "allowed_palette": null,
+          "off_palette_pixel_count": 0,
+          "off_palette_pixel_ratio": 0.0,
+          "distance_to_allowed_palette": {
+            "mean_nearest_rgb_distance": null,
+            "max_nearest_rgb_distance": null
+          }
+        },
+        "gradient_suspicion": {
+          "level": "LOW",
+          "unique_visible_colors": 32,
+          "small_rgb_step_ratio": 0.115119,
+          "small_rgb_step_edges": 651,
+          "differing_edges": 5655,
+          "small_step_distance_threshold": 24
+        },
+        "anti_alias_suspicion": {
+          "level": "LOW",
+          "suspected_pixels": 19,
+          "edge_pixels_examined": 2735,
+          "suspected_edge_pixel_ratio": 0.006947,
+          "method": "rare intermediate colors on high-contrast local edges; heuristic"
+        },
+        "silhouette": {
+          "measurable": true,
+          "method": "alpha",
+          "foreground_pixels": 4500,
+          "connected_component_count": 1,
+          "largest_component_ratio": 1.0,
+          "isolated_component_count": 0,
+          "isolated_pixel_count": 0,
+          "bounding_box": {
+            "x": 7,
+            "y": 3,
+            "width": 99,
+            "height": 120
+          }
+        },
+        "reasons": {
+          "failure": [],
+          "fix": [],
+          "review": []
+        }
+      },
+      {
+        "schema_version": 1,
+        "status": "PASS",
+        "aseprite_path": "C:\\Program Files\\Aseprite\\Aseprite.exe",
+        "aseprite_discovery_source": "common_install_location",
+        "aseprite_version": "Aseprite 1.3.18.6-x64",
+        "character_id": "m25_existing_candidate_revalidation",
+        "source_png": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\050_resolution\\candidate_128.png",
+        "source_sha256": "48dd794f7d9584646b0ca7627a6ef05ac89dca98a3fc3eb6e575331f39a43e02",
+        "source_dimensions": {
+          "width": 128,
+          "height": 128
+        },
+        "master": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\060_aseprite\\master.aseprite",
+        "master_sha256": "3ff38c74f9db3ca4938c074588679f0167966032258dfdd50e5bf15c4f0ba395",
+        "layer_names": [
+          "Pixel"
+        ],
+        "tag": {
+          "name": "static",
+          "from": 1,
+          "to": 1,
+          "direction": "forward"
+        },
+        "pivot": null,
+        "frame_duration_ms": 125,
+        "frame_durations_ms": [
+          125
+        ],
+        "frames": 1,
+        "sprite_sheet": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\060_aseprite\\sheet.png",
+        "sprite_sheet_dimensions": {
+          "width": 128,
+          "height": 128
+        },
+        "json_metadata": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\060_aseprite\\sheet.json",
+        "pixel_integrity": {
+          "comparison": "each source PNG vs corresponding exported frame",
+          "changed_pixels": 0,
+          "exact_rgba_match": true,
+          "frames": [
+            {
+              "frame": 1,
+              "source": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\050_resolution\\candidate_128.png",
+              "changed_pixels": 0,
+              "exact_rgba_match": true
+            }
+          ]
+        },
+        "verified_layers": [
+          "Pixel"
+        ],
+        "verified_tags": [
+          "static"
+        ],
+        "verified_slices": [],
+        "stdout": {
+          "build": "",
+          "export": ""
+        },
+        "stderr": {
+          "build": "",
+          "export": ""
+        }
+      }
+    ],
+    "human_review": "NOT_APPROVED_AS_STATIC_MASTER",
+    "game_ready": false,
+    "human_review_record": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\human_aseprite_review.json",
+    "human_review_record_sha256": "044d431bcdb7350658dd7b8348fe72cdbad516998dea5a7e2d7877b0e86f9db4",
+    "approval_record_created": false,
+    "pixel_gate": "PASS",
+    "resolution_selection": "HUMAN_APPROVED_128x128",
+    "aseprite_roundtrip": "PASS_EXACT_RGBA",
+    "export_review_required": true,
+    "source_png_sha256": "48dd794f7d9584646b0ca7627a6ef05ac89dca98a3fc3eb6e575331f39a43e02",
+    "safe_refinement_changed_pixels": 0,
+    "generation_mode": "EXISTING_CANDIDATE_REVALIDATION",
+    "new_generation_requests": 0,
+    "classification": "LEGACY_REGRESSION_FIXTURE",
+    "art_review": "NOT_APPROVED_AS_STATIC_MASTER",
+    "art_review_record": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\human_art_review.json"
+  },
+  "current_animation_e2e": {
+    "status": "NOT_RUN",
+    "blocker": "NO_APPROVED_COMPATIBLE_STATIC_MASTER; LEGACY_FIXTURE_NOT_APPROVED"
+  },
+  "style_experiment": {
+    "status": "EXECUTED_REVIEW_REQUIRED"
+  },
   "budget": {
     "limit": 12,
-    "reserved_requests": 0
+    "reserved_requests": 12,
+    "remaining": 0
   },
-  "human_review": "REQUIRED",
-  "game_ready": false,
+  "generation_requests": 12,
   "golden_approved": 0,
+  "human_review": "REQUIRED_FOR_NEW_CANDIDATES",
+  "game_ready": false,
   "in_game_review": "IN_GAME_REVIEW_PENDING",
-  "role_qa": {
-    "tile": "ROLE_QA_UNVERIFIED",
-    "ui_icon": "ROLE_QA_UNVERIFIED"
-  },
   "new_style_animation": "UNSUPPORTED",
-  "model_hash_status": "NOT_VERIFIED",
-  "source_reproduction": "NOT_CLAIMED",
-  "animation_regression": {
-    "status": "FAILED",
-    "error": "Static master approval lacks pipeline provenance and Aseprite review"
+  "samples": [
+    {
+      "id": "clean_anime_cel_anima_pixelate_x4_vae_character",
+      "style_id": "clean_anime_cel",
+      "asset_role": "character",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\clean_anime_cel_anima_pixelate_x4_vae_character.json",
+      "prepared_sha256": "1c45fb70e9f2a1513e3c23fcb98e3fb3d214eb12a6a9c192ab3949f86154100f",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 24.78099999999995,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_character\\run_manifest.json",
+      "manifest_sha256": "8619a31cbbf58529791fe30d5982329f6ee8bc754c6dffa6fc9f29f9bac8b9c4",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_character\\010_generation\\001_clean_anime_cel_anima_pixelate_x4_vae_character_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 24567,
+            "max_colors": 32,
+            "color_budget_excess": 24535,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 24567,
+            "small_rgb_step_ratio": 0.829049,
+            "small_rgb_step_edges": 135106,
+            "differing_edges": 162965,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 3350,
+            "edge_pixels_examined": 24306,
+            "suspected_edge_pixel_ratio": 0.137826,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 156687,
+            "connected_component_count": 4,
+            "largest_component_ratio": 0.9999361784959825,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 28,
+              "y": 40,
+              "width": 452,
+              "height": 684
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (24567 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_character\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 24567,
+            "max_colors": 32,
+            "color_budget_excess": 24535,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 24567,
+            "small_rgb_step_ratio": 0.829049,
+            "small_rgb_step_edges": 135106,
+            "differing_edges": 162965,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 3350,
+            "edge_pixels_examined": 24306,
+            "suspected_edge_pixel_ratio": 0.137826,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 156687,
+            "connected_component_count": 4,
+            "largest_component_ratio": 0.9999361784959825,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 28,
+              "y": 40,
+              "width": 452,
+              "height": 684
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (24567 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_character\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_character\\010_generation\\001_clean_anime_cel_anima_pixelate_x4_vae_character_00001_.png",
+          "sha256": "b2c061f10feba1f11d4758615954c69d1968c6cfe92801fe163b634b6eafffb4"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "clean_anime_cel_anima_pixelate_x4_vae_prop",
+      "style_id": "clean_anime_cel",
+      "asset_role": "prop",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\clean_anime_cel_anima_pixelate_x4_vae_prop.json",
+      "prepared_sha256": "33bcb30c8140e7a0ce1e9a5ab58518cb2b0e1dc7bbbbff3812a2cdbe3ed20677",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 22.42199999999957,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_prop\\run_manifest.json",
+      "manifest_sha256": "b826f4cb53354ed5d495d917c767d2ace5401c8cc157b40637ab03e966b3c028",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_prop\\010_generation\\001_clean_anime_cel_anima_pixelate_x4_vae_prop_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 8456,
+            "max_colors": 32,
+            "color_budget_excess": 8424,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 8456,
+            "small_rgb_step_ratio": 0.904329,
+            "small_rgb_step_edges": 110008,
+            "differing_edges": 121646,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "LOW",
+            "suspected_pixels": 748,
+            "edge_pixels_examined": 11812,
+            "suspected_edge_pixel_ratio": 0.063325,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 189359,
+            "connected_component_count": 6,
+            "largest_component_ratio": 0.9998943805153174,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 16,
+              "y": 16,
+              "width": 484,
+              "height": 736
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (8456 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 8456,
+            "max_colors": 32,
+            "color_budget_excess": 8424,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 8456,
+            "small_rgb_step_ratio": 0.904329,
+            "small_rgb_step_edges": 110008,
+            "differing_edges": 121646,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "LOW",
+            "suspected_pixels": 748,
+            "edge_pixels_examined": 11812,
+            "suspected_edge_pixel_ratio": 0.063325,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 189359,
+            "connected_component_count": 6,
+            "largest_component_ratio": 0.9998943805153174,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 16,
+              "y": 16,
+              "width": 484,
+              "height": 736
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (8456 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_pixelate_x4_vae_prop\\010_generation\\001_clean_anime_cel_anima_pixelate_x4_vae_prop_00001_.png",
+          "sha256": "ce5496b1b672a8273ddeded15e4ff552f958e6b295e892bb4aae990c6a1b70a9"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "storybook_gouache_anima_pixelate_x4_vae_character",
+      "style_id": "storybook_gouache",
+      "asset_role": "character",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\storybook_gouache_anima_pixelate_x4_vae_character.json",
+      "prepared_sha256": "8008ffd6e3c666a19cf33caaaad00a4cf4e595193db6f7dcb40bbfa497aac031",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 22.76599999999962,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_character\\run_manifest.json",
+      "manifest_sha256": "a853b290437cc7d1a9da1de9c15be3d9c6d743d159c213fc3e417082b9b242d1",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_character\\010_generation\\001_storybook_gouache_anima_pixelate_x4_vae_character_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 20967,
+            "max_colors": 32,
+            "color_budget_excess": 20935,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 20967,
+            "small_rgb_step_ratio": 0.955807,
+            "small_rgb_step_edges": 277746,
+            "differing_edges": 290588,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 1416,
+            "edge_pixels_examined": 10737,
+            "suspected_edge_pixel_ratio": 0.13188,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 337496,
+            "connected_component_count": 132,
+            "largest_component_ratio": 0.9952266100931566,
+            "isolated_component_count": 58,
+            "isolated_pixel_count": 73,
+            "bounding_box": {
+              "x": 0,
+              "y": 0,
+              "width": 508,
+              "height": 768
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (20967 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_character\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 20967,
+            "max_colors": 32,
+            "color_budget_excess": 20935,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 20967,
+            "small_rgb_step_ratio": 0.955807,
+            "small_rgb_step_edges": 277746,
+            "differing_edges": 290588,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 1416,
+            "edge_pixels_examined": 10737,
+            "suspected_edge_pixel_ratio": 0.13188,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 337496,
+            "connected_component_count": 132,
+            "largest_component_ratio": 0.9952266100931566,
+            "isolated_component_count": 58,
+            "isolated_pixel_count": 73,
+            "bounding_box": {
+              "x": 0,
+              "y": 0,
+              "width": 508,
+              "height": 768
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (20967 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_character\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_character\\010_generation\\001_storybook_gouache_anima_pixelate_x4_vae_character_00001_.png",
+          "sha256": "13de8e55fc4538d0d5722f035dec9e1ab987409669797906ad7424ae0f937750"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "storybook_gouache_anima_pixelate_x4_vae_prop",
+      "style_id": "storybook_gouache",
+      "asset_role": "prop",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\storybook_gouache_anima_pixelate_x4_vae_prop.json",
+      "prepared_sha256": "45863ab6e7ca193a22cfe2739df495ab6ac6a96339e498fd7d39585419cb7bd1",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 20.484999999999673,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_prop\\run_manifest.json",
+      "manifest_sha256": "99c63493baea31c2ebe0f925ef955d65355e10e8851fc753054cd622e279583a",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_prop\\010_generation\\001_storybook_gouache_anima_pixelate_x4_vae_prop_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 6913,
+            "max_colors": 32,
+            "color_budget_excess": 6881,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 6913,
+            "small_rgb_step_ratio": 0.908895,
+            "small_rgb_step_edges": 99255,
+            "differing_edges": 109204,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "LOW",
+            "suspected_pixels": 484,
+            "edge_pixels_examined": 7779,
+            "suspected_edge_pixel_ratio": 0.062219,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 166179,
+            "connected_component_count": 2,
+            "largest_component_ratio": 0.9651460172464632,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 32,
+              "y": 36,
+              "width": 448,
+              "height": 696
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (6913 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 6913,
+            "max_colors": 32,
+            "color_budget_excess": 6881,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 6913,
+            "small_rgb_step_ratio": 0.908895,
+            "small_rgb_step_edges": 99255,
+            "differing_edges": 109204,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "LOW",
+            "suspected_pixels": 484,
+            "edge_pixels_examined": 7779,
+            "suspected_edge_pixel_ratio": 0.062219,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 166179,
+            "connected_component_count": 2,
+            "largest_component_ratio": 0.9651460172464632,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 32,
+              "y": 36,
+              "width": 448,
+              "height": 696
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (6913 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_anima_pixelate_x4_vae_prop\\010_generation\\001_storybook_gouache_anima_pixelate_x4_vae_prop_00001_.png",
+          "sha256": "6ab9dfbda092958f8ccd4931e2c1a7a98a0e87c05202fe101b80d87435d413d5"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "painterly_fantasy_anima_pixelate_x4_vae_character",
+      "style_id": "painterly_fantasy",
+      "asset_role": "character",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\painterly_fantasy_anima_pixelate_x4_vae_character.json",
+      "prepared_sha256": "b1506418a83c76ba8acd1e103fe1befe39de56ddc958b526e0e36b9fa65b878c",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 23.09400000000005,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_character\\run_manifest.json",
+      "manifest_sha256": "9a9dc78ab86132a6d7e8f5dcc813eb43afef406e130d6d8ae86fb2e9f04eae9c",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_character\\010_generation\\001_painterly_fantasy_anima_pixelate_x4_vae_character_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 21506,
+            "max_colors": 32,
+            "color_budget_excess": 21474,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 21506,
+            "small_rgb_step_ratio": 0.88468,
+            "small_rgb_step_edges": 151543,
+            "differing_edges": 171297,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 1343,
+            "edge_pixels_examined": 11112,
+            "suspected_edge_pixel_ratio": 0.12086,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 184157,
+            "connected_component_count": 2,
+            "largest_component_ratio": 0.9999837095521756,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 20,
+              "y": 20,
+              "width": 456,
+              "height": 716
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (21506 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_character\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 21506,
+            "max_colors": 32,
+            "color_budget_excess": 21474,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 21506,
+            "small_rgb_step_ratio": 0.88468,
+            "small_rgb_step_edges": 151543,
+            "differing_edges": 171297,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 1343,
+            "edge_pixels_examined": 11112,
+            "suspected_edge_pixel_ratio": 0.12086,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 184157,
+            "connected_component_count": 2,
+            "largest_component_ratio": 0.9999837095521756,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 20,
+              "y": 20,
+              "width": 456,
+              "height": 716
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (21506 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_character\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_character\\010_generation\\001_painterly_fantasy_anima_pixelate_x4_vae_character_00001_.png",
+          "sha256": "f84d117509cd5ac7e11ff573feb5407a6047875ae12000c5e2470860e7b8779a"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "painterly_fantasy_anima_pixelate_x4_vae_prop",
+      "style_id": "painterly_fantasy",
+      "asset_role": "prop",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\painterly_fantasy_anima_pixelate_x4_vae_prop.json",
+      "prepared_sha256": "6d5cb56b7169645df11ccbf40f744c46ed5698d063fb0f79c0d4106c215fd942",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 21.936999999999898,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_prop\\run_manifest.json",
+      "manifest_sha256": "c266f691fde384cb87a6b758ad7d9c7db16ade33f9f1240550a9bafb402c5cab",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_prop\\010_generation\\001_painterly_fantasy_anima_pixelate_x4_vae_prop_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 15596,
+            "max_colors": 32,
+            "color_budget_excess": 15564,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 15596,
+            "small_rgb_step_ratio": 0.883879,
+            "small_rgb_step_edges": 132230,
+            "differing_edges": 149602,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 1160,
+            "edge_pixels_examined": 11026,
+            "suspected_edge_pixel_ratio": 0.105206,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 181361,
+            "connected_component_count": 5,
+            "largest_component_ratio": 0.999922805895424,
+            "isolated_component_count": 2,
+            "isolated_pixel_count": 3,
+            "bounding_box": {
+              "x": 32,
+              "y": 36,
+              "width": 448,
+              "height": 696
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (15596 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 15596,
+            "max_colors": 32,
+            "color_budget_excess": 15564,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 15596,
+            "small_rgb_step_ratio": 0.883879,
+            "small_rgb_step_edges": 132230,
+            "differing_edges": 149602,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 1160,
+            "edge_pixels_examined": 11026,
+            "suspected_edge_pixel_ratio": 0.105206,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 181361,
+            "connected_component_count": 5,
+            "largest_component_ratio": 0.999922805895424,
+            "isolated_component_count": 2,
+            "isolated_pixel_count": 3,
+            "bounding_box": {
+              "x": 32,
+              "y": 36,
+              "width": 448,
+              "height": 696
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (15596 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\painterly_fantasy_anima_pixelate_x4_vae_prop\\010_generation\\001_painterly_fantasy_anima_pixelate_x4_vae_prop_00001_.png",
+          "sha256": "2d5678e5b7db27b511f1c1304ae86a659a6e208929af494aa6e9b804588894c3"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "limited_palette_pixel_anima_pixelate_x4_vae_character",
+      "style_id": "limited_palette_pixel",
+      "asset_role": "character",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\limited_palette_pixel_anima_pixelate_x4_vae_character.json",
+      "prepared_sha256": "f0fb71871e19a3047c42613b37aa69f473c4dff368b6e7730b6ba21e03e29f4a",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 23.76600000000053,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_character\\run_manifest.json",
+      "manifest_sha256": "c3ed79444b99315cf07a644af9dd7ed87fe91413924604219fbaa9647412bb2d",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_character\\010_generation\\001_limited_palette_pixel_anima_pixelate_x4_vae_character_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 23744,
+            "max_colors": 32,
+            "color_budget_excess": 23712,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 23744,
+            "small_rgb_step_ratio": 0.844844,
+            "small_rgb_step_edges": 141486,
+            "differing_edges": 167470,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 2725,
+            "edge_pixels_examined": 23111,
+            "suspected_edge_pixel_ratio": 0.117909,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 174205,
+            "connected_component_count": 3,
+            "largest_component_ratio": 0.999925375276255,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 56,
+              "y": 40,
+              "width": 424,
+              "height": 696
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (23744 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_character\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 23744,
+            "max_colors": 32,
+            "color_budget_excess": 23712,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 23744,
+            "small_rgb_step_ratio": 0.844844,
+            "small_rgb_step_edges": 141486,
+            "differing_edges": 167470,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "MEDIUM",
+            "suspected_pixels": 2725,
+            "edge_pixels_examined": 23111,
+            "suspected_edge_pixel_ratio": 0.117909,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 174205,
+            "connected_component_count": 3,
+            "largest_component_ratio": 0.999925375276255,
+            "isolated_component_count": 0,
+            "isolated_pixel_count": 0,
+            "bounding_box": {
+              "x": 56,
+              "y": 40,
+              "width": 424,
+              "height": 696
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (23744 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_character\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_character\\010_generation\\001_limited_palette_pixel_anima_pixelate_x4_vae_character_00001_.png",
+          "sha256": "714acc37d871787ad78d5d24d7afff6977e2a4f686a434e2ee3c1a6cdcd33cb7"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "limited_palette_pixel_anima_pixelate_x4_vae_prop",
+      "style_id": "limited_palette_pixel",
+      "asset_role": "prop",
+      "workflow_id": "anima_pixelate_x4_vae",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\limited_palette_pixel_anima_pixelate_x4_vae_prop.json",
+      "prepared_sha256": "5aef900fb4a62b6fb4c4703ea17110a01c31f826b879286117b2bbdaadd042e1",
+      "status": "FAILED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": {
+        "kind": "color_budget",
+        "max_colors": 32
+      },
+      "error": "Pixel Gate failed; downstream Aseprite export locked",
+      "elapsed_seconds": 23.0,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_prop\\run_manifest.json",
+      "manifest_sha256": "ca7a6eb08ac4546443e75d56a4788f941bfe82482f9eedc7d24bc3dba1d4eafe",
+      "qa_results": [
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_prop\\010_generation\\001_limited_palette_pixel_anima_pixelate_x4_vae_prop_00001_.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 7821,
+            "max_colors": 32,
+            "color_budget_excess": 7789,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 7821,
+            "small_rgb_step_ratio": 0.901255,
+            "small_rgb_step_edges": 101438,
+            "differing_edges": 112552,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "LOW",
+            "suspected_pixels": 719,
+            "edge_pixels_examined": 10509,
+            "suspected_edge_pixel_ratio": 0.068418,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 177664,
+            "connected_component_count": 7,
+            "largest_component_ratio": 0.964168317723343,
+            "isolated_component_count": 3,
+            "isolated_pixel_count": 3,
+            "bounding_box": {
+              "x": 32,
+              "y": 32,
+              "width": 448,
+              "height": 700
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (7821 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        },
+        {
+          "status": "FAIL",
+          "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png",
+          "resolution": {
+            "width": 512,
+            "height": 768,
+            "target_width": null,
+            "target_height": null,
+            "matches_target": null,
+            "interpolation_evidence": "HIGH"
+          },
+          "alpha": {
+            "policy": "binary",
+            "transparent_pixels": 0,
+            "opaque_pixels": 393216,
+            "semi_transparent_pixels": 0,
+            "unique_alpha_values": [
+              255
+            ]
+          },
+          "palette": {
+            "unique_color_count": 7821,
+            "max_colors": 32,
+            "color_budget_excess": 7789,
+            "allowed_palette": null,
+            "off_palette_pixel_count": 0,
+            "off_palette_pixel_ratio": 0.0,
+            "distance_to_allowed_palette": {
+              "mean_nearest_rgb_distance": null,
+              "max_nearest_rgb_distance": null
+            }
+          },
+          "gradient_suspicion": {
+            "level": "HIGH",
+            "unique_visible_colors": 7821,
+            "small_rgb_step_ratio": 0.901255,
+            "small_rgb_step_edges": 101438,
+            "differing_edges": 112552,
+            "small_step_distance_threshold": 24
+          },
+          "anti_alias_suspicion": {
+            "level": "LOW",
+            "suspected_pixels": 719,
+            "edge_pixels_examined": 10509,
+            "suspected_edge_pixel_ratio": 0.068418,
+            "method": "rare intermediate colors on high-contrast local edges; heuristic"
+          },
+          "silhouette": {
+            "measurable": true,
+            "method": "border_color_inference",
+            "foreground_pixels": 177664,
+            "connected_component_count": 7,
+            "largest_component_ratio": 0.964168317723343,
+            "isolated_component_count": 3,
+            "isolated_pixel_count": 3,
+            "bounding_box": {
+              "x": 32,
+              "y": 32,
+              "width": 448,
+              "height": 700
+            }
+          },
+          "reasons": {
+            "failure": [
+              "unique colors exceed the configured budget (7821 > 32)",
+              "high gradient suspicion from dense small RGB steps"
+            ],
+            "fix": [],
+            "review": [
+              "no target resolution was supplied"
+            ]
+          }
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_prop\\030_refiner\\refined.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "resolution_status": "NOT_RUN_BLOCKED_BY_PIXEL_GATE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\limited_palette_pixel_anima_pixelate_x4_vae_prop\\010_generation\\001_limited_palette_pixel_anima_pixelate_x4_vae_prop_00001_.png",
+          "sha256": "24ff44c10afb966793dc472888915e91531148da0c643fa172189d0981e2b1c5"
+        }
+      ],
+      "pixel_gate_status": "FAIL",
+      "basic_image_qa_status": "NOT_APPLICABLE",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "clean_anime_cel_anima_base_character",
+      "style_id": "clean_anime_cel",
+      "asset_role": "character",
+      "workflow_id": "anima_base",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\clean_anime_cel_anima_base_character.json",
+      "prepared_sha256": "078c3f4324cfc617afd896ec46ae300a52a331b4168bf44b5d5428d0dd237738",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": null,
+      "elapsed_seconds": 17.07800000000043,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_character\\run_manifest.json",
+      "manifest_sha256": "6a263fcffec7828e0c32ed9639ad2f854aa283ecedc04bcd1831c80be209bc5f",
+      "qa_results": [
+        {
+          "step": "basic_image_qa",
+          "status": "PASS",
+          "path": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_character\\010_generation\\001_clean_anime_cel_anima_base_character_00001_.png",
+          "reasons": [],
+          "resolution": [
+            768,
+            768
+          ],
+          "format": "PNG",
+          "mode": "RGB"
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_character\\010_generation\\001_clean_anime_cel_anima_base_character_00001_.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_APPLICABLE",
+      "resolution_status": "NOT_APPLICABLE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_character\\010_generation\\001_clean_anime_cel_anima_base_character_00001_.png",
+          "sha256": "a47e014d189a31902e81dad036c3c5f27807b8a6a997b2048030647da4a22483"
+        }
+      ],
+      "pixel_gate_status": "NOT_APPLICABLE",
+      "basic_image_qa_status": "PASS",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "clean_anime_cel_anima_base_prop",
+      "style_id": "clean_anime_cel",
+      "asset_role": "prop",
+      "workflow_id": "anima_base",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\clean_anime_cel_anima_base_prop.json",
+      "prepared_sha256": "70db5ee2478e82a76122e191e2c2bfd9cbcb306e76e9fb0d81c14aba99cc0541",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": null,
+      "elapsed_seconds": 16.89099999999962,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_prop\\run_manifest.json",
+      "manifest_sha256": "c476375a9ee16b9dc79579ca48b81ee56dba8a86b8e149177252d1897bb6898b",
+      "qa_results": [
+        {
+          "step": "basic_image_qa",
+          "status": "PASS",
+          "path": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_prop\\010_generation\\001_clean_anime_cel_anima_base_prop_00001_.png",
+          "reasons": [],
+          "resolution": [
+            768,
+            768
+          ],
+          "format": "PNG",
+          "mode": "RGB"
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_prop\\010_generation\\001_clean_anime_cel_anima_base_prop_00001_.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_APPLICABLE",
+      "resolution_status": "NOT_APPLICABLE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\clean_anime_cel_anima_base_prop\\010_generation\\001_clean_anime_cel_anima_base_prop_00001_.png",
+          "sha256": "f90a09b06de21607f4d69a84b65e671733276667f41e456dd212ecdd56a21ced"
+        }
+      ],
+      "pixel_gate_status": "NOT_APPLICABLE",
+      "basic_image_qa_status": "PASS",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "storybook_gouache_krea2_base_character",
+      "style_id": "storybook_gouache",
+      "asset_role": "character",
+      "workflow_id": "krea2_base",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\storybook_gouache_krea2_base_character.json",
+      "prepared_sha256": "5b452325e214259ba85800bac06fd4160e632fea7cb8c777e8bceab4c94f8451",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": null,
+      "elapsed_seconds": 19.65599999999995,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_character\\run_manifest.json",
+      "manifest_sha256": "d88b11d4e80b154f05837068c87f159cdaccf0cee5a24a8810ad83f889caca83",
+      "qa_results": [
+        {
+          "step": "basic_image_qa",
+          "status": "PASS",
+          "path": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_character\\010_generation\\001_storybook_gouache_krea2_base_character_00001_.png",
+          "reasons": [],
+          "resolution": [
+            768,
+            768
+          ],
+          "format": "PNG",
+          "mode": "RGB"
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_character\\010_generation\\001_storybook_gouache_krea2_base_character_00001_.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_APPLICABLE",
+      "resolution_status": "NOT_APPLICABLE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_character\\010_generation\\001_storybook_gouache_krea2_base_character_00001_.png",
+          "sha256": "1b18e1535b1ce966f573706caffd62624662f33fdf44490e71cd70fbdebf9424"
+        }
+      ],
+      "pixel_gate_status": "NOT_APPLICABLE",
+      "basic_image_qa_status": "PASS",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    },
+    {
+      "id": "storybook_gouache_krea2_base_prop",
+      "style_id": "storybook_gouache",
+      "asset_role": "prop",
+      "workflow_id": "krea2_base",
+      "seed": 7725,
+      "prepared": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\prepared\\storybook_gouache_krea2_base_prop.json",
+      "prepared_sha256": "d2814d570aeb21af94f74501016678831b5f5da9315c565b8bed58945f7a9f32",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "human_review": "REQUIRED",
+      "game_ready": false,
+      "logical_canvas": "UNSPECIFIED",
+      "camera": "UNSPECIFIED",
+      "role_qa": "ROLE_QA_UNVERIFIED",
+      "palette_policy": null,
+      "elapsed_seconds": 17.25,
+      "cost": {
+        "billing": "LOCAL_COMFYUI",
+        "currency_cost": "NOT_MEASURED",
+        "gpu_energy": "NOT_MEASURED"
+      },
+      "manifest": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_prop\\run_manifest.json",
+      "manifest_sha256": "3245226f751a6ec4729d96ecd705a4d152e83081d77e3fe0811b0edc8a3a3815",
+      "qa_results": [
+        {
+          "step": "basic_image_qa",
+          "status": "PASS",
+          "path": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_prop\\010_generation\\001_storybook_gouache_krea2_base_prop_00001_.png",
+          "reasons": [],
+          "resolution": [
+            768,
+            768
+          ],
+          "format": "PNG",
+          "mode": "RGB"
+        }
+      ],
+      "outputs": [
+        "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_prop\\010_generation\\001_storybook_gouache_krea2_base_prop_00001_.png"
+      ],
+      "generation_submitted": true,
+      "aseprite_status": "NOT_APPLICABLE",
+      "resolution_status": "NOT_APPLICABLE",
+      "original_pngs": [
+        {
+          "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\runs\\storybook_gouache_krea2_base_prop\\010_generation\\001_storybook_gouache_krea2_base_prop_00001_.png",
+          "sha256": "5b96a660d3342f9009d65618d8380aa302a08a5d47d98d2abf2606b5804fd496"
+        }
+      ],
+      "pixel_gate_status": "NOT_APPLICABLE",
+      "basic_image_qa_status": "PASS",
+      "art_review": {
+        "status": "REVIEW_REQUIRED",
+        "criteria": [
+          "1x readability",
+          "silhouette",
+          "color clusters",
+          "outline",
+          "equipment separation",
+          "transparent boundary",
+          "postprocessing cost"
+        ],
+        "human_approval": null
+      }
+    }
+  ],
+  "artifact_root": "workspace/style_lab/cohorts/20261001T131720658569Z",
+  "status": "EXPERIMENT_COMPLETE_REVIEW_REQUIRED",
+  "base_commit": "b92b6542210d3c56c4c8d41d62173aab294ce19f",
+  "tests": {
+    "status": "PASS",
+    "passed": 207,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_sha256": "ef93a33ec9422b4533c34737c8bc61138aa1bef0da65c123515aa589f9de70ad"
   },
-  "status": "BLOCKED_REGRESSION_PREFLIGHT_FAILED",
-  "artifact_root": "workspace/style_lab/cohorts/20261001T130530758464Z",
-  "static_e2e": "NOT_RUN",
-  "nonpixel_e2e": "NOT_RUN",
-  "generation_requests": 0
+  "protected_contracts": {
+    "src/assetpipe/pipelines/pixel_static/approval.py": {
+      "unchanged": true,
+      "sha256": "3b9647a4e3abb7e669da370c1ccafea4d6778f2c95ce74e754b3c0392af500ef"
+    },
+    "examples/pixel_animation_smoke.yaml": {
+      "unchanged": true,
+      "sha256": "fe42d8518574f59b03b5a36c41c816d61ea9b6d674b7d3c52d40c2894f734dfd"
+    },
+    "config/workflow_registry.yaml": {
+      "unchanged": true,
+      "sha256": "37020ed24db8a05f54e3ba6b61d8ce9a6d393b933bf927e2db88060c9e230413"
+    },
+    "config/styles/model_recipes.yaml": {
+      "unchanged": true,
+      "sha256": "ef79fcb73bc9fed2d7e3001362a25b822c355f997721770071e4770cec64d78e"
+    },
+    "docs/style/M26_STATUS.json": {
+      "unchanged": true,
+      "sha256": "69cff0b3e91c36b35f4b99426cb8dd8b0272ae4bb2e5c3f6884c213ceb7a5785"
+    },
+    "integrations/mcp/schemas/asset_build_brief.json": {
+      "unchanged": true,
+      "sha256": "d0452ece5b826560b57535d62d5c0d86524777ace7afe2489fc2df218100f03a"
+    },
+    "integrations/mcp/schemas/asset_capabilities.json": {
+      "unchanged": true,
+      "sha256": "d1ff58338458f4bbad5aa8ae8ea9f79d55834f2b10a385fce79ccc1416222810"
+    },
+    "integrations/mcp/schemas/asset_continue_animation.json": {
+      "unchanged": true,
+      "sha256": "12bc2bf7873ec2c10d6191e62942ee5f37d245ca030db6b544ce89392cc994fa"
+    },
+    "integrations/mcp/schemas/asset_generate.json": {
+      "unchanged": true,
+      "sha256": "971942c0fcdc14fadbc6243140b6df61f113e0fd1eb17a4753377e0cc74e1e5d"
+    },
+    "integrations/mcp/schemas/asset_inspect_run.json": {
+      "unchanged": true,
+      "sha256": "8e28bc680e641b76ad7832c234da3203ef34fc0c17335363b981d3a993b4377c"
+    },
+    "integrations/mcp/schemas/asset_route.json": {
+      "unchanged": true,
+      "sha256": "172f276d28461d58fba2b396d95dbe5c2148fa0443d4210036012ff52e866efb"
+    }
+  },
+  "review_action": {
+    "file": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\060_aseprite\\master.aseprite",
+    "requirement": "Actual human Aseprite review and explicit Static Master approval",
+    "status": "REVIEW_REQUIRED",
+    "latest_human_answer": "아직 검토하지 않음 — 승인 보류"
+  },
+  "model_hash_status": "VERIFIED_LOCAL_FILES",
+  "legacy_inputs": {
+    "static_master": {
+      "path": "C:\\workspace\\pixel-pipeline\\workspace\\runs\\sword_warrior_001\\phase13_static_master\\approved\\static_master_export.png",
+      "sha256": "48dd794f7d9584646b0ca7627a6ef05ac89dca98a3fc3eb6e575331f39a43e02"
+    },
+    "approval_record": {
+      "path": "C:\\workspace\\pixel-pipeline\\workspace\\runs\\sword_warrior_001\\phase13_static_master\\approved\\approval_record.json",
+      "sha256": "0b21123a3740b918560722f7e070c2e826dee04ed8dfd8649cc56bd82706f8c3"
+    },
+    "motion_reference": {
+      "path": "C:\\workspace\\pixel-pipeline\\workspace\\runs\\sword_warrior_001\\phase13_walk_reference\\attempt_02\\010_generation\\001_minimax_h3_walk_00002.mp4",
+      "sha256": "5561556ec41e91d8938b47817eb2a0e28d9186b5686957e30fcbf8c2ccf737cc"
+    },
+    "selection": {
+      "path": "C:\\workspace\\pixel-pipeline\\workspace\\runs\\sword_warrior_001\\phase13_step3_direct_walk\\attempt_05\\semantic_frame_selection.json",
+      "sha256": "33712b1fdcbcda08e8dc4ad48e12339e36c5ff0072305e2651f180e764616254"
+    }
+  },
+  "model_hashes": {
+    "diffusion_models/anima-base-v1.0.safetensors": {
+      "sha256": "bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e",
+      "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\diffusion_models\\anima-base-v1.0.safetensors",
+      "size_bytes": 4182218328,
+      "mtime_ns": 1790511497484331100,
+      "checked_at": "2026-10-01T13:34:41.762333+00:00",
+      "verification": "LOCAL_FILE_BYTES_AND_SERVER_INVENTORY"
+    },
+    "diffusion_models/krea2_turbo_fp8_scaled.safetensors": {
+      "sha256": "eb4dd8c612cfd10f64f25b057e6e6bbcb5737c94a7372177e456dbf7579502f1",
+      "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\diffusion_models\\krea2_turbo_fp8_scaled.safetensors",
+      "size_bytes": 13141730784,
+      "mtime_ns": 1790600912940496200,
+      "checked_at": "2026-10-01T13:35:06.670059+00:00",
+      "verification": "LOCAL_FILE_BYTES_AND_SERVER_INVENTORY"
+    },
+    "text_encoders/qwen3vl_4b_fp8_scaled.safetensors": {
+      "sha256": "54bd5144df0bbc25dd6ccadfcb826b521445a1b06ae5a42570bdd2974ca87094",
+      "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\text_encoders\\qwen3vl_4b_fp8_scaled.safetensors",
+      "size_bytes": 5242467968,
+      "mtime_ns": 1790600033893962700,
+      "checked_at": "2026-10-01T13:35:19.759214+00:00",
+      "verification": "LOCAL_FILE_BYTES_AND_SERVER_INVENTORY"
+    },
+    "text_encoders/qwen_3_06b_base.safetensors": {
+      "sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba",
+      "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\text_encoders\\qwen_3_06b_base.safetensors",
+      "size_bytes": 1192135096,
+      "mtime_ns": 1790511303333496100,
+      "checked_at": "2026-10-01T13:35:23.300805+00:00",
+      "verification": "LOCAL_FILE_BYTES_AND_SERVER_INVENTORY"
+    },
+    "vae/pixelateX4VAEForAnima_animaV10.safetensors": {
+      "sha256": "9a27e059e2831d43fc441ff9d6381294be19a9449b6ead5ffab0f108182d067c",
+      "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\vae\\pixelateX4VAEForAnima_animaV10.safetensors",
+      "size_bytes": 253806054,
+      "mtime_ns": 1790513126175093500,
+      "checked_at": "2026-10-01T13:35:24.045108+00:00",
+      "verification": "LOCAL_FILE_BYTES_AND_SERVER_INVENTORY"
+    },
+    "vae/qwen_image_vae.safetensors": {
+      "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+      "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\vae\\qwen_image_vae.safetensors",
+      "size_bytes": 253806246,
+      "mtime_ns": 1790511200515012500,
+      "checked_at": "2026-10-01T13:35:24.745362+00:00",
+      "verification": "LOCAL_FILE_BYTES_AND_SERVER_INVENTORY"
+    }
+  },
+  "comparison": {
+    "technical_counts": {
+      "FAILED": 8,
+      "CANDIDATE_READY_REVIEW_REQUIRED": 4
+    },
+    "pixel_gate_counts": {
+      "FAIL": 8
+    },
+    "nonpixel_basic_qa_pass": 4,
+    "human_approved": 0,
+    "golden_approved": 0,
+    "automatic_art_scores": "NOT_MEASURED",
+    "animation_e2e": {
+      "status": "NOT_RUN",
+      "blocker": "NO_APPROVED_COMPATIBLE_STATIC_MASTER; LEGACY_FIXTURE_NOT_APPROVED"
+    },
+    "galleries": [
+      {
+        "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\previews\\pixel_candidates_native_1x.png",
+        "sha256": "0e48aab3a8330fd7bd2f45426fb11a9a0113c022cda9e6343e62c249553b3c3b",
+        "native_1x": true
+      },
+      {
+        "path": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\previews\\nonpixel_candidates_preview.png",
+        "sha256": "eb1ac8cbfe86aa3cc6aba0a59bd9df8c8b60bbca10db62e4529be1729a7ac6c2",
+        "native_1x": false
+      }
+    ]
+  },
+  "legacy_art_review": {
+    "status": "NOT_APPROVED_AS_STATIC_MASTER",
+    "classification": "LEGACY_REGRESSION_FIXTURE",
+    "reviewer": "seung (human user)",
+    "source": "Explicit user art review in this chat",
+    "feedback": [
+      "디테일 과밀",
+      "픽셀 클러스터 정돈 부족",
+      "신체/장비 경계의 시각적 불명료함",
+      "애니메이션용 구조 일관성 우려"
+    ],
+    "technical_manifest_status_preserved": "EXPORT_READY_REVIEW_REQUIRED",
+    "previous_hold_record": "workspace\\style_lab\\cohorts\\20261001T131720658569Z\\static_revalidation\\human_aseprite_review.json",
+    "previous_hold_record_sha256": "044d431bcdb7350658dd7b8348fe72cdbad516998dea5a7e2d7877b0e86f9db4",
+    "approval_created": false,
+    "golden_eligible": false,
+    "project_visual_sot_eligible": false
+  },
+  "execution_audit": {
+    "status": "PASS",
+    "requests": 12,
+    "unique_prompt_ids": 12,
+    "retries": 0,
+    "fallbacks": 0,
+    "original_pngs": 12,
+    "held_review_sha256": "044d431bcdb7350658dd7b8348fe72cdbad516998dea5a7e2d7877b0e86f9db4",
+    "checks": [
+      {
+        "id": "clean_anime_cel_anima_pixelate_x4_vae_character",
+        "prompt_id": "6165f9e2-435a-4964-b4fb-a899f590bf14",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "clean_anime_cel_anima_pixelate_x4_vae_prop",
+        "prompt_id": "48b60954-3210-458c-8123-cd4a74121072",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "storybook_gouache_anima_pixelate_x4_vae_character",
+        "prompt_id": "9e9e3746-aa99-47db-a602-6e9a86a23534",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "storybook_gouache_anima_pixelate_x4_vae_prop",
+        "prompt_id": "98eb5c1c-3f6d-4b40-a6ee-048dd10c4e10",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "painterly_fantasy_anima_pixelate_x4_vae_character",
+        "prompt_id": "4b9df2c1-526c-42db-bf12-526434288ad1",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "painterly_fantasy_anima_pixelate_x4_vae_prop",
+        "prompt_id": "7402595c-735e-4fc6-a754-9080d6cde1f6",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "limited_palette_pixel_anima_pixelate_x4_vae_character",
+        "prompt_id": "d688a36c-aa86-4a83-b77e-cd76c179f14d",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "limited_palette_pixel_anima_pixelate_x4_vae_prop",
+        "prompt_id": "314e9b6a-d3b0-427a-b652-689343264a4f",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "clean_anime_cel_anima_base_character",
+        "prompt_id": "a41d78bb-4c31-4112-87bc-5a497ab7b75b",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "clean_anime_cel_anima_base_prop",
+        "prompt_id": "88107316-c5e7-44dd-b5fa-3e532b6e89f5",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "storybook_gouache_krea2_base_character",
+        "prompt_id": "f2f43d8d-dc96-41ae-a4a8-7c83cc165464",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      },
+      {
+        "id": "storybook_gouache_krea2_base_prop",
+        "prompt_id": "f54c12ca-fe41-40e5-b6b2-ff745fa456f8",
+        "original_pngs_verified": 1,
+        "compiled_prompt_exact": true,
+        "no_approval_created": true
+      }
+    ],
+    "new_recipe_human_approvals": 0,
+    "golden_approved": 0,
+    "prepared_samples_modified": false
+  }
 }

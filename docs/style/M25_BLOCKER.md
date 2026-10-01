@@ -1,11 +1,29 @@
-# M2.5 real execution blocker
+# M2.5 independent experiment results — 2026-10-01
 
-2026-10-01: origin/main and HEAD agree at 94606ea. ComfyUI 0.38.1, Aseprite 1.3.18.6 and FFmpeg are available. Initial experiment authorization permits at most 16 local generations; planned first cohort has 12 (8 pixel, 4 nonpixel).
+Base main: b92b654. Current cohort: workspace/style_lab/cohorts/20261001T131720658569Z. Its original 12 PREPARED samples, seed 7725, M2.6 recipes and unused budget were reused; no replacement cohort or duplicate generation was created.
 
-Actual production entry-point execution of examples/pixel_animation_smoke.yaml stopped before frame extraction: Static master approval lacks pipeline provenance and Aseprite review. The old fixture approval fails the current immutable static-run evidence contract. No algorithm or legacy file was changed. Historical eight-frame exact comparison is separate evidence and does not establish this new full-pipeline run passed.
+## Independent path states
 
-New generation requests: 0. Pixel static E2E, nonpixel E2E and Golden approval: NOT_RUN. The directive requires stopping after regression failure; no further cohort was submitted. scripts/style_lab.py preserves this failure, guards a maximum initial budget of 16, reserves requests durably before dispatch, and forbids implicit retries/fallback. Candidate recipes remain offline research; future explicit experiments embed their PromptSpec without promoting production defaults.
+Historical eight-frame artifact RGBA equivalence: PASS, historical comparison only. Current PIXEL_ANIMATION E2E: NOT_RUN; no approved compatible Static Master exists. PIXEL_STATIC and NONPIXEL_IMAGE experiments now use their own model/workflow preflight and output-specific QA, independent of animation approval. Approval.py and exact direct-profile scope were not weakened.
 
-To resume, supply or produce a current validated static export with its passing resolution report, explicit reviewer selection, exact Aseprite roundtrip and human Aseprite approval. Bind that approval to its manifest and export hashes. Do not merely add missing fields to the old record. Once a valid approval exists, update the benchmark fixture reference, rerun the actual animation regression, and only then run the planned generation cohort. New character animation remains unsupported by the blue-tunic profile.
+Actual generation: 12/12 requests, 12 unique ComfyUI prompt IDs, 12 original PNGs. Durable cohort reservation was written before every dispatch. No retry, fallback, extra request or automatic approval. Local currency cost and GPU energy remain NOT_MEASURED; generation and total timings are retained per sample.
 
-M2.5 INFRA READY is not claimed: the initial harness is present, but full classification, model-hash evidence, role QA and measured cohort remain unfinished while the blocker exists.
+NONPIXEL_IMAGE: 4/4 basic image QA PASS, all CANDIDATE_READY_REVIEW_REQUIRED. This checks technical image constraints, not semantic or artistic quality. In particular the clean-anime character contains two views although its Brief asks for one character; this agent visual observation requires human review and is not a canon PASS.
+
+PIXEL_STATIC: 0/8 Pixel Gate PASS. All eight raw images were generated, but color budgets exceeded 32 and gradient suspicion failed. Original PNGs, analyzer/refiner/gate reports and hashes are preserved. Safe refiner did not change palettes or logical size. Resolution Gate and Aseprite were not reached for these failed candidates. No failed candidate may be approved as a Static Master without a separately authorized successful path.
+
+## Model evidence
+
+Running ComfyUI command line references inst-1789908464528.yaml, which configures C:/Users/seung/AppData/Local/Comfy-Desktop/ComfyUI-Shared/models as the default shared model root. SHA256 was computed from actual bytes for six checkpoint/text-encoder/VAE files, crosschecked with live server inventory and node availability. No duplicate dependency files exist in the installation-local models folder. The cohort stores model hashes, paths, sizes and timestamps; generation.json stores actual workflow hash, prompt/spec/parameters and prompt ID. These local hashes do not claim reproduction of external source examples or verified source-model versions. The experiment workflows use no LoRA; none was added or downloaded.
+
+## Legacy review remains unapproved
+
+The existing sword_warrior 128x128 image remains LEGACY_REGRESSION_FIXTURE. Its technical run remains EXPORT_READY_REVIEW_REQUIRED. The user's 128x128 resolution selection and actual Aseprite RGBA roundtrip PASS are retained, but human_aseprite_review.json still records approval hold. The later human art review explicitly does not approve it as a Static Master: excess detail, disorganized clusters, unclear body/equipment boundaries and animation structure concerns. This feedback is separately preserved in human_art_review.json. No approval_record.json exists; no Golden or project Visual SOT promotion occurred.
+
+Only actual human Aseprite review and formal approval of a compatible Static Master may unlock animation. The existing blue_tunic_white_matte_v1 scope is not generalized to these new characters. New Static Master candidates require a gallery-based human visual review before further approval steps; technical failure cannot be bypassed by visual approval.
+
+## Review artifacts
+
+comparison.json and comparison.md contain technical status, palette/alpha metrics, error reasons, timing and postprocessing estimates separately from art review. previews/pixel_candidates_native_1x.png shows original pixels at native 1x in the saved file (viewers may scale the display). previews/nonpixel_candidates_preview.png is a thumbnail contact sheet; inspect original PNGs for detail. New candidates remain NOT_REVIEWED on readability, silhouette, color clusters, outline, equipment separation, transparent boundary and postprocessing cost. No quality scores or model preference are fabricated.
+
+Regression tests: 207 passed, 0 failures/errors/skips; regression_independent.xml is retained. Golden Recipe count: 0. Tile/UI role QA and in-game fit remain unverified. Next work must follow actual human art feedback and explicit additional experiment authorization; this initial 12-request budget is exhausted.
