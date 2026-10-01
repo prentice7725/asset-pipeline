@@ -11,6 +11,55 @@ from ..providers.base import ProviderError
 from ..providers.cli_runner import assert_not_nested
 from . import pixel_animation, pixel_static, nonpixel_image, nonpixel_animation
 
+
+def revalidate_static_candidate(brief, candidate, root, output):
+    """Import a PNG without generation or approval, then run the unchanged static gates."""
+    import hashlib
+    import shutil
+    from PIL import Image
+    assert_not_nested()
+    validate(brief)
+    if brief['output_class'] != 'PIXEL_STATIC':
+        raise ValueError('Existing-candidate revalidation requires PIXEL_STATIC')
+    candidate = Path(candidate).resolve()
+    with Image.open(candidate) as image:
+        if image.format != 'PNG':
+            raise ValueError('Existing static candidate must be a PNG')
+        image.load()
+    root, directory = Path(root).resolve(), Path(output).resolve()
+    directory.mkdir(parents=True, exist_ok=False)
+    path = directory / 'run_manifest.json'
+    manifest = {'schema_version': 1, 'asset_id': brief['asset_id'], 'asset_brief': brief,
+        'output_class': 'PIXEL_STATIC', 'input_type': 'EXISTING_CANDIDATE',
+        'workflow': {'execution': 'NOT_EXECUTED_EXISTING_CANDIDATE'},
+        'generation': {'mode': 'EXISTING_CANDIDATE_REVALIDATION', 'new_requests': 0,
+            'source': str(candidate), 'source_sha256': hashlib.sha256(candidate.read_bytes()).hexdigest(),
+            'source_generation_parameters': 'UNKNOWN_NOT_INFERRED'},
+        'pipeline_steps': [], 'qa_results': [], 'outputs': [],
+        'timestamps': {'started': now()}, 'status': 'RUNNING', 'game_ready': False}
+    write(path, manifest)
+    try:
+        from ..api import route_brief
+        decision = route_brief(brief, root)
+        decision['execution_mode'] = 'EXISTING_CANDIDATE_REVALIDATION'
+        write(directory / 'route_decision.json', decision)
+        if decision['status'] == 'BLOCKED':
+            raise ValueError(decision['reason'])
+        saved = directory / '010_existing_candidate/source.png'
+        saved.parent.mkdir()
+        shutil.copyfile(candidate, saved)
+        if hashlib.sha256(saved.read_bytes()).hexdigest() != manifest['generation']['source_sha256']:
+            raise ValueError('Existing candidate changed during import')
+        manifest['generation']['saved_source'] = str(saved)
+        pixel_static.process_candidate(saved, brief, load_config(root / 'config/pipeline.yaml'), directory, manifest)
+    except Exception as exc:
+        manifest.update(status='FAILED', error=str(exc))
+        raise
+    finally:
+        manifest['timestamps']['finished'] = now()
+        write(path, manifest)
+    return path
+
 def create(brief, root, output=None, seed=None):
     # 생성 CLI 안에서 다시 시작된 assetpipe 실행(재귀·무한 호출)은 어떤 작업도 하기 전에 거부한다.
     assert_not_nested()

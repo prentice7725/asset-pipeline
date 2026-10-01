@@ -10,13 +10,18 @@ def run(brief, workflow, config, directory, manifest, seed):
     paths = ComfyUIProvider(config).generate(brief, workflow, directory / '010_generation', seed)
     if len(paths) != 1:
         raise ValueError('Static pipeline expects one image candidate')
+    return process_candidate(paths[0], brief, config, directory, manifest)
+
+
+def process_candidate(candidate, brief, config, directory, manifest):
+    """Shared static gates for generated or explicitly imported existing candidates."""
     size = brief['constraints']['resolution']
-    initial = analyze_image(paths[0], max_colors=config.section('pixel').get('max_colors', 32))
+    initial = analyze_image(candidate, max_colors=config.section('pixel').get('max_colors', 32))
     write_report(initial, directory / '020_analyzer')
     manifest['qa_results'].append(initial)
     manifest['pipeline_steps'].append({'step': 'candidate_analysis', 'status': initial['status']})
     # Only binary alpha is automatic. Palette/resizing/silhouette changes require explicit review.
-    refined = refine_image(paths[0], directory / '030_refiner', profile='binary_alpha_only', analyzer_max_colors=config.section('pixel').get('max_colors', 32))
+    refined = refine_image(candidate, directory / '030_refiner', profile='binary_alpha_only', analyzer_max_colors=config.section('pixel').get('max_colors', 32))
     manifest['pipeline_steps'].append({'step': 'safe_refine', 'operation': 'binary_alpha_only', 'report': str(directory / '030_refiner/refine_report.json')})
     path = directory / '030_refiner/refined.png'
     gate = analyze_image(path, max_colors=config.section('pixel').get('max_colors', 32), allowed_palette=brief['constraints']['palette'] or None,
