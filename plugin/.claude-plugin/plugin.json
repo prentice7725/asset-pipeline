@@ -1,0 +1,9 @@
+{
+  "name": "asset-pipeline",
+  "version": "0.1.0",
+  "description": "Create validated game-ready visual assets from prompts, reference images, or project design sources using registered local production workflows.",
+  "author": {"name": "prentice7725"},
+  "repository": "https://github.com/prentice7725/asset-pipeline",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}
