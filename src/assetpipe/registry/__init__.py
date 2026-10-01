@@ -15,6 +15,12 @@ FORBIDDEN_CLI_ARGS = {'--always-approve', '--dangerously-bypass-approvals-and-sa
 FORBIDDEN_CLI_VALUES = {'danger-full-access', 'bypassPermissions'}
 ENV_NAME_PATTERN = r'^[A-Z][A-Z0-9_]{0,63}$'
 
+class WorkflowRegistry(dict):
+    """Retains the config root without adding keys to the workflow contract."""
+    def __init__(self, values, root):
+        super().__init__(values)
+        self.root = root
+
 def _validate_cli_args(key, args):
     if not isinstance(args, list) or any(not isinstance(a, str) for a in args):
         raise ValueError(f'backend.cli_args must be a list of strings: {key}')
@@ -105,4 +111,4 @@ def load_registry(root):
         item['version'] = workflow.version
         # 기존 평면 키를 엔진별 backend 구조로도 노출한다. 기존 키는 그대로 유지한다.
         item.setdefault('backend', {'workflow_file': item['workflow_file'], 'workflow_name': item['workflow_name']})
-    return workflows
+    return WorkflowRegistry(workflows, root)

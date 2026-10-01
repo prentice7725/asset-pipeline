@@ -1,0 +1,11 @@
+# Template only. Do not copy into an active project until the owner approves it.
+status: UNTESTED
+default_style_id: graphic-risograph
+styles: {}
+recipes: {}
+# Required for an approved pack (fill only from real human approval):
+# human_approval:
+#   approved: true
+#   reviewed_by: <project owner>
+#   reviewed_at: <date>
+#   reason: <review decision>

@@ -1,0 +1,33 @@
+asset_id: m2_fox_scout
+asset_type: character
+output_class: NONPIXEL_IMAGE
+style_id: graphic-risograph
+purpose: Same-brief Anima/Krea2 style comparison; candidate only
+source:
+  type: PROMPT
+  paths: []
+  references: []
+identity:
+  canonical_traits: [orange fox, red scarf, green backpack]
+  visual_traits: [large triangular ears]
+constraints:
+  resolution: [768, 768]
+  transparency: null
+  palette: []
+  silhouette: upright small fox with a single large bushy tail
+  style: null
+animation:
+  action: null
+  frame_target: null
+  motion_constraints: []
+workflow_preferences: {}
+forbidden_elements: []
+unspecified_elements: [project visual canon]
+source_notes:
+  - classification: EXPLICIT
+    text: Synthetic comparison character; not a project canon
+    source: M2 comparison fixture
+prompt_spec:
+  subject: A small orange fox scout standing upright, wearing a red scarf and a green backpack. Show the entire fox, its large triangular ears and one bushy tail against a plain light background.
+  composition: centered single full-body character
+  aspectRatio: '1:1'

@@ -7,10 +7,19 @@ def satisfied(capabilities, capability):
         return bool(capabilities.get('negative_prompt') or capabilities.get('negative_prompt_instruction'))
     return bool(capabilities.get(capability))
 
-def route(brief, registry):
+def route(brief, registry, root=None):
     validate(brief)
+    from ..styles import resolve_style, select_recipe, public_selection
+    root = root or getattr(registry, 'root', None)
+    if brief.get('style_id') and root is None:
+        raise ValueError('Style routing requires a configuration root')
+    style = resolve_style(brief, root) if root is not None else None
     preferences = brief['workflow_preferences']
     requested = preferences.get('id')
+    model = preferences.get('model_profile')
+    explicit_ids = {key for key, item in registry.items() if (key == requested if requested else model and item.get('model_profile') == model)}
+    if requested and model and registry.get(requested, {}).get('model_profile') != model:
+        raise ValueError('Explicit workflow conflicts with requested model_profile')
     tags = set(preferences.get('tags', [])) | {brief['asset_type']}
     reusable_motion = bool(brief.get('production', {}).get('motion_reference'))
     required = []
@@ -30,6 +39,7 @@ def route(brief, registry):
         required.append('exact_resolution')
     candidates = []
     rejections = {}
+    recipes = {}
     for key, item in registry.items():
         reason = None
         if item['output_class'] != brief['output_class']:
@@ -38,12 +48,19 @@ def route(brief, registry):
             reason = 'required capabilities unavailable: ' + ', '.join(required)
         elif item['status'] == 'REJECTED':
             reason = 'REJECTED workflow'
-        elif item.get('selection') == 'explicit_only' and key != requested:
+        elif model and item.get('model_profile') != model:
+            reason = 'requested model_profile mismatch'
+        elif item.get('selection') == 'explicit_only' and key not in explicit_ids:
             reason = 'explicit_only workflow must be requested by id'
-        elif item['status'] != 'ACTIVE' and key != requested:
+        elif item['status'] != 'ACTIVE' and key not in explicit_ids:
             reason = 'automatic routing requires ACTIVE'
         elif item['status'] == 'EXPERIMENTAL' and not preferences.get('allow_experimental'):
             reason = 'EXPERIMENTAL requires explicit opt-in'
+        if reason is None and style:
+            try:
+                recipes[key] = select_recipe(style, item, root, explicit=key in explicit_ids)
+            except ValueError as exc:
+                reason = str(exc)
         if reason:
             rejections[key] = reason
         else:
@@ -53,7 +70,11 @@ def route(brief, registry):
         raise ValueError(f'No compatible workflow: {rejections.get(requested, rejections)}')
     candidates.sort(key=lambda row: (0 if row[0] == requested else 1, -len(row[2]), -row[1].get('priority', 0), row[0]))
     key, item, matching = candidates[0]
-    return {'selected_workflow': key, 'output_class': brief['output_class'], 'matching_tags': matching,
+    decision = {'selected_workflow': key, 'output_class': brief['output_class'], 'matching_tags': matching,
         'selection_reason': 'explicit compatible workflow' if requested else 'ACTIVE capability match, tags, priority',
         'fallback_candidates': [row[0] for row in candidates[1:]], 'rejected_candidates': rejections,
         'execution_mode': 'REUSE_MOTION_REFERENCE' if reusable_motion else 'GENERATE', 'required_capabilities': required}
+    if style:
+        decision['style_selection'] = public_selection(recipes[key])
+        decision['selection_reason'] = recipes[key]['reason'] + '; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults'
+    return decision

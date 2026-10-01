@@ -12,6 +12,9 @@ assetpipe engine owns all production algorithms and review gates.
 - For user-selected workflows, consult [routing rules](../../references/ROUTING_RULES.md)
   and [workflow status rules](../../references/WORKFLOW_STATUS_RULES.md).
 - To continue pixel animation, consult [pixel contract](../../references/PIXEL_PIPELINE_CONTRACT.md).
+- For visual style selection or model comparison, read [Style Intelligence](../../references/STYLE_INTELLIGENCE.md).
+  Codex CLI and Claude Code use this same knowledge contract and the engine's configured catalog;
+  retain project Visual SOT locks, canonical traits, and explicit user model choices.
 
 When tools are unavailable, report the missing local connection. Do not substitute
 arbitrary shell, image editing, or experimental recovery for the production path.

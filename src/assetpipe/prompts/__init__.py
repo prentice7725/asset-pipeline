@@ -86,6 +86,11 @@ def compile_prompt(brief, workflow, root):
         raise ValueError('Workflow must declare a configured model_profile')
     profile = profiles['profiles'][profile_id]
     spec = from_brief(brief)
+    from ..styles import resolve_style, select_recipe, apply_style, public_selection
+    selection = resolve_style(brief, root)
+    explicit = brief['workflow_preferences'].get('id') == workflow['id'] or brief['workflow_preferences'].get('model_profile') == profile_id
+    selection = select_recipe(selection, workflow, root, explicit=explicit)
+    spec = validate_spec(apply_style(spec, selection))
     caps = workflow['capabilities']
     adapter = profile['prompt_adapter']
     native_negative = bool(caps.get('negative_prompt'))
@@ -102,7 +107,7 @@ def compile_prompt(brief, workflow, root):
     if adapter == 'natural_language':
         positive = natural_language_prompt(brief, spec)
     elif adapter == 'anima':
-        positive = ', '.join(profile.get('positive_prefix', []) + [value.lower() for value in fields])
+        positive = ', '.join(profile.get('positive_prefix', []) + (fields if selection else [value.lower() for value in fields]))
     elif adapter == 'krea2':
         positive = '. '.join(value.rstrip('. ') for value in fields) + '.'
     else:
@@ -110,11 +115,14 @@ def compile_prompt(brief, workflow, root):
     if spec.get('textInImage') and adapter != 'natural_language':
         positive += ' Text in the image: ' + ', '.join(json.dumps(t, ensure_ascii=False) for t in spec['textInImage']) + '.'
     negative_mode = 'NONE' if not spec.get('negative') else 'NATURAL_LANGUAGE_INSTRUCTION' if instructed_negative else 'NATIVE'
-    return {'schema_version': 1, 'adapter': adapter, 'profile_id': profile_id,
+    result = {'schema_version': 1, 'adapter': adapter, 'profile_id': profile_id,
             'profile_sha256': hashlib.sha256(json.dumps(profile, sort_keys=True).encode()).hexdigest(),
             'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(spec.get('negative', [])),
             'negative_mode': negative_mode, 'negative_instruction': list(spec.get('negative', [])) if instructed_negative else [],
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
+    if selection:
+        result['style_selection'] = public_selection(selection)
+    return result
 
 
 def workflow_values(compiled, workflow, brief):

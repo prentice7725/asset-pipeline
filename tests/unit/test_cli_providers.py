@@ -531,7 +531,7 @@ def test_env_name_validation_and_json_helpers():
         build_env(['bad name'])
     values = list(iter_json_values('noise\n{"a": 1}\n{"b": "/x/y/one.png"}\n[broken'))
     assert values == [{'a': 1}, {'b': '/x/y/one.png'}]
-    assert [str(p) for p in image_paths_in(values, 'saved C:\\out\\two.jpg')] == ['/x/y/one.png', 'C:\\out\\two.jpg']
+    assert list(image_paths_in(values, 'saved C:\\out\\two.jpg')) == [Path('/x/y/one.png'), Path('C:\\out\\two.jpg')]
 
 
 def test_capabilities_report_all_provider_states_and_list_cli_workflows_as_experimental(monkeypatch):

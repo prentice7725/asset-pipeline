@@ -1,6 +1,10 @@
 {
   "type": "object",
   "properties": {
+    "style_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+    },
     "project_id": {
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
@@ -169,6 +173,10 @@
             "string",
             "null"
           ]
+        },
+        "model_profile": {
+          "type": "string",
+          "minLength": 1
         },
         "tags": {
           "type": "array",

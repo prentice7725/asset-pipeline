@@ -14,3 +14,9 @@ source note cites a supplied document and is EXPLICIT, DERIVED, or UNSPECIFIED.
 Calling the builder without extracted facts creates a validated unresolved brief;
 generation stays BLOCKED until source-backed canonical traits are supplied.
 Project canon remains outside Asset Pipeline.
+
+M2 optional `style_id` references shared style knowledge for NONPIXEL_IMAGE.
+`project_id` selects configured project Visual SOT/Style Pack.
+`workflow_preferences.model_profile` explicitly selects a configured model profile;
+it cannot contradict `workflow_preferences.id`. Existing briefs need no new field.
+Read [Style Intelligence](STYLE_INTELLIGENCE.md) for provenance and approval rules.
