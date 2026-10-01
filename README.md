@@ -44,13 +44,12 @@ assetpipe --help
 
 [config/pipeline.yaml](config/pipeline.yaml)에서 ComfyUI 주소와 제한 시간을 설정합니다. Aseprite는 `aseprite.executable` 또는 `ASEPRITE_PATH`로 지정할 수 있으며, `PATH`와 일반 설치 위치도 탐색합니다. workflow 그래프는 Python 코드와 분리해 [config/workflows](config/workflows)에 둡니다.
 
-## Codex에서 사용하기
+## Codex·Claude Code에서 사용하기
 
-현재는 로컬 MCP 연결로 사용할 수 있습니다. 저장소가 `C:\workspace\asset-pipeline`에 있다면:
+같은 MCP 서버와 스킬을 Codex와 Claude Code 양쪽에서 사용합니다. 먼저 로컬 설정 파일을 준비합니다.
 
 ```powershell
 Copy-Item config\mcp_adapter.example.yaml config\mcp_adapter.local.yaml
-codex mcp add asset-pipeline -- "C:\workspace\asset-pipeline\.venv\Scripts\assetpipe-mcp.exe" --config "C:\workspace\asset-pipeline\config\mcp_adapter.local.yaml"
 ```
 
 로컬 설정이 이미 있으면 복사하지 마세요. 설정 파일의 `source_roots`에 작업할 프로젝트·애셋 폴더를 추가합니다. 여러 폴더는 YAML 목록으로 지정합니다.
@@ -64,16 +63,57 @@ source_roots:
 output_root: ../workspace/plugin_runs
 ```
 
-상대 경로는 설정 파일이 있는 폴더를 기준으로 해석합니다. 소스 폴더는 미리 존재해야 합니다. 설정 후 Codex를 재시작하고 다음처럼 요청합니다.
+상대 경로는 설정 파일이 있는 폴더를 기준으로 해석합니다. 소스 폴더는 미리 존재해야 합니다.
+
+### Codex
+
+저장소가 `C:\workspace\asset-pipeline`에 있다면:
+
+```powershell
+codex mcp add asset-pipeline -- "C:\workspace\asset-pipeline\.venv\Scripts\assetpipe-mcp.exe" --config "C:\workspace\asset-pipeline\config\mcp_adapter.local.yaml"
+```
+
+### Claude Code
+
+**방법 1. 플러그인 설치 (스킬 + MCP 서버)**
+
+플러그인은 `assetpipe-mcp`를 인자 없이 실행하므로, Claude Code를 시작하기 전에 가상환경의 `Scripts` 폴더를 `PATH`에 넣고 `ASSETPIPE_MCP_CONFIG`를 지정합니다.
+
+```powershell
+$env:PATH = "C:\workspace\asset-pipeline\.venv\Scripts;$env:PATH"
+$env:ASSETPIPE_MCP_CONFIG = "C:\workspace\asset-pipeline\config\mcp_adapter.local.yaml"
+claude
+```
+
+Claude Code 안에서 저장소를 마켓플레이스로 추가하고 설치합니다. 로컬 폴더 경로나 `prentice7725/asset-pipeline` 모두 사용할 수 있습니다.
+
+```text
+/plugin marketplace add C:\workspace\asset-pipeline
+/plugin install asset-pipeline@asset-pipeline
+```
+
+**방법 2. MCP 서버만 연결**
+
+스킬 없이 도구만 쓰려면 다음 명령 하나로 충분합니다.
+
+```powershell
+claude mcp add asset-pipeline --scope user -- "C:\workspace\asset-pipeline\.venv\Scripts\assetpipe-mcp.exe" --config "C:\workspace\asset-pipeline\config\mcp_adapter.local.yaml"
+```
+
+`/mcp`에서 연결 상태를 확인할 수 있습니다. 저장소 안에서 Claude Code를 실행하면 `CLAUDE.md`가 `AGENTS.md`의 기여 규칙을 그대로 불러옵니다.
+
+### 요청 예시
+
+설정 후 호스트를 재시작하고 다음처럼 요청합니다.
 
 > asset-pipeline의 asset_capabilities로 준비 상태를 확인해줘.
 >
 > game-a 프로젝트에 칼 충돌 효과음을 3초로 만들어줘. 음악과 목소리는 없이.
 
 MCP는 기존 코어를 호출하는 6개 도구를 제공합니다: `asset_capabilities`, `asset_build_brief`, `asset_route`, `asset_generate`, `asset_continue_animation`, `asset_inspect_run`.
-서버는 Codex가 실행하며, 이미지·오디오 생성 시 ComfyUI는 실행돼 있어야 합니다.
+서버는 Codex 또는 Claude Code가 실행하며, 이미지·오디오 생성 시 ComfyUI는 실행돼 있어야 합니다.
 
-[로컬 설치 안내](docs/plugin/LOCAL_SETUP.md)와 [도구 계약](docs/plugin/MCP_TOOL_CONTRACT.md)을 참고하세요. 플러그인 패키지는 만들었지만 공식 Plugin Creator 검증과 실제 플러그인 호스트 설치는 아직 미완료입니다. 로컬 MCP SDK 검증과 구분하며, 공개 플러그인 배포나 원격 서비스는 포함하지 않습니다.
+[로컬 설치 안내](docs/plugin/LOCAL_SETUP.md)와 [도구 계약](docs/plugin/MCP_TOOL_CONTRACT.md)을 참고하세요. Claude Code 플러그인은 Linux에서 매니페스트 검증(`claude plugin validate`), 로컬 마켓플레이스 설치, MCP 서버 연결까지 확인했습니다. 다만 Windows에서 실제 생성은 아직 확인하지 않았습니다. Codex 플러그인 패키지는 공식 Plugin Creator 검증과 실제 호스트 설치가 아직 미완료입니다. 공개 플러그인 배포나 원격 서비스는 포함하지 않습니다.
 
 ## 프로젝트별 저장
 
@@ -116,7 +156,7 @@ assetpipe brief from-docs tests/fixtures/character_test.md --prepared examples/c
 assetpipe route --brief workspace/document_brief.json --output workspace/document_route.json
 ```
 
-Codex 또는 사람이 문서를 읽고 Brief를 준비합니다. `from-docs`는 준비된 Brief와 출처 경로를 검증하며, 문서 내용을 자동 해석하지 않습니다.
+Codex·Claude Code 또는 사람이 문서를 읽고 Brief를 준비합니다. `from-docs`는 준비된 Brief와 출처 경로를 검증하며, 문서 내용을 자동 해석하지 않습니다.
 
 프롬프트는 **공통 PromptSpec → 모델별 어댑터 → ComfyUI workflow**로 연결합니다. Anima·Krea2 어댑터는 특징과 제약을 보존하고 모델 전용 접두어를 프로파일에서 관리합니다. Tomohi의 트리거 워드는 `tomohi`입니다.
 
