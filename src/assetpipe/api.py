@@ -27,12 +27,16 @@ def capabilities(root):
             aseprite = {'ready': True, 'version': get_version(executable, timeout=5)}
     except Exception as exc:
         aseprite['reason'] = str(exc)
+    from .providers import diagnose_providers
+    readiness = diagnose_providers(config)
+    external = {k: {'engine': v['engine'], 'status': v['status'], 'selection': v.get('selection'), 'capabilities': v['capabilities'], 'validation': v.get('validation', {}).get('status')}
+        for k, v in registry.items() if v.get('engine', 'comfyui') != 'comfyui'}
     return {'supported_output_classes': OUTPUT_CLASSES, 'input_types': ['DIRECT_PROMPT', 'REFERENCE_IMAGE', 'PROJECT_SOURCES'],
         'active_workflows': {k: {'output_class': v['output_class'], 'capabilities': v['capabilities'], 'tags': v['tags']} for k, v in registry.items() if v['status'] == 'ACTIVE'},
-        'providers': ['comfyui', 'aseprite'], 'animation_actions': {'PIXEL_ANIMATION': ['walk'], 'NONPIXEL_ANIMATION': []},
+        'providers': ['comfyui', 'aseprite', 'codex_cli', 'grok_cli'], 'provider_readiness': readiness, 'external_cli_workflows': external, 'animation_actions': {'PIXEL_ANIMATION': ['walk'], 'NONPIXEL_ANIMATION': []},
         'optional_recovery': {'pixel_art_fixer': 'OPTIONAL_RECOVERY_NOT_AUTO_DISPATCHED'},
         'environment_readiness': {'comfyui': comfy, 'aseprite': aseprite, 'ffmpeg': {'ready': bool(shutil.which('ffmpeg'))}},
-        'limitations': ['NONPIXEL_ANIMATION is contract-only', 'Eight reviewed blue-tunic/white-background walk phases only', 'Existing reviewed motion required; idle and attack are unsupported']}
+        'limitations': ['codex_cli/grok_cli are EXPERIMENTAL, NONPIXEL_IMAGE only; request them by workflow id with allow_experimental. Seed, exact resolution, transparency and native negative prompts are unsupported; no automatic fallback between providers', 'NONPIXEL_ANIMATION is contract-only', 'Eight reviewed blue-tunic/white-background walk phases only', 'Existing reviewed motion required; idle and attack are unsupported']}
 
 def build_brief(*, request_text, output_class, asset_id='asset', source_documents=(), reference_image=None, action=None, prepared_brief=None, workflow_id=None):
     if prepared_brief is not None:
@@ -90,4 +94,13 @@ def inspect_manifest(path):
         'workflow_id': manifest.get('workflow', {}).get('id'), 'workflow': manifest.get('workflow', {}),
         'manifest': str(path), 'qa': qa, 'outputs': manifest.get('outputs', []), 'review_items': review,
         'route': json.loads(route_path.read_text(encoding='utf-8')) if route_path.exists() else None,
-        'error': manifest.get('error'), 'game_ready': manifest.get('game_ready', False)}
+        'error': manifest.get('error'), 'error_code': manifest.get('error_code'), 'provider': provider_summary(manifest), 'game_ready': manifest.get('game_ready', False)}
+
+
+def provider_summary(manifest):
+    """외부 CLI provider 실행 기록 중 검토에 필요한 요약만 돌려준다(로그·프롬프트 원문은 제외)."""
+    record = manifest.get('generation', {}).get('provider')
+    if not record:
+        return None
+    keys = ('provider_id', 'engine', 'tool', 'status', 'error_code', 'cli_version', 'model', 'auth', 'duration_seconds', 'request', 'usage_support', 'reproducibility', 'negative_prompt_mode', 'retry')
+    return {key: record[key] for key in keys if key in record}

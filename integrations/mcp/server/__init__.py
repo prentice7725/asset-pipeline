@@ -62,6 +62,13 @@ def main():
     parser = argparse.ArgumentParser(description='Asset Pipeline M0 local stdio MCP adapter')
     parser.add_argument('--config', default=os.environ.get('ASSETPIPE_MCP_CONFIG'), help='Host-controlled adapter config; defaults to ASSETPIPE_MCP_CONFIG')
     args = parser.parse_args()
+    from assetpipe.providers.base import ProviderBlocked
+    from assetpipe.providers.cli_runner import assert_not_nested
+    try:
+        # 생성 CLI가 띄운 자식 프로세스에서는 서버를 시작하지 않는다(재귀 호출 차단).
+        assert_not_nested()
+    except ProviderBlocked as exc:
+        parser.exit(3, f'assetpipe-mcp: {exc}\n')
     if not args.config:
         parser.error('--config or ASSETPIPE_MCP_CONFIG is required')
     create_server(args.config).run(transport='stdio')

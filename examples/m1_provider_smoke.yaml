@@ -1,0 +1,35 @@
+asset_id: m1_provider_smoke
+asset_type: character
+output_class: NONPIXEL_IMAGE
+purpose: provider 실제 생성(E2E) 검증용 최소 브리프
+source:
+  type: PROMPT
+  paths: []
+  references: []
+identity:
+  canonical_traits: []
+  visual_traits: []
+constraints:
+  resolution: null
+  transparency: null
+  palette: []
+  silhouette: null
+  style: null
+animation:
+  action: null
+  frame_target: null
+  motion_constraints: []
+workflow_preferences:
+  allow_experimental: true
+forbidden_elements: []
+unspecified_elements:
+- identity
+- resolution
+- palette
+- silhouette
+- style
+source_notes:
+- classification: EXPLICIT
+  text: provider E2E 검증용 단순 프롬프트
+  source: user input
+prompt: A small fox scout with a red scarf, simple flat colors, plain light background, full body

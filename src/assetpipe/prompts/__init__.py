@@ -56,6 +56,29 @@ def from_brief(brief):
     return validate_spec(spec)
 
 
+def natural_language_prompt(brief, spec):
+    """CLI 이미지 도구용 자연어 프롬프트. 정본·시각 특징·스타일·실루엣·금지 요소를 항목별로 모두 보존한다."""
+    canonical = list(brief['identity']['canonical_traits'])
+    silhouette = brief['constraints'].get('silhouette')
+    appearance = [v for v in spec.get('appearance', []) if v not in canonical]
+    other = [v for v in spec.get('constraints', []) if v != silhouette]
+    rows = [('Subject', [spec['subject']]),
+            ('Canonical traits (keep exactly as written; do not change, add to, or reinterpret)', canonical),
+            ('Visual traits', appearance),
+            ('Style', spec.get('style', []) + [r['description'] for r in spec.get('styleSources', [])]),
+            ('Silhouette (keep this overall shape)', [silhouette] if silhouette else []),
+            ('Other constraints', other)]
+    rows += [(label, [spec[key]]) for label, key in (('Pose', 'pose'), ('Composition', 'composition'), ('Environment', 'environment'), ('Lighting', 'lighting'), ('Mood', 'mood')) if spec.get(key)]
+    if spec.get('aspectRatio'):
+        rows.append(('Aspect ratio', [spec['aspectRatio']]))
+    if spec.get('textInImage'):
+        rows.append(('Text to render in the image', [json.dumps(t, ensure_ascii=False) for t in spec['textInImage']]))
+    lines = [f'{label}: ' + '; '.join(dict.fromkeys(values)) for label, values in rows if values]
+    if spec.get('negative'):
+        lines.append('Strictly do not include any of the following: ' + '; '.join(dict.fromkeys(spec['negative'])) + '.')
+    return '\n'.join(lines)
+
+
 def compile_prompt(brief, workflow, root):
     profiles = yaml.safe_load((Path(root) / 'config/model_profiles.yaml').read_text(encoding='utf-8'))
     profile_id = workflow.get('model_profile')
@@ -64,7 +87,11 @@ def compile_prompt(brief, workflow, root):
     profile = profiles['profiles'][profile_id]
     spec = from_brief(brief)
     caps = workflow['capabilities']
-    if spec.get('negative') and not caps.get('negative_prompt'):
+    adapter = profile['prompt_adapter']
+    native_negative = bool(caps.get('negative_prompt'))
+    # 자연어 금지 지시는 프롬프트 안의 문장일 뿐 모델이 보장하지 않으므로, 네이티브 negative prompt와 구분한다.
+    instructed_negative = adapter == 'natural_language' and bool(caps.get('negative_prompt_instruction'))
+    if spec.get('negative') and not (native_negative or instructed_negative):
         raise ValueError('Selected workflow does not support negative prompts')
     if spec.get('textInImage') and not caps.get('text_rendering'):
         raise ValueError('Selected workflow has no validated text rendering capability')
@@ -72,18 +99,21 @@ def compile_prompt(brief, workflow, root):
     fields += [spec[key] for key in ('pose', 'composition', 'environment', 'lighting', 'mood') if spec.get(key)]
     fields += spec.get('style', []) + [row['description'] for row in spec.get('styleSources', [])] + spec.get('constraints', [])
     fields = list(dict.fromkeys(fields))
-    adapter = profile['prompt_adapter']
-    if adapter == 'anima':
+    if adapter == 'natural_language':
+        positive = natural_language_prompt(brief, spec)
+    elif adapter == 'anima':
         positive = ', '.join(profile.get('positive_prefix', []) + [value.lower() for value in fields])
     elif adapter == 'krea2':
         positive = '. '.join(value.rstrip('. ') for value in fields) + '.'
     else:
         raise ValueError('Prompt adapter is not installed: ' + adapter)
-    if spec.get('textInImage'):
+    if spec.get('textInImage') and adapter != 'natural_language':
         positive += ' Text in the image: ' + ', '.join(json.dumps(t, ensure_ascii=False) for t in spec['textInImage']) + '.'
+    negative_mode = 'NONE' if not spec.get('negative') else 'NATURAL_LANGUAGE_INSTRUCTION' if instructed_negative else 'NATIVE'
     return {'schema_version': 1, 'adapter': adapter, 'profile_id': profile_id,
             'profile_sha256': hashlib.sha256(json.dumps(profile, sort_keys=True).encode()).hexdigest(),
-            'prompt_spec': spec, 'positive': positive, 'negative': ', '.join(spec.get('negative', [])),
+            'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(spec.get('negative', [])),
+            'negative_mode': negative_mode, 'negative_instruction': list(spec.get('negative', [])) if instructed_negative else [],
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
 
 

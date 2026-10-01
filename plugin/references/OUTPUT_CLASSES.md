@@ -4,7 +4,7 @@
 | --- | --- |
 | PIXEL_STATIC | Candidate generation, safe refinement, Pixel Gate, Resolution Gate, Aseprite review/export. |
 | PIXEL_ANIMATION | Approved static master + existing reviewed motion → verified direct pixelization → Pixel Gate → Aseprite sheet. |
-| NONPIXEL_IMAGE | Registered workflow generation → basic image QA → visual-review candidate. |
+| NONPIXEL_IMAGE | Registered provider generation (ComfyUI workflow, or explicitly requested Codex/Grok CLI) → shared basic image QA → visual-review candidate. |
 | NONPIXEL_ANIMATION | SUPPORTED_EXPERIMENTAL contract only; execution blocked in v0.1. |
 
 The MCP builder accepts an output type or uses a prepared brief's type. If neither

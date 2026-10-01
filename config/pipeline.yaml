@@ -3,6 +3,18 @@ comfyui:
   request_timeout_seconds: 30
   execution_timeout_seconds: 1800
   poll_interval_seconds: 1.0
+# 외부 생성 CLI(provider) 설정. 시크릿은 여기에 적지 않는다.
+# executable: null이면 PATH에서 찾는다. pass_env에는 자식 CLI에 넘길 환경변수 "이름"만 적는다(기본은 아무것도 넘기지 않음).
+# job_root: 격리 작업 폴더를 만들 위치. null이면 시스템 임시 폴더(프로젝트·git 트리 밖)를 쓴다.
+providers:
+  codex_cli:
+    executable: null
+    pass_env: []
+    job_root: null
+  grok_cli:
+    executable: null
+    pass_env: []
+    job_root: null
 workspace:
   input: workspace/input
   intermediate: workspace/intermediate
