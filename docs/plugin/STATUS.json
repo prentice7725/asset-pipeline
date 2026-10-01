@@ -21,6 +21,12 @@
   "plugin_creator_validation": "NOT_RUN_CREATOR_UNAVAILABLE",
   "codex_plugin_host_integration": "NOT_VERIFIED",
   "chatgpt_plugin_host_integration": "NOT_VERIFIED",
+  "claude_code_plugin_host_integration": {
+    "manifest_validation": "PASS_CLAUDE_PLUGIN_VALIDATE",
+    "local_marketplace_install": "PASS",
+    "mcp_server_connection": "PASS_LINUX",
+    "windows_generation": "NOT_VERIFIED"
+  },
   "public_plugin_submission": false,
   "pass_marker_written": false,
   "remaining_gates": [
