@@ -18,3 +18,10 @@ docs/plugin/M0_DIRECTIVE.md for this milestone. Keep production algorithms in
 assetpipe, expose exactly six high-level tools, restrict model paths to configured
 roots, and preserve all QA/review gates. No public plugin publishing or cloud service.
 Do not claim Plugin Creator validation passed unless the official creator actually ran.
+
+The user-authorized M1 milestone permits NONPIXEL_IMAGE multi-provider generation (comfyui, codex_cli,
+grok_cli) under src/assetpipe/providers. Read docs/m1/M1_DIRECTIVE.md and docs/m1/PROVIDERS.md. Pixel/SFX paths and
+the six MCP tool contracts stay unchanged. CLI providers stay EXPERIMENTAL and explicit_only until
+scripts/provider_e2e.py has recorded real-generation evidence; the registry loader rejects ACTIVE without it.
+Never add API-key bypasses, implicit provider fallback, automatic retries, or fabricated images. Report a missing or
+unauthenticated CLI as BLOCKED/UNAVAILABLE and do not declare M1 complete without real E2E evidence.

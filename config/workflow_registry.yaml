@@ -98,6 +98,7 @@ workflows:
       motion_conditioning: false
       image_to_video: false
       negative_prompt: true
+      exact_resolution: true
     presets:
       character_portrait:
         width: 512
@@ -166,6 +167,7 @@ workflows:
       motion_conditioning: false
       image_to_video: false
       negative_prompt: true
+      exact_resolution: true
     prompt_prefix: tomohi
     presets:
       character_portrait:
@@ -226,6 +228,7 @@ workflows:
       motion_conditioning: false
       image_to_video: false
       negative_prompt: false
+      exact_resolution: true
     presets:
       character_portrait:
         width: 1024
@@ -361,3 +364,94 @@ workflows:
     validation:
       status: REAL_GENERATION_AND_AUDIO_QA_PASS
       evidence: docs/sfx_verification.json
+  codex_imagegen:
+    model_profile: codex-imagegen
+    output_class: NONPIXEL_IMAGE
+    engine: codex_cli
+    status: EXPERIMENTAL
+    selection: explicit_only
+    priority: 0
+    tags:
+    - character
+    - illustration
+    - general
+    - cli_provider
+    backend:
+      tool: image_gen
+      model: null
+      timeout_seconds: 600
+      max_outputs: 1
+      auth:
+        mode: cli_login
+        env: []
+      cli_args: []
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: false
+      negative_prompt_instruction: true
+      text_rendering: false
+      exact_resolution: false
+      seed_control: false
+    reproducibility:
+      seed: UNSUPPORTED
+      exact_reproduction: UNSUPPORTED
+    post_pipeline:
+    - image_qa
+    validation:
+      status: NOT_VERIFIED
+      real_generation: NOT_RUN
+      router_smoke: PENDING
+  grok_imagine:
+    model_profile: grok-imagine
+    output_class: NONPIXEL_IMAGE
+    engine: grok_cli
+    status: EXPERIMENTAL
+    selection: explicit_only
+    priority: 0
+    tags:
+    - character
+    - illustration
+    - general
+    - cli_provider
+    backend:
+      tool: image_gen
+      edit_tool: image_edit
+      model: null
+      timeout_seconds: 600
+      max_outputs: 1
+      max_turns: 4
+      auth:
+        mode: cli_login
+        env: []
+      cli_args:
+      - --permission-mode
+      - dontAsk
+      - --allow
+      - '{tool}'
+    capabilities:
+      text_to_image: true
+      image_to_image: true
+      character_reference: true
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: false
+      negative_prompt_instruction: true
+      text_rendering: false
+      exact_resolution: false
+      seed_control: false
+    reproducibility:
+      seed: UNSUPPORTED
+      exact_reproduction: UNSUPPORTED
+    post_pipeline:
+    - image_qa
+    validation:
+      status: NOT_VERIFIED
+      real_generation: NOT_RUN
+      image_edit_path: NOT_RUN
+      router_smoke: PENDING

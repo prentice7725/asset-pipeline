@@ -28,8 +28,12 @@ def main(argv=None):
     run.add_argument('--project', help='Project folder ID; otherwise use brief project_id or default')
     run.add_argument('--workflow')
     run.add_argument('--preset')
-    run.add_argument('--seed', type=int)
+    run.add_argument('--seed', type=int, help='ComfyUI only; CLI providers (codex_cli, grok_cli) record seed as unsupported')
+    run.add_argument('--allow-experimental', action='store_true', help='Allow an EXPERIMENTAL workflow that was requested explicitly by --workflow')
     run.add_argument('--output', type=Path)
+    providers = commands.add_parser('providers', help='Diagnose generation providers without any paid request')
+    providers.add_argument('--provider', choices=['comfyui', 'codex_cli', 'grok_cli'], action='append', help='Limit diagnosis to these providers (default: all)')
+    providers.add_argument('--output', type=Path)
     brief_parser = commands.add_parser('brief')
     briefs = brief_parser.add_subparsers(dest='brief_command', required=True)
     schema = briefs.add_parser('schema')
@@ -66,10 +70,20 @@ def main(argv=None):
             registry = load_registry(args.root)
             workflow = registry[route(brief, registry)['selected_workflow']]
             compiled = compile_prompt(brief, workflow, args.root)
-            compiled['workflow_inputs'] = workflow_values(compiled, workflow, brief)
-            compiled['workflow_name'] = workflow['workflow_name']
+            if workflow.get('engine', 'comfyui') == 'comfyui':
+                compiled['workflow_inputs'] = workflow_values(compiled, workflow, brief)
+                compiled['workflow_name'] = workflow['workflow_name']
+            else:
+                compiled.update({'workflow_inputs': {}, 'workflow_name': None, 'engine': workflow['engine']})
             write(args.output, compiled)
             print(args.output)
+        elif args.command == 'providers':
+            from ..providers import ENGINES, diagnose_providers
+            from .._ported.config import load_config
+            report = diagnose_providers(load_config(args.root / 'config/pipeline.yaml'), tuple(args.provider or ENGINES))
+            if args.output:
+                write(args.output, report)
+            print(json.dumps(report, indent=2, ensure_ascii=False))
         elif args.command == 'route':
             decision = route(load(args.brief), load_registry(args.root))
             write(args.output, decision)
@@ -107,6 +121,8 @@ def main(argv=None):
                 brief['audio'] = {'duration_seconds': args.duration}
             if args.preset:
                 brief['workflow_preferences']['preset'] = args.preset
+            if args.allow_experimental:
+                brief['workflow_preferences']['allow_experimental'] = True
             print(create(brief, args.root, args.output, args.seed))
         return 0
     except Exception as exc:

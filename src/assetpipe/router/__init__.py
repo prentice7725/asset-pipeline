@@ -1,5 +1,12 @@
 from ..brief import validate
 
+def satisfied(capabilities, capability):
+    # negative_prompt는 네이티브 지원이고, negative_prompt_instruction은 자연어 금지 지시다.
+    # 자연어 지시는 보장되지 않는 방식이므로 둘을 구분해 기록하되 라우팅에서는 둘 중 하나면 충족으로 본다.
+    if capability == 'negative_prompt':
+        return bool(capabilities.get('negative_prompt') or capabilities.get('negative_prompt_instruction'))
+    return bool(capabilities.get(capability))
+
 def route(brief, registry):
     validate(brief)
     preferences = brief['workflow_preferences']
@@ -18,16 +25,21 @@ def route(brief, registry):
         required.append('text_rendering')
     if (brief.get('negative_prompt') or brief['forbidden_elements'] or spec.get('negative')) and brief['output_class'] in {'NONPIXEL_IMAGE', 'PIXEL_STATIC', 'SFX'}:
         required.append('negative_prompt')
+    if brief['constraints']['resolution'] and brief['output_class'] == 'NONPIXEL_IMAGE':
+        # 정확한 해상도를 보장하지 못하는 provider로 보내면 과금 후 QA에서 반드시 실패하므로 미리 차단한다.
+        required.append('exact_resolution')
     candidates = []
     rejections = {}
     for key, item in registry.items():
         reason = None
         if item['output_class'] != brief['output_class']:
             reason = 'output_class mismatch'
-        elif any(not item['capabilities'].get(cap) for cap in required):
+        elif any(not satisfied(item['capabilities'], cap) for cap in required):
             reason = 'required capabilities unavailable: ' + ', '.join(required)
         elif item['status'] == 'REJECTED':
             reason = 'REJECTED workflow'
+        elif item.get('selection') == 'explicit_only' and key != requested:
+            reason = 'explicit_only workflow must be requested by id'
         elif item['status'] != 'ACTIVE' and key != requested:
             reason = 'automatic routing requires ACTIVE'
         elif item['status'] == 'EXPERIMENTAL' and not preferences.get('allow_experimental'):
