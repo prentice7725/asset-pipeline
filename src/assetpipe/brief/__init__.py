@@ -10,6 +10,7 @@ def obj(properties, required=()):
     return {'type': 'object', 'properties': properties, 'required': list(required), 'additionalProperties': False}
 
 SCHEMA = obj({
+    'style_id': {'type': 'string', 'pattern': '^[a-z0-9][a-z0-9_-]{0,63}$'},
     'project_id': {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'},
     'asset_id': {'type': 'string', 'pattern': '^[A-Za-z0-9_-]+$'},
     'asset_type': {'type': 'string', 'minLength': 1},
@@ -19,7 +20,7 @@ SCHEMA = obj({
     'identity': obj({'canonical_traits': STRINGS, 'visual_traits': STRINGS}, ['canonical_traits', 'visual_traits']),
     'constraints': obj({'resolution': {'oneOf': [{'type': 'null'}, {'type': 'array', 'items': {'type': 'integer', 'minimum': 1}, 'minItems': 2, 'maxItems': 2}]}, 'transparency': {'type': ['boolean', 'null']}, 'palette': STRINGS, 'silhouette': {'type': ['string', 'null']}, 'style': {'type': ['string', 'null']}}, ['resolution', 'transparency', 'palette', 'silhouette', 'style']),
     'animation': obj({'action': {'type': ['string', 'null']}, 'frame_target': {'type': ['integer', 'null'], 'minimum': 1}, 'motion_constraints': STRINGS}, ['action', 'frame_target', 'motion_constraints']),
-    'workflow_preferences': obj({'id': {'type': ['string', 'null']}, 'tags': STRINGS, 'preset': {'type': 'string'}, 'allow_experimental': {'type': 'boolean'}}),
+    'workflow_preferences': obj({'id': {'type': ['string', 'null']}, 'model_profile': {'type': 'string', 'minLength': 1}, 'tags': STRINGS, 'preset': {'type': 'string'}, 'allow_experimental': {'type': 'boolean'}}),
     'forbidden_elements': STRINGS, 'unspecified_elements': STRINGS,
     'source_notes': {'type': 'array', 'items': obj({'classification': {'enum': ['EXPLICIT', 'DERIVED', 'UNSPECIFIED']}, 'text': {'type': 'string'}, 'source': {'type': 'string'}}, ['classification', 'text', 'source'])},
     'prompt': {'type': 'string'}, 'negative_prompt': {'type': 'string'}, 'prompt_spec': PROMPT_SPEC_SCHEMA,

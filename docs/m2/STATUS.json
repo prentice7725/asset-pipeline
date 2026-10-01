@@ -1,0 +1,141 @@
+{
+  "milestone": "ASSET_PIPELINE_M2_STYLE_INTELLIGENCE",
+  "status": "IMPLEMENTED_REAL_COMPARISON_VERIFIED_HUMAN_APPROVAL_PENDING",
+  "base_commit": "31ceffa",
+  "comparison_report": "workspace/m2/comparisons/20261001T122149167716Z/report.json",
+  "comparison": {
+    "status": "REAL_COMPARISON_GENERATED_REVIEW_REQUIRED",
+    "source_brief_sha256": "757026f3a4c6048deb192d01739103b53ab080cb7c3bb5af5ed77aa8a44a58da",
+    "seed": 7725,
+    "diagnosis": {
+      "provider_id": "comfyui",
+      "engine": "comfyui",
+      "status": "AVAILABLE",
+      "reasons": [],
+      "details": {
+        "base_url": "http://127.0.0.1:8188",
+        "version": "0.38.1",
+        "generation_probe": "NOT_RUN"
+      },
+      "checked_at": "2026-10-01T12:21:49.183764+00:00"
+    },
+    "samples": {
+      "anima_base": {
+        "result": "STYLE_COMBINATION_TESTED",
+        "style_id": "graphic-risograph",
+        "workflow_id": "anima_base",
+        "recipe_version": "1.0.0",
+        "run_manifest": "workspace/m2/comparisons/20261001T122149167716Z/anima_base/run_manifest.json",
+        "run_manifest_sha256": "49654463cab49abc9ddcb04067a3c4f311294ecc2a1b3a7125b30b2e80dd65ef",
+        "outputs": [
+          {
+            "path": "workspace/m2/comparisons/20261001T122149167716Z/anima_base/010_generation/001_m2_fox_scout_00001_.png",
+            "sha256": "c703639e43d48a2f996479514856d199103d6afa9f56b56ad53d90fef6160108",
+            "resolution": [
+              768,
+              768
+            ]
+          }
+        ],
+        "human_visual_review": "REQUIRED",
+        "style_sha256": "369a5d2d993a11fe67be53a4e8935da30ee6d577ee33528739514d381ae40ab4"
+      },
+      "krea2_base": {
+        "result": "STYLE_COMBINATION_TESTED",
+        "style_id": "graphic-risograph",
+        "workflow_id": "krea2_base",
+        "recipe_version": "1.0.0",
+        "run_manifest": "workspace/m2/comparisons/20261001T122149167716Z/krea2_base/run_manifest.json",
+        "run_manifest_sha256": "660f40bef8a099a2756b2e9c759f906958569296b0e21636d1036e9897a2fbff",
+        "outputs": [
+          {
+            "path": "workspace/m2/comparisons/20261001T122149167716Z/krea2_base/010_generation/001_m2_fox_scout_00002_.png",
+            "sha256": "dbc2db7e72ab883cf08f5e1108f2b88bb00def60a80ac6ae21fcfcd05909ab95",
+            "resolution": [
+              768,
+              768
+            ]
+          }
+        ],
+        "human_visual_review": "REQUIRED",
+        "style_sha256": "369a5d2d993a11fe67be53a4e8935da30ee6d577ee33528739514d381ae40ab4"
+      }
+    },
+    "human_visual_review": "REQUIRED",
+    "quality_scores": "NOT_MEASURED",
+    "model_preference": "NOT_ESTABLISHED"
+  },
+  "catalog": {
+    "styles": 3,
+    "approved": 0
+  },
+  "recipes": {
+    "total": 15,
+    "tested": 2,
+    "approved": 0,
+    "untested": 13
+  },
+  "m1_prior_real_e2e": {
+    "codex_imagegen": {
+      "result": "REAL_GENERATION_VERIFIED",
+      "checked_at": "20261001T121258Z",
+      "evidence": "workspace/m1_e2e/codex_imagegen_evidence.json",
+      "image": {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\m1_e2e\\codex_imagegen\\20261001T121258Z\\010_generation\\codex_cli\\raw\\01_exec-1491db27-70c8-4e24-82da-1474d2e3910b.png",
+        "sha256": "fcaaa5f36bb11c4f27d670d729a52d4771f67e08f5b2a94f3907bbfec2d2417d",
+        "bytes": 1250436,
+        "resolution": [
+          1145,
+          1374
+        ],
+        "format": "PNG"
+      },
+      "workflow_status": "EXPERIMENTAL",
+      "human_visual_review": "REQUIRED"
+    },
+    "grok_imagine": {
+      "result": "REAL_GENERATION_VERIFIED",
+      "checked_at": "20261001T121314Z",
+      "evidence": "workspace/m1_e2e/grok_imagine_evidence.json",
+      "image": {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\m1_e2e\\grok_imagine\\20261001T121314Z\\010_generation\\grok_cli\\raw\\01_1.jpg",
+        "sha256": "8e9f203d846c376530588349f1df8a334d30b0cfa41bb367030dfefc26fd43f9",
+        "bytes": 150735,
+        "resolution": [
+          832,
+          1248
+        ],
+        "format": "JPEG"
+      },
+      "workflow_status": "EXPERIMENTAL",
+      "human_visual_review": "REQUIRED"
+    }
+  },
+  "review_required": true,
+  "limitations": [
+    "No project Visual SOT or approved Style Pack supplied; project pack support tested with fixtures only",
+    "Only graphic-risograph Anima/Krea2 combinations generated; 13 remaining combinations untested",
+    "Actual Codex/Claude agent selection sessions not replayed; shared skill validated locally",
+    "M1 image_edit path untested",
+    "Evidence and raw outputs are local workspace artifacts; absent evidence blocks TESTED/APPROVED recipe loading"
+  ],
+  "regression": {
+    "passed": 159,
+    "failed": 0,
+    "new_style_tests": 18,
+    "report": "workspace/m2/regression.xml",
+    "windows_path_test_corrected": true
+  },
+  "development_install": "PASS",
+  "shared_skill_validation": "PASS",
+  "plugin_local_layout": {
+    "status": "PASS",
+    "hosts": [
+      "codex",
+      "claude_code"
+    ],
+    "official_creator_validation": "NOT_RUN"
+  },
+  "mcp_tool_contract": "UNCHANGED_6_TOOLS",
+  "completion_declared": false
+}

@@ -31,6 +31,8 @@ def create(brief, root, output=None, seed=None):
         from ..api import route_brief
         decision = route_brief(brief, root)
         write(directory / 'route_decision.json', decision)
+        if decision.get('style_selection'):
+            manifest['style_selection'] = decision['style_selection']
         if decision['status'] == 'BLOCKED':
             raise ValueError('; '.join(decision['missing_requirements']) or decision['reason'])
         workflow = registry[decision['selected_workflow']]

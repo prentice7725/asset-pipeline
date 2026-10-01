@@ -25,3 +25,8 @@ the six MCP tool contracts stay unchanged. CLI providers stay EXPERIMENTAL and e
 scripts/provider_e2e.py has recorded real-generation evidence; the registry loader rejects ACTIVE without it.
 Never add API-key bypasses, implicit provider fallback, automatic retries, or fabricated images. Report a missing or
 unauthenticated CLI as BLOCKED/UNAVAILABLE and do not declare M1 complete without real E2E evidence.
+
+The user-authorized M2 milestone permits shared NONPIXEL_IMAGE Style Intelligence under
+config/styles and assetpipe.styles. Read docs/m2/STYLE_INTELLIGENCE.md. Preserve Visual SOT
+locks, explicit model choices, all QA gates and six MCP tools. Never fabricate style approval,
+quality scores or evidence; M2 tests cannot replace provider real-generation E2E.

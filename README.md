@@ -384,3 +384,12 @@ config/ schemas/ examples/ tests/ docs/
 
 [마이그레이션 목록](docs/migration_inventory.json)은 원본 해시와 변경 내용을 기록합니다. bootstrap 스크립트는 기존 저장소와 로컬 벤치마크가 필요한 마이그레이션 도구이며 일반 설치 단계가 아닙니다.
 GUI·웹 UI·클라우드 배포·DB·범용 애니메이션 복원은 현재 범위에 포함하지 않습니다.
+# M2 Style Intelligence
+
+공통 스타일 후보와 모델별 레시피는 `config/styles/`에서 관리합니다.
+프로젝트 Visual SOT → 승인된 프로젝트 Style Pack → 공통 Catalog → 모델 기본값 순으로
+선택하며, `style_id`는 선택적 Brief 필드입니다. 사람의 승인과 실생성 근거가 없는
+조합은 자동 기본값이 되지 않습니다. 명시한 workflow/model은 기능 검증 후 우선합니다.
+Codex와 Claude Code는 동일한 플러그인 스킬을 사용합니다.
+
+[설정·비교 생성·승인 계약](docs/m2/STYLE_INTELLIGENCE.md)을 참고하세요.

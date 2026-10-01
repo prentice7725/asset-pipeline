@@ -1,0 +1,223 @@
+schema_version: 1
+recipes_version: 1.0.0
+recipes:
+  graphic-risograph:
+    anima_base:
+      version: 1.0.0
+      status: TESTED
+      style_sha256: 369a5d2d993a11fe67be53a4e8935da30ee6d577ee33528739514d381ae40ab4
+      model_profile: anima-base
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - &id001
+        url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/main/app/data.js
+        description: Explorer entry 0bb1c8cab169; descriptor adaptation selected for
+          M2 comparison, not approved visual canon
+        entry_id: 0bb1c8cab169
+        checked_at: '2026-10-01'
+        authority: COMMUNITY_EXPLORER
+      - url: https://huggingface.co/circlestone-labs/Anima/blob/main/README.md
+        description: Official hybrid tags/captions guidance; preserve names and canonical
+          text. Aesthetic avoids score tags.
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+      evidence: workspace/m2/comparisons/20261001T122149167716Z/anima_base_evidence.json
+    krea2_base:
+      version: 1.0.0
+      status: TESTED
+      style_sha256: 369a5d2d993a11fe67be53a4e8935da30ee6d577ee33528739514d381ae40ab4
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id001
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+      evidence: workspace/m2/comparisons/20261001T122149167716Z/krea2_base_evidence.json
+    tomohi_character:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 369a5d2d993a11fe67be53a4e8935da30ee6d577ee33528739514d381ae40ab4
+      model_profile: anima-tomohi
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id001
+      - url: https://huggingface.co/circlestone-labs/Anima/blob/main/README.md
+        description: Official hybrid tags/captions guidance; preserve names and canonical
+          text. Aesthetic avoids score tags.
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    codex_imagegen:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 369a5d2d993a11fe67be53a4e8935da30ee6d577ee33528739514d381ae40ab4
+      model_profile: codex-imagegen
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id001
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    grok_imagine:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 369a5d2d993a11fe67be53a4e8935da30ee6d577ee33528739514d381ae40ab4
+      model_profile: grok-imagine
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id001
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+  ink-storybook:
+    anima_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 554be000276216efb566ccfd3dc4dbc35807818d1ecf8bc70b28a22df16b388c
+      model_profile: anima-base
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - &id002
+        url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/main/app/data.js
+        description: Explorer entry a67caabb5179; adapted candidate descriptors, not
+          a tested game style
+        entry_id: a67caabb5179
+        checked_at: '2026-10-01'
+        authority: COMMUNITY_EXPLORER
+      - url: https://huggingface.co/circlestone-labs/Anima/blob/main/README.md
+        description: Official hybrid tags/captions guidance; preserve names and canonical
+          text. Aesthetic avoids score tags.
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 554be000276216efb566ccfd3dc4dbc35807818d1ecf8bc70b28a22df16b388c
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id002
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    tomohi_character:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 554be000276216efb566ccfd3dc4dbc35807818d1ecf8bc70b28a22df16b388c
+      model_profile: anima-tomohi
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id002
+      - url: https://huggingface.co/circlestone-labs/Anima/blob/main/README.md
+        description: Official hybrid tags/captions guidance; preserve names and canonical
+          text. Aesthetic avoids score tags.
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    codex_imagegen:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 554be000276216efb566ccfd3dc4dbc35807818d1ecf8bc70b28a22df16b388c
+      model_profile: codex-imagegen
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id002
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    grok_imagine:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 554be000276216efb566ccfd3dc4dbc35807818d1ecf8bc70b28a22df16b388c
+      model_profile: grok-imagine
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id002
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+  anime-cel:
+    anima_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 939bd007dbbf7f60c951f85a06ffc39bf7aa167b11b55e0f28ba999c9416c5ac
+      model_profile: anima-base
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - &id003
+        url: https://huggingface.co/circlestone-labs/Anima/blob/main/README.md
+        description: Official model prompting guidance; local cel-style proposal,
+          not an official or approved style preset
+        checked_at: '2026-10-01'
+        authority: MODEL_AUTHOR
+      - url: https://huggingface.co/circlestone-labs/Anima/blob/main/README.md
+        description: Official hybrid tags/captions guidance; preserve names and canonical
+          text. Aesthetic avoids score tags.
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 939bd007dbbf7f60c951f85a06ffc39bf7aa167b11b55e0f28ba999c9416c5ac
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id003
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    tomohi_character:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 939bd007dbbf7f60c951f85a06ffc39bf7aa167b11b55e0f28ba999c9416c5ac
+      model_profile: anima-tomohi
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id003
+      - url: https://huggingface.co/circlestone-labs/Anima/blob/main/README.md
+        description: Official hybrid tags/captions guidance; preserve names and canonical
+          text. Aesthetic avoids score tags.
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    codex_imagegen:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 939bd007dbbf7f60c951f85a06ffc39bf7aa167b11b55e0f28ba999c9416c5ac
+      model_profile: codex-imagegen
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id003
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.
+    grok_imagine:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 939bd007dbbf7f60c951f85a06ffc39bf7aa167b11b55e0f28ba999c9416c5ac
+      model_profile: grok-imagine
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources:
+      - *id003
+      note: Candidate wiring only; no measured quality score or model preference.
+        Human approval required for default routing.

@@ -27,6 +27,8 @@ def main(argv=None):
     run.add_argument('--asset-id', default='asset')
     run.add_argument('--project', help='Project folder ID; otherwise use brief project_id or default')
     run.add_argument('--workflow')
+    run.add_argument('--style-id', help='Style Catalog/Project Style Pack ID (NONPIXEL_IMAGE)')
+    run.add_argument('--model-profile', help='Explicit configured model profile')
     run.add_argument('--preset')
     run.add_argument('--seed', type=int, help='ComfyUI only; CLI providers (codex_cli, grok_cli) record seed as unsupported')
     run.add_argument('--allow-experimental', action='store_true', help='Allow an EXPERIMENTAL workflow that was requested explicitly by --workflow')
@@ -113,6 +115,10 @@ def main(argv=None):
             brief = load(args.brief) if args.brief else make(asset_id=args.asset_id, output_class=args.type.upper().replace('-', '_'), prompt=args.prompt, reference=args.reference, action=args.action)
             if args.workflow:
                 brief['workflow_preferences']['id'] = args.workflow
+            if args.style_id:
+                brief['style_id'] = args.style_id
+            if args.model_profile:
+                brief['workflow_preferences']['model_profile'] = args.model_profile
             if args.project:
                 brief['project_id'] = args.project
             if args.duration is not None:
