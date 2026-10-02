@@ -1,0 +1,33 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "G04_1_south_front.png"
+    }
+  },
+  "2": {
+    "class_type": "PixelOEPixelize+",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    }
+  },
+  "3": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "2",
+        0
+      ],
+      "filename_prefix": "style_lab/p3_directional_20261002T122431Z/G04/P3_OE_CONTRAST_2/south_front"
+    }
+  }
+}

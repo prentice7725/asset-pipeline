@@ -1,0 +1,175 @@
+{
+  "analyzer": "assetpipe._ported.pixel_gate.analyzer.analyze_image",
+  "same_existing_gate": true,
+  "max_colors": 32,
+  "gradient_threshold": 0.18,
+  "target_resolution": [
+    32,
+    32
+  ],
+  "candidate_count": 96,
+  "status_counts": {
+    "PASS": 88,
+    "REVIEW_REQUIRED": 8
+  },
+  "by_method_and_background": {
+    "P1_NN_THEN_MEDIANCUT_16|opaque_white": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 10,
+        "REVIEW_REQUIRED": 2
+      },
+      "visible_colors_min": 16,
+      "visible_colors_max": 16,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 21,
+      "four_neighbor_isolated_foreground_pixels": 0
+    },
+    "P1_NN_THEN_MEDIANCUT_16|binary_alpha": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 12
+      },
+      "visible_colors_min": 11,
+      "visible_colors_max": 16,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 0,
+      "four_neighbor_isolated_foreground_pixels": 0
+    },
+    "P1_MEDIANCUT_16_THEN_NN|opaque_white": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 10,
+        "REVIEW_REQUIRED": 2
+      },
+      "visible_colors_min": 15,
+      "visible_colors_max": 16,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 21,
+      "four_neighbor_isolated_foreground_pixels": 0
+    },
+    "P1_MEDIANCUT_16_THEN_NN|binary_alpha": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 12
+      },
+      "visible_colors_min": 12,
+      "visible_colors_max": 16,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 0,
+      "four_neighbor_isolated_foreground_pixels": 0
+    },
+    "P1_NN_THEN_MEDIANCUT_32|opaque_white": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 10,
+        "REVIEW_REQUIRED": 2
+      },
+      "visible_colors_min": 31,
+      "visible_colors_max": 32,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 21,
+      "four_neighbor_isolated_foreground_pixels": 0
+    },
+    "P1_NN_THEN_MEDIANCUT_32|binary_alpha": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 12
+      },
+      "visible_colors_min": 25,
+      "visible_colors_max": 31,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 0,
+      "four_neighbor_isolated_foreground_pixels": 0
+    },
+    "P1_MEDIANCUT_32_THEN_NN|opaque_white": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 10,
+        "REVIEW_REQUIRED": 2
+      },
+      "visible_colors_min": 31,
+      "visible_colors_max": 32,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 21,
+      "four_neighbor_isolated_foreground_pixels": 0
+    },
+    "P1_MEDIANCUT_32_THEN_NN|binary_alpha": {
+      "candidate_count": 12,
+      "pixel_gate_status": {
+        "PASS": 12
+      },
+      "visible_colors_min": 23,
+      "visible_colors_max": 32,
+      "gradient_levels": {
+        "LOW": 12
+      },
+      "aa_levels": {
+        "LOW": 12
+      },
+      "gate_isolated_silhouette_pixels": 0,
+      "four_neighbor_isolated_foreground_pixels": 0
+    }
+  },
+  "palette_order_pixel_differences": {
+    "16|opaque_white": {
+      "frames": 12,
+      "mean_different_rgb_pixels": 299.583,
+      "max_different_rgb_pixels": 423,
+      "total_different_rgb_pixels": 3595
+    },
+    "16|binary_alpha": {
+      "frames": 12,
+      "mean_different_rgb_pixels": 299.583,
+      "max_different_rgb_pixels": 423,
+      "total_different_rgb_pixels": 3595
+    },
+    "32|opaque_white": {
+      "frames": 12,
+      "mean_different_rgb_pixels": 297.417,
+      "max_different_rgb_pixels": 385,
+      "total_different_rgb_pixels": 3569
+    },
+    "32|binary_alpha": {
+      "frames": 12,
+      "mean_different_rgb_pixels": 297.417,
+      "max_different_rgb_pixels": 385,
+      "total_different_rgb_pixels": 3569
+    }
+  }
+}

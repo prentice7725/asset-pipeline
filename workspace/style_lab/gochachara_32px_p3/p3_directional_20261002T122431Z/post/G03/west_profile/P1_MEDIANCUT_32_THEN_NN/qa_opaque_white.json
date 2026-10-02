@@ -1,0 +1,111 @@
+{
+  "method": "P1_MEDIANCUT_32_THEN_NN",
+  "palette_cap": 32,
+  "background_mode": "opaque_white",
+  "path": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\G03\\west_profile\\P1_MEDIANCUT_32_THEN_NN\\32px_opaque_white.png",
+  "sha256": "78ca95a7d474f89b27dc055b9d954f83031b4078a844774cf7118f9ac5b428b2",
+  "size": [
+    32,
+    32
+  ],
+  "alpha_mode": "RGB",
+  "unique_rgb_colors": 32,
+  "foreground_pixels_from_sidecar_mask": 399,
+  "cluster_8_connected_count": 1,
+  "cluster_largest_ratio": 1.0,
+  "detached_cluster_area_le2_count": 0,
+  "detached_cluster_pixels_le2": 0,
+  "four_neighbor_exposed_edges": 126,
+  "four_neighbor_isolated_foreground_pixels": 0,
+  "pixel_gate": {
+    "status": "REVIEW_REQUIRED",
+    "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\G03\\west_profile\\P1_MEDIANCUT_32_THEN_NN\\32px_opaque_white.png",
+    "resolution": {
+      "width": 32,
+      "height": 32,
+      "target_width": 32,
+      "target_height": 32,
+      "matches_target": true,
+      "interpolation_evidence": "LOW"
+    },
+    "alpha": {
+      "policy": "binary",
+      "transparent_pixels": 0,
+      "opaque_pixels": 1024,
+      "semi_transparent_pixels": 0,
+      "unique_alpha_values": [
+        255
+      ]
+    },
+    "palette": {
+      "unique_color_count": 32,
+      "max_colors": 32,
+      "color_budget_excess": 0,
+      "allowed_palette": null,
+      "off_palette_pixel_count": 0,
+      "off_palette_pixel_ratio": 0.0,
+      "distance_to_allowed_palette": {
+        "mean_nearest_rgb_distance": null,
+        "max_nearest_rgb_distance": null
+      }
+    },
+    "gradient_suspicion": {
+      "level": "LOW",
+      "unique_visible_colors": 32,
+      "small_rgb_step_ratio": 0.542497,
+      "small_rgb_step_edges": 517,
+      "differing_edges": 953,
+      "small_step_distance_threshold": 24
+    },
+    "anti_alias_suspicion": {
+      "level": "LOW",
+      "suspected_pixels": 0,
+      "edge_pixels_examined": 294,
+      "suspected_edge_pixel_ratio": 0.0,
+      "method": "rare intermediate colors on high-contrast local edges; heuristic"
+    },
+    "silhouette": {
+      "measurable": true,
+      "method": "border_color_inference",
+      "foreground_pixels": 511,
+      "connected_component_count": 6,
+      "largest_component_ratio": 0.9843444227005871,
+      "isolated_component_count": 5,
+      "isolated_pixel_count": 8,
+      "bounding_box": {
+        "x": 5,
+        "y": 2,
+        "width": 22,
+        "height": 28
+      }
+    },
+    "reasons": {
+      "failure": [],
+      "fix": [],
+      "review": [
+        "multiple tiny detached silhouette clusters need visual review"
+      ]
+    }
+  },
+  "art_review": "PENDING",
+  "semantic_review": "PENDING",
+  "generation_id": "G03",
+  "requested_view_slot": "west_profile",
+  "source_raw": "generated/G03/95363562_000.png",
+  "source_sha256": "bd977116a45e87b889526b57281d5226ba80a1be86a38c4ed45d0916bdad9f8f",
+  "source_bbox_xyxy": [
+    288,
+    17,
+    472,
+    249
+  ],
+  "source_component_area_threshold235": 26784,
+  "cell_256_rgb": "post/pixelOE_inputs/G03_2_west_profile.png",
+  "cell_256_rgb_sha256": "1ffbfab6da53b3be9e3a656097478f3d2d8719f1e3dbeba3e7ec084f7118c9a8",
+  "cell_256_alpha_mask": "post/pixelOE_inputs/G03_2_west_profile_alpha.png",
+  "cell_256_alpha_mask_sha256": "f7ee6d5345df7d7a62f570f71ed5c6da6e32e4b5352a571e9ab66ba1adab3d49",
+  "background_mask_method": "edge-connected 4-neighbor flood fill of pixels with all RGB channels >=235; heuristic sidecar only",
+  "ratio_policy": "aspect ratio preserved; contain to 224x224; centered in 256x256; no crop",
+  "requested_direction_observed": "not yet assessed",
+  "realized_color_cap_compliant": true
+}

@@ -1,0 +1,42 @@
+{
+  "run_id": "p3_directional_20261002T122431Z",
+  "created_utc": "2026-10-02T12:24:31.800004+00:00",
+  "state": "TRANSFORMED_TECH_QA_COMPLETE_ART_REVIEW_PENDING",
+  "generation_scope": 4,
+  "directions_per_character": 3,
+  "canvas": [
+    512,
+    512
+  ],
+  "logical_frames": [
+    32,
+    32
+  ],
+  "promotion": "NOT_APPROVED",
+  "golden_recipe_approvals": 0,
+  "static_master_approvals": 0,
+  "preflight": {
+    "comfy_server": "http://127.0.0.1:8188",
+    "workflow_validation": "PASS 4/4",
+    "partner_nodes": 0,
+    "spends_credits": false,
+    "diffusion_model_available": true,
+    "text_encoder_available": true,
+    "standard_vae_available": true,
+    "pixelate_x4_vae_available": true,
+    "vram_free_after_memory_release_bytes": 7385120768,
+    "preexisting_queue_count": 10,
+    "preexisting_queue_status": "queued records from 2026-09-28; status queries failed",
+    "safe_submission": "HOLD to avoid triggering or appending behind unrelated queued jobs",
+    "preexisting_queue_state": "all 10 cancellation acknowledgements succeeded; retained in history as cancelled"
+  },
+  "generation_requests_submitted": 4,
+  "generated_outputs": 4,
+  "regression_tests": {
+    "status": "PASS",
+    "passed": 207,
+    "failed": 0
+  },
+  "preexisting_queue_cancelled": 10,
+  "art_review": "PENDING"
+}
