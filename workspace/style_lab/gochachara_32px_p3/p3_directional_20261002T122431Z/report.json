@@ -1,0 +1,418 @@
+{
+  "status": "TRANSFORMED_TECH_QA_COMPLETE_ART_REVIEW_PENDING",
+  "generation": {
+    "limit": 4,
+    "submitted": 4,
+    "successful_images": 4,
+    "retries": 0,
+    "remaining": 0,
+    "matched_pairs": {
+      "G01_G02": {
+        "same_prompt": true,
+        "same_seed": true,
+        "same_settings": true,
+        "same_diffusion_and_encoder": true,
+        "intended_change": "VAE"
+      },
+      "G03_G04": {
+        "same_prompt": true,
+        "same_seed": true,
+        "same_settings": true,
+        "same_diffusion_and_encoder": true,
+        "intended_change": "VAE"
+      }
+    }
+  },
+  "samples": [
+    {
+      "id": "G01",
+      "character": "archer",
+      "vae": "standard",
+      "seed": 202610021,
+      "prompt_sha256": "14c7f1fdd0ce9ec3d4e73e2fe44b272a577923f1f22fc24b47c64836d7951fa2",
+      "settings": {
+        "width": 512,
+        "height": 512,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "denoise": 1.0
+      },
+      "models": {
+        "diffusion": {
+          "name": "anima-base-v1.0.safetensors",
+          "sha256": "BD43B7CFFE1ED1153D9C41E7BEB2F18CB1273EAFBAA3AF3EDD6A173DC90A006E"
+        },
+        "text_encoder": {
+          "name": "qwen_3_06b_base.safetensors",
+          "sha256": "CD2A512003E2F9F3CD3C32A9C3573F820BB28C940F73C57B1DDAA983D9223EBA"
+        },
+        "vae": {
+          "name": "qwen_image_vae.safetensors",
+          "sha256": "A70580F0213E67967EE9C95F05BB400E8FB08307E017A924BF3441223E023D1F"
+        }
+      },
+      "raw_sha256": "3ad21be81240b861db9c839268d349b3c6f7f3eb1ea39752858a0981f072f7b8",
+      "raw_size": [
+        512,
+        512
+      ],
+      "raw_mode": "RGB",
+      "raw_unique_rgb_colors": 10359,
+      "status": "ACTUAL_GENERATED",
+      "prompt_id": "83aacbc7-3b11-4386-9a13-8d2dd4656681"
+    },
+    {
+      "id": "G02",
+      "character": "archer",
+      "vae": "pixelate_x4",
+      "seed": 202610021,
+      "prompt_sha256": "14c7f1fdd0ce9ec3d4e73e2fe44b272a577923f1f22fc24b47c64836d7951fa2",
+      "settings": {
+        "width": 512,
+        "height": 512,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "denoise": 1.0
+      },
+      "models": {
+        "diffusion": {
+          "name": "anima-base-v1.0.safetensors",
+          "sha256": "BD43B7CFFE1ED1153D9C41E7BEB2F18CB1273EAFBAA3AF3EDD6A173DC90A006E"
+        },
+        "text_encoder": {
+          "name": "qwen_3_06b_base.safetensors",
+          "sha256": "CD2A512003E2F9F3CD3C32A9C3573F820BB28C940F73C57B1DDAA983D9223EBA"
+        },
+        "vae": {
+          "name": "pixelateX4VAEForAnima_animaV10.safetensors",
+          "sha256": "9A27E059E2831D43FC441FF9D6381294BE19A9449B6EAD5FFAB0F108182D067C"
+        }
+      },
+      "raw_sha256": "e69d5b942fe7d1cc93d10f013084f4326caea7414a2f4e9883f2f02a34a98091",
+      "raw_size": [
+        512,
+        512
+      ],
+      "raw_mode": "RGB",
+      "raw_unique_rgb_colors": 3822,
+      "status": "ACTUAL_GENERATED",
+      "prompt_id": "3c3a69b0-5ab6-4aa1-8317-d48930662cb7"
+    },
+    {
+      "id": "G03",
+      "character": "orc",
+      "vae": "standard",
+      "seed": 202610022,
+      "prompt_sha256": "8622c01175e7781071dc6919d103e2b140dd8c7e29e73c7580e3bbe7f8eabe3f",
+      "settings": {
+        "width": 512,
+        "height": 512,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "denoise": 1.0
+      },
+      "models": {
+        "diffusion": {
+          "name": "anima-base-v1.0.safetensors",
+          "sha256": "BD43B7CFFE1ED1153D9C41E7BEB2F18CB1273EAFBAA3AF3EDD6A173DC90A006E"
+        },
+        "text_encoder": {
+          "name": "qwen_3_06b_base.safetensors",
+          "sha256": "CD2A512003E2F9F3CD3C32A9C3573F820BB28C940F73C57B1DDAA983D9223EBA"
+        },
+        "vae": {
+          "name": "qwen_image_vae.safetensors",
+          "sha256": "A70580F0213E67967EE9C95F05BB400E8FB08307E017A924BF3441223E023D1F"
+        }
+      },
+      "raw_sha256": "bd977116a45e87b889526b57281d5226ba80a1be86a38c4ed45d0916bdad9f8f",
+      "raw_size": [
+        512,
+        512
+      ],
+      "raw_mode": "RGB",
+      "raw_unique_rgb_colors": 15799,
+      "status": "ACTUAL_GENERATED",
+      "prompt_id": "95363562-5653-4e5d-ac07-90b0db56a35d"
+    },
+    {
+      "id": "G04",
+      "character": "orc",
+      "vae": "pixelate_x4",
+      "seed": 202610022,
+      "prompt_sha256": "8622c01175e7781071dc6919d103e2b140dd8c7e29e73c7580e3bbe7f8eabe3f",
+      "settings": {
+        "width": 512,
+        "height": 512,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "denoise": 1.0
+      },
+      "models": {
+        "diffusion": {
+          "name": "anima-base-v1.0.safetensors",
+          "sha256": "BD43B7CFFE1ED1153D9C41E7BEB2F18CB1273EAFBAA3AF3EDD6A173DC90A006E"
+        },
+        "text_encoder": {
+          "name": "qwen_3_06b_base.safetensors",
+          "sha256": "CD2A512003E2F9F3CD3C32A9C3573F820BB28C940F73C57B1DDAA983D9223EBA"
+        },
+        "vae": {
+          "name": "pixelateX4VAEForAnima_animaV10.safetensors",
+          "sha256": "9A27E059E2831D43FC441FF9D6381294BE19A9449B6EAD5FFAB0F108182D067C"
+        }
+      },
+      "raw_sha256": "24fcc603312e878dd790398ab2c88c8d7f79ee29bdce61bc717c8a5f449d0ef6",
+      "raw_size": [
+        512,
+        512
+      ],
+      "raw_mode": "RGB",
+      "raw_unique_rgb_colors": 9202,
+      "status": "ACTUAL_GENERATED",
+      "prompt_id": "54ca7920-e2fe-4822-99c9-e62d3970bdf2"
+    }
+  ],
+  "direction_compliance": {
+    "status": "FAIL_VISUAL",
+    "requested": [
+      "south/front/down",
+      "west/profile/left",
+      "north/back/up"
+    ],
+    "observed": "three copies per sheet; effectively repeated front-facing orientation"
+  },
+  "transforms": {
+    "P1_candidates": 96,
+    "palette_caps": [
+      16,
+      32
+    ],
+    "orders": [
+      "NN then MedianCut",
+      "MedianCut then NN"
+    ],
+    "pixelOE_0": "NOT_AVAILABLE: schema min 1",
+    "pixelOE_2": "NOT_AVAILABLE: ModuleNotFoundError pixeloe.pixelize",
+    "pixelOE_attempted": 1,
+    "pixelOE_skipped": 11
+  },
+  "pixel_gate": {
+    "analyzer": "assetpipe._ported.pixel_gate.analyzer.analyze_image",
+    "same_existing_gate": true,
+    "max_colors": 32,
+    "gradient_threshold": 0.18,
+    "target_resolution": [
+      32,
+      32
+    ],
+    "candidate_count": 96,
+    "status_counts": {
+      "PASS": 88,
+      "REVIEW_REQUIRED": 8
+    },
+    "by_method_and_background": {
+      "P1_NN_THEN_MEDIANCUT_16|opaque_white": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 10,
+          "REVIEW_REQUIRED": 2
+        },
+        "visible_colors_min": 16,
+        "visible_colors_max": 16,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 21,
+        "four_neighbor_isolated_foreground_pixels": 0
+      },
+      "P1_NN_THEN_MEDIANCUT_16|binary_alpha": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 12
+        },
+        "visible_colors_min": 11,
+        "visible_colors_max": 16,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 0,
+        "four_neighbor_isolated_foreground_pixels": 0
+      },
+      "P1_MEDIANCUT_16_THEN_NN|opaque_white": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 10,
+          "REVIEW_REQUIRED": 2
+        },
+        "visible_colors_min": 15,
+        "visible_colors_max": 16,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 21,
+        "four_neighbor_isolated_foreground_pixels": 0
+      },
+      "P1_MEDIANCUT_16_THEN_NN|binary_alpha": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 12
+        },
+        "visible_colors_min": 12,
+        "visible_colors_max": 16,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 0,
+        "four_neighbor_isolated_foreground_pixels": 0
+      },
+      "P1_NN_THEN_MEDIANCUT_32|opaque_white": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 10,
+          "REVIEW_REQUIRED": 2
+        },
+        "visible_colors_min": 31,
+        "visible_colors_max": 32,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 21,
+        "four_neighbor_isolated_foreground_pixels": 0
+      },
+      "P1_NN_THEN_MEDIANCUT_32|binary_alpha": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 12
+        },
+        "visible_colors_min": 25,
+        "visible_colors_max": 31,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 0,
+        "four_neighbor_isolated_foreground_pixels": 0
+      },
+      "P1_MEDIANCUT_32_THEN_NN|opaque_white": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 10,
+          "REVIEW_REQUIRED": 2
+        },
+        "visible_colors_min": 31,
+        "visible_colors_max": 32,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 21,
+        "four_neighbor_isolated_foreground_pixels": 0
+      },
+      "P1_MEDIANCUT_32_THEN_NN|binary_alpha": {
+        "candidate_count": 12,
+        "pixel_gate_status": {
+          "PASS": 12
+        },
+        "visible_colors_min": 23,
+        "visible_colors_max": 32,
+        "gradient_levels": {
+          "LOW": 12
+        },
+        "aa_levels": {
+          "LOW": 12
+        },
+        "gate_isolated_silhouette_pixels": 0,
+        "four_neighbor_isolated_foreground_pixels": 0
+      }
+    },
+    "palette_order_pixel_differences": {
+      "16|opaque_white": {
+        "frames": 12,
+        "mean_different_rgb_pixels": 299.583,
+        "max_different_rgb_pixels": 423,
+        "total_different_rgb_pixels": 3595
+      },
+      "16|binary_alpha": {
+        "frames": 12,
+        "mean_different_rgb_pixels": 299.583,
+        "max_different_rgb_pixels": 423,
+        "total_different_rgb_pixels": 3595
+      },
+      "32|opaque_white": {
+        "frames": 12,
+        "mean_different_rgb_pixels": 297.417,
+        "max_different_rgb_pixels": 385,
+        "total_different_rgb_pixels": 3569
+      },
+      "32|binary_alpha": {
+        "frames": 12,
+        "mean_different_rgb_pixels": 297.417,
+        "max_different_rgb_pixels": 385,
+        "total_different_rgb_pixels": 3569
+      }
+    }
+  },
+  "alpha": {
+    "raw": "RGB; alpha absent",
+    "candidates": [
+      "opaque white matte",
+      "heuristic binary alpha"
+    ],
+    "mask": "edge-connected 4-neighbor flood fill, RGB channels >=235"
+  },
+  "visual_review": {
+    "bow": "visible at 32x32",
+    "orc": "broad shoulder silhouette retained at 32x32",
+    "distinct_directions": "not achieved",
+    "human_review": "PENDING"
+  },
+  "approval": {
+    "human": false,
+    "static_master_count": 0,
+    "golden_recipe_count": 0,
+    "promotion": false
+  },
+  "integration": {
+    "godot": "IN_GAME_NOT_RUN",
+    "aseprite": "NOT_RUN"
+  },
+  "regression_tests": {
+    "command": ".venv/Scripts/python.exe -m pytest",
+    "status": "PASS",
+    "passed": 207,
+    "failed": 0,
+    "duration_seconds": 94.51
+  },
+  "preexisting_comfy_queue": {
+    "cancelled": 10,
+    "confirmation": "all ten cancellation acknowledgements succeeded; queue records show cancelled and outputs=0"
+  }
+}

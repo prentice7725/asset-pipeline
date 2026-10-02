@@ -1,0 +1,194 @@
+[
+  {
+    "generation_id": "G01",
+    "view": "south_front",
+    "input_name": "G01_1_south_front.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G01_south_front_pixelOE2.json",
+    "workflow_sha256": "f497dc1829c0db96fc8774c895ff03e06867b90534662b15e6fcf71c5dbcbf20",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G01",
+    "view": "west_profile",
+    "input_name": "G01_2_west_profile.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G01_west_profile_pixelOE2.json",
+    "workflow_sha256": "9f406cab6745cfbfbbe8ed40dfeddb64410db41713ac032163c7948ae0b2ab0b",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G01",
+    "view": "north_back",
+    "input_name": "G01_3_north_back.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G01_north_back_pixelOE2.json",
+    "workflow_sha256": "2d9b6446563a62c5ed1b8a95d7c66592950599e1398d05e362c64114030e05da",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G02",
+    "view": "south_front",
+    "input_name": "G02_1_south_front.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G02_south_front_pixelOE2.json",
+    "workflow_sha256": "dc5b8c52cd897246ce609a28c6006347426cdcfa26d359029cc2ccd94324aa6f",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G02",
+    "view": "west_profile",
+    "input_name": "G02_2_west_profile.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G02_west_profile_pixelOE2.json",
+    "workflow_sha256": "b3287532d8982a57c06b980c578abb8c5cc497e7f2f362dc54406b5186298078",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G02",
+    "view": "north_back",
+    "input_name": "G02_3_north_back.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G02_north_back_pixelOE2.json",
+    "workflow_sha256": "31a1dc40feabfc73312de678a3185c5ac39442a2592c9383742d61dc696378d8",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G03",
+    "view": "south_front",
+    "input_name": "G03_1_south_front.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G03_south_front_pixelOE2.json",
+    "workflow_sha256": "695f0905dbe414e1baf0ec572f8c59ee553df2dde547e7609d85bc57b3ccce80",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G03",
+    "view": "west_profile",
+    "input_name": "G03_2_west_profile.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G03_west_profile_pixelOE2.json",
+    "workflow_sha256": "b4cdb881b99dd6b7a412153fad1c37f3370b5a84c3217a3de32a0c1f81222ab2",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G03",
+    "view": "north_back",
+    "input_name": "G03_3_north_back.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G03_north_back_pixelOE2.json",
+    "workflow_sha256": "6c5747b0d8da842aff04186bcd7bda05620b0a0053eeddeb8fd59a285d316ba8",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G04",
+    "view": "south_front",
+    "input_name": "G04_1_south_front.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G04_south_front_pixelOE2.json",
+    "workflow_sha256": "ec618110b4e708ec8846ad373aecff57abf357ab6b13fcfbc71e65641045e7af",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G04",
+    "view": "west_profile",
+    "input_name": "G04_2_west_profile.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G04_west_profile_pixelOE2.json",
+    "workflow_sha256": "dcd7e9757d4c71861c4dc80b6df6c2bb9e8611bf59f4d3c1fe9dd51af4b7c43a",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  },
+  {
+    "generation_id": "G04",
+    "view": "north_back",
+    "input_name": "G04_3_north_back.png",
+    "workflow": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixelOE_workflows\\G04_north_back_pixelOE2.json",
+    "workflow_sha256": "9fe0666272c954b0c2b0115f61dc1ce7f81eba36202229027507d9376b93f402",
+    "parameters": {
+      "downscale_mode": "contrast",
+      "target_size": 32,
+      "patch_size": 16,
+      "thickness": 2,
+      "color_matching": true,
+      "upscale": false
+    },
+    "workflow_type": "postprocess_only_no_generation"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "run_id": "p3_directional_20261002T122431Z",
+  "max_generation_requests": 4,
+  "reserved_generation_requests": 4,
+  "consumed_generation_requests": 4,
+  "remaining_generation_requests": 0,
+  "retry_or_fallback_allowed": false,
+  "user_authorized": true,
+  "scope": "G01-G04 only; local ComfyUI; each output is a three-direction sprite sheet",
+  "submission_status": "COMPLETE_G01_G04",
+  "current_request": "G04"
+}

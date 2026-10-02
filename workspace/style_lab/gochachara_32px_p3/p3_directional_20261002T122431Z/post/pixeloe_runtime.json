@@ -1,0 +1,26 @@
+{
+  "node": "PixelOEPixelize+",
+  "node_schema": {
+    "downscale_mode": "contrast",
+    "target_size": 32,
+    "patch_size": 16,
+    "thickness_min": 1,
+    "thickness_max": 16
+  },
+  "thickness_0": {
+    "status": "NOT_AVAILABLE",
+    "reason": "live schema minimum is 1"
+  },
+  "thickness_2": {
+    "status": "NOT_AVAILABLE",
+    "attempted": true,
+    "job_id": "64bff2ba-a473-4739-b408-de66c5761091",
+    "error_type": "ModuleNotFoundError",
+    "exact_error": "No module named 'pixeloe.pixelize'"
+  },
+  "attempted_jobs": 1,
+  "skipped_jobs": 11,
+  "retries": 0,
+  "dependency_install_attempted": false,
+  "DPID_PIA": "NOT_AVAILABLE; no in-scope implementation was preidentified; no extra search"
+}

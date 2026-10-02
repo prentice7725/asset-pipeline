@@ -1,0 +1,57 @@
+{
+  "id": "G03",
+  "character": "orc",
+  "vae": "standard",
+  "status": "ACTUAL_GENERATED",
+  "generation_attempts": 1,
+  "prompt": "pixel art, chunky sprite art, top-down fantasy RPG character sprite sheet, exactly three depictions of the same orc soldier arranged in a 2 by 2 layout: top-left facing down toward the viewer (south/front), top-right facing left (west/profile), bottom-left facing away/up (north/back), bottom-right cell empty white; each occupied cell contains one full-body view of the same character at matching scale, centered with clear white gutters, feet and all equipment fully visible; orc soldier with distinctly broad shoulders and a wide torso that cannot be mistaken for a human, simple short iron shoulder guards, plain brown leather armor and belt, a compact blunt weapon kept separate from the body; olive-green skin and muted brown/iron test-only neutral colors; orthographic top-down game sprite views, compact proportions, strong readable silhouette, large square pixel clusters, crisp hard pixel edges, limited flat colors, no anti-aliasing, plain pure white background, no cast shadow, no text, no labels, no cell borders, no scenery",
+  "negative_prompt": "photorealistic, realistic, 3d, smooth shading, gradients, anti-aliased edges, soft brush, painterly, multiple different characters, extra limbs, duplicate equipment, cropped body, out of frame, lettering, text, watermark, logo, border, grid lines, scenery, shadow",
+  "prompt_sha256": "8622c01175e7781071dc6919d103e2b140dd8c7e29e73c7580e3bbe7f8eabe3f",
+  "negative_prompt_sha256": "6b8cbf9a1689fb99b39d98774f70f81203042a6dbf2de97f56f21aeaca430a50",
+  "seed": 202610022,
+  "settings": {
+    "width": 512,
+    "height": 512,
+    "steps": 30,
+    "cfg": 4.0,
+    "sampler": "er_sde",
+    "scheduler": "simple",
+    "denoise": 1.0
+  },
+  "models": {
+    "diffusion": {
+      "name": "anima-base-v1.0.safetensors",
+      "sha256": "BD43B7CFFE1ED1153D9C41E7BEB2F18CB1273EAFBAA3AF3EDD6A173DC90A006E"
+    },
+    "text_encoder": {
+      "name": "qwen_3_06b_base.safetensors",
+      "sha256": "CD2A512003E2F9F3CD3C32A9C3573F820BB28C940F73C57B1DDAA983D9223EBA"
+    },
+    "vae": {
+      "name": "qwen_image_vae.safetensors",
+      "sha256": "A70580F0213E67967EE9C95F05BB400E8FB08307E017A924BF3441223E023D1F"
+    }
+  },
+  "workflow_source": "config/workflows/anima_mushroom_courier_production.json",
+  "workflow_source_sha256": "de1d031aad7181b96fc176f243a53ee7f4caf58e92c86023ee1be185c60e01a2",
+  "workflow_api_path": "workflow_api.json",
+  "workflow_api_sha256": "c9ce45a6b7bcb077c50d388fcd6a89703b0666985c0dd4f6c4a407cdcd94d4fc",
+  "output_prefix": "style_lab/p3_directional_20261002T122431Z/G03/raw",
+  "direction_layout": {
+    "top_left": "south/front/down",
+    "top_right": "west/profile/left",
+    "bottom_left": "north/back/up",
+    "bottom_right": "empty white cell",
+    "derived_frames": 3
+  },
+  "prompt_id": "95363562-5653-4e5d-ac07-90b0db56a35d",
+  "raw_png": "95363562_000.png",
+  "raw_sha256": "bd977116a45e87b889526b57281d5226ba80a1be86a38c4ed45d0916bdad9f8f",
+  "raw_size": [
+    512,
+    512
+  ],
+  "raw_mode": "RGB",
+  "raw_alpha": "absent",
+  "raw_unique_rgb_colors": 15799
+}

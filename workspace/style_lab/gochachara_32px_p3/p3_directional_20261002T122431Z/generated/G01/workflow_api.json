@@ -1,0 +1,101 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "anima-base-v1.0.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_06b_base.safetensors",
+      "type": "stable_diffusion",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "pixel art, chunky sprite art, top-down fantasy RPG character sprite sheet, exactly three depictions of the same human archer arranged in a 2 by 2 layout: top-left facing down toward the viewer (south/front), top-right facing left (west/profile), bottom-left facing away/up (north/back), bottom-right cell empty white; each occupied cell contains one full-body view of the same character at matching scale, centered with clear white gutters, feet and bow fully visible; human archer with a clearly readable simple wooden bow separated from the arms and body, broad simple bow silhouette, one short quiver, uncomplicated forest-green tunic, brown trousers and boots, modest leather shoulder protection, test-only neutral colors; orthographic top-down game sprite views, compact proportions, strong readable silhouette, large square pixel clusters, crisp hard pixel edges, limited flat colors, no anti-aliasing, plain pure white background, no cast shadow, no text, no labels, no cell borders, no scenery",
+      "clip": [
+        "2",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "photorealistic, realistic, 3d, smooth shading, gradients, anti-aliased edges, soft brush, painterly, multiple different characters, extra limbs, duplicate equipment, cropped body, out of frame, lettering, text, watermark, logo, border, grid lines, scenery, shadow",
+      "clip": [
+        "2",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 512,
+      "height": 512,
+      "batch_size": 1
+    }
+  },
+  "8": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "seed": 202610021,
+      "steps": 30,
+      "cfg": 4.0,
+      "sampler_name": "er_sde",
+      "scheduler": "simple",
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "7",
+        0
+      ],
+      "denoise": 1.0
+    }
+  },
+  "9": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "8",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "9",
+        0
+      ],
+      "filename_prefix": "style_lab/p3_directional_20261002T122431Z/G01/raw"
+    }
+  }
+}
