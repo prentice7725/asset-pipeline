@@ -1,0 +1,87 @@
+{
+  "status": "PASS_READ_ONLY_PRESERVATION_AND_ARTIFACT_INTEGRITY",
+  "new_generation_requests": 0,
+  "historical_generation_requests": 4,
+  "preserved_raw_images": [
+    {
+      "sample": "G01",
+      "path": "generated\\G01\\83aacbc7_000.png",
+      "sha256": "3ad21be81240b861db9c839268d349b3c6f7f3eb1ea39752858a0981f072f7b8",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB"
+    },
+    {
+      "sample": "G02",
+      "path": "generated\\G02\\3c3a69b0_000.png",
+      "sha256": "e69d5b942fe7d1cc93d10f013084f4326caea7414a2f4e9883f2f02a34a98091",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB"
+    },
+    {
+      "sample": "G03",
+      "path": "generated\\G03\\95363562_000.png",
+      "sha256": "bd977116a45e87b889526b57281d5226ba80a1be86a38c4ed45d0916bdad9f8f",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB"
+    },
+    {
+      "sample": "G04",
+      "path": "generated\\G04\\54ca7920_000.png",
+      "sha256": "24fcc603312e878dd790398ab2c88c8d7f79ee29bdce61bc717c8a5f449d0ef6",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB"
+    }
+  ],
+  "preserved_crop": {
+    "path": "post\\pixelOE_inputs\\G01_1_south_front.png",
+    "sha256": "c2d2b8f01210d8e80bc90057431318dcc2aab7fe703fc65c6d0182e2d02cbb65"
+  },
+  "preserved_baseline": {
+    "path": "post\\G01\\south_front\\P1_NN_THEN_MEDIANCUT_32\\32px_opaque_white.png",
+    "sha256": "3f5fac38ac12d0d5f04fbbfcaa3cf3f809768b0ce2d0d27dec2210225747ee73"
+  },
+  "parsed_recovery_json": [
+    "comparison_results.json",
+    "gate_p1_nn_mc32.json",
+    "gate_pixeloe_t0.json",
+    "gate_pixeloe_t2.json",
+    "pixeloe_environment_diagnosis.json",
+    "pixeloe_execution.json",
+    "preservation_verification.json"
+  ],
+  "verified_pixelOE_outputs": [
+    {
+      "path": "pixeloe_t0_32x32.png",
+      "size": [
+        32,
+        32
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "sha256": "8ef33d9879a6964269a93744e1886a1fe377c49ea3befd084bb76622f03b64b1"
+    },
+    {
+      "path": "pixeloe_t2_32x32.png",
+      "size": [
+        32,
+        32
+      ],
+      "format": "PNG",
+      "mode": "RGB",
+      "sha256": "94cedea5efcb7bac8e64eecf6ce0a4fd36c3924d153a9e24e9f6c1598041943f"
+    }
+  ],
+  "original_run_manifest_values_unchanged": true
+}

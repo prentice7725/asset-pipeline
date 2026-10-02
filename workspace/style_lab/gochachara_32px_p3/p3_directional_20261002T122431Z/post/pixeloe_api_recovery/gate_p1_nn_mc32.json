@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\G01\\south_front\\P1_NN_THEN_MEDIANCUT_32\\32px_opaque_white.png",
+  "resolution": {
+    "width": 32,
+    "height": 32,
+    "target_width": 32,
+    "target_height": 32,
+    "matches_target": true,
+    "interpolation_evidence": "LOW"
+  },
+  "alpha": {
+    "policy": "binary",
+    "transparent_pixels": 0,
+    "opaque_pixels": 1024,
+    "semi_transparent_pixels": 0,
+    "unique_alpha_values": [
+      255
+    ]
+  },
+  "palette": {
+    "unique_color_count": 32,
+    "max_colors": 32,
+    "color_budget_excess": 0,
+    "allowed_palette": null,
+    "off_palette_pixel_count": 0,
+    "off_palette_pixel_ratio": 0.0,
+    "distance_to_allowed_palette": {
+      "mean_nearest_rgb_distance": null,
+      "max_nearest_rgb_distance": null
+    }
+  },
+  "gradient_suspicion": {
+    "level": "LOW",
+    "unique_visible_colors": 32,
+    "small_rgb_step_ratio": 0.404372,
+    "small_rgb_step_edges": 222,
+    "differing_edges": 549,
+    "small_step_distance_threshold": 24
+  },
+  "anti_alias_suspicion": {
+    "level": "LOW",
+    "suspected_pixels": 0,
+    "edge_pixels_examined": 216,
+    "suspected_edge_pixel_ratio": 0.0,
+    "method": "rare intermediate colors on high-contrast local edges; heuristic"
+  },
+  "silhouette": {
+    "measurable": true,
+    "method": "border_color_inference",
+    "foreground_pixels": 312,
+    "connected_component_count": 2,
+    "largest_component_ratio": 0.9967948717948718,
+    "isolated_component_count": 1,
+    "isolated_pixel_count": 1,
+    "bounding_box": {
+      "x": 8,
+      "y": 2,
+      "width": 15,
+      "height": 28
+    }
+  },
+  "reasons": {
+    "failure": [],
+    "fix": [],
+    "review": []
+  },
+  "comparison_label": "P1 NN+MC32",
+  "sha256": "3f5fac38ac12d0d5f04fbbfcaa3cf3f809768b0ce2d0d27dec2210225747ee73",
+  "art_review": "PENDING",
+  "approval": "NOT_APPROVED"
+}

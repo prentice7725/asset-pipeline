@@ -1,0 +1,194 @@
+{
+  "experiment": "P3 PixelOE API recovery / one existing G01 south-front crop",
+  "source_raw": "generated\\G01\\83aacbc7_000.png",
+  "source_raw_sha256": "3ad21be81240b861db9c839268d349b3c6f7f3eb1ea39752858a0981f072f7b8",
+  "source_crop": "post\\pixelOE_inputs\\G01_1_south_front.png",
+  "source_crop_sha256": "c2d2b8f01210d8e80bc90057431318dcc2aab7fe703fc65c6d0182e2d02cbb65",
+  "new_generation_requests": 0,
+  "pixel_gate": {
+    "implementation": "assetpipe._ported.pixel_gate.analyzer.analyze_image",
+    "unchanged_thresholds": {
+      "max_colors": 32,
+      "gradient_threshold": 0.18,
+      "target_resolution": [
+        32,
+        32
+      ]
+    },
+    "results": [
+      {
+        "label": "P1 NN+MC32",
+        "path": "post\\G01\\south_front\\P1_NN_THEN_MEDIANCUT_32\\32px_opaque_white.png",
+        "sha256": "3f5fac38ac12d0d5f04fbbfcaa3cf3f809768b0ce2d0d27dec2210225747ee73",
+        "size": [
+          32,
+          32
+        ],
+        "unique_visible_colors": 32,
+        "alpha": {
+          "policy": "binary",
+          "transparent_pixels": 0,
+          "opaque_pixels": 1024,
+          "semi_transparent_pixels": 0,
+          "unique_alpha_values": [
+            255
+          ]
+        },
+        "gradient_suspicion": "LOW",
+        "anti_alias_suspicion": "LOW",
+        "silhouette": {
+          "measurable": true,
+          "method": "border_color_inference",
+          "foreground_pixels": 312,
+          "connected_component_count": 2,
+          "largest_component_ratio": 0.9967948717948718,
+          "isolated_component_count": 1,
+          "isolated_pixel_count": 1,
+          "bounding_box": {
+            "x": 8,
+            "y": 2,
+            "width": 15,
+            "height": 28
+          }
+        },
+        "pixel_gate_status": "PASS",
+        "pixel_gate_reasons": {
+          "failure": [],
+          "fix": [],
+          "review": []
+        },
+        "art_review": "PENDING",
+        "approval": "NOT_APPROVED"
+      },
+      {
+        "label": "PixelOE t0",
+        "path": "post\\pixeloe_api_recovery\\pixeloe_t0_32x32.png",
+        "sha256": "8ef33d9879a6964269a93744e1886a1fe377c49ea3befd084bb76622f03b64b1",
+        "size": [
+          32,
+          32
+        ],
+        "unique_visible_colors": 238,
+        "alpha": {
+          "policy": "binary",
+          "transparent_pixels": 0,
+          "opaque_pixels": 1024,
+          "semi_transparent_pixels": 0,
+          "unique_alpha_values": [
+            255
+          ]
+        },
+        "gradient_suspicion": "HIGH",
+        "anti_alias_suspicion": "HIGH",
+        "silhouette": {
+          "measurable": true,
+          "method": "border_color_inference",
+          "foreground_pixels": 292,
+          "connected_component_count": 2,
+          "largest_component_ratio": 0.9965753424657534,
+          "isolated_component_count": 1,
+          "isolated_pixel_count": 1,
+          "bounding_box": {
+            "x": 8,
+            "y": 3,
+            "width": 15,
+            "height": 27
+          }
+        },
+        "pixel_gate_status": "FAIL",
+        "pixel_gate_reasons": {
+          "failure": [
+            "unique colors exceed the configured budget (238 > 32)",
+            "high gradient suspicion from dense small RGB steps",
+            "high anti-alias suspicion on high-contrast edges"
+          ],
+          "fix": [],
+          "review": []
+        },
+        "art_review": "PENDING",
+        "approval": "NOT_APPROVED"
+      },
+      {
+        "label": "PixelOE t2",
+        "path": "post\\pixeloe_api_recovery\\pixeloe_t2_32x32.png",
+        "sha256": "94cedea5efcb7bac8e64eecf6ce0a4fd36c3924d153a9e24e9f6c1598041943f",
+        "size": [
+          32,
+          32
+        ],
+        "unique_visible_colors": 226,
+        "alpha": {
+          "policy": "binary",
+          "transparent_pixels": 0,
+          "opaque_pixels": 1024,
+          "semi_transparent_pixels": 0,
+          "unique_alpha_values": [
+            255
+          ]
+        },
+        "gradient_suspicion": "HIGH",
+        "anti_alias_suspicion": "HIGH",
+        "silhouette": {
+          "measurable": true,
+          "method": "border_color_inference",
+          "foreground_pixels": 541,
+          "connected_component_count": 2,
+          "largest_component_ratio": 0.7301293900184843,
+          "isolated_component_count": 0,
+          "isolated_pixel_count": 0,
+          "bounding_box": {
+            "x": 3,
+            "y": 3,
+            "width": 20,
+            "height": 26
+          }
+        },
+        "pixel_gate_status": "FAIL",
+        "pixel_gate_reasons": {
+          "failure": [
+            "unique colors exceed the configured budget (226 > 32)",
+            "high gradient suspicion from dense small RGB steps",
+            "high anti-alias suspicion on high-contrast edges"
+          ],
+          "fix": [],
+          "review": []
+        },
+        "art_review": "PENDING",
+        "approval": "NOT_APPROVED"
+      }
+    ],
+    "technical_pass_is_not_production_success": true
+  },
+  "contact_sheets": [
+    {
+      "path": "comparison_native_1x.png",
+      "size": [
+        227,
+        66
+      ],
+      "sha256": "0267dd6c1f97f21ac71a2e1be31b6c285e1c3b80d9887165e5a021e1989b20b6",
+      "panel_pixels": "native logical 32x32"
+    },
+    {
+      "path": "comparison_nearest_4x.png",
+      "size": [
+        416,
+        162
+      ],
+      "sha256": "796d0d836c588a5cd84448244ca6b7b3beed4dd24fdd922e1229aae2f0296413",
+      "panel_pixels": "integer nearest-neighbor 4x; display only"
+    }
+  ],
+  "review": {
+    "quality_validation": "FAILED_PENDING_HUMAN_REVIEW",
+    "semantic_art_review": "PENDING",
+    "static_master_approvals": 0,
+    "golden_recipe_approvals": 0
+  },
+  "limitations": [
+    "The source generation prompt requested a three-view sheet; repeated same-facing characters were observed in the raw output.",
+    "PixelOE outputs preserve the source RGB white matte; no alpha was synthesized.",
+    "The 4x sheet is display-only and was not used for measurements.",
+    "1x identity, equipment readability, semantic fidelity, silhouette quality and matte edge require human review."
+  ]
+}

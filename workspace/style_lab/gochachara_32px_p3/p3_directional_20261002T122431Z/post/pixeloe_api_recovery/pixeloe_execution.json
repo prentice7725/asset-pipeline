@@ -1,0 +1,99 @@
+{
+  "experiment": "P3 PixelOE API recovery; one existing human-archer south/front crop",
+  "status": "TRANSFORM_EXECUTION_PASS; quality_validation_failed; human_review_pending",
+  "new_image_generation_requests": 0,
+  "source": {
+    "generated_raw": "generated/G01/83aacbc7_000.png",
+    "generated_raw_sha256": "3ad21be81240b861db9c839268d349b3c6f7f3eb1ea39752858a0981f072f7b8",
+    "derived_input": "post/pixelOE_inputs/G01_1_south_front.png",
+    "derived_input_sha256": "c2d2b8f01210d8e80bc90057431318dcc2aab7fe703fc65c6d0182e2d02cbb65",
+    "derived_input_size": [
+      256,
+      256
+    ],
+    "lineage_bbox_xyxy_in_raw": [
+      106,
+      3,
+      176,
+      133
+    ],
+    "crop_policy": "aspect ratio preserved; contain to 224x224; centered in 256x256; no crop",
+    "input_color_mode": "RGB; no alpha channel; opaque white background"
+  },
+  "runtime": {
+    "python": "3.13.12",
+    "python_executable": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Installs\\ComfyUI\\ComfyUI\\.venv\\Scripts\\python.exe",
+    "torch": "2.12.1+cu130",
+    "torch_cuda": "13.0",
+    "cuda_device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "pixeloe_version": "1.0.0",
+    "pixeloe_api": "pixeloe.torch.pixelize.pixelize",
+    "pixeloe_api_source": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Installs\\ComfyUI\\ComfyUI\\.venv\\Lib\\site-packages\\pixeloe\\torch\\pixelize.py",
+    "pixeloe_api_source_sha256": "7c333671c8311d3c4922cd714498138c31374d38f08a73b94e0073c169382e76",
+    "backend": "torch on CUDA; Slang backend explicitly bypassed"
+  },
+  "parameters": {
+    "target_size": 32,
+    "patch_size": 16,
+    "pre_resize": "official pre_resize; bicubic; target_size=32; patch_size=16",
+    "downscale_mode": "contrast",
+    "color_matching": true,
+    "quantization": false,
+    "upscale": false,
+    "pixel_size": 16,
+    "thickness_values": [
+      0,
+      2
+    ],
+    "output_size": [
+      32,
+      32
+    ],
+    "output_background": "opaque white inherited from RGB input; no alpha synthesis",
+    "stochastic_seed": "not_applicable; deterministic image-processing path"
+  },
+  "outputs": [
+    {
+      "thickness": 0,
+      "status": "EXECUTED",
+      "path": "pixeloe_t0_32x32.png",
+      "sha256": "8ef33d9879a6964269a93744e1886a1fe377c49ea3befd084bb76622f03b64b1",
+      "format": "PNG",
+      "size": [
+        32,
+        32
+      ],
+      "mode": "RGB",
+      "alpha": "absent; source crop is RGB on opaque white",
+      "unique_rgb_colors": 238,
+      "pixels_not_exact_rgb_white": 1024,
+      "unique_rgb_colors_on_outer_border": 1,
+      "pure_white_count_is_not_a_silhouette_measure": true,
+      "elapsed_seconds": 15.621755
+    },
+    {
+      "thickness": 2,
+      "status": "EXECUTED",
+      "path": "pixeloe_t2_32x32.png",
+      "sha256": "94cedea5efcb7bac8e64eecf6ce0a4fd36c3924d153a9e24e9f6c1598041943f",
+      "format": "PNG",
+      "size": [
+        32,
+        32
+      ],
+      "mode": "RGB",
+      "alpha": "absent; source crop is RGB on opaque white",
+      "unique_rgb_colors": 226,
+      "pixels_not_exact_rgb_white": 541,
+      "unique_rgb_colors_on_outer_border": 1,
+      "pure_white_count_is_not_a_silhouette_measure": true,
+      "elapsed_seconds": 0.169762
+    }
+  ],
+  "approval": {
+    "pixel_gate_is_technical_only": true,
+    "semantic_art_review": "PENDING",
+    "static_master_approved": false,
+    "golden_recipe_approved": false
+  }
+}
