@@ -1,0 +1,76 @@
+{
+  "status": "FAIL",
+  "image": "C:\\workspace\\asset-pipeline\\workspace\\style_lab\\gochachara_32px_p3\\p3_directional_20261002T122431Z\\post\\pixeloe_api_recovery\\pixeloe_t0_32x32.png",
+  "resolution": {
+    "width": 32,
+    "height": 32,
+    "target_width": 32,
+    "target_height": 32,
+    "matches_target": true,
+    "interpolation_evidence": "HIGH"
+  },
+  "alpha": {
+    "policy": "binary",
+    "transparent_pixels": 0,
+    "opaque_pixels": 1024,
+    "semi_transparent_pixels": 0,
+    "unique_alpha_values": [
+      255
+    ]
+  },
+  "palette": {
+    "unique_color_count": 238,
+    "max_colors": 32,
+    "color_budget_excess": 206,
+    "allowed_palette": null,
+    "off_palette_pixel_count": 0,
+    "off_palette_pixel_ratio": 0.0,
+    "distance_to_allowed_palette": {
+      "mean_nearest_rgb_distance": null,
+      "max_nearest_rgb_distance": null
+    }
+  },
+  "gradient_suspicion": {
+    "level": "HIGH",
+    "unique_visible_colors": 238,
+    "small_rgb_step_ratio": 0.475358,
+    "small_rgb_step_edges": 299,
+    "differing_edges": 629,
+    "small_step_distance_threshold": 24
+  },
+  "anti_alias_suspicion": {
+    "level": "HIGH",
+    "suspected_pixels": 81,
+    "edge_pixels_examined": 221,
+    "suspected_edge_pixel_ratio": 0.366516,
+    "method": "rare intermediate colors on high-contrast local edges; heuristic"
+  },
+  "silhouette": {
+    "measurable": true,
+    "method": "border_color_inference",
+    "foreground_pixels": 292,
+    "connected_component_count": 2,
+    "largest_component_ratio": 0.9965753424657534,
+    "isolated_component_count": 1,
+    "isolated_pixel_count": 1,
+    "bounding_box": {
+      "x": 8,
+      "y": 3,
+      "width": 15,
+      "height": 27
+    }
+  },
+  "reasons": {
+    "failure": [
+      "unique colors exceed the configured budget (238 > 32)",
+      "high gradient suspicion from dense small RGB steps",
+      "high anti-alias suspicion on high-contrast edges"
+    ],
+    "fix": [],
+    "review": []
+  },
+  "comparison_label": "PixelOE t0",
+  "sha256": "8ef33d9879a6964269a93744e1886a1fe377c49ea3befd084bb76622f03b64b1",
+  "art_review": "PENDING",
+  "approval": "NOT_APPROVED"
+}
