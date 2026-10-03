@@ -63,9 +63,12 @@ def from_brief(brief):
 
 def natural_language_prompt(brief, spec):
     """CLI 이미지 도구용 자연어 프롬프트. 정본·시각 특징·스타일·실루엣·금지 요소를 항목별로 모두 보존한다."""
-    canonical = list(brief['identity']['canonical_traits'])
+    equipment = spec.get('subject_integrity', {}).get('equipment', [])
+    equipment_traits = {item['source_trait'].casefold() for item in equipment}
+    canonical = [v for v in brief['identity']['canonical_traits'] if v.casefold() not in equipment_traits]
     silhouette = brief['constraints'].get('silhouette')
-    appearance = [v for v in spec.get('appearance', []) if v not in canonical]
+    appearance = [v for v in spec.get('appearance', [])
+                  if v not in brief['identity']['canonical_traits'] and v.casefold() not in equipment_traits]
     other = [v for v in spec.get('constraints', []) if v != silhouette]
     rows = [('Subject', [spec['subject']]),
             ('Canonical traits (keep exactly as written; do not change, add to, or reinterpret)', canonical),
@@ -78,6 +81,11 @@ def natural_language_prompt(brief, spec):
         rows.append(('Aspect ratio', [spec['aspectRatio']]))
     if spec.get('textInImage'):
         rows.append(('Text to render in the image', [json.dumps(t, ensure_ascii=False) for t in spec['textInImage']]))
+    if equipment:
+        rows.append(('Equipment relationships (preserve the source-defined relationship and count)',
+                     [f"{item['source_trait']} ({item['relationship']}" +
+                      (f", visible count of {item['visible_count']}" if item.get('visible_count') else '') + ')'
+                      for item in equipment]))
     lines = [f'{label}: ' + '; '.join(dict.fromkeys(values)) for label, values in rows if values]
     if spec.get('negative'):
         lines.append('Strictly do not include any of the following: ' + '; '.join(dict.fromkeys(spec['negative'])) + '.')
@@ -119,7 +127,11 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         raise ValueError('Selected workflow does not support negative prompts')
     if spec.get('textInImage') and not caps.get('text_rendering'):
         raise ValueError('Selected workflow has no validated text rendering capability')
-    fields = [spec['subject'], *spec.get('appearance', [])]
+    equipment = spec.get('subject_integrity', {}).get('equipment', [])
+    equipment_traits = {item['source_trait'].casefold() for item in equipment}
+    appearance = [value for value in spec.get('appearance', [])
+                  if value.casefold() not in equipment_traits]
+    fields = [spec['subject'], *appearance]
     fields += [spec[key] for key in ('pose', 'composition', 'environment', 'lighting', 'mood') if spec.get(key)]
     fields += spec.get('style', []) + [row['description'] for row in spec.get('styleSources', [])] + spec.get('constraints', [])
     fields = list(dict.fromkeys(fields))
@@ -133,6 +145,11 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         raise ValueError('Prompt adapter is not installed: ' + adapter)
     if spec.get('subject_integrity'):
         positive = subject_lead(spec, adapter) + '\n' + positive
+        if adapter != 'natural_language' and equipment:
+            positive += '\nEquipment relationships (preserve the source-defined relationship and count): ' + '; '.join(
+                f"{item['source_trait']} ({item['relationship']}" +
+                (f", visible count of {item['visible_count']}" if item.get('visible_count') else '') + ')'
+                for item in equipment) + '.'
         tail = direction_tail(spec)
         if tail:
             positive += '\n' + tail
