@@ -11,6 +11,11 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory')
     parser.add_argument('--root', type=Path, default=Path.cwd(), help='Repository/config root')
     commands = parser.add_subparsers(dest='command', required=True)
+    visual = commands.add_parser('visual-review', help='Create advisory previews for an existing technically passing candidate; no generation or approval')
+    visual.add_argument('--run', required=True, type=Path)
+    visual.add_argument('--image', type=Path, help='Select one output when the manifest has multiple outputs')
+    visual.add_argument('--display-size', nargs=2, type=int, metavar=('WIDTH', 'HEIGHT'))
+    visual.add_argument('--matte', nargs=3, type=int, default=(255, 255, 255), metavar=('R', 'G', 'B'))
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -68,7 +73,10 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'mining':
+        if args.command == 'visual-review':
+            from ..visual_review import build_review
+            print(build_review(args.run, image=args.image, display_size=args.display_size, matte=args.matte))
+        elif args.command == 'mining':
             from ..prompt_mining import load_candidates, library, compile_candidate, normalize_civitai
             if args.mining_command == 'validate':
                 candidates = load_candidates(args.root, args.candidates)

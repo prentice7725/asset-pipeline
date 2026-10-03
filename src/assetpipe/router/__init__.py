@@ -30,10 +30,16 @@ def route(brief, registry, root=None):
     if brief['constraints']['transparency'] is True and brief['output_class'] == 'NONPIXEL_IMAGE':
         required.append('transparent_output')
     spec = brief.get('prompt_spec', {})
+    subject_spec = None
+    if spec.get('subject_integrity') or spec.get('art_direction'):
+        from ..prompts import from_brief
+        subject_spec = from_brief(brief)
     if spec.get('textInImage'):
         required.append('text_rendering')
     if (brief.get('negative_prompt') or brief['forbidden_elements'] or spec.get('negative')) and brief['output_class'] in {'NONPIXEL_IMAGE', 'PIXEL_STATIC', 'SFX'}:
         required.append('negative_prompt')
+    if spec.get('subject_integrity', {}).get('forbidden_substitutions'):
+        required.append('native_subject_negative')
     if brief['constraints']['resolution'] and brief['output_class'] == 'NONPIXEL_IMAGE':
         # 정확한 해상도를 보장하지 못하는 provider로 보내면 과금 후 QA에서 반드시 실패하므로 미리 차단한다.
         required.append('exact_resolution')
@@ -44,7 +50,7 @@ def route(brief, registry, root=None):
         reason = None
         if item['output_class'] != brief['output_class']:
             reason = 'output_class mismatch'
-        elif any(not satisfied(item['capabilities'], cap) for cap in required):
+        elif any(not (item['capabilities'].get('negative_prompt') if cap == 'native_subject_negative' else satisfied(item['capabilities'], cap)) for cap in required):
             reason = 'required capabilities unavailable: ' + ', '.join(required)
         elif item['status'] == 'REJECTED':
             reason = 'REJECTED workflow'
@@ -70,6 +76,18 @@ def route(brief, registry, root=None):
         raise ValueError(f'No compatible workflow: {rejections.get(requested, rejections)}')
     candidates.sort(key=lambda row: (0 if row[0] == requested else 1, -len(row[2]), -row[1].get('priority', 0), row[0]))
     key, item, matching = candidates[0]
+    if subject_spec is not None and root is not None:
+        from ..prompts import compile_spec
+        from ..styles import apply_style
+        selected_style = recipes.get(key)
+        compile_spec(brief, item, root, apply_style(subject_spec, selected_style), style_context=selected_style)
+    intent = None
+    if 'art_direction' in brief:
+        from ..art_direction import apply_intent
+        from ..prompts import from_brief
+        from ..styles import apply_style
+        selected_style = recipes.get(key)
+        _, intent = apply_intent(brief, apply_style(from_brief(brief), selected_style), selected_style)
     decision = {'selected_workflow': key, 'output_class': brief['output_class'], 'matching_tags': matching,
         'selection_reason': 'explicit compatible workflow' if requested else 'ACTIVE capability match, tags, priority',
         'fallback_candidates': [row[0] for row in candidates[1:]], 'rejected_candidates': rejections,
@@ -77,4 +95,6 @@ def route(brief, registry, root=None):
     if style:
         decision['style_selection'] = public_selection(recipes[key])
         decision['selection_reason'] = recipes[key]['reason'] + '; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults'
+    if intent:
+        decision['art_direction'] = intent
     return decision

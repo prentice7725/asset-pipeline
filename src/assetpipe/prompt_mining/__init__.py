@@ -138,7 +138,7 @@ def compile_candidate(root, candidate_id, brief, workflow_id, *, candidates=None
         if workflow.get('model_profile') not in {'anima-base', 'anima-tomohi', 'anima-pixel'}:
             raise ValueError('Foreign model tags cannot pass to natural-language adapters')
         spec['style'] += [tag.lower().replace('_', ' ') for tag in recipe['tags']]
-    result = compile_spec(selected, workflow, root, spec, preserve_case=True)
+    result = compile_spec(selected, workflow, root, spec, preserve_case=True, style_context=style)
     result['workflow_inputs'] = workflow_values(result, workflow, selected)
     result['mining'] = {'candidate_id': candidate_id, 'candidate_sha256': digest(candidate),
         'style_id': style['style_id'], 'style_sha256': style['style_sha256'], 'style_source': style['selection_source'],

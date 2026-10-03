@@ -34,3 +34,10 @@ quality scores or evidence; M2 tests cannot replace provider real-generation E2E
 The user-authorized M2.6 milestone permits offline prompt mining, candidate recipes and source analysis. Read docs/style/PROMPT_MINING_METHOD.md and RECIPE_VALIDATION.md. Submit zero generations in this milestone; M2.5 real image and full pipeline validation follows with a separately authorized budget. Preserve production defaults, six MCP contracts, legacy pixel baseline and all review gates.
 
 The user-authorized M2.5 resumption permits existing-candidate static revalidation and a resumable local style lab. Separate historical equivalence from current approved-master E2E. Never synthesize human Aseprite review; stop at REVIEW_REQUIRED until actual approval. The initial 12-sample PIXEL_STATIC/NONPIXEL_IMAGE cohort executes independently through its own model/workflow preflight and output-specific QA, with persistent pre-reserved budget and no retries or fallback. Only PIXEL_ANIMATION E2E requires a currently approved compatible Static Master. Preserve explicit legacy art rejection and never promote the legacy fixture. Read docs/style/M25_BLOCKER.md.
+
+The user-authorized M2.7 subject-first Visual Hierarchy change is NONPIXEL_IMAGE
+offline Gate A only. Read docs/style/M27_SUBJECT_FIRST.md. Integrate explicit
+subject integrity and art direction through the existing PromptSpec compiler,
+M2 styles and M2.6 mining path. Preserve canon, camera, counts, style fingerprints,
+all QA/review gates and six MCP contracts. Generate zero images; Gate B needs a
+separate request budget. Stop at OFFLINE_CONTRACT_PASS / GENERATION_NOT_RUN.

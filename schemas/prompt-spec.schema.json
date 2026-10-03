@@ -6,6 +6,139 @@
     "subject"
   ],
   "properties": {
+    "subject_integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class",
+        "identity_source"
+      ],
+      "properties": {
+        "class": {
+          "enum": [
+            "full_character",
+            "costume_item",
+            "prop",
+            "environment"
+          ]
+        },
+        "identity_source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "whole_subject_required": {
+          "type": "boolean"
+        },
+        "physically_connected_body": {
+          "type": "boolean"
+        },
+        "mandatory_parts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "camera_view": {
+          "enum": [
+            "from_source",
+            "front",
+            "rear",
+            "left",
+            "right"
+          ]
+        },
+        "equipment": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_trait",
+              "relationship"
+            ],
+            "properties": {
+              "source_trait": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relationship": {
+                "enum": [
+                  "worn",
+                  "carried"
+                ]
+              },
+              "visible_count": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "location": {
+                "enum": [
+                  "unspecified",
+                  "front",
+                  "rear",
+                  "left",
+                  "right"
+                ]
+              }
+            }
+          }
+        },
+        "forbidden_substitutions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "art_direction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "focal_target",
+        "source"
+      ],
+      "properties": {
+        "focal_target": {
+          "enum": [
+            "full_character",
+            "costume_item",
+            "prop",
+            "environment"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "style_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "value_grouping": {
+          "const": "large_coherent_masses"
+        },
+        "shadow_grouping": {
+          "const": "broad_connected_shadows"
+        },
+        "background_texture": {
+          "const": "subordinate"
+        },
+        "subject_texture": {
+          "const": "selective_detail"
+        },
+        "silhouette_contrast": {
+          "const": "strong"
+        },
+        "preserve_scene_landmarks": {
+          "const": true
+        }
+      }
+    },
     "subject": {
       "type": "string",
       "minLength": 1

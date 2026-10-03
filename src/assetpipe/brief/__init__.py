@@ -3,6 +3,7 @@ import json
 import yaml
 from jsonschema import Draft202012Validator
 from ..prompts import SCHEMA as PROMPT_SPEC_SCHEMA
+from ..art_direction import SCHEMA as ART_DIRECTION_SCHEMA
 
 OUTPUT_CLASSES = ['PIXEL_STATIC', 'PIXEL_ANIMATION', 'NONPIXEL_IMAGE', 'NONPIXEL_ANIMATION', 'SFX']
 STRINGS = {'type': 'array', 'items': {'type': 'string'}}
@@ -10,6 +11,7 @@ def obj(properties, required=()):
     return {'type': 'object', 'properties': properties, 'required': list(required), 'additionalProperties': False}
 
 SCHEMA = obj({
+    'art_direction': ART_DIRECTION_SCHEMA,
     'style_id': {'type': 'string', 'pattern': '^[a-z0-9][a-z0-9_-]{0,63}$'},
     'project_id': {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'},
     'asset_id': {'type': 'string', 'pattern': '^[A-Za-z0-9_-]+$'},
@@ -33,6 +35,13 @@ def validate(brief):
     errors = sorted(Draft202012Validator(SCHEMA).iter_errors(brief), key=lambda e: str(e.path))
     if errors:
         raise ValueError('; '.join(f'{".".join(map(str, e.path)) or "brief"}: {e.message}' for e in errors))
+    if 'art_direction' in brief and brief['output_class'] != 'NONPIXEL_IMAGE':
+        raise ValueError('Art direction supports NONPIXEL_IMAGE only')
+    if brief.get('prompt_spec', {}).get('subject_integrity') or brief.get('prompt_spec', {}).get('art_direction'):
+        from ..prompts import from_brief
+        if 'art_direction' in brief:
+            raise ValueError('Use structured PromptSpec direction or legacy brief focal intent separately')
+        from_brief(brief)
     project = brief.get('project_id', 'default')
     if project.upper() in {'CON', 'PRN', 'AUX', 'NUL', *[f'COM{i}' for i in range(10)], *[f'LPT{i}' for i in range(10)]}:
         raise ValueError('project_id cannot be a reserved Windows directory name')
