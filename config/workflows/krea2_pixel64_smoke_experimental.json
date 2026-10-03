@@ -1,0 +1,149 @@
+{
+  "10": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "krea2_turbo_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "11": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_4b_fp8_scaled.safetensors",
+      "type": "krea2",
+      "device": "default"
+    }
+  },
+  "12": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "One human archer standing still, front view, full body, centered on a plain white background. A compact fantasy game character with short brown hair, a simple green tunic, brown trousers and brown boots, holding one wooden bow at the side, with a quiver on the back. Both hands and both feet visible. One character only, a single view, clean readable silhouette, simple distinct color clusters.",
+      "clip": [
+        "11",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": [
+        "6",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "15": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "10",
+        0
+      ],
+      "lora_name": "k2-pixel64.safetensors",
+      "strength_model": 1.0
+    }
+  },
+  "22": {
+    "class_type": "ComfySwitchNode",
+    "inputs": {
+      "switch": true,
+      "on_false": [
+        "10",
+        0
+      ],
+      "on_true": [
+        "15",
+        0
+      ]
+    }
+  },
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "22",
+        0
+      ],
+      "seed": 7725,
+      "steps": 8,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "13",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ],
+      "denoise": 1.0
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "12",
+        0
+      ]
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ],
+      "filename_prefix": "assetpipe/krea2_pixel64_smoke_20261003/raw"
+    }
+  },
+  "30": {
+    "class_type": "Krea2PixelArtRefiner",
+    "inputs": {
+      "image": [
+        "8",
+        0
+      ],
+      "width": 64,
+      "height": 64,
+      "colors": 24,
+      "color_reduction_first": true,
+      "scale_to_original": false
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ],
+      "filename_prefix": "assetpipe/krea2_pixel64_smoke_20261003/refined"
+    }
+  }
+}
