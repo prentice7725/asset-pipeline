@@ -166,10 +166,6 @@ def subject_lead(spec, adapter):
             lead += ' Show the whole subject.'
     if integrity.get('mandatory_parts'):
         lead += ' Keep these source-required parts present and connected: ' + ', '.join(integrity['mandatory_parts']) + '.'
-    for item in integrity.get('equipment', []):
-        lead += f" Equipment {item['relationship']} by this character: {item['source_trait']}."
-        if item.get('visible_count'):
-            lead += f" Preserve the explicitly required visible count of {item['visible_count']} for that equipment."
     if spec.get('pose'):
         lead += ' Source action and pose: ' + spec['pose'].rstrip('. ') + '.'
     lead += ' Preserve the source-defined camera view.'
