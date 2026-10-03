@@ -6,12 +6,15 @@ import re
 from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
+from .subject_contract import INTEGRITY_SCHEMA, DIRECTION_SCHEMA, validate_contract, prepare_spec, subject_lead, direction_tail
 
 LIST = {'type': 'array', 'items': {'type': 'string', 'minLength': 1}}
 SCHEMA = {
     '$schema': 'https://json-schema.org/draft/2020-12/schema', 'type': 'object',
     'additionalProperties': False, 'required': ['subject'],
     'properties': {
+        'subject_integrity': INTEGRITY_SCHEMA,
+        'art_direction': DIRECTION_SCHEMA,
         **{key: {'type': 'string', 'minLength': 1} for key in ('subject', 'pose', 'composition', 'environment', 'lighting', 'mood')},
         **{key: LIST for key in ('appearance', 'style', 'constraints', 'negative', 'textInImage')},
         'aspectRatio': {'type': 'string', 'pattern': '^[1-9][0-9]*:[1-9][0-9]*$'},
@@ -27,6 +30,7 @@ def validate_spec(spec):
     Draft202012Validator(SCHEMA).validate(spec)
     if not spec['subject'].strip():
         raise ValueError('PromptSpec subject must not be empty')
+    validate_contract(spec, check_style=False)
     return spec
 
 
@@ -53,6 +57,7 @@ def from_brief(brief):
     if brief.get('negative_prompt'):
         negative.append(brief['negative_prompt'])
     spec['negative'] = list(dict.fromkeys(spec.get('negative', []) + negative))
+    validate_contract(spec, brief, check_style=False)
     return validate_spec(spec)
 
 
@@ -86,13 +91,17 @@ def compile_prompt(brief, workflow, root):
     explicit = brief['workflow_preferences'].get('id') == workflow['id'] or brief['workflow_preferences'].get('model_profile') == workflow.get('model_profile')
     selection = select_recipe(selection, workflow, root, explicit=explicit)
     spec = validate_spec(apply_style(spec, selection))
-    result = compile_spec(brief, workflow, root, spec, preserve_case=bool(selection))
+    from ..art_direction import apply_intent
+    spec, intent = apply_intent(brief, spec, selection)
+    result = compile_spec(brief, workflow, root, spec, preserve_case=bool(selection), style_context=selection)
+    if intent:
+        result['art_direction'] = intent
     if selection:
         result['style_selection'] = public_selection(selection)
     return result
 
 
-def compile_spec(brief, workflow, root, spec, *, preserve_case=False):
+def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_context=None):
     """Shared dialect compiler for validated offline specs; performs no routing or generation."""
     profiles = yaml.safe_load((Path(root) / 'config/model_profiles.yaml').read_text(encoding='utf-8'))
     profile_id = workflow.get('model_profile')
@@ -101,6 +110,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False):
     profile = profiles['profiles'][profile_id]
     spec = validate_spec(spec)
     caps = workflow['capabilities']
+    spec = prepare_spec(spec, brief, caps, style_context)
     adapter = profile['prompt_adapter']
     native_negative = bool(caps.get('negative_prompt'))
     # 자연어 금지 지시는 프롬프트 안의 문장일 뿐 모델이 보장하지 않으므로, 네이티브 negative prompt와 구분한다.
@@ -121,6 +131,11 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False):
         positive = '. '.join(value.rstrip('. ') for value in fields) + '.'
     else:
         raise ValueError('Prompt adapter is not installed: ' + adapter)
+    if spec.get('subject_integrity'):
+        positive = subject_lead(spec, adapter) + '\n' + positive
+        tail = direction_tail(spec)
+        if tail:
+            positive += '\n' + tail
     if spec.get('textInImage') and adapter != 'natural_language':
         positive += ' Text in the image: ' + ', '.join(json.dumps(t, ensure_ascii=False) for t in spec['textInImage']) + '.'
     negative_mode = 'NONE' if not spec.get('negative') else 'NATURAL_LANGUAGE_INSTRUCTION' if instructed_negative else 'NATIVE'
@@ -129,6 +144,14 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False):
             'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(spec.get('negative', [])),
             'negative_mode': negative_mode, 'negative_instruction': list(spec.get('negative', [])) if instructed_negative else [],
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
+    if spec.get('subject_integrity'):
+        result['subject_contract_review'] = {'semantic': 'NOT_VALIDATED', 'composition': 'NOT_VALIDATED',
+            'art': 'NOT_VALIDATED', 'human_review': 'REVIEW_REQUIRED',
+            'identity_source': spec['subject_integrity']['identity_source'],
+            'style_fingerprint_binding': spec.get('art_direction', {}).get('style_sha256'),
+            'approval_effect': 'NONE'}
+        from .subject_contract import assessment_limits
+        result['subject_contract_review']['assessment_limits'] = assessment_limits(spec)
     return result
 
 

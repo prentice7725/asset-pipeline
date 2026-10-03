@@ -397,3 +397,9 @@ Codex와 Claude Code는 동일한 플러그인 스킬을 사용합니다.
 ## M2.6 offline recipe research
 
 See [prompt mining method](docs/style/PROMPT_MINING_METHOD.md) and [M2.5 validation handoff](docs/style/RECIPE_VALIDATION.md). `assetpipe mining` validates saved public metadata or compiles candidates without generation. Candidate recipes do not become production defaults.
+# Advisory visual hierarchy
+
+Existing technically passing static candidates can receive reproducible review
+previews with `assetpipe visual-review --run <run-directory>`. Optional prepared
+NONPIXEL_IMAGE briefs can declare focal intent. These features never approve an
+asset; see [scope, conflict handling and usage](docs/style/VISUAL_HIERARCHY.md).

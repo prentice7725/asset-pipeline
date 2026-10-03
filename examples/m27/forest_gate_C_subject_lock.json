@@ -1,0 +1,111 @@
+{
+  "asset_id": "hierarchy_forest_gate",
+  "asset_type": "character",
+  "output_class": "NONPIXEL_IMAGE",
+  "purpose": "Synthetic character-in-environment visual hierarchy comparison; not project canon",
+  "source": {
+    "type": "PROMPT",
+    "paths": [],
+    "references": []
+  },
+  "identity": {
+    "canonical_traits": [
+      "blue tunic",
+      "visible insignia",
+      "six belt pouches"
+    ],
+    "visual_traits": [
+      "wooden gate",
+      "small red warning flag attached to the gate"
+    ]
+  },
+  "constraints": {
+    "resolution": [
+      1024,
+      1024
+    ],
+    "transparency": false,
+    "palette": [],
+    "silhouette": null,
+    "style": null
+  },
+  "animation": {
+    "action": null,
+    "frame_target": null,
+    "motion_constraints": []
+  },
+  "workflow_preferences": {
+    "id": "anima_base"
+  },
+  "forbidden_elements": [],
+  "unspecified_elements": [
+    "project canon",
+    "approved style",
+    "game display context"
+  ],
+  "source_notes": [
+    {
+      "classification": "EXPLICIT",
+      "text": "Compare a character together with a background",
+      "source": "User request in current chat"
+    },
+    {
+      "classification": "DERIVED",
+      "text": "Synthetic forest gate and market scene designs proposed by the agent; not approved project canon",
+      "source": "Local comparison proposal"
+    },
+    {
+      "classification": "DERIVED",
+      "text": "M2.7 full-character connection lock; original camera unspecified and unchanged; fixture only, not project canon",
+      "source": "Current user-authorized M2.7 directive"
+    }
+  ],
+  "prompt": "One fantasy scout wearing a blue tunic with a visible insignia and six belt pouches",
+  "prompt_spec": {
+    "subject": "One fantasy scout wearing a blue tunic with a visible insignia and six belt pouches",
+    "environment": "A forest path leading to a wooden gate, with weathered planks, scattered stones, grass, distant trees and a small red warning flag attached to the gate. The gate and red warning flag must remain visible.",
+    "constraints": [
+      "one character only",
+      "character and required background clues visible together"
+    ],
+    "subject_integrity": {
+      "class": "full_character",
+      "identity_source": "Synthetic scout scene fixture; complete-character interpretation from user-authorized M2.7 directive",
+      "whole_subject_required": true,
+      "physically_connected_body": true,
+      "camera_view": "from_source",
+      "mandatory_parts": [
+        "head",
+        "torso",
+        "left arm",
+        "right arm",
+        "left leg",
+        "right leg"
+      ],
+      "equipment": [
+        {
+          "source_trait": "blue tunic",
+          "relationship": "worn"
+        },
+        {
+          "source_trait": "six belt pouches",
+          "relationship": "worn",
+          "visible_count": 6
+        }
+      ],
+      "forbidden_substitutions": [
+        "disembodied outfit",
+        "floating armor",
+        "mannequin",
+        "product display",
+        "empty clothes"
+      ]
+    },
+    "art_direction": {
+      "focal_target": "full_character",
+      "source": "User-authorized M2.7 synthetic scene direction",
+      "style_sha256": "ae85cb8600634688a655355fab8f8dd81234dfc43bcebbe74783ec55bb986665",
+      "preserve_scene_landmarks": true
+    }
+  }
+}
