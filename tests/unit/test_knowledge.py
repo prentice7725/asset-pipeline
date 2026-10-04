@@ -65,6 +65,11 @@ def test_complete_mapping_and_counts():
     assert result["counts"]["recipe_states"] == {"TESTED": 2, "UNTESTED": 13}
     assert result["counts"]["historical_report_records"] == 6
     assert "config/workflows/krea2_pixel64_smoke_experimental.json" in result["unregistered_workflow_graphs"]
+    assert result["styles"]["ink-storybook"]["visual_grammar"]["linework"] == ["fine ink contours"]
+    assert result["workflows"]["anima_base"]["prompt_adapter"] == "anima"
+    assert result["workflows"]["krea2_base"]["prompt_adapter"] == "krea2"
+    assert result["workflows"]["anima_pixelate_x4_vae"]["profile_positive_prefix"] == ["pixel art", "chibi"]
+    assert result["workflows"]["krea2_base"]["declared_presets"]["concept_art"]["steps"] == 8
     assert result["generation_requests_made_by_this_command"] == 0
     assert result["side_effects"] == "NONE"
     assert result["ranked_models"] == result["approved_recommendations"] == []
@@ -148,6 +153,7 @@ def test_cli_reads_without_generation_and_supports_queries(tmp_path, capsys):
     assert main(["--root", str(ROOT), "knowledge", "--model-id", "anima-base", "--output", str(output)]) == 0
     data = json.loads(output.read_text(encoding="utf-8"))
     assert "anima-base" in data["model"]
+    assert data["declared_workflows"]["anima_base"]["declared_presets"]["character_portrait"]["steps"] == 24
     assert data["generation_requests_made_by_this_command"] == 0
     assert not data["approved_recommendations"]
     assert main(["--root", str(ROOT), "knowledge", "--style-id", "limited_palette_pixel"]) == 0
