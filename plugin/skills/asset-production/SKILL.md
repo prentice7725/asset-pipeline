@@ -31,9 +31,10 @@ or experimental recovery for the configured production path. When the local MCP
 connection or required deterministic compiler is unavailable, report it and stop
 before generation.
 
-For cross-project asset reference documents using YAML-front-matter Markdown, read
-[Shared project-reference intake](../../references/PROJECT_REFERENCE_INTAKE.md)
-before building the existing Asset Brief. This is a source-to-Brief convention, not
-an implemented Markdown importer or a new MCP tool. Treat DRAFT, EXAMPLE_ONLY and
-BLOCKED_SOURCE_GAP references as non-generatable; follow the project SOT and the
-existing review gates.
+For a user asking how to design a project's own reference, model choice or style,
+read [Model & Style Handbook](../../../docs/ASSET_PIPELINE_MODEL_STYLE_HANDBOOK_v0.1.md)
+and the live model/workflow/style registries. The handbook is pipeline-side usage
+knowledge, **not** a mandatory project reference-document schema. Project visual
+SOT controls art identity and style choice; keep the existing Asset Brief/PromptSpec
+as the tool interchange contract. Distinguish capability, comparative evidence and
+human-approved Golden styles; never invent performance preferences.
