@@ -1,0 +1,275 @@
+# Research-only NONPIXEL_IMAGE menu prompt prototypes. NEVER auto-route or approve.
+schema_version: 1
+version: '0.1.0'
+created_at: '2026-10-04'
+status: OFFLINE_PROMPT_STUDY
+model_scopes:
+  krea2_base:
+    profile: krea2
+    file: config/workflows/krea2_turbo_api.json
+    base_model: krea2_turbo_fp8_scaled.safetensors
+    text_encoder: qwen3vl_4b_fp8_scaled.safetensors
+    vae: qwen_image_vae.safetensors
+    loras: []
+    recipe_policy: KREA_NATURAL_LANGUAGE
+    model_author_reference: https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
+    config_caution: 'Local graph CFG 1.0 differs from official Turbo OSS example CFG 0.0. Do not silently retune.'
+  anima_base:
+    profile: anima-base
+    file: config/workflows/baseline_anima_api.json
+    base_model: anima-base-v1.0.safetensors
+    text_encoder: qwen_3_06b_base.safetensors
+    vae: qwen_image_vae.safetensors
+    loras: []
+    recipe_policy: ANIMA_TAGS_PLUS_CAPTION
+    model_author_reference: https://huggingface.co/circlestone-labs/Anima
+    config_caution: 'Anima character portrait preset 24 steps differs from 30-50 step author baseline. Use same fixed preset within experiment; no implicit optimization.'
+global_rules:
+  pixel_menus_hold: [STYLE-005]
+  no_pixel_generation: true
+  cli_providers: SMOKE_ONLY_ALREADY_GENERATED_2026_10_01
+  project_sot_is_authoritative: true
+  source_prompt_is_not_canonical_subject: true
+  base_lora_policy: NONE_UNTIL_SEPARATE_ABLATION
+  no_generated_preview_approvals: true
+  no_silent_model_or_vae_fallback: true
+  styles_proven_better: 0
+  adapter_output: RESEARCH_CANDIDATE_NOT_PRODUCTION_RECIPE
+source_research:
+  - https://kreastyles.thetacursed.com/
+  - https://github.com/ThetaCursed/Krea2-Style-Explorer
+  - https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
+  - https://www.krea.ai/blog/krea-2-deep-dive-walkthrough
+  - https://huggingface.co/circlestone-labs/Anima
+recipes:
+  STYLE-001:
+    label: "cinematic cyberpunk illustration"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: CINEMATIC_STYLIZED; color: RED_CHARCOAL; form: HARD_EDGE; light: NEON_RIM; texture: LOW_GRAIN"
+    krea2_base:
+      style_clause: "Industrial nighttime noir; red neon accents against charcoal architectural masses; reflective metal as secondary detail; keep silhouettes readable without lens clutter."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["cyberpunk","night","neon lighting","red lighting","black background","high contrast","metallic surfaces"]
+      natural_language_caption: "A stylized science-fiction noir illustration with red neon accents and deep charcoal architectural shadows. Keep the subject silhouette primary and use reflective metal and atmospheric haze only as secondary information."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Avoid defaulting to literal photographic film grain when project demands clean 2D assets."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-002:
+    label: "cybernetic portrait noir"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: GRAPHIC_PORTRAIT; color: AMBER_COBALT; form: MEDIUM_EDGE; light: SPLIT_RIM; texture: RESTRAINED"
+    krea2_base:
+      style_clause: "Amber and cobalt dual-tone portrait lighting, sharp cybernetic accents, dark uncluttered negative space; eyewear is optional, not mandatory."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["cyberpunk","portrait","blue lighting","orange lighting","dark background","high contrast","sharp focus"]
+      natural_language_caption: "A restrained illustrated portrait illuminated by opposing amber and cobalt practical lights. Keep clothing and facial identity from the source brief, with the background subdued and cybernetic design elements only when canon specifies them."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Do not introduce glasses, implants, or other foreign subject details from explorer reference."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-003:
+    label: "retro twilight gothic cel"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: RETRO_ANIME; color: INDIGO_MAGENTA; form: CLEAN_LINE; light: TWILIGHT; texture: BACKGROUND_ONLY"
+    krea2_base:
+      style_clause: "1990s-like animation cel shapes in deep indigo dusk with selective magenta glow; painted atmospheric background but hard contours on the subject."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["1990s anime","gothic fantasy","cel shading","watercolor background","twilight","indigo","magenta lighting"]
+      natural_language_caption: "A gothic fantasy cel illustration with readable hard-edged figure shading, deep indigo twilight and controlled magenta bioluminescent accents. Background textures are watercolor-like and subordinate to the main subject."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Keep painted background texture out of character silhouettes and small icon-sized objects."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-004:
+    label: "nonpixel SD illustrated gouache"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: GOUACHE_2D; color: WARM_BALANCED; form: SOFT_GROUPED; light: WARM_DAYLIGHT; texture: DRY_BRUSH_LOW"
+    krea2_base:
+      style_clause: "Soft painted gouache with simplified facial construction, compact SD proportions only if authorized in game SOT, warm daylight and grouped colors."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["storybook illustration","small body","simplified features","gouache painting","warm light","flat shapes","clean silhouette"]
+      natural_language_caption: "A welcoming storybook illustration in opaque gouache with clear compact shape design, simplified planes, warm dappled lighting and painterly edges. Retain the source-defined body proportions, clothing and equipment without inventing a new chibi identity."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "SD proportions must come from project SOT. This is NONPIXEL, not an approved 32px sprite recipe."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-006:
+    label: "historic ink engraving"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: INK_ENGRAVING; color: MUTED_PAPER; form: FINELINE; light: VALUE_BY_HATCH; texture: STIPPLE"
+    krea2_base:
+      style_clause: "Fine ruled contours, stippled shadows and muted parchment accents; focus on one readable engraving focal mass."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["engraving","fine lineart","hatching","stippling","muted colors","storybook illustration","vintage print"]
+      natural_language_caption: "An illustrated ink engraving with fine contour linework and controlled cross-hatched values on aged paper. Preserve clear silhouettes and spatial hierarchy, limiting hatch density in critical silhouettes and small props."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Do not over-texture equipment silhouettes or invent botanical motifs."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-007:
+    label: "dark crimson painterly fantasy"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: IMPASTO_FANTASY; color: DEEP_DARK_CRIMSON; form: PAINT_DEFINED; light: CHIAROSCURO; texture: FOCAL_ONLY"
+    krea2_base:
+      style_clause: "Chiaroscuro value blocks and muted dark-violet environment, selective crimson glow, thick but intentional paint edges."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["dark fantasy","gothic atmosphere","painterly","impasto","dramatic lighting","red highlights","deep shadows"]
+      natural_language_caption: "A dramatic painted dark-fantasy scene using large controlled shadow masses, restrained impasto only at the focal point, and selective crimson light. Avoid dissolving equipment edges or character silhouettes in texture."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Impasto visual texture may conflict with clean isolated transparent assets."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-008:
+    label: "modern flat manga"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: MODERN_FLAT_MANGA; color: CONTROLLED_FLATS; form: CRISP_CONTOUR; light: FEW_SHADOW_SHAPES; texture: NONE"
+    krea2_base:
+      style_clause: "Contemporary comic graphic design; unbroken black contours, solid local colors and a few intentional shadow blocks."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["modern manga","clean lineart","flat colors","simple background","graphic illustration","cel shading"]
+      natural_language_caption: "A contemporary flat manga illustration with strong even linework, simple blocks of local color, limited grouped cel shadows and little surface grain. Faces, hands, clothing and pose must remain faithful to the subject brief."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "No spontaneous text balloons, signage, or pop-art graphics unless project explicitly requires them."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-009:
+    label: "retro graphic risograph"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: GRAPHIC_PRINT; color: SATURATED; form: BOLD_LINE; light: GRAPHIC_TWO_TONE; texture: LOW_RISOGRAPH"
+    krea2_base:
+      style_clause: "High-contrast poster-like outlines and solid saturated masses; subtle misregistration/paper texture only on surfaces away from key subject."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["retro cartoon","bold outline","risograph texture","saturated colors","simple shading","graphic shapes"]
+      natural_language_caption: "A bold graphic illustration with strong thick contours and high-contrast saturated color shapes. Apply restrained risograph grain on secondary areas only so facial features and signature equipment stay legible."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Not equivalent to the historically TESTED graphic-risograph runtime recipe; this is a separate menu research candidate."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-010:
+    label: "voxel-look isometric illustration"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: VOXEL_LOOK_2D; color: EARTHY; form: BOX_VOLUMES; light: SOFT_DIRECTIONAL; texture: CLEAN"
+    krea2_base:
+      style_clause: "Orthographic 3/4 diorama projection with blocky square volume silhouettes, warm environment and simple shadow planes; output remains 2D image."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["isometric","voxel art style","block shapes","miniature scene","soft light","clean background"]
+      natural_language_caption: "A 2D illustration of a compact voxel-like isometric diorama, made of clear box-shaped masses, warm earthy lighting and simplified materials. Keep structural blocks legible and do not claim this creates 3D meshes or rigs."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "2D-looking-3D representation only. Not a native 3D asset generator."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-011:
+    label: "painted clay toy look"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: CLAY_TOY_ILLUSTRATION; color: SOFT_PASTEL; form: ROUND_MASS; light: SOFT_STUDIO; texture: MATTE"
+    krea2_base:
+      style_clause: "Tactile rounded clay-like volumes and soft matte surface, pastel limited accents, readable toy silhouette, no depth-of-field blur over key details."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["chibi","claymation","stylized 3d look","matte texture","round shapes","pastel colors"]
+      natural_language_caption: "A stylized nonpixel illustration of a rounded clay-toy character with soft matte material and restrained pastel accents. The shape is clean and readable without excessive blur; preserve identity and clothing as specified."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Illustration of clay style, not a rigged 3D output or verified modular character."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
+  STYLE-012:
+    label: "industrial punk zine"
+    status: RESEARCH_NOT_RUN
+    output_class: NONPIXEL_IMAGE
+    style_axes: "medium: PUNK_ZINE; color: BW; form: HARD_CONTRAST; light: STARK; texture: LIMITED_PHOTOCOPY"
+    krea2_base:
+      style_clause: "Stark monochrome, photocopy edge noise away from objects, large black/white masses and deliberate gritty half-tones."
+      positive_dialect: NATURAL_LANGUAGE
+      negative_native: UNSUPPORTED
+    anima_base:
+      positive_tags: ["punk","monochrome","graphic illustration","print texture","halftone","harsh shadows","poster"]
+      natural_language_caption: "A stark monochrome punk-zine illustration with bold black-and-white value blocks and deliberately limited distressed print textures. Preserve clear object boundaries and readable typography space without generating unsolicited words."
+      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
+      optional_negative: []
+    failure_risk: "Avoid invented writing or labels; if typography required use separate authored UI text."
+    editable_axes: [color, linework, shading, texture, focal_hierarchy]
+    locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
+    image_validation: NOT_RUN
+    repeated_seeds: NOT_RUN
+    game_size_validation: NOT_RUN
+    human_approval: false
