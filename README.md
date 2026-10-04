@@ -4,6 +4,14 @@
 
 **생성 결과는 자동 승인하지 않습니다.** 픽셀 캐릭터는 검증을 통과한 후보만 검토 후 Static Master로 승인하며, SFX도 기본 검증 후 직접 들어봐야 합니다. 실패한 단계는 중단하고 기록을 보존합니다.
 
+## 이미지로 고르는 번호형 화풍 메뉴판 (탐색 후보)
+
+**[12종 시각 화풍 메뉴판](docs/style_menu/NUMBERED_CANDIDATE_MENU_v0.1.md)** · [Codex/Claude 레시피 선택/수정 가이드](docs/style_menu/AGENT_RECIPE_SELECTION_GUIDE_v0.1.md)
+
+SF 사이버펑크는 STYLE-001/002, 판타지 SD/치비는 STYLE-004/005/011, 현대 만화는 STYLE-008, 중세 판타지는 STYLE-003/006/007을 **후보로** 비교할 수 있습니다. 원본 [Krea2 Style Explorer](https://kreastyles.thetacursed.com/)의 실제 미리보기/프롬프트를 연결했으나, 자체 Krea2/Anima 실험과 게임 내 QA는 **아직 안 끝났습니다**. 따라서 12개 카드 모두 EXTERNAL_PREVIEW_ONLY이며 검증된 추천 또는 Golden Recipe로 사용하지 않습니다.
+
+`python scripts/style_menu.py check` / `render` / `plan`은 메뉴 검사·생성 없는 실험계획 준비만 수행합니다. 현재 ComfyUI GPU 자동 생성이나 모델 튜닝은 실행하지 않습니다.
+
 ## 프로젝트별 애셋 레퍼런스를 설계할 때
 
 게임마다 레퍼런스 문서 양식을 통일할 필요는 없습니다. [모델·스타일 취급 설명서](docs/ASSET_PIPELINE_MODEL_STYLE_HANDBOOK_v0.1.md)는 현재 **조사 미완성 목록**입니다. 등록된 모델/워크플로/스타일과 일부 실패·기술 QA 결과만 확인되었고, 특정 표현의 우월성이나 최적 레시피는 입증되지 않았습니다. [근거 감사](docs/research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md) 및 [재설계 실험 계획](docs/research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md)을 먼저 확인하세요. 각 게임은 자체 ACTIVE/SOT에 적합한 미술 레퍼런스를 자유롭게 작성하고, 제작 스킬은 이를 **기존 Asset Brief/PromptSpec**로 변환해 실행합니다. 설명서는 프로젝트 캐논이나 모델 품질 승인이 아닙니다.
