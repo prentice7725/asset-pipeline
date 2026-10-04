@@ -8,7 +8,7 @@ import pytest
 import yaml
 
 from assetpipe.cli import main
-from assetpipe.knowledge import KnowledgeError, build_snapshot, inspect
+from assetpipe.knowledge import KnowledgeError, build_snapshot, inspect, scan_expected_weights
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUIRED_FILES = (
@@ -144,3 +144,29 @@ def test_cli_reads_without_generation_and_supports_queries(tmp_path, capsys):
     assert "limited_palette_pixel" in capsys.readouterr().out
     assert main(["--root", str(ROOT), "knowledge", "--style-id", "missing_style"]) == 1
     assert "Unknown style" in capsys.readouterr().err
+
+
+def test_declared_weight_scan_is_readonly_and_reports_missing(tmp_path):
+    models_root = tmp_path / "models"
+    sample = models_root / "diffusion_models" / "anima-base-v1.0.safetensors"
+    sample.parent.mkdir(parents=True)
+    sample.write_bytes(b"small fixture, not a model")
+    report = scan_expected_weights(ROOT, models_root, hash_files=True)
+    assert report["present"] >= 1 and report["missing"] >= 1
+    record = next(x for x in report["files"] if x["filename"] == "anima-base-v1.0.safetensors")
+    assert record["hash_status"] == "LOCAL_BYTES_SHA256"
+    assert len(record["sha256"]) == 64
+    assert record["model_identity_verified"] is False
+    assert report["generation_requests"] == 0
+    assert report["art_quality"] == "UNKNOWN"
+    assert sample.read_bytes() == b"small fixture, not a model"
+
+
+def test_missing_models_root_fails_closed(tmp_path):
+    with pytest.raises(KnowledgeError, match="does not exist"):
+        scan_expected_weights(ROOT, tmp_path / "not_existing")
+
+
+def test_cli_rejects_hash_without_explicit_models_dir(capsys):
+    assert main(["--root", str(ROOT), "knowledge", "--hash-models"]) == 1
+    assert "requires explicit" in capsys.readouterr().err
