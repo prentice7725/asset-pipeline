@@ -15,7 +15,7 @@
 ```powershell
 assetpipe knowledge --model-id anima-base
 assetpipe knowledge --style-id limited_palette_pixel
-assetpipe knowledge --models-root "C:/path/to/ComfyUI/models" --hash-models --output workspace/local_weight_inventory.json
+assetpipe knowledge --models-root "C:/path/to/ComfyUI/models" --hash-models --discover-unregistered --output workspace/local_weight_inventory.json
 ```
 
 이 기능은 생성·모델 다운로드·모델 교체·Golden 승인 작업을 수행하지 않습니다. 로컬 모델 경로 스캔도 사용자가 `--models-root`를 명시했을 때만 진행되며, 모형이 설치되었거나 SHA256을 계산했다고 해서 모델이 좋은 그림을 그린다고 평가하지 않습니다. 검증된 모델별 미술적 추천/순위는 아직 없습니다.
