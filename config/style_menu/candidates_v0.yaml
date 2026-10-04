@@ -1,0 +1,245 @@
+# Candidate Visual Style Menu — curated from ThetaCursed Krea2 Explorer
+# Not a production model style registry, no auto-routing.
+schema_version: 1
+menu_version: '0.1.0'
+as_of: '2026-10-04'
+validation_state: EXTERNAL_PREVIEW_ONLY
+canonical_project_approval: false
+source:
+  publisher: ThetaCursed
+  url: https://kreastyles.thetacursed.com/
+  repo: https://github.com/ThetaCursed/Krea2-Style-Explorer
+  revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+  data_path: app/data.js
+  source_license: MIT_FOR_SOURCE_CODE_AND_DOCUMENTATION_CONFIRM_IMAGES_SEPARATELY
+  preview_policy: HOTLINK_ORIGINAL_EXTERNAL_IMAGES_ONLY
+  source_total: 1596
+  generated_here: 0
+model_experiment_policy:
+  source_preview_model: KREA2_TURBO_CREATOR_DEMO
+  required_first_local_workflow: krea2_base
+  optional_transfer_workflow: anima_base
+  local_reproduction: NOT_RUN
+  model_comparison: NOT_RUN
+  project_approval: NOT_RUN
+  no_automatic_generation_or_style_promotion: true
+cards:
+  - menu_id: STYLE-001
+    title: "Neon Industrial Cyberpunk"
+    source_id: aaea31dc325f
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/aaea31dc325f.webp
+    genre_tags: [SF_CYBERPUNK, NOIR]
+    asset_roles: [BACKGROUND, CHARACTER, PROP]
+    source_prompt: "saturated red neon lighting, high-contrast noir, futuristic cyberpunk aesthetic, glossy metallic surfaces, deep shadows, cinematic low-key photography, industrial synthwave atmosphere"
+    subject_baked_in: false
+    transfer_risk: HIGH
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-002
+    title: "Amber/Blue Cybernetic Noir"
+    source_id: ab4ac0c75e48
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/ab4ac0c75e48.webp
+    genre_tags: [SF_CYBERPUNK, MODERN, THRILLER]
+    asset_roles: [PORTRAIT, CHARACTER]
+    source_prompt: "cybernetic portraiture, chiaroscuro lighting, futuristic eyewear, cinematic 35mm film grain, high contrast composition, minimalist cyberpunk, saturated amber and blue palette"
+    subject_baked_in: true
+    transfer_risk: HIGH
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-003
+    title: "Twilight Gothic Anime"
+    source_id: 2dfd01bda89f
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/2dfd01bda89f.webp
+    genre_tags: [MEDIEVAL_FANTASY, DARK_FANTASY, SF_FANTASY]
+    asset_roles: [BACKGROUND, CHARACTER]
+    source_prompt: "90s retro anime style, hand-painted watercolor background, deep indigo twilight, ethereal magenta bioluminescence, high-contrast moody lighting, gothic fantasy atmosphere, cel-shaded 2D illustration"
+    subject_baked_in: false
+    transfer_risk: MEDIUM
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-004
+    title: "Cozy Gouache Storybook"
+    source_id: b0c422916b0d
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/b0c422916b0d.webp
+    genre_tags: [FANTASY_CHIBI_SD, MEDIEVAL_FANTASY, COZY]
+    asset_roles: [CHARACTER, BACKGROUND, PROP]
+    source_prompt: "children's book illustration, textured gouache painting, whimsical character design, vibrant saturated colors, soft painterly textures, expressive simplified features, warm dappled lighting"
+    subject_baked_in: true
+    transfer_risk: MEDIUM
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-005
+    title: "Pastel Chibi Pixel Candidate"
+    source_id: 6d67e449de82
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/6d67e449de82.webp
+    genre_tags: [FANTASY_CHIBI_SD, COZY, PIXEL]
+    asset_roles: [CHARACTER, PROP]
+    source_prompt: "pixel art, kawaii aesthetic, pastel color palette, 8-bit retro style, chibi character design, clean isolated sprite, nostalgic game asset"
+    subject_baked_in: true
+    transfer_risk: HIGH
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+    warning: 'This Krea preview does not establish native 32x32 pixel quality or alpha.'
+  - menu_id: STYLE-006
+    title: "Engraved Ink Storybook"
+    source_id: a67caabb5179
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/a67caabb5179.webp
+    genre_tags: [MEDIEVAL_FANTASY, HISTORICAL, COZY]
+    asset_roles: [PROP, BACKGROUND, CHARACTER]
+    source_prompt: "fine-line engraving, stippled pointillism, pastel botanical illustration, cross-hatching texture, whimsical storybook aesthetic, muted desaturated palette, intricate ink work"
+    subject_baked_in: true
+    transfer_risk: HIGH
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-007
+    title: "Crimson Dark Fantasy Paint"
+    source_id: af70aeb23773
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/af70aeb23773.webp
+    genre_tags: [DARK_FANTASY, MEDIEVAL_FANTASY]
+    asset_roles: [BACKGROUND, CHARACTER, PROP]
+    source_prompt: "dark gothic fantasy, chiaroscuro lighting, fiery crimson accents, expressive impasto texture, ominous atmosphere, dynamic painterly brushstrokes, high contrast composition"
+    subject_baked_in: false
+    transfer_risk: HIGH
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-008
+    title: "Modern Flat Manga"
+    source_id: 03efebcc9262
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/03efebcc9262.webp
+    genre_tags: [MODERN, SLICE_OF_LIFE, COMEDY]
+    asset_roles: [CHARACTER, PROP, BACKGROUND]
+    source_prompt: "minimalist manga illustration, bold ink line art, solid vibrant background, flat color blocking, high contrast graphic art, slice of life anime, pop art aesthetic"
+    subject_baked_in: false
+    transfer_risk: LOW
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-009
+    title: "Graphic Retro Anime Risograph"
+    source_id: 0bb1c8cab169
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/0bb1c8cab169.webp
+    genre_tags: [MODERN, FANTASY_CHIBI_SD, COMEDY, SF_CYBERPUNK]
+    asset_roles: [CHARACTER, PROP]
+    source_prompt: "bold graphic illustration, risograph texture, saturated color blocking, stylized cartoon character, 90s anime influence, clean thick linework, playful whimsical mood"
+    subject_baked_in: true
+    transfer_risk: MEDIUM
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+  - menu_id: STYLE-010
+    title: "Cozy Voxel Diorama"
+    source_id: 6dbec3956138
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/6dbec3956138.webp
+    genre_tags: [FANTASY_CHIBI_SD, COZY, TACTICAL]
+    asset_roles: [BACKGROUND, PROP]
+    source_prompt: "isometric voxel diorama, low-poly blocky style, soft directional lighting, cozy miniature aesthetic, warm earthy color palette, clean solid background, MagicaVoxel render"
+    subject_baked_in: true
+    transfer_risk: HIGH
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+    warning: '3D-looking style preview is not a Godot 3D/rig or production 3D mesh.'
+  - menu_id: STYLE-011
+    title: "Clay Toy Chibi"
+    source_id: d5f832669a95
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/d5f832669a95.webp
+    genre_tags: [FANTASY_CHIBI_SD, COZY]
+    asset_roles: [CHARACTER, PROP]
+    source_prompt: "3D claymation style, tactile toy aesthetic, soft pastel palette, matte and plush textures, chibi proportion, vibrant whimsical render, shallow depth of field"
+    subject_baked_in: true
+    transfer_risk: HIGH
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
+    warning: '3D-looking style preview is not a Godot 3D/rig or production 3D mesh.'
+  - menu_id: STYLE-012
+    title: "Punk Zine Monochrome"
+    source_id: 960625243657
+    source_folder: "1"
+    preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/960625243657.webp
+    genre_tags: [SF_CYBERPUNK, MODERN, PUNK]
+    asset_roles: [CHARACTER, PROP, UI]
+    source_prompt: "high-contrast monochrome, photocopy texture, punk zine aesthetic, stark black and white, gritty halftone, distressed ink, avant-garde editorial"
+    subject_baked_in: false
+    transfer_risk: MEDIUM
+    tested_on_local_krea2: false
+    tested_on_local_anima: false
+    verified_in_game: false
+    approved: false
+    base_workflow: krea2_base
+    alternate_workflow: anima_base
+    lora_required: false
+    vae: qwen_image_vae.safetensors
