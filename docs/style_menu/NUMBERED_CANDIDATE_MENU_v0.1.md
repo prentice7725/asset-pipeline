@@ -6,6 +6,10 @@
 
 **참고 사이트:** https://kreastyles.thetacursed.com/ · **출처:** https://github.com/ThetaCursed/Krea2-Style-Explorer · **고정 커밋:** `eb690aa57bc6` · **원본 목록:** 1,596종
 
+**2026-10-04 우선순위:** STYLE-001 SF, STYLE-004 판타지 SD 비픽셀, STYLE-006 중세판타지, STYLE-008 현대 만화를 **Anima/Krea2 비교 후보**로 먼저 연구한다. STYLE-005 픽셀아트의 로컬 신규 실험은 **HOLD** (검색용 카드만 유지).
+
+**[비픽셀 11종 모델별 프롬프트 연구](NONPIXEL_PROMPT_RESEARCH_v0.1.md)** · **[Codex 로컬 재현 실행 지시서](CODEX_NONPIXEL_WORK_ORDER_v0.1.md)**. 이미지로 비교할 수 있는 '검증 완료 메뉴'는 아직 없으며, 외부 제작자 미리보기 이미지로만 시작한다.
+
 ## 장르 검색 색인
 
 - **COMEDY:** `STYLE-008` · `STYLE-009`
