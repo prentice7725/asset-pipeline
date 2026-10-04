@@ -40,7 +40,8 @@ def inspect(root=ROOT):
         raise ValueError("Pixel generation must remain held")
     if config["global_rules"]["pixel_menus_hold"] != [HOLD_STYLE]:
         raise ValueError("Pixel hold list drift")
-    if HOLD_STYLE not in cards or "PIXEL" not in cards[HOLD_STYLE]["genre_tags"]:
+    if (HOLD_STYLE not in cards or "PIXEL" not in cards[HOLD_STYLE]["genre_tags"] or
+            cards[HOLD_STYLE].get("experiment_status") != "HOLD_PIXEL_NO_GENERATION"):
         raise ValueError("Pixel entry/hold mismatch")
     expected = set(cards) - {HOLD_STYLE}
     if set(research) != expected:
