@@ -184,8 +184,9 @@ def markdown_menu(obj):
     return "\n".join(lines) + "\n"
 
 
-def pilot_plan(obj):
+def pilot_plan(obj, root=ROOT):
     cards = {c["menu_id"]: c for c in obj["cards"]}
+    studies = yaml.safe_load((Path(root) / "config/style_menu/nonpixel_prompt_research_v0.yaml").read_text(encoding="utf-8"))["recipes"]
     if any("PIXEL" in cards[x]["genre_tags"] for x in IDS):
         raise ValueError("Pixel menu cannot enter NONPIXEL pilot")
     jobs = []
@@ -193,8 +194,14 @@ def pilot_plan(obj):
         card = cards[style_id]
         for subject_id, subject in SUBJECTS.items():
             for workflow in ("krea2_base", "anima_base"):
+                style_clause = studies[style_id][workflow]
                 jobs.append({
                     "style_id": style_id, "source_style_id": card["source_id"],
+                    "model_specific_study": style_clause,
+                    "study_state": "OFFLINE_RESEARCH_NOT_RUN",
+                    "lora_weights": [],
+                    "vae": "qwen_image_vae.safetensors",
+                    "model_dialect_compiler_required": True,
                     "subject_fixture": subject_id, "canonical_requirements": subject["must_have"],
                     "subject": subject["text"],
                     "source_style_prompt": card["source_prompt"],
@@ -233,7 +240,7 @@ def main(argv=None):
     if args.command == "render":
         output = markdown_menu(obj)
     elif args.command == "plan":
-        output = json.dumps(pilot_plan(obj), indent=2, ensure_ascii=False) + "\n"
+        output = json.dumps(pilot_plan(obj, args.root), indent=2, ensure_ascii=False) + "\n"
     else:
         output = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
     if args.output:
