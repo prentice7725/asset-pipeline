@@ -10,6 +10,17 @@
 >
 > 근거 및 미조사 범위: [MODEL_STYLE_EVIDENCE_AUDIT_20261004.md](research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md). 향후 통제된 비교 계획: [MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md](research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md). 현재 계획은 새 이미지 생성 승인이 아니다.
 
+## 현재 구현된 검증 가능한 지식 조회 (2026-10-04)
+
+모델의 미술적 강점은 **아직 UNKNOWN**이지만, 기존 설명서를 수동 관리하는 대신 Git의 데이터와 교차 검증하는 기능을 갖췄다.
+
+- `assetpipe knowledge`: 9개 등록 워크플로, 6개 프롬프트 프로파일, 7개 스타일, 15개 런타임 레시피를 읽고 **10개 구분된 모델/파생 변형**과 연결한다. 등록/연구전용 모델을 구분한다.
+- `assetpipe knowledge --model-id anima-base`: 저작자 주장과 현재 workflow 연결/기능·실험 보고 이력을 분리하여 표시한다. 좋은 그림이 증명됐다는 의미는 아니다.
+- `assetpipe knowledge --style-id graphic-risograph`: style + model recipe와 실험 근거 수준을 조회한다.
+- `assetpipe knowledge --models-root "C:/path/to/ComfyUI/models" --hash-models`: 사용자가 지정한 모델 폴더의 **선언된 파일**을 SHA256으로 점검한다. 이 명령을 실제 사용자 PC에서 실행하기 전까지 설치/노드 호환 상태는 확인되지 않았다.
+
+사용법과 정확한 출처는 [MODEL_CAPABILITY_GUIDE_v0.1.md](knowledge/MODEL_CAPABILITY_GUIDE_v0.1.md)를 참조한다. **통과한 CI는 지식 데이터 구조가 읽힌다는 증거이며 이미지 미술 품질의 시험이 아니다.** 연구 상태 `INVENTORY_ONLY`와 0건 Golden 유지.
+
 ## 0. 취급 설명서의 역할
 
 프로젝트가 파이프라인에 맞춰 `PROJECT_PROFILE.md`, `ASSET_REFERENCE.md`, `ASSET_MANIFEST.md` 같은 새로운 고정 양식을 작성할 필요는 **없다**. 각 프로젝트의 기존 아트 바이블, 개별 캐릭터 시트, UI 명세, 게임 화면 규격, 레퍼런스 이미지, Drive ACTIVE/SOT가 그대로 우선한다.
