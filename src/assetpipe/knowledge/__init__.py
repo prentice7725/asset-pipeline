@@ -160,7 +160,23 @@ def build_snapshot(repository_root: str | Path) -> dict:
                 "has_stated_evidence": bool(recipe.get("evidence")),
                 "art_quality": "UNKNOWN", "project_approved": False,
             }
-        results[style_id] = {"status": style["status"], "recipes": entries, "art_quality": "UNKNOWN"}
+        descriptors = {}
+        for field in ("expression", "colors", "linework", "shading", "texture"):
+            value = style.get(field)
+            if not isinstance(value, list) or any(not isinstance(v, str) for v in value):
+                raise KnowledgeError(f"Invalid visual style descriptors: {style_id}/{field}")
+            descriptors[field] = value
+        sources = style.get("sources")
+        if not isinstance(sources, list):
+            raise KnowledgeError(f"Unattributed visual style: {style_id}")
+        results[style_id] = {
+            "status": style["status"], "version": style.get("version"),
+            "visual_grammar": descriptors,
+            "required_capabilities": style.get("required_capabilities", []),
+            "forbidden_elements": style.get("forbidden_elements", []),
+            "source_claims_not_quality_evidence": sources,
+            "recipes": entries, "art_quality": "UNKNOWN",
+        }
     bad_styles = sorted(set(recipes) - set(catalog))
     if bad_styles:
         raise KnowledgeError(f"Unrecognized style IDs in recipes: {bad_styles}")
@@ -186,10 +202,18 @@ def build_snapshot(repository_root: str | Path) -> dict:
             raise KnowledgeError(f"Workflow uses unknown prompt profile: {workflow_id}")
         if not isinstance(wf.get("capabilities"), dict):
             raise KnowledgeError(f"Missing workflow capabilities: {workflow_id}")
+        adapter = profiles.get(profile, {}) if profile else {}
         workflow_info[workflow_id] = {
             "model_id": owners[workflow_id], "registry_state": wf.get("status"),
             "output_class": wf.get("output_class"), "prompt_profile": profile,
+            "prompt_adapter": adapter.get("prompt_adapter"),
+            "profile_positive_prefix": adapter.get("positive_prefix", []),
+            "intended_tags_not_benchmarks": wf.get("tags", []),
+            "declared_models": wf.get("models", {}),
+            "declared_presets": wf.get("presets", {}),
             "declared_capabilities": wf["capabilities"],
+            "engine": wf.get("engine", "comfyui"),
+            "workflow_file": wf.get("workflow_file"),
             "local_runtime_verified_this_session": False,
             "art_quality": "UNKNOWN",
             "not_a_quality_ranking": True,
@@ -249,6 +273,10 @@ def inspect(snapshot: dict, model_id: str | None = None, style_id: str | None = 
     result = {
         "research_state": snapshot["research_state"],
         "model": {model_id: snapshot["models"][model_id]} if model_id else {},
+        "declared_workflows": {
+            workflow_id: snapshot["workflows"][workflow_id]
+            for workflow_id in (snapshot["models"][model_id]["workflow_ids"] if model_id else [])
+        },
         "style": {style_id: snapshot["styles"][style_id]} if style_id else {},
         "relevant_reports": {},
         "art_quality": "UNKNOWN", "approved_recommendations": [],
