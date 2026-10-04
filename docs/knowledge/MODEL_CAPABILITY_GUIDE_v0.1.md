@@ -24,7 +24,12 @@ assetpipe knowledge --models-root "C:/Users/seung/AppData/Local/Comfy-Desktop/Co
 
 # 위 선언된 모델 파일의 SHA256 계산 (실제 큰 safetensors 파일은 오래 걸릴 수 있음)
 assetpipe knowledge --models-root "C:/Users/seung/AppData/Local/Comfy-Desktop/ComfyUI-Shared/models" --hash-models --output workspace/local_hash_inventory.json
+
+# 현재 등록되지 않은 추가 모델형 파일명도 조사 (파일 내용은 읽지 않음)
+assetpipe knowledge --models-root "C:/Users/seung/AppData/Local/Comfy-Desktop/ComfyUI-Shared/models" --discover-unregistered --output workspace/unregistered_candidates.json
 ```
+
+파이프라인은 config/workflows에 존재하나 라우팅에 등록되지 않은 JSON 그래프도 `unregistered_workflow_graphs`로 별도 표시한다. 그래프 존재와 자동 사용 가능성은 다르다. `--discover-unregistered` 역시 해당 models 폴더 내 모델형 확장자의 **파일명만** 읽으며 신규 checkpoint를 자동 등록하지 않는다.
 
 로컬 경로는 **이전 실험 기록의 사례**일 뿐 설치 경로를 확정하지 않는다. 실제 현재 사용 중인 ComfyUI 모델 디렉터리로 교체한다. 스캐너는 등록한 모델 파일의 위치와 바이트 해시만 검사하며 서버 연결, 모델 로딩, 다운로드, 생성 요청을 하지 않는다. GPU/ComfyUI 노드 호환성과 상업적 이용권은 별도 검사다. 출력물에 로컬 파일 경로가 포함되므로 외부 공개 전에 점검한다.
 
