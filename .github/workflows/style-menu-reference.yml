@@ -5,7 +5,9 @@ on:
     paths:
       - "config/style_menu/**"
       - "scripts/style_menu.py"
+      - "scripts/nonpixel_research.py"
       - "tests/unit/test_style_menu.py"
+      - "tests/unit/test_nonpixel_research.py"
       - "docs/style_menu/**"
       - ".github/workflows/style-menu-reference.yml"
   push:
@@ -40,7 +42,9 @@ jobs:
           python scripts/style_menu.py check --upstream-data /tmp/krea_style_data.js
       - name: Verify menu contract, preview identity and no-generation plan
         run: |
-          python -m compileall -q scripts/style_menu.py
-          python -m pytest -q tests/unit/test_style_menu.py
+          python -m compileall -q scripts/style_menu.py scripts/nonpixel_research.py
+          python -m pytest -q tests/unit/test_style_menu.py tests/unit/test_nonpixel_research.py
+          python scripts/nonpixel_research.py check
+          python scripts/nonpixel_research.py export --style STYLE-004 --workflow krea2_base --subject "One full body traveler wearing a plain blue coat with a brass compass" --output /tmp/nonpixel-style-004.json
           python scripts/style_menu.py render --output /tmp/numbered-style-menu.md
           python scripts/style_menu.py plan --output /tmp/style-menu-pilot-plan.json
