@@ -59,6 +59,13 @@ def test_menu_pilot_is_nonpixel_only_and_excludes_005():
     assert plan["pixel_quality_test"] == "ON_HOLD_NO_GENERATION"
     assert plan["experiment_scope"] == "NONPIXEL_IMAGE_ONLY"
     assert plan["generation_budget_approved"] == 0
+    pair_krea = next(x for x in plan["jobs"] if x["style_id"] == "STYLE-004" and x["workflow"] == "krea2_base")
+    pair_anima = next(x for x in plan["jobs"] if x["style_id"] == "STYLE-004" and x["workflow"] == "anima_base")
+    assert pair_krea["model_specific_study"]["positive_dialect"] == "NATURAL_LANGUAGE"
+    assert pair_anima["model_specific_study"]["positive_dialect"] == "TAGS_PLUS_NATURAL_CAPTION"
+    assert pair_krea["lora_weights"] == pair_anima["lora_weights"] == []
+    assert pair_krea["model_dialect_compiler_required"]
+    assert pair_krea["study_state"] == "OFFLINE_RESEARCH_NOT_RUN"
 
 
 def test_upstream_preview_cannot_be_approved_via_recipe_text(tmp_path):
