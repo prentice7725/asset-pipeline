@@ -17,7 +17,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "config/style_menu/candidates_v0.yaml"
-IDS = ("STYLE-001", "STYLE-004", "STYLE-005", "STYLE-008")
+IDS = ("STYLE-001", "STYLE-004", "STYLE-006", "STYLE-008")  # 4 NONPIXEL genre pilots; PIXEL STYLE-005 HELD
 SUBJECTS = {
     "CHARACTER": {
         "text": "Exactly one adult traveler standing full body, short dark brown hair, plain blue coat, a brass compass held in the left hand, feet visible, front three-quarter view, centered.",
@@ -161,6 +161,11 @@ def markdown_menu(obj):
             lines.extend(["**피사체 오염 위험:** 외부 스타일 문자열 자체에 특정 피사체/물체가 포함되어 있어 그대로 합성하면 캐논을 침범할 수 있음.", ""])
         lines.extend(["---", ""])
     lines.extend([
+        "## 픽셀 홀드: STYLE-005",
+        "",
+        "STYLE-005의 출처 미리보기는 검색용으로만 남긴다. **32px/64px 픽셀 실험은 HOLD이며**",
+        "비픽셀 최초 pilot의 생성 대상에서 제외한다.",
+        "",
         "## 실험에서 승인 카드로 전환하는 기준",
         "",
         "외부 미리보기(탐색) → Krea2 로컬 재현 → Anima 모델별 별도 비교 →",
@@ -179,6 +184,8 @@ def markdown_menu(obj):
 
 def pilot_plan(obj):
     cards = {c["menu_id"]: c for c in obj["cards"]}
+    if any("PIXEL" in cards[x]["genre_tags"] for x in IDS):
+        raise ValueError("Pixel menu cannot enter NONPIXEL pilot")
     jobs = []
     for style_id in IDS:
         card = cards[style_id]
@@ -202,7 +209,9 @@ def pilot_plan(obj):
         "generation_budget_approved": 0,
         "generation_requests_submitted": 0,
         "proposed_jobs": len(jobs),
-        "pixel_quality_test": "NOT_INCLUDED_REQUIRES_SEPARATE_32PX_DESIGN",
+        "pixel_quality_test": "ON_HOLD_NO_GENERATION",
+        "pixel_style_hold": ["STYLE-005"],
+        "experiment_scope": "NONPIXEL_IMAGE_ONLY",
         "same_seed_is_not_equivalent_noise": True,
         "can_promote_without_human_review": False,
         "jobs": jobs,
