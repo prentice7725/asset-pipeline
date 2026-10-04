@@ -72,6 +72,8 @@ def validate(obj, root=ROOT, upstream_data=None, upstream_images=None):
         if int(menu_id[-3:]) != index:
             raise ValueError("Menu cards must use contiguous stable numbered IDs")
         style_ids.add(menu_id)
+        if (menu_id == "STYLE-005") != (card.get("experiment_status") == "HOLD_PIXEL_NO_GENERATION"):
+            raise ValueError("PIXEL HOLD policy must apply only to STYLE-005")
         source_id = card.get("source_id", "")
         folder = card.get("source_folder")
         if not re.fullmatch(r"[a-f0-9]{12}", source_id) or folder not in {"1", "2"}:
