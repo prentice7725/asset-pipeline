@@ -26,7 +26,7 @@ model_experiment_policy:
 cards:
   - menu_id: STYLE-001
     title: "Neon Industrial Cyberpunk"
-    source_id: aaea31dc325f
+    source_id: "aaea31dc325f"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/aaea31dc325f.webp
     genre_tags: [SF_CYBERPUNK, NOIR]
@@ -44,7 +44,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-002
     title: "Amber/Blue Cybernetic Noir"
-    source_id: ab4ac0c75e48
+    source_id: "ab4ac0c75e48"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/ab4ac0c75e48.webp
     genre_tags: [SF_CYBERPUNK, MODERN, THRILLER]
@@ -62,7 +62,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-003
     title: "Twilight Gothic Anime"
-    source_id: 2dfd01bda89f
+    source_id: "2dfd01bda89f"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/2dfd01bda89f.webp
     genre_tags: [MEDIEVAL_FANTASY, DARK_FANTASY, SF_FANTASY]
@@ -80,7 +80,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-004
     title: "Cozy Gouache Storybook"
-    source_id: b0c422916b0d
+    source_id: "b0c422916b0d"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/b0c422916b0d.webp
     genre_tags: [FANTASY_CHIBI_SD, MEDIEVAL_FANTASY, COZY]
@@ -98,7 +98,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-005
     title: "Pastel Chibi Pixel Candidate"
-    source_id: 6d67e449de82
+    source_id: "6d67e449de82"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/6d67e449de82.webp
     genre_tags: [FANTASY_CHIBI_SD, COZY, PIXEL]
@@ -117,7 +117,7 @@ cards:
     warning: 'This Krea preview does not establish native 32x32 pixel quality or alpha.'
   - menu_id: STYLE-006
     title: "Engraved Ink Storybook"
-    source_id: a67caabb5179
+    source_id: "a67caabb5179"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/a67caabb5179.webp
     genre_tags: [MEDIEVAL_FANTASY, HISTORICAL, COZY]
@@ -135,7 +135,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-007
     title: "Crimson Dark Fantasy Paint"
-    source_id: af70aeb23773
+    source_id: "af70aeb23773"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/af70aeb23773.webp
     genre_tags: [DARK_FANTASY, MEDIEVAL_FANTASY]
@@ -153,7 +153,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-008
     title: "Modern Flat Manga"
-    source_id: 03efebcc9262
+    source_id: "03efebcc9262"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/03efebcc9262.webp
     genre_tags: [MODERN, SLICE_OF_LIFE, COMEDY]
@@ -171,7 +171,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-009
     title: "Graphic Retro Anime Risograph"
-    source_id: 0bb1c8cab169
+    source_id: "0bb1c8cab169"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/0bb1c8cab169.webp
     genre_tags: [MODERN, FANTASY_CHIBI_SD, COMEDY, SF_CYBERPUNK]
@@ -189,7 +189,7 @@ cards:
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-010
     title: "Cozy Voxel Diorama"
-    source_id: 6dbec3956138
+    source_id: "6dbec3956138"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/6dbec3956138.webp
     genre_tags: [FANTASY_CHIBI_SD, COZY, TACTICAL]
@@ -208,7 +208,7 @@ cards:
     warning: '3D-looking style preview is not a Godot 3D/rig or production 3D mesh.'
   - menu_id: STYLE-011
     title: "Clay Toy Chibi"
-    source_id: d5f832669a95
+    source_id: "d5f832669a95"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/d5f832669a95.webp
     genre_tags: [FANTASY_CHIBI_SD, COZY]
@@ -227,7 +227,7 @@ cards:
     warning: '3D-looking style preview is not a Godot 3D/rig or production 3D mesh.'
   - menu_id: STYLE-012
     title: "Punk Zine Monochrome"
-    source_id: 960625243657
+    source_id: "960625243657"
     source_folder: "1"
     preview: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/960625243657.webp
     genre_tags: [SF_CYBERPUNK, MODERN, PUNK]
