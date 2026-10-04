@@ -26,6 +26,7 @@ def test_style_005_is_candidate_not_a_proven_native_pixel_sprite():
     item = next(x for x in style_menu.load_menu()["cards"] if x["menu_id"] == "STYLE-005")
     assert "chibi" in item["source_prompt"]
     assert "32x32" in item["warning"]
+    assert item["experiment_status"] == "HOLD_PIXEL_NO_GENERATION"
     assert item["base_workflow"] == "krea2_base"
     assert item["approved"] is False
 
