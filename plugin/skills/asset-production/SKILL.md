@@ -39,6 +39,17 @@ SOT controls art identity and style choice; keep the existing Asset Brief/Prompt
 as the tool interchange contract. Distinguish capability, comparative evidence and
 human-approved Golden styles; never invent performance preferences.
 
+Before recommending model, style, LoRA or workflow to a project, consult
+[Offline Model Knowledge Guide](../../../docs/knowledge/MODEL_CAPABILITY_GUIDE_v0.1.md)
+and run `assetpipe knowledge --model-id <model_variant>` or
+`assetpipe knowledge --style-id <style_id>` if the local CLI is available.
+The command reads checked-in registry and report metadata only; output
+`art_quality=UNKNOWN` is **not** a score to optimize. Historical technical QA
+or model-author marketing claims cannot be presented as comparative visual proof.
+If knowledge validation fails, report the contradiction without silently choosing
+another model. This query is optional metadata inspection and never overrides
+project visual SOT, existing six MCP tool schemas or runtime routing.
+
 Research caution (2026-10-04): [Model & Style Evidence Audit](../../../docs/research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md)
 records that the handbook remains INVENTORY_ONLY and model-specific art quality
 is NOT established. The [benchmark protocol](../../../docs/research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md)
