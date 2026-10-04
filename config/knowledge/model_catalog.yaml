@@ -1,0 +1,122 @@
+schema_version: 1
+as_of: "2026-10-04"
+purpose: "Research/catalog lookup only; NEVER automatic model ranking, selection, approval or generation."
+models:
+  anima-base:
+    family: Anima
+    variant: Base v1.0
+    workflows: [anima_base, anima_pixelate_x4_vae]
+    status: REGISTERED
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://huggingface.co/circlestone-labs/Anima
+    source_kind: MODEL_AUTHOR
+    author_claims:
+      - "Maker describes Base as an unrefined, flexible version intended for diversity and LoRA training."
+      - "Maker describes mixed Danbooru tags and natural language captions and suggests 30-50 steps, CFG 4-5."
+    art_quality: UNKNOWN
+  anima-aesthetic-tomohi:
+    family: Anima
+    variant: Aesthetic plus local Tomohi LoRA
+    workflows: [tomohi_character]
+    status: EXPERIMENTAL
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://huggingface.co/circlestone-labs/Anima
+    source_kind: MODEL_AUTHOR
+    author_claims:
+      - "Maker describes Aesthetic as providing a more consistent default look. Tomohi LoRA changes must be evaluated independently."
+    art_quality: UNKNOWN
+  anima-turbo:
+    family: Anima
+    variant: Turbo
+    workflows: []
+    status: RESEARCH_ONLY
+    local_installation: UNKNOWN
+    license_review: REQUIRED
+    source: https://huggingface.co/circlestone-labs/Anima
+    source_kind: MODEL_AUTHOR
+    author_claims:
+      - "Maker describes distilled fast inference at 8-12 steps and CFG 1, with reduced diversity."
+    art_quality: UNKNOWN
+  krea2-turbo:
+    family: Krea2
+    variant: Turbo FP8 workflow
+    workflows: [krea2_base]
+    status: REGISTERED
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://github.com/krea-ai/krea-2
+    source_kind: MODEL_AUTHOR
+    author_claims:
+      - "Maker describes Turbo as an 8-step distilled inference model."
+      - "Official prompting guide recommends natural language with clear subject and composition."
+    art_quality: UNKNOWN
+  krea2-raw:
+    family: Krea2
+    variant: Raw
+    workflows: []
+    status: RESEARCH_ONLY
+    local_installation: UNKNOWN
+    license_review: REQUIRED
+    source: https://github.com/krea-ai/krea-2
+    source_kind: MODEL_AUTHOR
+    author_claims:
+      - "Maker describes Raw as the undistilled base preferred for LoRA training and fine-tuning."
+    art_quality: UNKNOWN
+  krea2-pixel64-experimental:
+    family: Krea2
+    variant: Turbo + e-n-v-y Pixel Art LoRA + Refiner
+    workflows: []
+    status: RESEARCH_ONLY
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner
+    source_kind: COMMUNITY_AUTHOR
+    author_claims:
+      - "Refiner author documents logical grid collapse plus palette reduction; this is postprocessing, not semantic validation."
+    art_quality: UNKNOWN
+  minimax-motion:
+    family: MiniMax
+    variant: H3 Ref2VA 8-step local motion-reference graph
+    workflows: [minimax_character_motion_reference, nonpixel_motion_contract]
+    status: REGISTERED
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://github.com/prentice7725/asset-pipeline
+    source_kind: LOCAL_CONFIG
+    author_claims: []
+    art_quality: UNKNOWN
+  stable-audio-3:
+    family: Stable Audio
+    variant: 3 Medium
+    workflows: [audio_stable_audio_3_medium]
+    status: REGISTERED
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://github.com/prentice7725/asset-pipeline
+    source_kind: LOCAL_CONFIG
+    author_claims: []
+    art_quality: UNKNOWN
+  codex-imagegen:
+    family: Codex image_gen
+    variant: CLI provider unspecified model
+    workflows: [codex_imagegen]
+    status: EXPERIMENTAL
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://github.com/prentice7725/asset-pipeline
+    source_kind: LOCAL_CONFIG
+    author_claims: []
+    art_quality: UNKNOWN
+  grok-imagine:
+    family: Grok Imagine
+    variant: CLI provider unspecified model
+    workflows: [grok_imagine]
+    status: EXPERIMENTAL
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://github.com/prentice7725/asset-pipeline
+    source_kind: LOCAL_CONFIG
+    author_claims: []
+    art_quality: UNKNOWN
