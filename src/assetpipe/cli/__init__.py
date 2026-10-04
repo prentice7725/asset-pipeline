@@ -17,6 +17,7 @@ def main(argv=None):
     knowledge.add_argument('--output', type=Path, help='Optional JSON report path; stdout by default')
     knowledge.add_argument('--models-root', type=Path, help='Only scan dependencies under this explicit ComfyUI models/ directory')
     knowledge.add_argument('--hash-models', action='store_true', help='Stream full SHA256 for present declared weights; slower')
+    knowledge.add_argument('--discover-unregistered', action='store_true', help='Opt-in scan of unknown model-like filenames; no hashes')
     visual = commands.add_parser('visual-review', help='Create advisory previews for an existing technically passing candidate; no generation or approval')
     visual.add_argument('--run', required=True, type=Path)
     visual.add_argument('--image', type=Path, help='Select one output when the manifest has multiple outputs')
@@ -81,11 +82,11 @@ def main(argv=None):
     try:
         if args.command == 'knowledge':
             from ..knowledge import build_snapshot, inspect, scan_expected_weights
-            if args.hash_models and not args.models_root:
-                raise ValueError('--hash-models requires explicit --models-root')
+            if (args.hash_models or args.discover_unregistered) and not args.models_root:
+                raise ValueError('--hash-models/--discover-unregistered require explicit --models-root')
             result = inspect(build_snapshot(args.root), args.model_id, args.style_id)
             if args.models_root:
-                result['local_weight_scan'] = scan_expected_weights(args.root, args.models_root, hash_files=args.hash_models)
+                result['local_weight_scan'] = scan_expected_weights(args.root, args.models_root, hash_files=args.hash_models, discover_unregistered=args.discover_unregistered)
             if args.output:
                 write(args.output, result)
             print(json.dumps(result, ensure_ascii=False, indent=2))
