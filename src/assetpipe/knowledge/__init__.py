@@ -7,6 +7,7 @@ not independently verified output files.
 from __future__ import annotations
 
 from collections import Counter
+import hashlib
 from pathlib import Path
 
 import yaml
@@ -245,3 +246,74 @@ def inspect(snapshot: dict, model_id: str | None = None, style_id: str | None = 
                 or style_id is not None and model_id is None and style_link):
             result["relevant_reports"][evid] = item
     return result
+
+
+def scan_expected_weights(repository_root: str | Path, comfy_models_root: str | Path,
+                          hash_files: bool = False) -> dict:
+    """Read-only file-presence inventory. No ComfyUI calls and no new downloads.
+
+    comfy_models_root MUST point to the actual ComfyUI 'models' directory.
+    Presence and hashing cannot validate whether the model executes correctly.
+    """
+    project = Path(repository_root).resolve()
+    models_root = Path(comfy_models_root).resolve()
+    if not models_root.is_dir():
+        raise KnowledgeError(f"Configured models root does not exist: {models_root}")
+    registry = _read(project, "config/workflow_registry.yaml")["workflows"]
+    expected: dict[tuple[str, str], set[str]] = {}
+    for workflow_id, workflow in registry.items():
+        for folder, filenames in (workflow.get("models") or {}).items():
+            if not isinstance(folder, str) or folder not in {
+                "checkpoints", "diffusion_models", "text_encoders", "vae", "loras"
+            } or not isinstance(filenames, list):
+                raise KnowledgeError(f"Unsafe model inventory declarations: {workflow_id}")
+            for filename in filenames:
+                if not isinstance(filename, str) or not filename or filename in {".", ".."} or (
+                    Path(filename).name != filename
+                ):
+                    raise KnowledgeError(f"Unsafe model filename in workflow {workflow_id}")
+                expected.setdefault((folder, filename), set()).add(workflow_id)
+        for lora in workflow.get("loras", []):
+            if not isinstance(lora, dict) or not isinstance(lora.get("file"), str):
+                raise KnowledgeError(f"Invalid LoRA metadata: {workflow_id}")
+            filename = lora["file"]
+            if Path(filename).name != filename or not filename:
+                raise KnowledgeError(f"Unsafe LoRA path: {workflow_id}")
+            expected.setdefault(("loras", filename), set()).add(workflow_id)
+    results = []
+    for (folder, filename), owners in sorted(expected.items()):
+        path = models_root / folder / filename
+        resolved = path.resolve()
+        if not resolved.is_relative_to(models_root):
+            raise KnowledgeError(f"Dependency path escapes model root: {folder}/{filename}")
+        exists = resolved.is_file()
+        entry = {
+            "folder": folder, "filename": filename,
+            "workflow_ids": sorted(owners), "presence": "PRESENT" if exists else "MISSING",
+            "byte_size": resolved.stat().st_size if exists else None,
+            "sha256": None, "hash_status": "NOT_REQUESTED" if not hash_files else "MISSING",
+            "model_identity_verified": False, "license_cleared": False,
+            "generation_validated": False,
+        }
+        if exists and hash_files:
+            digest = hashlib.sha256()
+            with resolved.open("rb") as stream:
+                for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+                    digest.update(chunk)
+            entry["sha256"] = digest.hexdigest()
+            entry["hash_status"] = "LOCAL_BYTES_SHA256"
+        results.append(entry)
+    return {
+        "inventory_state": "LOCAL_FILENAME_INVENTORY" if not hash_files else "LOCAL_HASHED_BYTES",
+        "scope": "DECLARED_WORKFLOW_DEPENDENCIES_ONLY",
+        "local_models_root": str(models_root),
+        "expected": len(results),
+        "present": sum(1 for e in results if e["presence"] == "PRESENT"),
+        "missing": sum(1 for e in results if e["presence"] == "MISSING"),
+        "files": results,
+        "generation_requests": 0,
+        "installation_compatibility": "NOT_TESTED",
+        "commercial_rights": "NOT_REVIEWED",
+        "art_quality": "UNKNOWN",
+        "side_effects": "NONE",
+    }
