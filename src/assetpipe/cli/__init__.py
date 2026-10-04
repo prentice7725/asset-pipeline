@@ -11,6 +11,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory')
     parser.add_argument('--root', type=Path, default=Path.cwd(), help='Repository/config root')
     commands = parser.add_subparsers(dest='command', required=True)
+    knowledge = commands.add_parser('knowledge', help='Offline model/style/evidence lookup; never generates or approves')
+    knowledge.add_argument('--model-id', help='Known model variant key')
+    knowledge.add_argument('--style-id', help='Known style key')
+    knowledge.add_argument('--output', type=Path, help='Optional JSON report path; stdout by default')
+    knowledge.add_argument('--models-root', type=Path, help='Only scan dependencies under this explicit ComfyUI models/ directory')
+    knowledge.add_argument('--hash-models', action='store_true', help='Stream full SHA256 for present declared weights; slower')
+    knowledge.add_argument('--discover-unregistered', action='store_true', help='Opt-in scan of unknown model-like filenames; no hashes')
     visual = commands.add_parser('visual-review', help='Create advisory previews for an existing technically passing candidate; no generation or approval')
     visual.add_argument('--run', required=True, type=Path)
     visual.add_argument('--image', type=Path, help='Select one output when the manifest has multiple outputs')
@@ -73,7 +80,17 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'visual-review':
+        if args.command == 'knowledge':
+            from ..knowledge import build_snapshot, inspect, scan_expected_weights
+            if (args.hash_models or args.discover_unregistered) and not args.models_root:
+                raise ValueError('--hash-models/--discover-unregistered require explicit --models-root')
+            result = inspect(build_snapshot(args.root), args.model_id, args.style_id)
+            if args.models_root:
+                result['local_weight_scan'] = scan_expected_weights(args.root, args.models_root, hash_files=args.hash_models, discover_unregistered=args.discover_unregistered)
+            if args.output:
+                write(args.output, result)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'visual-review':
             from ..visual_review import build_review
             print(build_review(args.run, image=args.image, display_size=args.display_size, matte=args.matte))
         elif args.command == 'mining':

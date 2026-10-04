@@ -1,0 +1,82 @@
+schema_version: 1
+as_of: "2026-10-04"
+evidence:
+  m2-graphic-risograph-pair:
+    workflows: [anima_base, krea2_base]
+    style_id: graphic-risograph
+    subject_scope: "one synthetic fox-scout comparison, not model preference"
+    report: docs/m2/STATUS.json
+    source_level: REPOSITORY_REPORT
+    originals_reviewed_here: false
+    generation_requests: 2
+    technical_qa: PASS_REPORTED
+    semantic_review: NOT_REVIEWED
+    artistic_review: NOT_REVIEWED
+    project_approval: false
+    generalization: NONE
+  m25-nonpixel-cohort:
+    workflows: []
+    style_id: null
+    subject_scope: "four nonpixel outputs, including an observed two-views error"
+    report: docs/style/M25_BLOCKER.md
+    source_level: REPOSITORY_REPORT
+    originals_reviewed_here: false
+    generation_requests: 4
+    technical_qa: PASS_REPORTED
+    semantic_review: NOT_REVIEWED
+    artistic_review: NOT_REVIEWED
+    project_approval: false
+    generalization: NONE
+  m25-anima-pixel-fail:
+    workflows: [anima_pixelate_x4_vae]
+    style_id: null
+    subject_scope: "eight source pixel-looking candidates at raw image resolution, no native 32px master"
+    report: docs/style/PIXEL_ROOT_CAUSE_AUDIT_20261001.md
+    source_level: REPOSITORY_REPORT
+    originals_reviewed_here: false
+    generation_requests: 8
+    technical_qa: FAIL_REPORTED
+    semantic_review: NOT_REVIEWED
+    artistic_review: NOT_REVIEWED
+    project_approval: false
+    generalization: NONE
+  krea2-pixel64-smoke:
+    workflows: []
+    model_id: krea2-pixel64-experimental
+    style_id: null
+    subject_scope: "two 64x64 native candidates pass Pixel Gate; alpha and 32px not proven"
+    report: docs/research/KREA2_PIXEL64_SMOKE_20261003.md
+    source_level: REPOSITORY_REPORT
+    originals_reviewed_here: false
+    generation_requests: 2
+    technical_qa: PASS_REPORTED
+    semantic_review: NOT_REVIEWED
+    artistic_review: NOT_REVIEWED
+    project_approval: false
+    generalization: NONE
+  m27-nonpixel-detached-clothing:
+    workflows: [anima_base]
+    style_id: clean_anime_cel
+    subject_scope: "four image focus experiments; detached clothing observed; no validated subject-first improvement"
+    report: docs/style/VISUAL_HIERARCHY.md
+    source_level: REPOSITORY_REPORT
+    originals_reviewed_here: false
+    generation_requests: 4
+    technical_qa: PASS_REPORTED
+    semantic_review: FAIL_REPORTED
+    artistic_review: NOT_REVIEWED
+    project_approval: false
+    generalization: NONE
+  m1-cli-providers:
+    workflows: [codex_imagegen, grok_imagine]
+    style_id: null
+    subject_scope: "historical provider E2E generation, not reproducible model/art benchmarking"
+    report: docs/m2/STATUS.json
+    source_level: REPOSITORY_REPORT
+    originals_reviewed_here: false
+    generation_requests: null
+    technical_qa: PASS_REPORTED
+    semantic_review: NOT_REVIEWED
+    artistic_review: NOT_REVIEWED
+    project_approval: false
+    generalization: NONE
