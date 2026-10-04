@@ -97,6 +97,7 @@ cards:
     lora_required: false
     vae: qwen_image_vae.safetensors
   - menu_id: STYLE-005
+    experiment_status: HOLD_PIXEL_NO_GENERATION
     title: "Pastel Chibi Pixel Candidate"
     source_id: "6d67e449de82"
     source_folder: "1"
