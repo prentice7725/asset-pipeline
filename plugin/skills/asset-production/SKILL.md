@@ -31,6 +31,18 @@ or experimental recovery for the configured production path. When the local MCP
 connection or required deterministic compiler is unavailable, report it and stop
 before generation.
 
+When project owners request an **illustrated style menu**, read
+[Numbered Candidate Style Menu](../../../docs/style_menu/NUMBERED_CANDIDATE_MENU_v0.1.md)
+and [Agent Recipe Selection Guide](../../../docs/style_menu/AGENT_RECIPE_SELECTION_GUIDE_v0.1.md).
+Menu IDs are external preview candidates (Krea2 creator examples) only;
+EXTERNAL_PREVIEW_ONLY must never be silently promoted to locally VERIFIED or
+PROJECT_APPROVED. Do not claim 32px pixel quality from a pixel-themed preview.
+The menu may help shortlisting but can never overwrite project SOT identity,
+required output class, or actual style approvals. As the user requests,
+Codex/Claude may propose *separate trial variants* of palette, linework,
+materials, LoRA, VAE and model workflow, but all changed combinations need
+independent compatibility and actual-image review, not silent production fallback.
+
 For a user asking how to design a project's own reference, model choice or style,
 read [Model & Style Handbook](../../../docs/ASSET_PIPELINE_MODEL_STYLE_HANDBOOK_v0.1.md)
 and the live model/workflow/style registries. The handbook is pipeline-side usage
