@@ -13,6 +13,15 @@ from assetpipe.knowledge import KnowledgeError, build_snapshot, inspect, scan_ex
 ROOT = Path(__file__).resolve().parents[2]
 REQUIRED_FILES = (
     "config/workflow_registry.yaml",
+    "config/workflows/krea2_pixel64_smoke_experimental.json",
+    "config/workflows/krea2_pixel64_redraw_experimental.json",
+    "config/workflows/concept_character.json",
+    "config/workflows/anima_mushroom_courier_production.json",
+    "config/workflows/anima_tomohi_api.json",
+    "config/workflows/audio_stable_audio_3_medium.json",
+    "config/workflows/baseline_anima_api.json",
+    "config/workflows/deno_minimax_h3_r2v_8step.json",
+    "config/workflows/krea2_turbo_api.json",
     "config/model_profiles.yaml",
     "config/styles/catalog.yaml",
     "config/styles/model_recipes.yaml",
@@ -55,6 +64,7 @@ def test_complete_mapping_and_counts():
     assert result["counts"]["runtime_recipes"] == 15
     assert result["counts"]["recipe_states"] == {"TESTED": 2, "UNTESTED": 13}
     assert result["counts"]["historical_report_records"] == 6
+    assert "config/workflows/krea2_pixel64_smoke_experimental.json" in result["unregistered_workflow_graphs"]
     assert result["generation_requests_made_by_this_command"] == 0
     assert result["side_effects"] == "NONE"
     assert result["ranked_models"] == result["approved_recommendations"] == []
@@ -170,3 +180,17 @@ def test_missing_models_root_fails_closed(tmp_path):
 def test_cli_rejects_hash_without_explicit_models_dir(capsys):
     assert main(["--root", str(ROOT), "knowledge", "--hash-models"]) == 1
     assert "requires explicit" in capsys.readouterr().err
+
+
+def test_unregistered_weights_are_discovered_but_not_routed(tmp_path):
+    root = tmp_path / "models"
+    unknown = root / "diffusion_models" / "new-but-unregistered.safetensors"
+    unknown.parent.mkdir(parents=True)
+    unknown.write_bytes(b"not a real model")
+    report = scan_expected_weights(ROOT, root, discover_unregistered=True)
+    assert report["unregistered_count"] == 1
+    item = report["unregistered_candidates"][0]
+    assert item["relative_filename"] == unknown.name
+    assert item["runtime_available"] is False
+    assert item["hash_status"] == "NOT_REQUESTED"
+    assert report["generation_requests"] == 0
