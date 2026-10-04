@@ -1,0 +1,50 @@
+name: Visual Style Menu Reference Integrity
+
+on:
+  pull_request:
+    paths:
+      - "config/style_menu/**"
+      - "scripts/style_menu.py"
+      - "scripts/nonpixel_research.py"
+      - "tests/unit/test_style_menu.py"
+      - "tests/unit/test_nonpixel_research.py"
+      - "docs/style_menu/**"
+      - ".github/workflows/style-menu-reference.yml"
+  push:
+    branches: [main]
+    paths:
+      - "config/style_menu/**"
+      - "scripts/style_menu.py"
+      - "tests/unit/test_style_menu.py"
+      - "docs/style_menu/**"
+      - ".github/workflows/style-menu-reference.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-menu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install offline pipeline dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Compare curated prompts against pinned original gallery source
+        run: |
+          curl --fail --location --retry 3 \
+            https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js \
+            --output /tmp/krea_style_data.js
+          python scripts/style_menu.py check --upstream-data /tmp/krea_style_data.js
+      - name: Verify menu contract, preview identity and no-generation plan
+        run: |
+          python -m compileall -q scripts/style_menu.py scripts/nonpixel_research.py
+          python -m pytest -q tests/unit/test_style_menu.py tests/unit/test_nonpixel_research.py
+          python scripts/nonpixel_research.py check
+          python scripts/nonpixel_research.py export --style STYLE-004 --workflow krea2_base --subject "One full body traveler wearing a plain blue coat with a brass compass" --output /tmp/nonpixel-style-004.json
+          python scripts/style_menu.py render --output /tmp/numbered-style-menu.md
+          python scripts/style_menu.py plan --output /tmp/style-menu-pilot-plan.json
