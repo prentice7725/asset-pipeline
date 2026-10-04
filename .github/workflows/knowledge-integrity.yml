@@ -41,6 +41,6 @@ jobs:
       - name: Assert compile and knowledge integrity (no generation)
         run: |
           python -m compileall -q src/assetpipe/knowledge src/assetpipe/cli
-          python -m pytest -q tests/unit/test_knowledge.py
+          python -m pytest -q tests/unit/test_knowledge.py tests/unit/test_styles.py tests/unit/test_asset_production_skill.py
           assetpipe knowledge --model-id anima-base > /dev/null
           assetpipe knowledge --style-id limited_palette_pixel > /dev/null
