@@ -179,7 +179,7 @@ def test_missing_models_root_fails_closed(tmp_path):
 
 def test_cli_rejects_hash_without_explicit_models_dir(capsys):
     assert main(["--root", str(ROOT), "knowledge", "--hash-models"]) == 1
-    assert "requires explicit" in capsys.readouterr().err
+    assert "--models-root" in capsys.readouterr().err
 
 
 def test_unregistered_weights_are_discovered_but_not_routed(tmp_path):
