@@ -30,3 +30,10 @@ production contracts. Never substitute arbitrary shell execution, image editing,
 or experimental recovery for the configured production path. When the local MCP
 connection or required deterministic compiler is unavailable, report it and stop
 before generation.
+
+For cross-project asset reference documents using YAML-front-matter Markdown, read
+[Shared project-reference intake](../../references/PROJECT_REFERENCE_INTAKE.md)
+before building the existing Asset Brief. This is a source-to-Brief convention, not
+an implemented Markdown importer or a new MCP tool. Treat DRAFT, EXAMPLE_ONLY and
+BLOCKED_SOURCE_GAP references as non-generatable; follow the project SOT and the
+existing review gates.
