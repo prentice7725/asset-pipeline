@@ -8,6 +8,18 @@
 
 게임마다 레퍼런스 문서 양식을 통일할 필요는 없습니다. [모델·스타일 취급 설명서](docs/ASSET_PIPELINE_MODEL_STYLE_HANDBOOK_v0.1.md)는 현재 **조사 미완성 목록**입니다. 등록된 모델/워크플로/스타일과 일부 실패·기술 QA 결과만 확인되었고, 특정 표현의 우월성이나 최적 레시피는 입증되지 않았습니다. [근거 감사](docs/research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md) 및 [재설계 실험 계획](docs/research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md)을 먼저 확인하세요. 각 게임은 자체 ACTIVE/SOT에 적합한 미술 레퍼런스를 자유롭게 작성하고, 제작 스킬은 이를 **기존 Asset Brief/PromptSpec**로 변환해 실행합니다. 설명서는 프로젝트 캐논이나 모델 품질 승인이 아닙니다.
 
+## 검증 근거 기반 모델 지식 조회 (읽기 전용)
+
+모델·워크플로·화풍 카탈로그의 **등록 상태**와 실물 이미지의 **예술적 검증 상태**를 혼동하지 않도록 오프라인 조회 기능을 제공합니다. [모델 지식 기반 취급 설명서](docs/knowledge/MODEL_CAPABILITY_GUIDE_v0.1.md)를 참고하세요.
+
+```powershell
+assetpipe knowledge --model-id anima-base
+assetpipe knowledge --style-id limited_palette_pixel
+assetpipe knowledge --models-root "C:/path/to/ComfyUI/models" --hash-models --discover-unregistered --output workspace/local_weight_inventory.json
+```
+
+이 기능은 생성·모델 다운로드·모델 교체·Golden 승인 작업을 수행하지 않습니다. 로컬 모델 경로 스캔도 사용자가 `--models-root`를 명시했을 때만 진행되며, 모형이 설치되었거나 SHA256을 계산했다고 해서 모델이 좋은 그림을 그린다고 평가하지 않습니다. 검증된 모델별 미술적 추천/순위는 아직 없습니다.
+
 ## 지원 기능과 현재 상태
 
 | 출력 유형 | 동작 |
