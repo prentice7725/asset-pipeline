@@ -62,6 +62,16 @@ assetpipe knowledge --models-root "C:/Users/seung/AppData/Local/Comfy-Desktop/Co
 
 저작자의 소개 문구(예: '일관된 스타일', '고품질')는 **AUTHOR_CLAIM**이며 Asset-Pipeline 벤치마크 성공으로 둔갑시키지 않는다. 모델의 미술적 우열, 품목별 안정성, 특정 게임에 적합한 화풍은 원본 생성 출력과 사람이 확인한 비교 데이터가 있을 때만 기록한다.
 
+## 라이선스 분리 — 상업 게임 애셋에 특히 중요
+
+모델 가중치 사용 권리와 **생성물 이용 권리**, 추가 LoRA·VAE·후처리 노드의 라이선스는 각각 검토해야 한다.
+
+- **Anima:** 공식 모델 카드에서 모델/파생 가중치의 사용에는 CircleStone 비상업 라이선스를 적용하며, 생성 이미지는 상업적으로 사용할 수 있다고 별도로 설명한다. 즉 '이미지로 상업 게임 개발 가능'과 '유료 이미지 생성 서비스/유료 게임에 모델을 임베딩 가능'은 같은 말이 아니다. 프로젝트 실제 이용 형태에 따라 원문을 검토해야 한다. [모델 카드](https://huggingface.co/circlestone-labs/Anima) · [라이선스 전문](https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md)
+- **Krea2:** 2026-06-22 Community License는 Raw/Turbo 모델 및 출력물의 상업 이용에 **기업 전체 최근 12개월 매출 미화 100만 달러 미만** 등 조건을 둔다. 해당 기준 충족 여부와 파생 모델 의무를 개별적으로 확인해야 한다. [라이선스 전문](https://github.com/krea-ai/krea-2/blob/main/docs/KREA-2-COMMUNITY-LICENSE)
+- **Pixel64:** Krea2 기반 모델 가중치와 제3자 LoRA, refiner 코드의 라이선스 조건은 **별개**다. 커뮤니티 LoRA 페이지의 단일 라이선스 표기로 전체 제작 체인의 상업적 적합성을 승인하지 않는다.
+
+따라서 knowledge 결과의 `license_review=REQUIRED`는 유지한다. 위 내용은 공식 약관의 정리이지 법률 자문이나 개별 게임의 최종 라이선스 승인 기록이 아니다.
+
 ## 등록·작동·품질 판단의 세 층
 
 - **REGISTERED:** Git 설정에 이름·그래프·프로파일이 있다. `ACTIVE`는 실행 경로 상태이며 미술 검증이 아니다.
