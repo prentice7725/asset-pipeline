@@ -38,3 +38,10 @@ knowledge, **not** a mandatory project reference-document schema. Project visual
 SOT controls art identity and style choice; keep the existing Asset Brief/PromptSpec
 as the tool interchange contract. Distinguish capability, comparative evidence and
 human-approved Golden styles; never invent performance preferences.
+
+Research caution (2026-10-04): [Model & Style Evidence Audit](../../../docs/research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md)
+records that the handbook remains INVENTORY_ONLY and model-specific art quality
+is NOT established. The [benchmark protocol](../../../docs/research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md)
+is a proposal, not authorization to generate. Model/recipe recommendation requires
+actual comparable outputs and reviewed evidence; never infer superiority from tags,
+workflow ACTIVE status, partial smoke QA or offline-compiled prompts.
