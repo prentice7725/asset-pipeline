@@ -4,6 +4,18 @@
 
 **생성 결과는 자동 승인하지 않습니다.** 픽셀 캐릭터는 검증을 통과한 후보만 검토 후 Static Master로 승인하며, SFX도 기본 검증 후 직접 들어봐야 합니다. 실패한 단계는 중단하고 기록을 보존합니다.
 
+## 이미지로 고르는 번호형 화풍 메뉴판 (탐색 후보)
+
+**[12종 시각 화풍 메뉴판](docs/style_menu/NUMBERED_CANDIDATE_MENU_v0.1.md)** · [비픽셀 Anima/Krea2 프롬프트 연구 11종](docs/style_menu/NONPIXEL_PROMPT_RESEARCH_v0.1.md) · [Codex/Claude 선택 가이드](docs/style_menu/AGENT_RECIPE_SELECTION_GUIDE_v0.1.md) · [로컬 Codex 실험 지시서](docs/style_menu/CODEX_NONPIXEL_WORK_ORDER_v0.1.md)
+
+**우선순위:** 비픽셀 메뉴 연구·재현 (STYLE-001/004/006/008), 픽셀 STYLE-005와 PixelOE 계열 실험은 **HOLD**. Codex/Grok CLI는 이미 2026-10-01 실제 이미지 생성 성공 이력이 있어서 원본/해시를 확인하고, 별도의 필요가 없으면 전수 화풍 비교를 하지 않습니다. 로컬 Codex 실험용 [작업 이슈 #8](https://github.com/prentice7725/asset-pipeline/issues/8)은 만들었으나 GitHub 이슈만으로 사용자의 PC에서 Codex CLI가 자동 실행되지는 않습니다.
+
+연구 레시피는 생성·승인된 Golden이 아닙니다. 단순 조회: `python scripts/nonpixel_research.py check`. 에이전트 프롬프트를 연구용 패킷으로 내보내기: `python scripts/nonpixel_research.py export --style STYLE-004 --workflow krea2_base --subject "One complete adult traveler wearing a blue coat and carrying a compass"`.
+
+SF 사이버펑크는 STYLE-001/002, 판타지 SD/치비는 STYLE-004/005/011, 현대 만화는 STYLE-008, 중세 판타지는 STYLE-003/006/007을 **후보로** 비교할 수 있습니다. 원본 [Krea2 Style Explorer](https://kreastyles.thetacursed.com/)의 실제 미리보기/프롬프트를 연결했으나, 자체 Krea2/Anima 실험과 게임 내 QA는 **아직 안 끝났습니다**. 따라서 12개 카드 모두 EXTERNAL_PREVIEW_ONLY이며 검증된 추천 또는 Golden Recipe로 사용하지 않습니다.
+
+`python scripts/style_menu.py check` / `render` / `plan`은 메뉴 검사·생성 없는 실험계획 준비만 수행합니다. 현재 ComfyUI GPU 자동 생성이나 모델 튜닝은 실행하지 않습니다.
+
 ## 프로젝트별 애셋 레퍼런스를 설계할 때
 
 게임마다 레퍼런스 문서 양식을 통일할 필요는 없습니다. [모델·스타일 취급 설명서](docs/ASSET_PIPELINE_MODEL_STYLE_HANDBOOK_v0.1.md)는 현재 **조사 미완성 목록**입니다. 등록된 모델/워크플로/스타일과 일부 실패·기술 QA 결과만 확인되었고, 특정 표현의 우월성이나 최적 레시피는 입증되지 않았습니다. [근거 감사](docs/research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md) 및 [재설계 실험 계획](docs/research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md)을 먼저 확인하세요. 각 게임은 자체 ACTIVE/SOT에 적합한 미술 레퍼런스를 자유롭게 작성하고, 제작 스킬은 이를 **기존 Asset Brief/PromptSpec**로 변환해 실행합니다. 설명서는 프로젝트 캐논이나 모델 품질 승인이 아닙니다.
