@@ -164,6 +164,21 @@ def build_snapshot(repository_root: str | Path) -> dict:
     bad_styles = sorted(set(recipes) - set(catalog))
     if bad_styles:
         raise KnowledgeError(f"Unrecognized style IDs in recipes: {bad_styles}")
+    # JSON graphs can exist without a registry entry. Surface, never route them.
+    declared_graphs = set()
+    for workflow_id, workflow in registry.items():
+        if workflow.get("engine", "comfyui") != "comfyui":
+            continue
+        graph = workflow.get("workflow_file")
+        if not isinstance(graph, str) or not graph.startswith("config/workflows/"):
+            raise KnowledgeError(f"ComfyUI workflow graph path missing: {workflow_id}")
+        graph_path = (root / graph).resolve()
+        if not graph_path.is_relative_to((root / "config/workflows").resolve()) or not graph_path.is_file():
+            raise KnowledgeError(f"ComfyUI workflow graph missing or unsafe: {workflow_id}")
+        declared_graphs.add(graph_path.relative_to(root).as_posix())
+    graphs_on_disk = {file.resolve().relative_to(root).as_posix()
+                      for file in (root / "config/workflows").glob("*.json") if file.is_file()}
+    unregistered_graphs = sorted(graphs_on_disk - declared_graphs)
     workflow_info = {}
     for workflow_id, wf in sorted(registry.items()):
         profile = wf.get("model_profile")
@@ -212,6 +227,7 @@ def build_snapshot(repository_root: str | Path) -> dict:
         "workflows": workflow_info, "styles": results,
         "historical_reports": evidence_summary,
         "offline_candidate_recipes": _read_research_recipes(root),
+        "unregistered_workflow_graphs": unregistered_graphs,
         "limitations": [
             "No local ComfyUI/GPU inventory or model hash probe",
             "Historical reports are not original images and do not prove artwork quality",
@@ -249,7 +265,7 @@ def inspect(snapshot: dict, model_id: str | None = None, style_id: str | None = 
 
 
 def scan_expected_weights(repository_root: str | Path, comfy_models_root: str | Path,
-                          hash_files: bool = False) -> dict:
+                          hash_files: bool = False, discover_unregistered: bool = False) -> dict:
     """Read-only file-presence inventory. No ComfyUI calls and no new downloads.
 
     comfy_models_root MUST point to the actual ComfyUI 'models' directory.
@@ -303,6 +319,32 @@ def scan_expected_weights(repository_root: str | Path, comfy_models_root: str | 
             entry["sha256"] = digest.hexdigest()
             entry["hash_status"] = "LOCAL_BYTES_SHA256"
         results.append(entry)
+    unregistered = []
+    if discover_unregistered:
+        # Names only. Do not read or hash unknown model files.
+        discovered_count = 0
+        for folder in ("checkpoints", "diffusion_models", "text_encoders", "vae", "loras"):
+            base = models_root / folder
+            if not base.is_dir():
+                continue
+            for path in base.rglob("*"):
+                if not path.is_file() or path.suffix.lower() not in {
+                    ".safetensors", ".ckpt", ".pt", ".pth", ".gguf"
+                }:
+                    continue
+                discovered_count += 1
+                if discovered_count > 5000:
+                    raise KnowledgeError("Unregistered scan exceeded 5000 model-like files")
+                resolved = path.resolve()
+                if not resolved.is_relative_to(models_root):
+                    raise KnowledgeError("Unregistered candidate path escapes model root")
+                rel = path.relative_to(base).as_posix()
+                if (folder, rel) not in expected:
+                    unregistered.append({
+                        "folder": folder, "relative_filename": rel,
+                        "registry_state": "UNREGISTERED",
+                        "runtime_available": False, "hash_status": "NOT_REQUESTED",
+                    })
     return {
         "inventory_state": "LOCAL_FILENAME_INVENTORY" if not hash_files else "LOCAL_HASHED_BYTES",
         "scope": "DECLARED_WORKFLOW_DEPENDENCIES_ONLY",
@@ -311,6 +353,8 @@ def scan_expected_weights(repository_root: str | Path, comfy_models_root: str | 
         "present": sum(1 for e in results if e["presence"] == "PRESENT"),
         "missing": sum(1 for e in results if e["presence"] == "MISSING"),
         "files": results,
+        "unregistered_candidates": sorted(unregistered, key=lambda x: (x["folder"], x["relative_filename"])),
+        "unregistered_count": len(unregistered),
         "generation_requests": 0,
         "installation_compatibility": "NOT_TESTED",
         "commercial_rights": "NOT_REVIEWED",
