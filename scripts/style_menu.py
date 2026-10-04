@@ -138,7 +138,7 @@ def markdown_menu(obj):
             "",
             f"![외부 제작자 스타일 예시 — {card['menu_id']}]({card['preview']})",
             "",
-            "**상태:** 외부 Krea2 Turbo 데모만 있음 · 우리 환경 Krea2 재현 미실행 · Anima 이식 미실행 · 프로젝트 승인 없음.",
+            "**상태:** EXTERNAL_PREVIEW_ONLY · 로컬 Krea2 재현 NOT_RUN · Anima 이식 NOT_RUN · human review NOT_RUN · 프로젝트 승인 없음.",
             "",
             "**장르:** " + ", ".join(card["genre_tags"]) + " · **애셋:** " + ", ".join(card["asset_roles"]),
             "",
