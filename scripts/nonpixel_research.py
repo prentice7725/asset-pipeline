@@ -81,8 +81,8 @@ def inspect(root=ROOT):
             raise ValueError(f"Invalid Anima research dialect or unapproved negative: {style_id}")
         if "project_subject_identity" not in entry["locked_axes"]:
             raise ValueError(f"Canon may not be edited by style recipe: {style_id}")
-        if cards[style_id]["source_id"] not in {cards[style_id]["source_id"]}:
-            raise ValueError("Unexpected upstream ID")
+        if "PIXEL" in cards[style_id]["genre_tags"]:
+            raise ValueError(f"Pixel card may not enter nonpixel research: {style_id}")
     return {"status": "OFFLINE_PROMPT_STUDY", "model_workflows": sorted(config["model_scopes"]),
             "research_style_count": len(research), "pixel_holds": [HOLD_STYLE],
             "cli_providers": "SMOKE_ONLY",
