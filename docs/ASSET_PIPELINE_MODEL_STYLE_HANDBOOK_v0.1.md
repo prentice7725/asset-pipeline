@@ -1,16 +1,20 @@
 # Asset-Pipeline 모델·스타일 취급 설명서 v0.1
 
-> 작성일: 2026-10-04 · 상태: DRAFT / 설명용 카탈로그
+> 작성일: 2026-10-04 · 상태: **RESEARCH_INCOMPLETE / INVENTORY_ONLY — 모델 표현능력·스타일 최적 레시피 미검증**
 >
 > **이 문서를 읽는 대상:** 각 게임 프로젝트의 기획/아트 담당자, Codex, Claude.
 >
 > **핵심 원칙:** Asset-Pipeline은 **어떤 모델·워크플로·스타일·후처리를 사용하면 무엇을 시도할 수 있는지**를 설명한다. 각 **게임 프로젝트는 이를 참고해 자기만의 아트 레퍼런스와 SOT를 작성**한다. 파이프라인은 게임의 화풍이나 캐릭터를 대신 결정하지 않는다.
 
+> ⚠️ **2026-10-04 정정:** 이 문서가 모든 설치 모델·워크플로의 실제 작동 및 화풍별 강점·최적 레시피를 조사한 것처럼 소개한 것은 과장이다. Git 등록 9 워크플로·6 prompt profiles·7 catalog styles·15 M2 recipe entries는 **기계적 목록**이며, 로컬 설치 본체와 예술적 품질은 전수 조사되지 않았다. pixel cohort 8/8 FAIL과 고립된 소수 생성 시도는 특정 생성 경로의 성공적인 품질 비교를 의미하지 않는다. 권장 모델이나 style winner 판단의 근거로 이 문서만 사용하지 말 것.
+>
+> 근거 및 미조사 범위: [MODEL_STYLE_EVIDENCE_AUDIT_20261004.md](research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md). 향후 통제된 비교 계획: [MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md](research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md). 현재 계획은 새 이미지 생성 승인이 아니다.
+
 ## 0. 취급 설명서의 역할
 
 프로젝트가 파이프라인에 맞춰 `PROJECT_PROFILE.md`, `ASSET_REFERENCE.md`, `ASSET_MANIFEST.md` 같은 새로운 고정 양식을 작성할 필요는 **없다**. 각 프로젝트의 기존 아트 바이블, 개별 캐릭터 시트, UI 명세, 게임 화면 규격, 레퍼런스 이미지, Drive ACTIVE/SOT가 그대로 우선한다.
 
-프로젝트는 아래 설명서를 통해 모델의 표현 특성, 스타일 조합, 해상도·투명도 제약, 검증된 예시를 확인하고 자신의 아트 방향을 정한다. 실제 작업 의뢰 시 Codex/Claude가 프로젝트 SOT와 레퍼런스에서 필요한 정보를 추출하여 **기존 `schemas/asset_brief.schema.json` 및 `schemas/prompt-spec.schema.json`** 형식으로 변환한다. 프로젝트 문서 자체에 YAML/front matter나 고정 파일명을 강제하지 않는다.
+프로젝트는 아래 미완성 목록을 통해 모델·스타일 후보와 해상도·투명도 제약을 살펴볼 수 있다. 검증되지 않은 표현 강점과 우열은 아직 알 수 없으며, 프로젝트의 아트 방향은 자체 SOT·레퍼런스와 별도의 품질 비교를 근거로 결정해야 한다. 실제 작업 의뢰 시 Codex/Claude가 프로젝트 SOT와 레퍼런스에서 필요한 정보를 추출하여 **기존 `schemas/asset_brief.schema.json` 및 `schemas/prompt-spec.schema.json`** 형식으로 변환한다. 프로젝트 문서 자체에 YAML/front matter나 고정 파일명을 강제하지 않는다.
 
 ```text
 Asset-Pipeline 설명서/스타일 카탈로그
