@@ -31,6 +31,18 @@ or experimental recovery for the configured production path. When the local MCP
 connection or required deterministic compiler is unavailable, report it and stop
 before generation.
 
+When project owners request **NONPIXEL_IMAGE** style work, prioritize
+[Anima/Krea2 source-researched prompts](../../../docs/style_menu/NONPIXEL_PROMPT_RESEARCH_v0.1.md),
+the machine-readable `config/style_menu/nonpixel_prompt_research_v0.yaml`,
+and [local Codex experiment work order](../../../docs/style_menu/CODEX_NONPIXEL_WORK_ORDER_v0.1.md).
+Study-only recipes can be exported with `python scripts/nonpixel_research.py export`;
+those study packets are not native production PromptSpecs. Protect project SOT
+identity; vary one palette/linework/shading/texture variable at a time and retain
+failed candidates. PIXEL style STYLE-005 is HOLD and excluded from all nonpixel
+pilot generation. Codex/Grok CLI providers have separate historical 2026-10-01
+REAL_GENERATION_VERIFIED records; validate files/sha before planning any new
+paid smoke, and do not batch stylistic cross-model experiments for them.
+
 When project owners request an **illustrated style menu**, read
 [Numbered Candidate Style Menu](../../../docs/style_menu/NUMBERED_CANDIDATE_MENU_v0.1.md)
 and [Agent Recipe Selection Guide](../../../docs/style_menu/AGENT_RECIPE_SELECTION_GUIDE_v0.1.md).
