@@ -7,6 +7,7 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 from .subject_contract import INTEGRITY_SCHEMA, DIRECTION_SCHEMA, validate_contract, prepare_spec, subject_lead, direction_tail
+from .spatial import compile_spatial_relationships
 
 LIST = {'type': 'array', 'items': {'type': 'string', 'minLength': 1}}
 SCHEMA = {
@@ -15,6 +16,7 @@ SCHEMA = {
     'properties': {
         'subject_integrity': INTEGRITY_SCHEMA,
         'art_direction': DIRECTION_SCHEMA,
+        'style_contract_id': {'type': 'string', 'pattern': '^STYLE-[0-9]{3}$'},
         **{key: {'type': 'string', 'minLength': 1} for key in ('subject', 'pose', 'composition', 'environment', 'lighting', 'mood')},
         **{key: LIST for key in ('appearance', 'style', 'constraints', 'negative', 'textInImage')},
         'aspectRatio': {'type': 'string', 'pattern': '^[1-9][0-9]*:[1-9][0-9]*$'},
@@ -81,11 +83,10 @@ def natural_language_prompt(brief, spec):
         rows.append(('Aspect ratio', [spec['aspectRatio']]))
     if spec.get('textInImage'):
         rows.append(('Text to render in the image', [json.dumps(t, ensure_ascii=False) for t in spec['textInImage']]))
+    spatial = compile_spatial_relationships(spec)
     if equipment:
         rows.append(('Equipment relationships (preserve the source-defined relationship and count)',
-                     [f"{item['source_trait']} ({item['relationship']}" +
-                      (f", visible count of {item['visible_count']}" if item.get('visible_count') else '') + ')'
-                      for item in equipment]))
+                     spatial['relationships']))
     lines = [f'{label}: ' + '; '.join(dict.fromkeys(values)) for label, values in rows if values]
     if spec.get('negative'):
         lines.append('Strictly do not include any of the following: ' + '; '.join(dict.fromkeys(spec['negative'])) + '.')
@@ -93,7 +94,7 @@ def natural_language_prompt(brief, spec):
 
 
 
-def anima_hybrid_prompt(spec, profile):
+def anima_hybrid_prompt(spec, profile, style_contract_caption=None):
     """Official-guidance Anima layout: quality/meta tags followed by a detailed caption.
 
     PromptSpec remains model-neutral. This compiler formats the same canonical facts
@@ -118,6 +119,7 @@ def anima_hybrid_prompt(spec, profile):
         ('Lighting', [spec['lighting']] if spec.get('lighting') else []),
         ('Mood', [spec['mood']] if spec.get('mood') else []),
         ('Style direction', spec.get('style', []) + [row['description'] for row in spec.get('styleSources', [])]),
+        ('Style Contract', [style_contract_caption] if style_contract_caption else []),
         ('Constraints', spec.get('constraints', [])),
     )
     for label, values in rows:
@@ -133,7 +135,11 @@ def anima_hybrid_prompt(spec, profile):
 def compile_prompt(brief, workflow, root):
     from ..styles import resolve_style, select_recipe, apply_style, public_selection
     spec = from_brief(brief)
-    selection = resolve_style(brief, root)
+    contract_id = spec.get('style_contract_id')
+    if contract_id and brief.get('style_id') not in (None, contract_id):
+        raise ValueError('STYLE_CONTRACT_CONFLICT: PromptSpec contract and brief style_id disagree')
+    style_brief = {**brief, 'style_id': contract_id} if contract_id else brief
+    selection = resolve_style(style_brief, root)
     explicit = brief['workflow_preferences'].get('id') == workflow['id'] or brief['workflow_preferences'].get('model_profile') == workflow.get('model_profile')
     selection = select_recipe(selection, workflow, root, explicit=explicit)
     spec = validate_spec(apply_style(spec, selection))
@@ -158,8 +164,25 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     caps = workflow['capabilities']
     spec = prepare_spec(spec, brief, caps, style_context)
     adapter = profile['prompt_adapter']
+    style_contract = None
+    style_contract_compilation = None
+    if spec.get('style_contract_id'):
+        from ..styles.contracts import compile_anima_style_contract, load_style_contract
+        contract_id = spec['style_contract_id']
+        if style_context and style_context.get('definition', {}).get('style_contract'):
+            style_contract = style_context['definition']['style_contract']
+            if style_contract.get('id') != contract_id:
+                raise ValueError('STYLE_CONTRACT_CONFLICT: resolved style differs from PromptSpec contract')
+        else:
+            style_contract = load_style_contract(Path(root), contract_id)
+        if spec.get('style') or spec.get('styleSources'):
+            raise ValueError('STYLE_CONTRACT_CONFLICT: free-text style cannot be mixed with a structured contract')
+        style_contract_compilation = compile_anima_style_contract(
+            style_contract, adapter=adapter, dialect=profile.get('style_dialect', ''),
+            model_profile=profile_id, workflow_id=workflow['id'])
     native_negative = bool(caps.get('negative_prompt'))
     equipment = spec.get('subject_integrity', {}).get('equipment', [])
+    spatial = compile_spatial_relationships(spec)
     # Model-profile defaults are part of the model dialect, not project canon.
     profile_negative = profile.get('negative_prefix', [])
     if not isinstance(profile_negative, list) or any(not isinstance(v, str) or not v.strip() for v in profile_negative):
@@ -167,7 +190,8 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     contract_negative_guards = []
     if native_negative and any(item.get('visible_count') == 1 for item in equipment):
         contract_negative_guards = ['duplicate required equipment', 'extra copies of required equipment']
-    negative_items = list(dict.fromkeys(profile_negative + spec.get('negative', []) + contract_negative_guards))
+    contract_forbidden = style_contract_compilation['forbidden_negative_terms'] if style_contract_compilation else []
+    negative_items = list(dict.fromkeys(profile_negative + spec.get('negative', []) + contract_forbidden + contract_negative_guards))
     # 자연어 금지 지시는 프롬프트 안의 문장일 뿐 모델이 보장하지 않으므로, 네이티브 negative prompt와 구분한다.
     instructed_negative = adapter == 'natural_language' and bool(caps.get('negative_prompt_instruction'))
     if negative_items and not (native_negative or instructed_negative):
@@ -186,7 +210,8 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     elif adapter == 'anima':
         positive = ', '.join(profile.get('positive_prefix', []) + (fields if preserve_case else [value.lower() for value in fields]))
     elif adapter == 'anima_hybrid':
-        positive = anima_hybrid_prompt(spec, profile)
+        positive = anima_hybrid_prompt(spec, profile,
+                                       style_contract_compilation['caption'] if style_contract_compilation else None)
     elif adapter == 'krea2':
         positive = '. '.join(value.rstrip('. ') for value in fields) + '.'
     else:
@@ -207,10 +232,8 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
             lead = subject_lead(spec, adapter)
             positive = lead + '\n' + positive
         if adapter != 'natural_language' and equipment:
-            positive += '\nEquipment relationships (preserve the source-defined relationship and count): ' + '; '.join(
-                f"{item['source_trait']} ({item['relationship']}" +
-                (f", visible count of {item['visible_count']}" if item.get('visible_count') else '') + ')'
-                for item in equipment) + '.'
+            if spatial['relationships']:
+                positive += '\nEquipment relationships (preserve count and compiled spatial mapping): ' + '; '.join(spatial['relationships']) + '.'
         tail = direction_tail(spec)
         if tail:
             positive += '\n' + tail
@@ -222,8 +245,15 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
             'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(negative_items),
             'negative_mode': negative_mode, 'negative_instruction': list(negative_items) if instructed_negative else [],
             'contract_negative_guards': contract_negative_guards,
-            'compiler_revision': 'anima_hybrid_v2' if adapter == 'anima_hybrid' else 'legacy',
+            'compiler_revision': ('anima_hybrid_v3' if style_contract_compilation else
+                                  'anima_hybrid_v2' if adapter == 'anima_hybrid' else 'legacy'),
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
+    if style_contract_compilation:
+        from ..styles.contracts import style_contract_review_template
+        result['style_contract_compilation'] = style_contract_compilation
+        result['style_contract_review'] = style_contract_review_template(style_contract)
+    if spatial['mappings']:
+        result['spatial_relationships'] = spatial['mappings']
     if spec.get('subject_integrity'):
         result['subject_contract_review'] = {'semantic': 'NOT_VALIDATED', 'composition': 'NOT_VALIDATED',
             'art': 'NOT_VALIDATED', 'human_review': 'REVIEW_REQUIRED',
