@@ -1,0 +1,55 @@
+name: Anima Family Pipeline
+
+on:
+  pull_request:
+    paths:
+      - "config/model_profiles.yaml"
+      - "config/workflow_registry.yaml"
+      - "config/workflows/anima_base_rebuilt_api.json"
+      - "config/workflows/anima_turbo_api.json"
+      - "src/assetpipe/prompts/**"
+      - "scripts/anima_family_pipeline.py"
+      - "tests/unit/test_anima_family_pipeline.py"
+      - "docs/style_menu/**"
+      - ".github/workflows/anima-family-pipeline.yml"
+  push:
+    branches: [main]
+    paths:
+      - "config/model_profiles.yaml"
+      - "config/workflow_registry.yaml"
+      - "config/workflows/anima_base_rebuilt_api.json"
+      - "config/workflows/anima_turbo_api.json"
+      - "src/assetpipe/prompts/**"
+      - "scripts/anima_family_pipeline.py"
+      - "tests/unit/test_anima_family_pipeline.py"
+      - ".github/workflows/anima-family-pipeline.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install package
+        run: python -m pip install -e ".[dev]"
+      - name: Validate Anima family pipeline without generation
+        run: |
+          python -m compileall -q src/assetpipe/prompts scripts/anima_family_pipeline.py
+          python -m pytest -q tests/unit/test_prompts.py tests/unit/test_anima_family_pipeline.py
+          python scripts/anima_family_pipeline.py check
+          python scripts/anima_family_pipeline.py plan --output /tmp/anima-family-r1.json
+          python - <<'PY'
+          import json
+          p=json.load(open('/tmp/anima-family-r1.json', encoding='utf-8'))
+          assert p['status']=='PREPARED_NOT_EXECUTED'
+          assert p['reserved_calls_required']==4
+          assert p['generation_requests']==0
+          assert {j['workflow_id'] for j in p['jobs']}=={'anima_base_rebuilt','anima_turbo'}
+          PY
