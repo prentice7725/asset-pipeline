@@ -34,7 +34,7 @@ def test_anima_hybrid_compiler_applies_official_prefix_and_negative():
     assert compiled["adapter"] == "anima_hybrid"
     assert compiled["positive"].startswith("masterpiece, best quality, score_7, safe.")
     assert "Depict Exactly one adult traveler" in compiled["positive"]
-    assert "Appearance:" in compiled["positive"]
+    assert "Appearance:" not in compiled["positive"]  # all appearance facts are already in subject/equipment contract
     assert "Style direction:" in compiled["positive"]
     assert "Full body, complete character." in compiled["positive"]
     assert compiled["negative"].startswith(", ".join(afp.OFFICIAL_NEGATIVE))
