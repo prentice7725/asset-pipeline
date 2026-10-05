@@ -1,0 +1,101 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "anima-base-v1.0.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen_3_06b_base.safetensors",
+      "type": "stable_diffusion",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_vae.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "masterpiece, best quality, score_7, safe. Depict Exactly one adult traveler with short dark brown hair, wearing a plain blue coat. Pose: standing naturally in a front view. Composition: complete full body centered in frame, head to toe, both feet visible, with clear ground margin below the footwear. Environment: uncluttered background treatment consistent with the selected style direction, with no crowd. Lighting: use the selected style lighting while keeping the face, coat, hands, and required equipment readable. Mood: follow the selected style direction while keeping the subject legible. Style direction: cyberpunk; night; neon lighting; red lighting; black background; high contrast; metallic surfaces. Constraints: single character; do not crop the head or feet; background detail remains subordinate to the traveler; complete head-to-toe human silhouette with both feet visible.\nSubject integrity: Keep the body physically connected; keep the whole character in frame from head to toe; keep these required body parts present and connected: head, torso, both arms, both hands, both legs, both feet; preserve the source-defined camera view.\nEquipment relationships (preserve the source-defined relationship and count): exactly one brass compass visibly held in the subject's anatomical left hand (carried, visible count of 1).",
+      "clip": [
+        "2",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration, duplicate required equipment, extra copies of required equipment",
+      "clip": [
+        "2",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 512,
+      "height": 768,
+      "batch_size": 1
+    }
+  },
+  "7": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "seed": 7725,
+      "steps": 30,
+      "cfg": 4.0,
+      "sampler_name": "er_sde",
+      "scheduler": "simple",
+      "positive": [
+        "4",
+        0
+      ],
+      "negative": [
+        "5",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "denoise": 1
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "7",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ],
+      "filename_prefix": "assetpipe/STYLE_001_anima_base_rebuilt_r2"
+    }
+  }
+}

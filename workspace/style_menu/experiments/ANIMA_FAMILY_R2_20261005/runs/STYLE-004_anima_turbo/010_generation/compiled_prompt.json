@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "adapter": "anima_hybrid",
+  "profile_id": "anima-turbo",
+  "profile_sha256": "6d819c798b15b8cb6e8d40fc00cbc8b0bab5b3beeb252ec32a8a3c41d156fece",
+  "prompt_spec": {
+    "subject": "Exactly one adult traveler with short dark brown hair, wearing a plain blue coat.",
+    "appearance": [
+      "short dark brown hair",
+      "plain blue coat",
+      "exactly one brass compass visibly held in the subject's anatomical left hand",
+      "adult traveler"
+    ],
+    "pose": "standing naturally in a front view",
+    "composition": "complete full body centered in frame, head to toe, both feet visible, with clear ground margin below the footwear",
+    "environment": "uncluttered background treatment consistent with the selected style direction, with no crowd",
+    "lighting": "use the selected style lighting while keeping the face, coat, hands, and required equipment readable",
+    "mood": "follow the selected style direction while keeping the subject legible",
+    "style": [
+      "storybook illustration",
+      "simplified features",
+      "gouache painting",
+      "warm light",
+      "flat shapes",
+      "clean silhouette"
+    ],
+    "constraints": [
+      "single character",
+      "do not crop the head or feet",
+      "background detail remains subordinate to the traveler",
+      "complete head-to-toe human silhouette with both feet visible"
+    ],
+    "negative": [],
+    "subject_integrity": {
+      "class": "full_character",
+      "identity_source": "synthetic controlled fixture",
+      "whole_subject_required": true,
+      "physically_connected_body": true,
+      "mandatory_parts": [
+        "head",
+        "torso",
+        "both arms",
+        "both hands",
+        "both legs",
+        "both feet"
+      ],
+      "camera_view": "front",
+      "equipment": [
+        {
+          "source_trait": "exactly one brass compass visibly held in the subject's anatomical left hand",
+          "relationship": "carried",
+          "visible_count": 1,
+          "location": "left"
+        }
+      ],
+      "forbidden_substitutions": []
+    }
+  },
+  "positive": "masterpiece, best quality, score_7, safe. Depict Exactly one adult traveler with short dark brown hair, wearing a plain blue coat. Pose: standing naturally in a front view. Composition: complete full body centered in frame, head to toe, both feet visible, with clear ground margin below the footwear. Environment: uncluttered background treatment consistent with the selected style direction, with no crowd. Lighting: use the selected style lighting while keeping the face, coat, hands, and required equipment readable. Mood: follow the selected style direction while keeping the subject legible. Style direction: storybook illustration; simplified features; gouache painting; warm light; flat shapes; clean silhouette. Constraints: single character; do not crop the head or feet; background detail remains subordinate to the traveler; complete head-to-toe human silhouette with both feet visible.\nSubject integrity: Keep the body physically connected; keep the whole character in frame from head to toe; keep these required body parts present and connected: head, torso, both arms, both hands, both legs, both feet; preserve the source-defined camera view.\nEquipment relationships (preserve the source-defined relationship and count): exactly one brass compass visibly held in the subject's anatomical left hand (carried, visible count of 1).",
+  "negative": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration, duplicate required equipment, extra copies of required equipment",
+  "negative_mode": "NATIVE",
+  "negative_instruction": [],
+  "contract_negative_guards": [
+    "duplicate required equipment",
+    "extra copies of required equipment"
+  ],
+  "compiler_revision": "anima_hybrid_v2",
+  "aspect_ratio": null,
+  "defaults": {},
+  "subject_contract_review": {
+    "semantic": "NOT_VALIDATED",
+    "composition": "NOT_VALIDATED",
+    "art": "NOT_VALIDATED",
+    "human_review": "REVIEW_REQUIRED",
+    "identity_source": "synthetic controlled fixture",
+    "style_fingerprint_binding": null,
+    "approval_effect": "NONE",
+    "assessment_limits": {
+      "recognized_source_camera": "front",
+      "camera_assessment": "RECOGNIZED_PATTERN_ONLY",
+      "view_visibility": "VIEW_VISIBILITY_REVIEW_REQUIRED",
+      "visibility_reason": "Counts do not prove visibility; unspecified placement, occlusion and camera geometry require image review.",
+      "prose_conflicts": "UNASSESSED_OUTSIDE_EXPLICIT_PATTERNS",
+      "certifies_conflict_absence": false
+    }
+  }
+}
