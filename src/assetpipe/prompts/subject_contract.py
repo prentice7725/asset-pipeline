@@ -158,7 +158,7 @@ def subject_lead(spec, adapter):
         if integrity.get('whole_subject_required'):
             lead += ' and the whole character in frame'
         lead += '.'
-        if adapter == 'anima':
+        if adapter in {'anima', 'anima_hybrid'}:
             lead += ' Full body, complete character.'
     else:
         lead = f"Depict the {kind.replace('_', ' ')} described here: {spec['subject']}."
