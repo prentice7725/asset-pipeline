@@ -12,7 +12,7 @@ def obj(properties, required=()):
 
 SCHEMA = obj({
     'art_direction': ART_DIRECTION_SCHEMA,
-    'style_id': {'type': 'string', 'pattern': '^[a-z0-9][a-z0-9_-]{0,63}$'},
+    'style_id': {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'},
     'project_id': {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'},
     'asset_id': {'type': 'string', 'pattern': '^[A-Za-z0-9_-]+$'},
     'asset_type': {'type': 'string', 'minLength': 1},

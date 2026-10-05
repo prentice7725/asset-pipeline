@@ -13,13 +13,14 @@ INTEGRITY_SCHEMA = {
         'whole_subject_required': {'type': 'boolean'},
         'physically_connected_body': {'type': 'boolean'},
         'mandatory_parts': STRINGS,
-        'camera_view': {'enum': ['from_source', 'front', 'rear', 'left', 'right']},
+        'camera_view': {'enum': ['from_source', 'front', 'rear', 'left', 'right', 'three_quarter']},
         'equipment': {'type': 'array', 'items': {
             'type': 'object', 'additionalProperties': False,
             'required': ['source_trait', 'relationship'],
             'properties': {'source_trait': TEXT, 'relationship': {'enum': ['worn', 'carried']},
                 'visible_count': {'type': 'integer', 'minimum': 1},
-                'location': {'enum': ['unspecified', 'front', 'rear', 'left', 'right']}}
+                'location': {'enum': ['unspecified', 'front', 'rear', 'left', 'right']},
+                'subject_side': {'enum': ['SUBJECT_LEFT', 'SUBJECT_RIGHT']}}
         }},
         'forbidden_substitutions': STRINGS,
     },
@@ -70,6 +71,9 @@ def validate_contract(spec, brief=None, style_context=None, *, check_style=True)
         raise ValueError('SUBJECT_CLASS_CONFLICT: non-character subject cannot acquire body requirements')
     source_view = camera_from_source(spec)
     view = integrity.get('camera_view', 'from_source')
+    has_subject_side = any(item.get('subject_side') for item in integrity.get('equipment', []))
+    if has_subject_side and view == 'three_quarter':
+        raise ValueError('SPATIAL_VIEW_UNRESOLVED: three-quarter view cannot map anatomical side safely')
     if view != 'from_source' and source_view != view:
         raise ValueError('BRIEF_COMPOSITION_CONFLICT: explicit camera must match the source pose/composition/constraints')
     view = source_view if view == 'from_source' else view
@@ -89,6 +93,13 @@ def validate_contract(spec, brief=None, style_context=None, *, check_style=True)
             if counts != [count]:
                 raise ValueError('SUBJECT_SOURCE_CONFLICT: visible count must match an unambiguous explicit source count')
             location = item.get('location', 'unspecified')
+            subject_side = item.get('subject_side')
+            if subject_side:
+                if location != 'unspecified':
+                    raise ValueError('SPATIAL_RELATIONSHIP_CONFLICT: use subject_side instead of ambiguous location')
+                anatomical = 'left' if subject_side == 'SUBJECT_LEFT' else 'right'
+                if not re.search(r"\b" + anatomical + r" hand\b", trait, re.I):
+                    raise ValueError('SUBJECT_SOURCE_CONFLICT: subject_side must match the explicit source trait')
             if location != 'unspecified' and not re.search(r'\b' + location + r'\b', trait, re.I):
                 raise ValueError('SUBJECT_SOURCE_CONFLICT: equipment location must be explicit in its source trait')
             if (view, location) in {('front', 'rear'), ('rear', 'front'), ('left', 'right'), ('right', 'left')}:
@@ -158,7 +169,7 @@ def subject_lead(spec, adapter):
         if integrity.get('whole_subject_required'):
             lead += ' and the whole character in frame'
         lead += '.'
-        if adapter == 'anima':
+        if adapter in {'anima', 'anima_hybrid'}:
             lead += ' Full body, complete character.'
     else:
         lead = f"Depict the {kind.replace('_', ' ')} described here: {spec['subject']}."

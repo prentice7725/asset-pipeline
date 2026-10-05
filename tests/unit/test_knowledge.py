@@ -20,6 +20,8 @@ REQUIRED_FILES = (
     "config/workflows/anima_tomohi_api.json",
     "config/workflows/audio_stable_audio_3_medium.json",
     "config/workflows/baseline_anima_api.json",
+    "config/workflows/anima_base_rebuilt_api.json",
+    "config/workflows/anima_turbo_api.json",
     "config/workflows/deno_minimax_h3_r2v_8step.json",
     "config/workflows/krea2_turbo_api.json",
     "config/model_profiles.yaml",
@@ -57,16 +59,18 @@ def mutate(root, name, callback):
 def test_complete_mapping_and_counts():
     result = build_snapshot(ROOT)
     assert result["research_state"] == "INVENTORY_ONLY"
-    assert result["counts"]["workflows"] == 9
+    assert result["counts"]["workflows"] == 11
     assert result["counts"]["model_variants"] == 10
-    assert result["counts"]["model_profiles"] == 6
-    assert result["counts"]["styles"] == 7
-    assert result["counts"]["runtime_recipes"] == 15
-    assert result["counts"]["recipe_states"] == {"TESTED": 2, "UNTESTED": 13}
+    assert result["counts"]["model_profiles"] == 8
+    assert result["counts"]["styles"] == 9
+    assert result["counts"]["runtime_recipes"] == 19
+    assert result["counts"]["recipe_states"] == {"TESTED": 2, "UNTESTED": 17}
     assert result["counts"]["historical_report_records"] == 6
     assert "config/workflows/krea2_pixel64_smoke_experimental.json" in result["unregistered_workflow_graphs"]
     assert result["styles"]["ink-storybook"]["visual_grammar"]["linework"] == ["fine ink contours"]
     assert result["workflows"]["anima_base"]["prompt_adapter"] == "anima"
+    assert result["workflows"]["anima_base_rebuilt"]["prompt_adapter"] == "anima_hybrid"
+    assert result["workflows"]["anima_turbo"]["prompt_adapter"] == "anima_hybrid"
     assert result["workflows"]["krea2_base"]["prompt_adapter"] == "krea2"
     assert result["workflows"]["anima_pixelate_x4_vae"]["profile_positive_prefix"] == ["pixel art", "chibi"]
     assert result["workflows"]["krea2_base"]["declared_presets"]["concept_art"]["steps"] == 8
@@ -83,7 +87,8 @@ def test_every_model_and_style_explicitly_unranked():
     assert all(x["artistic_review"] == "NOT_REVIEWED" and not x["raw_artifacts_verified"] and not x["project_approved"] for x in report["historical_reports"].values())
     assert report["historical_reports"]["m25-anima-pixel-fail"]["technical_qa"] == "FAIL_REPORTED"
     assert report["historical_reports"]["krea2-pixel64-smoke"]["technical_qa"] == "PASS_REPORTED"
-    assert report["models"]["anima-turbo"]["workflow_ids"] == []
+    assert report["models"]["anima-turbo"]["workflow_ids"] == ["anima_turbo"]
+    assert report["models"]["anima-turbo"]["catalog_state"] == "EXPERIMENTAL"
     assert report["models"]["krea2-raw"]["catalog_state"] == "RESEARCH_ONLY"
 
 
@@ -142,7 +147,7 @@ def test_unregistered_unknown_style_in_recipe(replica):
 
 def test_research_model_cannot_claim_active_routing(replica):
     def alter(data):
-        data["models"]["anima-turbo"]["workflows"] = ["anima_base"]
+        data["models"]["krea2-raw"]["workflows"] = ["anima_base"]
     mutate(replica, "config/knowledge/model_catalog.yaml", alter)
     with pytest.raises(KnowledgeError, match="Research-only model"):
         build_snapshot(replica)

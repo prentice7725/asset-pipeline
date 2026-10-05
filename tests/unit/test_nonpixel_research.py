@@ -26,9 +26,13 @@ def test_all_nonpixel_menus_have_two_model_specific_prompt_studies():
 
 def test_export_project_canon_is_not_changed_and_lora_none():
     subject = "One adult guard with brown hair wearing a blue coat and carrying a brass compass."
-    for workflow in ("anima_base", "krea2_base"):
-        packet = nonpixel_research.export_packet(ROOT, "STYLE-004", workflow, subject)
-        assert subject in packet["example_unapproved_compiled_text"]
+    anima = nonpixel_research.export_packet(ROOT, "STYLE-004", "anima_base", subject)
+    krea = nonpixel_research.export_packet(ROOT, "STYLE-004", "krea2_base", subject)
+    assert anima["example_unapproved_compiled_text"] is None
+    assert anima["style_contract_ref"] == "config/styles/catalog.yaml#/styles/STYLE-004/style_contract"
+    assert "STRUCTURED_STYLE_CONTRACT" in anima["prompt_dialect"]
+    assert subject in krea["example_unapproved_compiled_text"]
+    for packet in (anima, krea):
         assert packet["output_class"] == "NONPIXEL_IMAGE"
         assert packet["loras"] == []
         assert packet["vae"] == "qwen_image_vae.safetensors"
@@ -36,7 +40,7 @@ def test_export_project_canon_is_not_changed_and_lora_none():
         assert packet["generation_requests"] == 0
         assert packet["original_image_reproduction"] == "NOT_RUN"
         assert "project_subject_identity" in packet["canon_locked_axes"]
-    assert "gouache" in packet["example_unapproved_compiled_text"]
+    assert "gouache" in krea["example_unapproved_compiled_text"]
 
 
 def test_nonpixel_research_rejects_pixel_and_cli_providers():
@@ -62,7 +66,7 @@ def test_menu_pilot_is_nonpixel_only_and_excludes_005():
     pair_krea = next(x for x in plan["jobs"] if x["style_id"] == "STYLE-004" and x["workflow"] == "krea2_base")
     pair_anima = next(x for x in plan["jobs"] if x["style_id"] == "STYLE-004" and x["workflow"] == "anima_base")
     assert pair_krea["model_specific_study"]["positive_dialect"] == "NATURAL_LANGUAGE"
-    assert pair_anima["model_specific_study"]["positive_dialect"] == "TAGS_PLUS_NATURAL_CAPTION"
+    assert pair_anima["model_specific_study"]["positive_dialect"] == "STRUCTURED_STYLE_CONTRACT"
     assert pair_krea["lora_weights"] == pair_anima["lora_weights"] == []
     assert pair_krea["model_dialect_compiler_required"]
     assert pair_krea["study_state"] == "OFFLINE_RESEARCH_NOT_RUN"
@@ -74,7 +78,8 @@ def test_upstream_preview_cannot_be_approved_via_recipe_text(tmp_path):
         "config/style_menu/nonpixel_prompt_research_v0.yaml",
         "config/style_menu/candidates_v0.yaml",
         "config/workflow_registry.yaml",
-        "config/model_profiles.yaml"
+        "config/model_profiles.yaml",
+        "config/styles/catalog.yaml"
     ]:
         dest = target / relative
         dest.parent.mkdir(parents=True, exist_ok=True)

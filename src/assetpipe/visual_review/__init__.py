@@ -2,6 +2,7 @@
 import hashlib
 import io
 import json
+import copy
 from pathlib import Path
 
 from PIL import Image, ImageFilter, ImageOps
@@ -113,5 +114,9 @@ def build_review(run, *, image=None, display_size=None, matte=(255, 255, 255)):
                 key: {'decision': 'NOT_VALIDATED', 'notes': ''} for key in
                 ('thumbnail_readability', 'grayscale_value_masses', 'blurred_shadow_groups', 'background_noise')}},
         }
+    compiled = manifest.get('generation', {}).get('compiled_prompt', {})
+    if compiled.get('style_contract_review'):
+        report['style_contract_review'] = copy.deepcopy(compiled['style_contract_review'])
+        report['style_contract_review']['status'] = 'NOT_REVIEWED'
     write(directory / 'visual_review.json', report)
     return directory / 'visual_review.json'

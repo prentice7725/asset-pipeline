@@ -6,27 +6,63 @@ profiles:
     defaults: {}
     sources:
       - https://huggingface.co/circlestone-labs/Anima
+    notes: Legacy B1 profile retained for evidence reproducibility; do not use as the rebuilt baseline.
+
+  anima-base-rebuilt:
+    prompt_adapter: anima_hybrid
+    style_dialect: anima_hybrid_v3
+    positive_prefix: [masterpiece, best quality, score_7, safe]
+    negative_prefix: [worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration]
+    defaults: {}
+    prompt_policy:
+      format: quality_tags_plus_detailed_caption
+      preserve_proper_case_in_caption: true
+      tag_case: lower
+      minimum_caption_sentences: 2
+    sources:
+      - https://huggingface.co/circlestone-labs/Anima
+    notes: Official-guidance rebuild; experimental until real-generation validation.
+
+  anima-turbo:
+    prompt_adapter: anima_hybrid
+    style_dialect: anima_hybrid_v3
+    positive_prefix: [masterpiece, best quality, score_7, safe]
+    negative_prefix: [worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration]
+    defaults: {}
+    prompt_policy:
+      format: quality_tags_plus_detailed_caption
+      preserve_proper_case_in_caption: true
+      tag_case: lower
+      minimum_caption_sentences: 2
+    sources:
+      - https://huggingface.co/circlestone-labs/Anima
+    notes: Official Turbo candidate; CFG 1 and 8-12 steps enforced by workflow presets.
+
   anima-pixel:
     prompt_adapter: anima
     positive_prefix: [pixel art, chibi]
     defaults: {}
     sources:
       - https://huggingface.co/circlestone-labs/Anima
+
   anima-tomohi:
     prompt_adapter: anima
     positive_prefix: [tomohi]
     defaults: {}
     trigger_source: user-confirmed
+
   krea2:
     prompt_adapter: krea2
     defaults: {}
     sources:
       - https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
     community_style_reference: https://kreastyles.thetacursed.com/
+
   codex-imagegen:
     prompt_adapter: natural_language
     defaults: {}
     notes: Codex CLI 내장 image_gen 도구용 자연어 프롬프트. 네이티브 negative prompt와 seed는 없다.
+
   grok-imagine:
     prompt_adapter: natural_language
     defaults: {}

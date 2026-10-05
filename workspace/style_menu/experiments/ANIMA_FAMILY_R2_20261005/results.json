@@ -1,0 +1,31 @@
+{
+  "cohort": "ANIMA_FAMILY_R2_20261005",
+  "status": "EXECUTED_REVIEW_REQUIRED",
+  "generation_requests": 4,
+  "completed": 4,
+  "failed": 0,
+  "retries": 0,
+  "golden_approval": false,
+  "results": [
+    {
+      "job_id": "STYLE-001_anima_base_rebuilt",
+      "status": "COMPLETED",
+      "manifest": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_base_rebuilt\\run_manifest.json"
+    },
+    {
+      "job_id": "STYLE-001_anima_turbo",
+      "status": "COMPLETED",
+      "manifest": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_turbo\\run_manifest.json"
+    },
+    {
+      "job_id": "STYLE-004_anima_base_rebuilt",
+      "status": "COMPLETED",
+      "manifest": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_base_rebuilt\\run_manifest.json"
+    },
+    {
+      "job_id": "STYLE-004_anima_turbo",
+      "status": "COMPLETED",
+      "manifest": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\run_manifest.json"
+    }
+  ]
+}

@@ -131,6 +131,143 @@ workflows:
     installation_check:
       status: PASS
       missing: []
+  anima_base_rebuilt:
+    model_profile: anima-base-rebuilt
+    output_class: NONPIXEL_IMAGE
+    engine: comfyui
+    workflow_file: config/workflows/anima_base_rebuilt_api.json
+    workflow_name: anima_base_rebuilt_api
+    status: EXPERIMENTAL
+    selection: explicit_only
+    priority: 55
+    tags:
+    - character
+    - illustration
+    - anime
+    - general
+    - portrait
+    - fantasy
+    - official_baseline_rebuild
+    models:
+      diffusion_models:
+      - anima-base-v1.0.safetensors
+      text_encoders:
+      - qwen_3_06b_base.safetensors
+      vae:
+      - qwen_image_vae.safetensors
+      loras: []
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: true
+      exact_resolution: true
+    presets:
+      pilot_b1_compatible:
+        width: 512
+        height: 768
+        steps: 30
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+      character_portrait:
+        width: 768
+        height: 1152
+        steps: 30
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+      concept_art:
+        width: 1024
+        height: 1024
+        steps: 30
+        cfg: 4.0
+        sampler: er_sde
+        scheduler: simple
+    default_preset: character_portrait
+    post_pipeline:
+    - image_qa
+    validation:
+      status: CONFIGURED_OFFICIAL_BASELINE_NOT_GENERATION_VERIFIED
+      source: https://huggingface.co/circlestone-labs/Anima
+      real_generation: NOT_RUN
+      router_smoke: PENDING
+    installation_check:
+      status: PENDING_LOCAL_HASH_RECHECK
+      missing: []
+
+  anima_turbo:
+    model_profile: anima-turbo
+    output_class: NONPIXEL_IMAGE
+    engine: comfyui
+    workflow_file: config/workflows/anima_turbo_api.json
+    workflow_name: anima_turbo_api
+    status: EXPERIMENTAL
+    selection: explicit_only
+    priority: 65
+    tags:
+    - character
+    - illustration
+    - anime
+    - general
+    - portrait
+    - fantasy
+    - turbo
+    models:
+      diffusion_models:
+      - anima-turbo-v1.1.safetensors
+      text_encoders:
+      - qwen_3_06b_base.safetensors
+      vae:
+      - qwen_image_vae.safetensors
+      loras: []
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: true
+      exact_resolution: true
+    presets:
+      pilot_b1_compatible:
+        width: 512
+        height: 768
+        steps: 10
+        cfg: 1.0
+        sampler: euler
+        scheduler: simple
+      character_portrait:
+        width: 768
+        height: 1152
+        steps: 10
+        cfg: 1.0
+        sampler: euler
+        scheduler: simple
+      concept_art:
+        width: 1024
+        height: 1024
+        steps: 10
+        cfg: 1.0
+        sampler: euler
+        scheduler: simple
+    default_preset: character_portrait
+    post_pipeline:
+    - image_qa
+    validation:
+      status: CONFIGURED_OFFICIAL_TURBO_NOT_GENERATION_VERIFIED
+      source: https://huggingface.co/circlestone-labs/Anima
+      real_generation: NOT_RUN
+      router_smoke: PENDING
+    installation_check:
+      status: PENDING_LOCAL_INSTALLATION
+      missing:
+      - anima-turbo-v1.1.safetensors
+
   tomohi_character:
     model_profile: anima-tomohi
     output_class: NONPIXEL_IMAGE

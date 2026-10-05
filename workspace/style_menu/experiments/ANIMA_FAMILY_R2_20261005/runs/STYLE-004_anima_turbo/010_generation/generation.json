@@ -1,0 +1,39 @@
+{
+  "status": "COMPLETED",
+  "workflow": "anima_turbo_api",
+  "workflow_path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\config\\workflows\\anima_turbo_api.json",
+  "workflow_sha256": "34c66b56e2e8ac7b911d7e99ea6c4fb4f2400b28dc607800fd40a5b477b69319",
+  "workflow_version": "1.0.0",
+  "models": {
+    "diffusion": "anima-turbo-v1.1.safetensors",
+    "text_encoder": "qwen_3_06b_base.safetensors",
+    "vae": "qwen_image_vae.safetensors",
+    "loras": []
+  },
+  "generation_parameters": {
+    "width": 512,
+    "height": 768,
+    "steps": 10,
+    "cfg": 1.0,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "seed": 7725,
+    "lora_strength": null
+  },
+  "prompt": "masterpiece, best quality, score_7, safe. Depict Exactly one adult traveler with short dark brown hair, wearing a plain blue coat. Pose: standing naturally in a front view. Composition: complete full body centered in frame, head to toe, both feet visible, with clear ground margin below the footwear. Environment: uncluttered background treatment consistent with the selected style direction, with no crowd. Lighting: use the selected style lighting while keeping the face, coat, hands, and required equipment readable. Mood: follow the selected style direction while keeping the subject legible. Style direction: storybook illustration; simplified features; gouache painting; warm light; flat shapes; clean silhouette. Constraints: single character; do not crop the head or feet; background detail remains subordinate to the traveler; complete head-to-toe human silhouette with both feet visible.\nSubject integrity: Keep the body physically connected; keep the whole character in frame from head to toe; keep these required body parts present and connected: head, torso, both arms, both hands, both legs, both feet; preserve the source-defined camera view.\nEquipment relationships (preserve the source-defined relationship and count): exactly one brass compass visibly held in the subject's anatomical left hand (carried, visible count of 1).",
+  "negative_prompt": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration, duplicate required equipment, extra copies of required equipment",
+  "seed": 7725,
+  "lora_strength": null,
+  "prompt_id": "6ed7022c-1659-4494-b7cb-30ac5d732b3f",
+  "client_id": "8b1f036b-f3ba-4bec-ab88-2152d716117b",
+  "comfyui_base_url": "http://127.0.0.1:8188",
+  "comfyui_version": "0.38.2",
+  "input_image": null,
+  "input_image_sha256": null,
+  "uploaded_input_image": null,
+  "created_at_utc": "2026-10-05T13:30:43.803273+00:00",
+  "artifacts": [
+    "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\001_STYLE_004_anima_turbo_r2_00001_.png"
+  ],
+  "completed_at_utc": "2026-10-05T13:30:48.523696+00:00"
+}
