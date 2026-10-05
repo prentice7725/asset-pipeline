@@ -36,13 +36,13 @@ Offline contract:
 
 ```powershell
 python scripts/anima_family_pipeline.py check
-python scripts/anima_family_pipeline.py plan --output workspace/style_menu/anima_family_r1/plan.json
+python scripts/anima_family_pipeline.py plan --output workspace/style_menu/anima_family_r2/plan.json
 ```
 
 Before generation, place the official Turbo checkpoint under the configured ComfyUI `models/diffusion_models` directory if it is missing. Do not silently substitute another Turbo file, quantization or LoRA. Then hash all required files:
 
 ```powershell
-python scripts/anima_family_pipeline.py check --models-root C:\path\to\ComfyUI\models --hash-models --output workspace/style_menu/anima_family_r1/preflight.json
+python scripts/anima_family_pipeline.py check --models-root C:\path\to\ComfyUI\models --hash-models --output workspace/style_menu/anima_family_r2/preflight.json
 ```
 
 Controlled R1 execution (four calls, zero retries):
@@ -51,7 +51,7 @@ Controlled R1 execution (four calls, zero retries):
 python scripts/anima_family_pipeline.py execute \
   --plan workspace/style_menu/anima_family_r1/plan.json \
   --models-root C:\path\to\ComfyUI\models \
-  --output-dir workspace/style_menu/experiments/ANIMA_FAMILY_R1_20261005 \
+  --output-dir workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005 \
   --authorization-note "User requested Turbo introduction, rebuilt baseline and re-experiment on 2026-10-05" \
   --confirm-generation
 ```
@@ -66,3 +66,28 @@ The runner blocks before dispatch if any checkpoint/text encoder/VAE is missing,
 - STYLE-004 × `anima_turbo`
 
 All cells use the same structured adult traveler fixture, seed 7725 and 512x768 comparison canvas. This is a baseline-family comparison, not a Golden approval. Results remain REVIEW_REQUIRED until the original PNGs and manifests are visually reviewed.
+
+
+## R1 actual-output findings and R2 correction
+
+R1 was executed locally from Git commit `267529838ab989c58868277f1a850fb963468eb4`. Four Anima-family cells completed at 512x768 / seed 7725 with no retries. All remain REVIEW_REQUIRED.
+
+The actual comparison revealed two pipeline-level defects:
+
+- the synthetic fixture forced a neutral environment while STYLE-001 required cyberpunk night/red/black treatment;
+- the hybrid prompt repeated the exact-one compass requirement through subject, appearance, integrity and constraints, coinciding with a visible duplicate-compass failure in STYLE-004 Base.
+
+R2 therefore changes the compiler/fixture rather than hand-editing four final prompts:
+
+- `compiler_revision=anima_hybrid_v2`;
+- appearance facts already present in the subject are omitted from the caption;
+- structured equipment traits are omitted from appearance and emitted once through the equipment relationship contract;
+- full-character integrity instructions do not repeat the entire subject sentence;
+- exact-one equipment adds native-negative guards against duplicated required equipment;
+- STYLE menu enum-like axis metadata does not reach Anima as model tokens;
+- background/lighting are style-consistent instead of forcing a neutral environment;
+- controlled equipment uses explicit `subject's anatomical left hand` and front view.
+
+The next prepared cohort ID is `ANIMA_FAMILY_R2_20261005`. R1 artifacts remain historical evidence tied to the earlier commit and must not be re-labelled as R2.
+
+R2 remains a four-call, no-retry comparison and needs a fresh reservation before execution.
