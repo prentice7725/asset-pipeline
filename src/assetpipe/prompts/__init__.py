@@ -182,7 +182,10 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     else:
         raise ValueError('Prompt adapter is not installed: ' + adapter)
     if spec.get('subject_integrity'):
-        positive = subject_lead(spec, adapter) + '\n' + positive
+        lead = subject_lead(spec, adapter)
+        # Official Anima quality/meta tags should remain at the beginning of the
+        # hybrid prompt. Structured integrity instructions follow the caption.
+        positive = positive + '\n' + lead if adapter == 'anima_hybrid' else lead + '\n' + positive
         if adapter != 'natural_language' and equipment:
             positive += '\nEquipment relationships (preserve the source-defined relationship and count): ' + '; '.join(
                 f"{item['source_trait']} ({item['relationship']}" +
