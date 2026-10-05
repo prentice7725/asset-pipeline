@@ -32,7 +32,7 @@ models:
     variant: Turbo v1.1 candidate
     workflows: [anima_turbo]
     status: EXPERIMENTAL
-    local_installation: PENDING_LOCAL_PREFLIGHT
+    local_installation: UNKNOWN
     license_review: REQUIRED
     source: https://huggingface.co/circlestone-labs/Anima
     source_kind: MODEL_AUTHOR
