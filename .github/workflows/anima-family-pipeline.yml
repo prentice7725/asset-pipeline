@@ -47,7 +47,7 @@ jobs:
           python scripts/anima_family_pipeline.py plan --output /tmp/anima-family-r2.json
           python - <<'PY'
           import json
-          p=json.load(open('/tmp/anima-family-r1.json', encoding='utf-8'))
+          p=json.load(open('/tmp/anima-family-r2.json', encoding='utf-8'))
           assert p['status']=='PREPARED_NOT_EXECUTED'
           assert p['cohort']=='ANIMA_FAMILY_R2_20261005'
           assert p['reserved_calls_required']==4
