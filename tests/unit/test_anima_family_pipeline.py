@@ -52,6 +52,9 @@ def test_turbo_uses_same_canonical_fixture_but_native_turbo_preset():
     compiled = compile_prompt(turbo_brief, registry["anima_turbo"], ROOT)
     values = workflow_values(compiled, registry["anima_turbo"], turbo_brief)
     assert compiled["profile_id"] == "anima-turbo"
+    assert "small body" not in compiled["positive"].lower()
+    assert "chibi" not in compiled["positive"].lower()
+    assert "gouache" in compiled["positive"].lower()
     assert (values["width"], values["height"], values["steps"], values["cfg"], values["sampler"]) == (
         512, 768, 10, 1.0, "euler"
     )
