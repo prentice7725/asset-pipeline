@@ -24,6 +24,8 @@ MODEL_PROFILES = ROOT / "config/model_profiles.yaml"
 WORKFLOWS = ("anima_base_rebuilt", "anima_turbo")
 DEFAULT_STYLES = ("STYLE-001", "STYLE-004")
 SEED = 7725
+COHORT = "ANIMA_FAMILY_R2_20261005"
+R1_EVIDENCE_COMMIT = "267529838ab989c58868277f1a850fb963468eb4"
 EXPECTED = {
     "anima_base_rebuilt": {
         "profile": "anima-base-rebuilt",
@@ -149,18 +151,21 @@ def _fixture(style_id: str, style: dict[str, Any], workflow_id: str) -> dict[str
     # historically contains "small body"). The controlled adult fixture locks body
     # identity/proportions, so such cues are not allowed to leak into the prompt.
     subject_mutation_tags = {"small body", "chibi", "super deformed", "child", "teen"}
+    # Only model-facing visual semantics enter the prompt. Internal menu axis
+    # labels such as CINEMATIC_STYLIZED/RED_CHARCOAL remain metadata and are not
+    # treated as learned Anima tokens.
     descriptors = [
-        style["style_axes"],
-        *(tag for tag in semantics.get("positive_tags", []) if tag.casefold() not in subject_mutation_tags),
+        tag for tag in semantics.get("positive_tags", [])
+        if tag.casefold() not in subject_mutation_tags
     ]
 
     brief = make(
-        asset_id=f"{style_id}_{workflow_id}_r1".replace("-", "_"),
+        asset_id=f"{style_id}_{workflow_id}_r2".replace("-", "_"),
         output_class="NONPIXEL_IMAGE",
         prompt="synthetic Anima family controlled fixture",
     )
     brief.pop("prompt", None)
-    trait = "one brass compass visibly held in the left hand"
+    trait = "exactly one brass compass visibly held in the subject's anatomical left hand"
     brief["identity"] = {
         "canonical_traits": ["adult traveler", "short dark brown hair", "plain blue coat", trait],
         "visual_traits": [],
@@ -182,18 +187,17 @@ def _fixture(style_id: str, style: dict[str, Any], workflow_id: str) -> dict[str
     }]
     brief["unspecified_elements"] = ["project identity", "project lore"]
     brief["prompt_spec"] = {
-        "subject": "Exactly one adult traveler with short dark brown hair, wearing a plain blue coat and carrying one brass compass.",
+        "subject": "Exactly one adult traveler with short dark brown hair, wearing a plain blue coat.",
         "appearance": ["short dark brown hair", "plain blue coat", trait],
-        "pose": "standing naturally in a front three-quarter view",
+        "pose": "standing naturally in a front view",
         "composition": "complete full body centered in frame, head to toe, both feet visible, with clear ground margin below the footwear",
-        "environment": "simple subdued neutral environment with no crowd",
-        "lighting": "subject remains readable across face, coat, hands, and compass",
-        "mood": "restrained and legible",
+        "environment": "uncluttered background treatment consistent with the selected style direction, with no crowd",
+        "lighting": "use the selected style lighting while keeping the face, coat, hands, and required equipment readable",
+        "mood": "follow the selected style direction while keeping the subject legible",
         "style": list(dict.fromkeys(descriptors)),
         "constraints": [
             "single character",
             "do not crop the head or feet",
-            "the compass remains visibly connected to the left hand",
             "background detail remains subordinate to the traveler",
         ],
         "negative": [],
@@ -203,7 +207,7 @@ def _fixture(style_id: str, style: dict[str, Any], workflow_id: str) -> dict[str
             "whole_subject_required": True,
             "physically_connected_body": True,
             "mandatory_parts": ["head", "torso", "both arms", "both hands", "both legs", "both feet"],
-            "camera_view": "from_source",
+            "camera_view": "front",
             "equipment": [{
                 "source_trait": trait,
                 "relationship": "carried",
@@ -250,9 +254,10 @@ def plan(root: Path = ROOT, output: Path | None = None, styles: tuple[str, ...] 
             })
     payload = {
         "schema_version": 1,
-        "cohort": "ANIMA_FAMILY_R1_20261005",
+        "cohort": COHORT,
         "status": "PREPARED_NOT_EXECUTED",
-        "purpose": "Rebuild Anima baseline and compare Base-rebuilt vs Turbo without hand-authored final prompts.",
+        "purpose": "R2 pipeline correction: remove fixture/style conflicts and equipment-prompt duplication before comparing Base-rebuilt vs Turbo.",
+        "supersedes_r1_evidence_commit": R1_EVIDENCE_COMMIT,
         "styles": list(styles),
         "workflows": list(WORKFLOWS),
         "seed": seed,
@@ -279,11 +284,11 @@ def execute(root: Path, plan_path: Path, models_root: Path, output_dir: Path,
         raise ValueError("Generation requires a nonempty --authorization-note")
     root = Path(root).resolve()
     plan_data = json.loads(Path(plan_path).read_text(encoding="utf-8"))
-    if plan_data.get("cohort") != "ANIMA_FAMILY_R1_20261005":
+    if plan_data.get("cohort") != COHORT:
         raise ValueError("Unexpected cohort plan")
     jobs = plan_data.get("jobs", [])
     if len(jobs) != 4 or plan_data.get("reserved_calls_required") != 4:
-        raise ValueError("R1 is fixed to four no-retry calls")
+        raise ValueError("R2 is fixed to four no-retry calls")
     local = inspect(root, models_root=models_root, hash_models=True)
     if local["status"] != "PIPELINE_CONFIG_VALID" or local.get("local_model_preflight") != "PASS":
         raise ValueError("Local model preflight must PASS before any dispatch")
