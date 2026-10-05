@@ -5,7 +5,7 @@ models:
   anima-base:
     family: Anima
     variant: Base v1.0
-    workflows: [anima_base, anima_pixelate_x4_vae]
+    workflows: [anima_base, anima_base_rebuilt, anima_pixelate_x4_vae]
     status: REGISTERED
     local_installation: NOT_PROBED_THIS_SESSION
     license_review: REQUIRED
@@ -29,10 +29,10 @@ models:
     art_quality: UNKNOWN
   anima-turbo:
     family: Anima
-    variant: Turbo
-    workflows: []
-    status: RESEARCH_ONLY
-    local_installation: UNKNOWN
+    variant: Turbo v1.1 candidate
+    workflows: [anima_turbo]
+    status: EXPERIMENTAL
+    local_installation: PENDING_LOCAL_PREFLIGHT
     license_review: REQUIRED
     source: https://huggingface.co/circlestone-labs/Anima
     source_kind: MODEL_AUTHOR
