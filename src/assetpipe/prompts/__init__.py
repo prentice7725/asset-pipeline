@@ -92,6 +92,37 @@ def natural_language_prompt(brief, spec):
     return '\n'.join(lines)
 
 
+
+def anima_hybrid_prompt(spec, profile):
+    """Official-guidance Anima layout: quality/meta tags followed by a detailed caption.
+
+    PromptSpec remains model-neutral. This compiler formats the same canonical facts
+    without requiring per-style hand-authored final prompts.
+    """
+    prefix = profile.get('positive_prefix', [])
+    if not isinstance(prefix, list) or any(not isinstance(v, str) or not v.strip() for v in prefix):
+        raise ValueError('Anima positive_prefix must be a list of nonempty strings')
+    sentences = [f"Depict {spec['subject'].rstrip('. ')}."]
+    rows = (
+        ('Appearance', spec.get('appearance', [])),
+        ('Pose', [spec['pose']] if spec.get('pose') else []),
+        ('Composition', [spec['composition']] if spec.get('composition') else []),
+        ('Environment', [spec['environment']] if spec.get('environment') else []),
+        ('Lighting', [spec['lighting']] if spec.get('lighting') else []),
+        ('Mood', [spec['mood']] if spec.get('mood') else []),
+        ('Style direction', spec.get('style', []) + [row['description'] for row in spec.get('styleSources', [])]),
+        ('Constraints', spec.get('constraints', [])),
+    )
+    for label, values in rows:
+        values = list(dict.fromkeys(v.strip() for v in values if isinstance(v, str) and v.strip()))
+        if values:
+            sentences.append(f"{label}: " + '; '.join(values) + '.')
+    if len(sentences) < 2:
+        sentences.append('Preserve the described subject faithfully and do not invent unspecified identity details.')
+    caption = ' '.join(sentences)
+    return (', '.join(prefix) + '. ' if prefix else '') + caption
+
+
 def compile_prompt(brief, workflow, root):
     from ..styles import resolve_style, select_recipe, apply_style, public_selection
     spec = from_brief(brief)
@@ -121,9 +152,14 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     spec = prepare_spec(spec, brief, caps, style_context)
     adapter = profile['prompt_adapter']
     native_negative = bool(caps.get('negative_prompt'))
+    # Model-profile defaults are part of the model dialect, not project canon.
+    profile_negative = profile.get('negative_prefix', [])
+    if not isinstance(profile_negative, list) or any(not isinstance(v, str) or not v.strip() for v in profile_negative):
+        raise ValueError('Model negative_prefix must be a list of nonempty strings')
+    negative_items = list(dict.fromkeys(profile_negative + spec.get('negative', [])))
     # 자연어 금지 지시는 프롬프트 안의 문장일 뿐 모델이 보장하지 않으므로, 네이티브 negative prompt와 구분한다.
     instructed_negative = adapter == 'natural_language' and bool(caps.get('negative_prompt_instruction'))
-    if spec.get('negative') and not (native_negative or instructed_negative):
+    if negative_items and not (native_negative or instructed_negative):
         raise ValueError('Selected workflow does not support negative prompts')
     if spec.get('textInImage') and not caps.get('text_rendering'):
         raise ValueError('Selected workflow has no validated text rendering capability')
@@ -139,6 +175,8 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         positive = natural_language_prompt(brief, spec)
     elif adapter == 'anima':
         positive = ', '.join(profile.get('positive_prefix', []) + (fields if preserve_case else [value.lower() for value in fields]))
+    elif adapter == 'anima_hybrid':
+        positive = anima_hybrid_prompt(spec, profile)
     elif adapter == 'krea2':
         positive = '. '.join(value.rstrip('. ') for value in fields) + '.'
     else:
@@ -155,11 +193,11 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
             positive += '\n' + tail
     if spec.get('textInImage') and adapter != 'natural_language':
         positive += ' Text in the image: ' + ', '.join(json.dumps(t, ensure_ascii=False) for t in spec['textInImage']) + '.'
-    negative_mode = 'NONE' if not spec.get('negative') else 'NATURAL_LANGUAGE_INSTRUCTION' if instructed_negative else 'NATIVE'
+    negative_mode = 'NONE' if not negative_items else 'NATURAL_LANGUAGE_INSTRUCTION' if instructed_negative else 'NATIVE'
     result = {'schema_version': 1, 'adapter': adapter, 'profile_id': profile_id,
             'profile_sha256': hashlib.sha256(json.dumps(profile, sort_keys=True).encode()).hexdigest(),
-            'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(spec.get('negative', [])),
-            'negative_mode': negative_mode, 'negative_instruction': list(spec.get('negative', [])) if instructed_negative else [],
+            'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(negative_items),
+            'negative_mode': negative_mode, 'negative_instruction': list(negative_items) if instructed_negative else [],
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
     if spec.get('subject_integrity'):
         result['subject_contract_review'] = {'semantic': 'NOT_VALIDATED', 'composition': 'NOT_VALIDATED',
