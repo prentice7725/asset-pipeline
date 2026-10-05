@@ -34,8 +34,9 @@ def test_anima_hybrid_compiler_applies_official_prefix_and_negative():
     assert compiled["adapter"] == "anima_hybrid"
     assert compiled["positive"].startswith("masterpiece, best quality, score_7, safe.")
     assert "Depict Exactly one adult traveler" in compiled["positive"]
-    assert "Appearance:" not in compiled["positive"]  # all appearance facts are already in subject/equipment contract
-    assert "Style direction:" in compiled["positive"]
+    for trait in ("short dark brown hair", "plain blue knee-length coat", "dark trousers", "dark closed shoes"):
+        assert trait in compiled["positive"]
+    assert "Style Contract:" in compiled["positive"]
     assert "whole character in frame from head to toe" in compiled["positive"]
     assert compiled["negative"].startswith(", ".join(afp.OFFICIAL_NEGATIVE))
     assert compiled["contract_negative_guards"] == [
@@ -43,10 +44,13 @@ def test_anima_hybrid_compiler_applies_official_prefix_and_negative():
     ]
     assert compiled["negative"].endswith("duplicate required equipment, extra copies of required equipment")
     assert compiled["negative_mode"] == "NATIVE"
-    assert compiled["compiler_revision"] == "anima_hybrid_v2"
+    assert compiled["compiler_revision"] == "anima_hybrid_v3"
     assert compiled["positive"].lower().count("compass") == 1
-    assert "simple subdued neutral environment" not in compiled["positive"].lower()
-    assert "consistent with the selected style direction" in compiled["positive"].lower()
+    assert "white or neutral studio background" in compiled["negative"].lower()
+    assert "red neon" in compiled["positive"].lower()
+    assert "CINEMATIC_STYLIZED" not in compiled["positive"]
+    assert compiled["spatial_relationships"][0]["subject_side"] == "SUBJECT_LEFT"
+    assert compiled["spatial_relationships"][0]["image_side"] == "IMAGE_RIGHT"
     values = workflow_values(compiled, registry["anima_base_rebuilt"], brief)
     assert (values["width"], values["height"], values["steps"], values["cfg"]) == (512, 768, 30, 4.0)
 
@@ -58,13 +62,14 @@ def test_turbo_uses_same_canonical_fixture_but_native_turbo_preset():
     turbo_brief = afp._fixture("STYLE-004", research["STYLE-004"], "anima_turbo")
     assert base_brief["prompt_spec"] == turbo_brief["prompt_spec"]
     assert base_brief["prompt_spec"]["subject_integrity"]["camera_view"] == "front"
-    assert "anatomical left hand" in base_brief["prompt_spec"]["subject_integrity"]["equipment"][0]["source_trait"]
+    assert base_brief["prompt_spec"]["subject_integrity"]["equipment"][0]["subject_side"] == "SUBJECT_LEFT"
     compiled = compile_prompt(turbo_brief, registry["anima_turbo"], ROOT)
     values = workflow_values(compiled, registry["anima_turbo"], turbo_brief)
     assert compiled["profile_id"] == "anima-turbo"
     assert "small body" not in compiled["positive"].lower()
     assert "chibi" not in compiled["positive"].lower()
     assert "gouache" in compiled["positive"].lower()
+    assert "chibi" not in compiled["positive"].lower()
     assert (values["width"], values["height"], values["steps"], values["cfg"], values["sampler"]) == (
         512, 768, 10, 1.0, "euler"
     )
@@ -76,8 +81,10 @@ def test_plan_is_four_cells_no_generation_no_lora_no_vae_change(tmp_path):
     assert result["status"] == "PREPARED_NOT_EXECUTED"
     assert result["cohort"] == afp.COHORT
     assert result["supersedes_r1_evidence_commit"] == afp.R1_EVIDENCE_COMMIT
+    assert result["supersedes_r2_evidence_commit"] == afp.R2_EVIDENCE_COMMIT
     assert result["reserved_calls_required"] == 4
     assert result["generation_requests"] == 0
+    assert result["reservation_status"] == "NOT_RESERVED"
     assert result["pixel_generation"] == 0
     assert result["lora_changes"] == 0
     assert result["vae_changes"] == 0
@@ -87,6 +94,13 @@ def test_plan_is_four_cells_no_generation_no_lora_no_vae_change(tmp_path):
     assert all(j["seed"] == 7725 and j["retry_budget"] == 0 for j in result["jobs"])
     disk = json.loads(path.read_text(encoding="utf-8"))
     assert disk["jobs"][0]["generation_status"] == "NOT_RUN"
+
+
+def test_r3_plan_freezes_matrix_and_seed():
+    with pytest.raises(ValueError, match="fixed to STYLE-001 and STYLE-004"):
+        afp.plan(ROOT, styles=("STYLE-001",))
+    with pytest.raises(ValueError, match="seed is fixed"):
+        afp.plan(ROOT, seed=123)
 
 
 def test_pixel_style_cannot_enter_family_plan(tmp_path):

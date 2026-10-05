@@ -6,6 +6,8 @@ from pathlib import Path
 
 import yaml
 
+from .contracts import load_style_contract, validate_style_contract
+
 STATES = {'UNTESTED', 'TESTED', 'APPROVED', 'REJECTED'}
 FIELDS = ('expression', 'colors', 'linework', 'shading', 'texture')
 
@@ -92,7 +94,7 @@ def _evidence(item, root, style_id, workflow_id):
     return relative
 
 
-def validate_style(style):
+def validate_style(style, style_id=None):
     if style.get('status') not in STATES or not isinstance(style.get('version'), str):
         raise ValueError('Style requires version and validation status')
     for field in (*FIELDS, 'forbidden_elements', 'required_capabilities', 'sources'):
@@ -104,6 +106,8 @@ def validate_style(style):
     for source in style['sources']:
         if not isinstance(source, dict) or not all(isinstance(source.get(k), str) and source[k] for k in ('url', 'description')):
             raise ValueError('Style source requires url and description')
+    if 'style_contract' in style:
+        validate_style_contract(style['style_contract'], style_id)
     if style['status'] == 'APPROVED':
         approval(style)
 
@@ -141,7 +145,7 @@ def resolve_style(brief, root):
     style = copy.deepcopy(sot.get('style') if locked and sot.get('style') else pack_styles.get(chosen, styles.get(chosen)))
     if not isinstance(style, dict):
         raise ValueError('Unknown style_id: ' + str(chosen))
-    validate_style(style)
+    validate_style(style, chosen)
     if style['status'] == 'REJECTED':
         raise ValueError('REJECTED style: ' + chosen)
     selection_path = sot_path if source == 'PROJECT_VISUAL_SOT' else pack_path if source == 'PROJECT_STYLE_PACK' else catalog_path
@@ -176,7 +180,8 @@ def select_recipe(selection, workflow, root, explicit=False):
         raise ValueError('Automatic style routing requires human APPROVED style and recipe; select a workflow explicitly for comparison')
     style = selection['definition']
     required = set(style['required_capabilities']) | set(recipe.get('required_capabilities', []))
-    if style['forbidden_elements'] or recipe.get('negative', []):
+    contract_forbids = style.get('style_contract', {}).get('forbidden_style_features', [])
+    if style['forbidden_elements'] or recipe.get('negative', []) or contract_forbids:
         required.add('negative_prompt')
     from ..router import satisfied
     missing = [cap for cap in sorted(required) if not satisfied(workflow['capabilities'], cap)]
@@ -202,6 +207,16 @@ def apply_style(spec, selection):
         return spec
     spec = copy.deepcopy(spec)
     style, recipe = selection['definition'], selection['recipe']
+    if 'style_contract' in style:
+        if recipe['positive'] or recipe['negative']:
+            raise ValueError('STYLE_CONTRACT_CONFLICT: contract recipes cannot add unstructured style strings')
+        contract_id = style['style_contract']['id']
+        if spec.get('style_contract_id') not in (None, contract_id):
+            raise ValueError('STYLE_CONTRACT_CONFLICT: PromptSpec and selected style disagree')
+        if spec.get('style') or spec.get('styleSources'):
+            raise ValueError('STYLE_CONTRACT_CONFLICT: free-text style cannot be mixed with a structured contract')
+        spec['style_contract_id'] = contract_id
+        return spec
     descriptors = [v for field in FIELDS for v in style[field]] + recipe['positive']
     spec['style'] = list(dict.fromkeys(spec.get('style', []) + descriptors))
     spec['negative'] = list(dict.fromkeys(spec.get('negative', []) + style['forbidden_elements'] + recipe['negative']))

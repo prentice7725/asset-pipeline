@@ -23,6 +23,11 @@ def main(argv=None):
     visual.add_argument('--image', type=Path, help='Select one output when the manifest has multiple outputs')
     visual.add_argument('--display-size', nargs=2, type=int, metavar=('WIDTH', 'HEIGHT'))
     visual.add_argument('--matte', nargs=3, type=int, default=(255, 255, 255), metavar=('R', 'G', 'B'))
+    style_review = commands.add_parser('style-review', help='Record human Style Contract observations and failure codes; never approves')
+    style_review.add_argument('--review-file', required=True, type=Path, help='visual_review.json containing the generated Style Contract checklist')
+    style_review.add_argument('--observed-features', required=True, type=Path, help='JSON object mapping every feature code to true/false observed in the image')
+    style_review.add_argument('--reviewed-by', required=True)
+    style_review.add_argument('--reason', required=True)
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -93,6 +98,13 @@ def main(argv=None):
         elif args.command == 'visual-review':
             from ..visual_review import build_review
             print(build_review(args.run, image=args.image, display_size=args.display_size, matte=args.matte))
+        elif args.command == 'style-review':
+            from ..styles.review import record_style_contract_review
+            outcomes = json.loads(args.observed_features.read_text(encoding='utf-8'))
+            result = record_style_contract_review(args.review_file, outcomes,
+                                                  reviewed_by=args.reviewed_by, reason=args.reason)
+            write(args.review_file, result)
+            print(args.review_file)
         elif args.command == 'mining':
             from ..prompt_mining import load_candidates, library, compile_candidate, normalize_civitai
             if args.mining_command == 'validate':

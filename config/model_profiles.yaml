@@ -10,6 +10,7 @@ profiles:
 
   anima-base-rebuilt:
     prompt_adapter: anima_hybrid
+    style_dialect: anima_hybrid_v3
     positive_prefix: [masterpiece, best quality, score_7, safe]
     negative_prefix: [worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration]
     defaults: {}
@@ -24,6 +25,7 @@ profiles:
 
   anima-turbo:
     prompt_adapter: anima_hybrid
+    style_dialect: anima_hybrid_v3
     positive_prefix: [masterpiece, best quality, score_7, safe]
     negative_prefix: [worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration]
     defaults: {}

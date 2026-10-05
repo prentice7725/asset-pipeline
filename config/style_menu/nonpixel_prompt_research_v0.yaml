@@ -46,16 +46,14 @@ recipes:
     label: "cinematic cyberpunk illustration"
     status: RESEARCH_NOT_RUN
     output_class: NONPIXEL_IMAGE
-    style_axes: "medium: CINEMATIC_STYLIZED; color: RED_CHARCOAL; form: HARD_EDGE; light: NEON_RIM; texture: LOW_GRAIN"
+    style_contract_id: STYLE-001
     krea2_base:
       style_clause: "Industrial nighttime noir; red neon accents against charcoal architectural masses; reflective metal as secondary detail; keep silhouettes readable without lens clutter."
       positive_dialect: NATURAL_LANGUAGE
       negative_native: UNSUPPORTED
     anima_base:
-      positive_tags: ["cyberpunk","night","neon lighting","red lighting","black background","high contrast","metallic surfaces"]
-      natural_language_caption: "A stylized science-fiction noir illustration with red neon accents and deep charcoal architectural shadows. Keep the subject silhouette primary and use reflective metal and atmospheric haze only as secondary information."
-      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
-      optional_negative: []
+      contract_ref: config/styles/catalog.yaml#/styles/STYLE-001/style_contract
+      positive_dialect: STRUCTURED_STYLE_CONTRACT
     failure_risk: "Avoid defaulting to literal photographic film grain when project demands clean 2D assets."
     editable_axes: [color, linework, shading, texture, focal_hierarchy]
     locked_axes: [project_subject_identity, equipment, target_resolution, output_class]
@@ -109,16 +107,14 @@ recipes:
     label: "nonpixel SD illustrated gouache"
     status: RESEARCH_NOT_RUN
     output_class: NONPIXEL_IMAGE
-    style_axes: "medium: GOUACHE_2D; color: WARM_BALANCED; form: SOFT_GROUPED; light: WARM_DAYLIGHT; texture: DRY_BRUSH_LOW"
+    style_contract_id: STYLE-004
     krea2_base:
       style_clause: "Soft painted gouache with simplified facial construction, compact SD proportions only if authorized in game SOT, warm daylight and grouped colors."
       positive_dialect: NATURAL_LANGUAGE
       negative_native: UNSUPPORTED
     anima_base:
-      positive_tags: ["storybook illustration","small body","simplified features","gouache painting","warm light","flat shapes","clean silhouette"]
-      natural_language_caption: "A welcoming storybook illustration in opaque gouache with clear compact shape design, simplified planes, warm dappled lighting and painterly edges. Retain the source-defined body proportions, clothing and equipment without inventing a new chibi identity."
-      positive_dialect: TAGS_PLUS_NATURAL_CAPTION
-      optional_negative: []
+      contract_ref: config/styles/catalog.yaml#/styles/STYLE-004/style_contract
+      positive_dialect: STRUCTURED_STYLE_CONTRACT
     failure_risk: "SD proportions must come from project SOT. This is NONPIXEL, not an approved 32px sprite recipe."
     editable_axes: [color, linework, shading, texture, focal_hierarchy]
     locked_axes: [project_subject_identity, equipment, target_resolution, output_class]

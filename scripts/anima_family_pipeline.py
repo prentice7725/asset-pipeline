@@ -24,8 +24,9 @@ MODEL_PROFILES = ROOT / "config/model_profiles.yaml"
 WORKFLOWS = ("anima_base_rebuilt", "anima_turbo")
 DEFAULT_STYLES = ("STYLE-001", "STYLE-004")
 SEED = 7725
-COHORT = "ANIMA_FAMILY_R2_20261005"
+COHORT = "ANIMA_FAMILY_R3_20261005"
 R1_EVIDENCE_COMMIT = "267529838ab989c58868277f1a850fb963468eb4"
+R2_EVIDENCE_COMMIT = "b756483d51345fdcc57258c38a14e63d7c981f56"
 EXPECTED = {
     "anima_base_rebuilt": {
         "profile": "anima-base-rebuilt",
@@ -90,6 +91,8 @@ def inspect(root: Path = ROOT, models_root: Path | None = None, hash_models: boo
         profile = profiles[workflow["model_profile"]]
         if profile.get("prompt_adapter") != "anima_hybrid":
             raise ValueError(f"{workflow_id} must use anima_hybrid")
+        if profile.get("style_dialect") != "anima_hybrid_v3":
+            raise ValueError(f"{workflow_id} must use the structured Anima Style Contract dialect")
         if profile.get("positive_prefix") != OFFICIAL_POSITIVE:
             raise ValueError(f"{workflow_id} official positive prefix drift")
         if profile.get("negative_prefix") != OFFICIAL_NEGATIVE:
@@ -115,6 +118,20 @@ def inspect(root: Path = ROOT, models_root: Path | None = None, hash_models: boo
             "preset": dict(preset),
             "real_generation": workflow.get("validation", {}).get("real_generation", "NOT_RUN"),
         }
+
+    from assetpipe.styles.contracts import load_style_contract
+    from assetpipe.prompts.synthetic_fixture import load_fixture_contract
+    research = _yaml(STYLE_RESEARCH)["recipes"]
+    for style_id in DEFAULT_STYLES:
+        if research.get(style_id, {}).get("style_contract_id") != style_id:
+            raise ValueError(f"{style_id} must reference its migrated Style Contract")
+        contract = load_style_contract(root, style_id)
+        result.setdefault("style_contracts", {})[style_id] = {
+            "version": contract["version"], "priority": contract["priority"],
+            "features": len(contract["required_style_features"]) + len(contract["forbidden_style_features"]),
+        }
+    fixture = load_fixture_contract(root)
+    result["synthetic_fixture"] = {"id": fixture["id"], "state": fixture["state"]}
 
     if models_root is not None:
         models_root = Path(models_root).expanduser().resolve()
@@ -143,86 +160,20 @@ def inspect(root: Path = ROOT, models_root: Path | None = None, hash_models: boo
     return result
 
 
-def _fixture(style_id: str, style: dict[str, Any], workflow_id: str) -> dict[str, Any]:
-    from assetpipe.brief import make, validate
+def _fixture(style_id: str, style: dict[str, Any], workflow_id: str,
+             root: Path = ROOT) -> dict[str, Any]:
+    from assetpipe.prompts.synthetic_fixture import build_anima_family_brief
 
-    semantics = style.get("anima_base", {})
-    # Style menu semantics may contain subject-shape cues (for example STYLE-004
-    # historically contains "small body"). The controlled adult fixture locks body
-    # identity/proportions, so such cues are not allowed to leak into the prompt.
-    subject_mutation_tags = {"small body", "chibi", "super deformed", "child", "teen"}
-    # Only model-facing visual semantics enter the prompt. Internal menu axis
-    # labels such as CINEMATIC_STYLIZED/RED_CHARCOAL remain metadata and are not
-    # treated as learned Anima tokens.
-    descriptors = [
-        tag for tag in semantics.get("positive_tags", [])
-        if tag.casefold() not in subject_mutation_tags
-    ]
-
-    brief = make(
-        asset_id=f"{style_id}_{workflow_id}_r2".replace("-", "_"),
-        output_class="NONPIXEL_IMAGE",
-        prompt="synthetic Anima family controlled fixture",
-    )
-    brief.pop("prompt", None)
-    trait = "exactly one brass compass visibly held in the subject's anatomical left hand"
-    brief["identity"] = {
-        "canonical_traits": ["adult traveler", "short dark brown hair", "plain blue coat", trait],
-        "visual_traits": [],
-    }
-    brief["constraints"].update({
-        "resolution": [512, 768],
-        "style": None,
-        "silhouette": "complete head-to-toe human silhouette with both feet visible",
-    })
-    brief["workflow_preferences"] = {
-        "id": workflow_id,
-        "preset": "pilot_b1_compatible",
-        "allow_experimental": True,
-    }
-    brief["source_notes"] = [{
-        "classification": "DERIVED",
-        "text": "Synthetic controlled fixture for model/prompt baseline comparison; not project canon.",
-        "source": "anima-family-pipeline",
-    }]
-    brief["unspecified_elements"] = ["project identity", "project lore"]
-    brief["prompt_spec"] = {
-        "subject": "Exactly one adult traveler with short dark brown hair, wearing a plain blue coat.",
-        "appearance": ["short dark brown hair", "plain blue coat", trait],
-        "pose": "standing naturally in a front view",
-        "composition": "complete full body centered in frame, head to toe, both feet visible, with clear ground margin below the footwear",
-        "environment": "uncluttered background treatment consistent with the selected style direction, with no crowd",
-        "lighting": "use the selected style lighting while keeping the face, coat, hands, and required equipment readable",
-        "mood": "follow the selected style direction while keeping the subject legible",
-        "style": list(dict.fromkeys(descriptors)),
-        "constraints": [
-            "single character",
-            "do not crop the head or feet",
-            "background detail remains subordinate to the traveler",
-        ],
-        "negative": [],
-        "subject_integrity": {
-            "class": "full_character",
-            "identity_source": "synthetic controlled fixture",
-            "whole_subject_required": True,
-            "physically_connected_body": True,
-            "mandatory_parts": ["head", "torso", "both arms", "both hands", "both legs", "both feet"],
-            "camera_view": "front",
-            "equipment": [{
-                "source_trait": trait,
-                "relationship": "carried",
-                "visible_count": 1,
-                "location": "left",
-            }],
-            "forbidden_substitutions": [],
-        },
-    }
-    return validate(brief)
+    if style.get("style_contract_id") != style_id:
+        raise ValueError(f"{style_id} research entry has no matching structured Style Contract")
+    return build_anima_family_brief(Path(root), style_id, workflow_id)
 
 
 def plan(root: Path = ROOT, output: Path | None = None, styles: tuple[str, ...] = DEFAULT_STYLES,
          seed: int = SEED) -> dict[str, Any]:
     root = Path(root).resolve()
+    if seed != SEED:
+        raise ValueError("R3 seed is fixed to the R2 seed 7725")
     state = inspect(root)
     research = _yaml(root / "config/style_menu/nonpixel_prompt_research_v0.yaml")["recipes"]
     from assetpipe.registry import load_registry
@@ -235,8 +186,11 @@ def plan(root: Path = ROOT, output: Path | None = None, styles: tuple[str, ...] 
             raise ValueError("Pixel style is HOLD and cannot enter Anima nonpixel cohort")
         if style_id not in research:
             raise ValueError(f"Unknown research style: {style_id}")
+    if tuple(styles) != DEFAULT_STYLES:
+        raise ValueError("R3 is fixed to STYLE-001 and STYLE-004 × anima_base_rebuilt and anima_turbo")
+    for style_id in styles:
         for workflow_id in WORKFLOWS:
-            brief = _fixture(style_id, research[style_id], workflow_id)
+            brief = _fixture(style_id, research[style_id], workflow_id, root)
             compiled = compile_prompt(brief, registry[workflow_id], root)
             values = workflow_values(compiled, registry[workflow_id], brief)
             jobs.append({
@@ -248,6 +202,9 @@ def plan(root: Path = ROOT, output: Path | None = None, styles: tuple[str, ...] 
                 "brief": brief,
                 "compiled_prompt": compiled,
                 "workflow_inputs": values,
+                "style_contract": compiled.get("style_contract_compilation"),
+                "style_contract_review": compiled.get("style_contract_review"),
+                "spatial_relationships": compiled.get("spatial_relationships", []),
                 "generation_status": "NOT_RUN",
                 "retry_budget": 0,
                 "golden_approval": False,
@@ -256,16 +213,23 @@ def plan(root: Path = ROOT, output: Path | None = None, styles: tuple[str, ...] 
         "schema_version": 1,
         "cohort": COHORT,
         "status": "PREPARED_NOT_EXECUTED",
-        "purpose": "R2 pipeline correction: remove fixture/style conflicts and equipment-prompt duplication before comparing Base-rebuilt vs Turbo.",
+        "purpose": "R3 compares structured Style Contracts, explicit anatomical-to-image coordinates, and a complete synthetic traveler fixture while holding the R2 model settings fixed.",
         "supersedes_r1_evidence_commit": R1_EVIDENCE_COMMIT,
+        "supersedes_r2_evidence_commit": R2_EVIDENCE_COMMIT,
         "styles": list(styles),
         "workflows": list(WORKFLOWS),
         "seed": seed,
         "reserved_calls_required": len(jobs),
+        "reservation_status": "NOT_RESERVED",
         "generation_requests": 0,
         "pixel_generation": 0,
         "lora_changes": 0,
         "vae_changes": 0,
+        "settings_comparison": {
+            "baseline": R2_EVIDENCE_COMMIT,
+            "unchanged": ["models", "checkpoints", "VAE", "text encoder", "resolution", "seed", "steps", "CFG", "sampler", "scheduler"],
+            "changed": ["structured Style Contract", "Anima model dialect compiler", "spatial relationship compiler", "completed synthetic fixture"],
+        },
         "jobs": jobs,
         "pipeline_check": state,
     }
@@ -288,7 +252,11 @@ def execute(root: Path, plan_path: Path, models_root: Path, output_dir: Path,
         raise ValueError("Unexpected cohort plan")
     jobs = plan_data.get("jobs", [])
     if len(jobs) != 4 or plan_data.get("reserved_calls_required") != 4:
-        raise ValueError("R2 is fixed to four no-retry calls")
+        raise ValueError("R3 is fixed to four no-retry calls")
+    expected_cells = {(style_id, workflow_id) for style_id in DEFAULT_STYLES for workflow_id in WORKFLOWS}
+    actual_cells = {(job.get("style_id"), job.get("workflow_id")) for job in jobs}
+    if actual_cells != expected_cells or any(job.get("retry_budget") != 0 for job in jobs):
+        raise ValueError("R3 plan matrix or retry budget changed")
     local = inspect(root, models_root=models_root, hash_models=True)
     if local["status"] != "PIPELINE_CONFIG_VALID" or local.get("local_model_preflight") != "PASS":
         raise ValueError("Local model preflight must PASS before any dispatch")

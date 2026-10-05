@@ -1,0 +1,36 @@
+schema_version: 1
+fixtures:
+  anima_family_traveler_v1:
+    id: anima_family_traveler_v1
+    state: SYNTHETIC_NOT_CANON
+    output_class: NONPIXEL_IMAGE
+    subject:
+      count: 1
+      class: adult traveler
+      canonical_traits:
+      - adult traveler
+      - short dark brown hair
+      - plain blue knee-length coat
+      - dark trousers
+      - dark closed shoes
+      - exactly one brass compass held in the subject's left hand
+    equipment:
+    - source_trait: exactly one brass compass held in the subject's left hand
+      relationship: carried
+      visible_count: 1
+      subject_side: SUBJECT_LEFT
+    camera:
+      view: FRONT
+      pose: standing
+    framing:
+      coverage: HEAD_TO_TOE
+      required_parts: [head, torso, both arms, both hands, both legs, both feet]
+      feet_fully_visible: true
+      lower_margin: visible
+    scene:
+      extra_people: false
+      extra_props: false
+    provenance:
+      classification: DERIVED
+      source: user-authorized R3 synthetic comparison fixture
+      note: Not project canon; identity and equipment stay identical across all model cells.
