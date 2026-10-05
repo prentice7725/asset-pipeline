@@ -1,0 +1,31 @@
+{
+  "selected_workflow": "anima_base_rebuilt",
+  "output_class": "NONPIXEL_IMAGE",
+  "matching_tags": [
+    "character"
+  ],
+  "selection_reason": "explicit compatible workflow",
+  "fallback_candidates": [
+    "krea2_base",
+    "anima_base"
+  ],
+  "rejected_candidates": {
+    "anima_pixelate_x4_vae": "output_class mismatch",
+    "anima_turbo": "explicit_only workflow must be requested by id",
+    "tomohi_character": "explicit_only workflow must be requested by id",
+    "minimax_character_motion_reference": "output_class mismatch",
+    "nonpixel_motion_contract": "output_class mismatch",
+    "audio_stable_audio_3_medium": "output_class mismatch",
+    "codex_imagegen": "required capabilities unavailable: text_to_image, exact_resolution",
+    "grok_imagine": "required capabilities unavailable: text_to_image, exact_resolution"
+  },
+  "execution_mode": "GENERATE",
+  "required_capabilities": [
+    "text_to_image",
+    "exact_resolution"
+  ],
+  "status": "ROUTED",
+  "selected_pipeline": "NONPIXEL_IMAGE",
+  "reason": "explicit compatible workflow",
+  "missing_requirements": []
+}

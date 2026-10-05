@@ -1,0 +1,77 @@
+{
+  "status": "PASS_BEFORE_DISPATCH",
+  "checked_at_utc": "2026-10-05T13:28:28.313746+00:00",
+  "comfyui": {
+    "url": "http://127.0.0.1:8188",
+    "version": "0.38.2",
+    "gpu": "cuda:0 NVIDIA GeForce RTX 5060 Laptop GPU : cudaMallocAsync",
+    "queue_running": 0,
+    "queue_pending": 0,
+    "required_nodes": [
+      "CLIPLoader",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "SaveImage",
+      "UNETLoader",
+      "VAEDecode",
+      "VAELoader"
+    ],
+    "missing_nodes": [],
+    "loader_choices": {
+      "UNETLoader": {
+        "anima-base-v1.0.safetensors": true,
+        "anima-turbo-v1.1.safetensors": true
+      },
+      "CLIPLoader": {
+        "qwen_3_06b_base.safetensors": true
+      },
+      "VAELoader": {
+        "qwen_image_vae.safetensors": true
+      }
+    }
+  },
+  "models_root": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models",
+  "model_hashes_vs_r1": {
+    "anima-base-v1.0.safetensors": {
+      "r1_sha256": "bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e",
+      "r2_check_sha256": "bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e",
+      "immediate_sha256": "bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e",
+      "same_as_r1": true,
+      "exists": true,
+      "bytes": 4182218328
+    },
+    "anima-turbo-v1.1.safetensors": {
+      "r1_sha256": "fba11953276b57edf59d1dc4f1857ac05aa079c56f982b4d7c20298d57d3f7eb",
+      "r2_check_sha256": "fba11953276b57edf59d1dc4f1857ac05aa079c56f982b4d7c20298d57d3f7eb",
+      "immediate_sha256": "fba11953276b57edf59d1dc4f1857ac05aa079c56f982b4d7c20298d57d3f7eb",
+      "same_as_r1": true,
+      "exists": true,
+      "bytes": 4182230656
+    },
+    "qwen_3_06b_base.safetensors": {
+      "r1_sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba",
+      "r2_check_sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba",
+      "immediate_sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba",
+      "same_as_r1": true,
+      "exists": true,
+      "bytes": 1192135096
+    },
+    "qwen_image_vae.safetensors": {
+      "r1_sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+      "r2_check_sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+      "immediate_sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+      "same_as_r1": true,
+      "exists": true,
+      "bytes": 253806246
+    }
+  },
+  "r1_reservation_not_reused": {
+    "cohort": "ANIMA_FAMILY_R1_20261005",
+    "reserved_calls": 4,
+    "attempted_calls": 4,
+    "note": "R2 execute creates an independent reservation."
+  },
+  "authorized_r2_calls": 4,
+  "retry_budget": 0
+}
