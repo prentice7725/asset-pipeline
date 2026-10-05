@@ -145,16 +145,14 @@ def _fixture(style_id: str, style: dict[str, Any], workflow_id: str) -> dict[str
     from assetpipe.brief import make, validate
 
     semantics = style.get("anima_base", {})
+    # Style menu semantics may contain subject-shape cues (for example STYLE-004
+    # historically contains "small body"). The controlled adult fixture locks body
+    # identity/proportions, so such cues are not allowed to leak into the prompt.
+    subject_mutation_tags = {"small body", "chibi", "super deformed", "child", "teen"}
     descriptors = [
-        style["label"],
         style["style_axes"],
-        *semantics.get("positive_tags", []),
+        *(tag for tag in semantics.get("positive_tags", []) if tag.casefold() not in subject_mutation_tags),
     ]
-    # Keep the research caption as a semantic source phrase; the final model prompt
-    # is formatted by anima_hybrid_prompt, never stored here as a complete prompt.
-    caption = semantics.get("natural_language_caption")
-    if caption:
-        descriptors.append(caption)
 
     brief = make(
         asset_id=f"{style_id}_{workflow_id}_r1".replace("-", "_"),
