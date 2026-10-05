@@ -63,7 +63,6 @@ def from_brief(brief):
 
 def natural_language_prompt(brief, spec):
     """CLI 이미지 도구용 자연어 프롬프트. 정본·시각 특징·스타일·실루엣·금지 요소를 항목별로 모두 보존한다."""
-    equipment = spec.get('subject_integrity', {}).get('equipment', [])
     equipment_traits = {item['source_trait'].casefold() for item in equipment}
     canonical = [v for v in brief['identity']['canonical_traits'] if v.casefold() not in equipment_traits]
     silhouette = brief['constraints'].get('silhouette')
@@ -103,8 +102,15 @@ def anima_hybrid_prompt(spec, profile):
     if not isinstance(prefix, list) or any(not isinstance(v, str) or not v.strip() for v in prefix):
         raise ValueError('Anima positive_prefix must be a list of nonempty strings')
     sentences = [f"Depict {spec['subject'].rstrip('. ')}."]
+    equipment = spec.get('subject_integrity', {}).get('equipment', [])
+    equipment_traits = {item['source_trait'].casefold() for item in equipment}
+    subject_text = spec['subject'].casefold()
+    appearance = [
+        value for value in spec.get('appearance', [])
+        if value.casefold() not in equipment_traits and value.casefold() not in subject_text
+    ]
     rows = (
-        ('Appearance', spec.get('appearance', [])),
+        ('Appearance', appearance),
         ('Pose', [spec['pose']] if spec.get('pose') else []),
         ('Composition', [spec['composition']] if spec.get('composition') else []),
         ('Environment', [spec['environment']] if spec.get('environment') else []),
@@ -152,11 +158,15 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     spec = prepare_spec(spec, brief, caps, style_context)
     adapter = profile['prompt_adapter']
     native_negative = bool(caps.get('negative_prompt'))
+    equipment = spec.get('subject_integrity', {}).get('equipment', [])
     # Model-profile defaults are part of the model dialect, not project canon.
     profile_negative = profile.get('negative_prefix', [])
     if not isinstance(profile_negative, list) or any(not isinstance(v, str) or not v.strip() for v in profile_negative):
         raise ValueError('Model negative_prefix must be a list of nonempty strings')
-    negative_items = list(dict.fromkeys(profile_negative + spec.get('negative', [])))
+    contract_negative_guards = []
+    if native_negative and any(item.get('visible_count') == 1 for item in equipment):
+        contract_negative_guards = ['duplicate required equipment', 'extra copies of required equipment']
+    negative_items = list(dict.fromkeys(profile_negative + spec.get('negative', []) + contract_negative_guards))
     # 자연어 금지 지시는 프롬프트 안의 문장일 뿐 모델이 보장하지 않으므로, 네이티브 negative prompt와 구분한다.
     instructed_negative = adapter == 'natural_language' and bool(caps.get('negative_prompt_instruction'))
     if negative_items and not (native_negative or instructed_negative):
@@ -182,10 +192,20 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     else:
         raise ValueError('Prompt adapter is not installed: ' + adapter)
     if spec.get('subject_integrity'):
-        lead = subject_lead(spec, adapter)
-        # Official Anima quality/meta tags should remain at the beginning of the
-        # hybrid prompt. Structured integrity instructions follow the caption.
-        positive = positive + '\n' + lead if adapter == 'anima_hybrid' else lead + '\n' + positive
+        if adapter == 'anima_hybrid':
+            integrity = spec['subject_integrity']
+            guards = []
+            if integrity.get('physically_connected_body'):
+                guards.append('Keep the body physically connected')
+            if integrity.get('whole_subject_required'):
+                guards.append('keep the whole character in frame from head to toe')
+            if integrity.get('mandatory_parts'):
+                guards.append('keep these required body parts present and connected: ' + ', '.join(integrity['mandatory_parts']))
+            guards.append('preserve the source-defined camera view')
+            positive += '\nSubject integrity: ' + '; '.join(guards) + '.'
+        else:
+            lead = subject_lead(spec, adapter)
+            positive = lead + '\n' + positive
         if adapter != 'natural_language' and equipment:
             positive += '\nEquipment relationships (preserve the source-defined relationship and count): ' + '; '.join(
                 f"{item['source_trait']} ({item['relationship']}" +
@@ -201,6 +221,8 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
             'profile_sha256': hashlib.sha256(json.dumps(profile, sort_keys=True).encode()).hexdigest(),
             'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(negative_items),
             'negative_mode': negative_mode, 'negative_instruction': list(negative_items) if instructed_negative else [],
+            'contract_negative_guards': contract_negative_guards,
+            'compiler_revision': 'anima_hybrid_v2' if adapter == 'anima_hybrid' else 'legacy',
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
     if spec.get('subject_integrity'):
         result['subject_contract_review'] = {'semantic': 'NOT_VALIDATED', 'composition': 'NOT_VALIDATED',
