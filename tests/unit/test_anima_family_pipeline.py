@@ -37,8 +37,16 @@ def test_anima_hybrid_compiler_applies_official_prefix_and_negative():
     assert "Appearance:" in compiled["positive"]
     assert "Style direction:" in compiled["positive"]
     assert "Full body, complete character." in compiled["positive"]
-    assert compiled["negative"] == ", ".join(afp.OFFICIAL_NEGATIVE)
+    assert compiled["negative"].startswith(", ".join(afp.OFFICIAL_NEGATIVE))
+    assert compiled["contract_negative_guards"] == [
+        "duplicate required equipment", "extra copies of required equipment"
+    ]
+    assert compiled["negative"].endswith("duplicate required equipment, extra copies of required equipment")
     assert compiled["negative_mode"] == "NATIVE"
+    assert compiled["compiler_revision"] == "anima_hybrid_v2"
+    assert compiled["positive"].lower().count("compass") == 1
+    assert "simple subdued neutral environment" not in compiled["positive"].lower()
+    assert "consistent with the selected style direction" in compiled["positive"].lower()
     values = workflow_values(compiled, registry["anima_base_rebuilt"], brief)
     assert (values["width"], values["height"], values["steps"], values["cfg"]) == (512, 768, 30, 4.0)
 
@@ -49,6 +57,8 @@ def test_turbo_uses_same_canonical_fixture_but_native_turbo_preset():
     base_brief = afp._fixture("STYLE-004", research["STYLE-004"], "anima_base_rebuilt")
     turbo_brief = afp._fixture("STYLE-004", research["STYLE-004"], "anima_turbo")
     assert base_brief["prompt_spec"] == turbo_brief["prompt_spec"]
+    assert base_brief["prompt_spec"]["subject_integrity"]["camera_view"] == "front"
+    assert "anatomical left hand" in base_brief["prompt_spec"]["subject_integrity"]["equipment"][0]["source_trait"]
     compiled = compile_prompt(turbo_brief, registry["anima_turbo"], ROOT)
     values = workflow_values(compiled, registry["anima_turbo"], turbo_brief)
     assert compiled["profile_id"] == "anima-turbo"
@@ -64,6 +74,8 @@ def test_plan_is_four_cells_no_generation_no_lora_no_vae_change(tmp_path):
     path = tmp_path / "plan.json"
     result = afp.plan(ROOT, path)
     assert result["status"] == "PREPARED_NOT_EXECUTED"
+    assert result["cohort"] == afp.COHORT
+    assert result["supersedes_r1_evidence_commit"] == afp.R1_EVIDENCE_COMMIT
     assert result["reserved_calls_required"] == 4
     assert result["generation_requests"] == 0
     assert result["pixel_generation"] == 0
