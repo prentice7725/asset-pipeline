@@ -63,6 +63,7 @@ def from_brief(brief):
 
 def natural_language_prompt(brief, spec):
     """CLI 이미지 도구용 자연어 프롬프트. 정본·시각 특징·스타일·실루엣·금지 요소를 항목별로 모두 보존한다."""
+    equipment = spec.get('subject_integrity', {}).get('equipment', [])
     equipment_traits = {item['source_trait'].casefold() for item in equipment}
     canonical = [v for v in brief['identity']['canonical_traits'] if v.casefold() not in equipment_traits]
     silhouette = brief['constraints'].get('silhouette')
@@ -173,7 +174,6 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         raise ValueError('Selected workflow does not support negative prompts')
     if spec.get('textInImage') and not caps.get('text_rendering'):
         raise ValueError('Selected workflow has no validated text rendering capability')
-    equipment = spec.get('subject_integrity', {}).get('equipment', [])
     equipment_traits = {item['source_trait'].casefold() for item in equipment}
     appearance = [value for value in spec.get('appearance', [])
                   if value.casefold() not in equipment_traits]
