@@ -152,3 +152,129 @@ styles:
         not local validation
       source_id: explorer_selected
       checked_at: '2026-10-01'
+  STYLE-001:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://kreastyles.thetacursed.com/
+      description: Krea Style Explorer creator reference entry aaea31dc325f; candidate source, not approval
+      entry_id: aaea31dc325f
+      checked_at: '2026-10-04'
+      authority: COMMUNITY_EXPLORER
+    style_contract:
+      id: STYLE-001
+      version: 1.0.0
+      medium:
+      - stylized 2D science-fiction cyberpunk noir illustration
+      palette:
+      - deep charcoal and near-black masses dominate
+      - saturated red neon accents are visible against the dark palette
+      linework:
+      - crisp high-contrast contours keep the main silhouette readable
+      shading:
+      - hard-edged grouped shadows preserve a clear subject silhouette
+      lighting:
+      - saturated red neon light visibly illuminates a scene surface or reflection
+      background:
+      - industrial nighttime environment with dark charcoal architectural masses
+      - reflective metal remains secondary to the subject
+      texture:
+      - restrained low-grain surface treatment without photographic lens clutter
+      value_structure:
+      - deep dark value masses with localized red light and a separated focal silhouette
+      required_style_features:
+      - code: STYLE001_RED_LIGHT_MISSING
+        text: visible saturated red neon light illuminates at least one scene surface or reflection
+      - code: STYLE001_DARK_NIGHT_MASS_MISSING
+        text: dark charcoal or near-black nighttime masses dominate the background
+      - code: STYLE001_INDUSTRIAL_CUES_MISSING
+        text: restrained industrial architectural cues support the noir setting
+      forbidden_style_features:
+      - code: STYLE001_WHITE_NEUTRAL_BACKGROUND_PRESENT
+        text: predominantly white or neutral studio background
+      - code: STYLE001_PHOTOGRAPHIC_GRAIN_PRESENT
+        text: heavy photographic film grain or lens clutter
+      priority: 90
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: aaea31dc325f
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/aaea31dc325f.webp
+        catalog_path: config/style_menu/candidates_v0.yaml#STYLE-001
+      evidence:
+      - path: workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/validation_report.md
+        role: R2 visual defect evidence; historical candidate review, not approval
+        original_sha256s:
+          STYLE-001_anima_base_rebuilt: e734eed2f49cf77b8420039ddb980d83c9e62a784c25f5cf5156cdc54c6bf717
+          STYLE-001_anima_turbo: 125236a03328582fd6a8e8b84440a280633cfc3c6413156d0f211fb706111475
+  STYLE-004:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://kreastyles.thetacursed.com/
+      description: Krea Style Explorer creator reference entry b0c422916b0d; candidate source, not approval
+      entry_id: b0c422916b0d
+      checked_at: '2026-10-04'
+      authority: COMMUNITY_EXPLORER
+    style_contract:
+      id: STYLE-004
+      version: 1.0.0
+      medium:
+      - opaque gouache storybook illustration
+      palette:
+      - warm balanced colors with clear grouped local-color shapes
+      linework:
+      - simplified painted contours with a readable outer silhouette
+      shading:
+      - broad grouped opaque-paint shadow shapes and simplified planes
+      lighting:
+      - warm dappled daylight
+      background:
+      - warm storybook setting or paper-like backdrop remains behind the character
+      texture:
+      - subtle visible dry-brush and paper texture on major painted color masses
+      value_structure:
+      - broad warm midtone groups keep the full character distinct from the backdrop
+      required_style_features:
+      - code: STYLE004_GOUACHE_MEDIUM_MISSING
+        text: opaque gouache-like painted edges or brush texture are visible on major color masses
+      - code: STYLE004_WARM_STORYBOOK_LIGHT_MISSING
+        text: warm dappled daylight supports a cozy storybook mood
+      - code: STYLE004_GROUPED_PAINTED_SHAPES_MISSING
+        text: broad grouped painted shapes preserve a clear full-character silhouette
+      forbidden_style_features:
+      - code: STYLE004_CEL_ONLY_FINISH_PRESENT
+        text: clean cel-only shading dominates with no visible painterly surface treatment
+      - code: STYLE004_PROPORTION_MUTATION_PRESENT
+        text: chibi or super-deformed body proportions replace the source-defined adult proportions
+      - code: STYLE004_BLANK_STERILE_WHITE_BACKGROUND_PRESENT
+        text: blank sterile white field with no warm storybook or paper treatment
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: b0c422916b0d
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://raw.githubusercontent.com/ThetaCursed/Krea2-Style-Explorer/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/images/1/b0c422916b0d.webp
+        catalog_path: config/style_menu/candidates_v0.yaml#STYLE-004
+      evidence:
+      - path: workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/validation_report.md
+        role: R2 visual defect evidence; historical candidate review, not approval
+        original_sha256s:
+          STYLE-004_anima_base_rebuilt: ddd11fc37b65040ba4b37b735406d4dc71330f9d694c9632325ad4a8bf4b2f4d
+          STYLE-004_anima_turbo: e95028703309fa63e4434d6f454ac49a22059d91ff1b0904881a2105bb34f7e7

@@ -1,0 +1,556 @@
+{
+  "cohort": "ANIMA_FAMILY_R2_20261005",
+  "r1_evidence_commit": "267529838ab989c58868277f1a850fb963468eb4",
+  "r2_branch_head": "d4f984efd1c4c7c1378405b5237db266da0c15b2",
+  "comparison_card": {
+    "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\comparison_card.png",
+    "bytes": 2228235,
+    "sha256": "e2a0eb772964f9533da3c9f7e793403d377a34605983b1d03623832e88f90adc"
+  },
+  "r2_originals_and_manifests": {
+    "STYLE-001_anima_base_rebuilt": {
+      "phase": "R2",
+      "asset_id": "STYLE_001_anima_base_rebuilt_r2",
+      "style_id": "STYLE-001",
+      "workflow_id": "anima_base_rebuilt",
+      "workflow_sha256": "fa645baddd1f50ccc983a745339bb478d43ee69c7e993322f4eb5536f6744ac8",
+      "model": "anima-base-v1.0.safetensors",
+      "compiler_revision": "anima_hybrid_v2",
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-base-rebuilt",
+      "prompt_id": "e3c63717-12cc-4da1-bc0d-734ea19cc735",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\001_STYLE_001_anima_base_rebuilt_r2_00001_.png",
+          "sha256": "e734eed2f49cf77b8420039ddb980d83c9e62a784c25f5cf5156cdc54c6bf717",
+          "bytes": 170112,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_base_rebuilt/010_generation/001_STYLE_001_anima_base_rebuilt_r2_00001_.png"
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_base_rebuilt\\run_manifest.json",
+          "sha256": "973fcaab1210dc97d89800f8197a2052f87bb1e83a9c7cf645ba3865fba408fe",
+          "bytes": 12197,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_base_rebuilt/run_manifest.json"
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\generation.json",
+          "sha256": "0ce5d4fb9acc26dcbb455465684f83eea36f9288081a3749bb28e2a4c128130f",
+          "bytes": 2985,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_base_rebuilt/010_generation/generation.json"
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\compiled_prompt.json",
+          "sha256": "08ba39f03699fe53c7df57a0d5434e66fcebd58b20ac665cf9a946b077ca9760",
+          "bytes": 4724,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_base_rebuilt/010_generation/compiled_prompt.json"
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\workflow.json",
+          "sha256": "6a76e92463a1385cc34e84191ee32d6f02481457f0ba74bb001b7064940f4e9e",
+          "bytes": 3235,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_base_rebuilt/010_generation/workflow.json"
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_base_rebuilt\\route_decision.json",
+          "sha256": "b2ce087cee64cba853af00a46a7ec05df715ee06171d3c186c4bfd6acca6154e",
+          "bytes": 1119,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_base_rebuilt/route_decision.json"
+        }
+      }
+    },
+    "STYLE-001_anima_turbo": {
+      "phase": "R2",
+      "asset_id": "STYLE_001_anima_turbo_r2",
+      "style_id": "STYLE-001",
+      "workflow_id": "anima_turbo",
+      "workflow_sha256": "34c66b56e2e8ac7b911d7e99ea6c4fb4f2400b28dc607800fd40a5b477b69319",
+      "model": "anima-turbo-v1.1.safetensors",
+      "compiler_revision": "anima_hybrid_v2",
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-turbo",
+      "prompt_id": "946cb8de-3c3f-414e-b6fa-e9c9d12cbe7c",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 10,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\001_STYLE_001_anima_turbo_r2_00001_.png",
+          "sha256": "125236a03328582fd6a8e8b84440a280633cfc3c6413156d0f211fb706111475",
+          "bytes": 234314,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_turbo/010_generation/001_STYLE_001_anima_turbo_r2_00001_.png"
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_turbo\\run_manifest.json",
+          "sha256": "51740b311c230e77a1bfd21cac5e3914c87be5dc317be89f061fe2c4fa60ef9d",
+          "bytes": 12134,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_turbo/run_manifest.json"
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\generation.json",
+          "sha256": "b8ccd431fed536c3a6e9a4518f54bce1e1fc406387840251a5b1deb4554d917e",
+          "bytes": 2957,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_turbo/010_generation/generation.json"
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\compiled_prompt.json",
+          "sha256": "a1319281bc7f95d3759dd4a634a50b9ad750db737f33d13c5cc586a76c5b4683",
+          "bytes": 4717,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_turbo/010_generation/compiled_prompt.json"
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\workflow.json",
+          "sha256": "c83c3021c8254b488e2293b02952f0afdb9e2fa36efc0f145268a33e378b8f70",
+          "bytes": 3228,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_turbo/010_generation/workflow.json"
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-001_anima_turbo\\route_decision.json",
+          "sha256": "00eb08e6c6a9c16235bdb3454e122a7d70545f1579c1d5e68871957198970df1",
+          "bytes": 1119,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-001_anima_turbo/route_decision.json"
+        }
+      }
+    },
+    "STYLE-004_anima_base_rebuilt": {
+      "phase": "R2",
+      "asset_id": "STYLE_004_anima_base_rebuilt_r2",
+      "style_id": "STYLE-004",
+      "workflow_id": "anima_base_rebuilt",
+      "workflow_sha256": "fa645baddd1f50ccc983a745339bb478d43ee69c7e993322f4eb5536f6744ac8",
+      "model": "anima-base-v1.0.safetensors",
+      "compiler_revision": "anima_hybrid_v2",
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-base-rebuilt",
+      "prompt_id": "d3522770-7e12-4af7-bac7-b5d38dd1a528",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\001_STYLE_004_anima_base_rebuilt_r2_00001_.png",
+          "sha256": "ddd11fc37b65040ba4b37b735406d4dc71330f9d694c9632325ad4a8bf4b2f4d",
+          "bytes": 95140,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_base_rebuilt/010_generation/001_STYLE_004_anima_base_rebuilt_r2_00001_.png"
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_base_rebuilt\\run_manifest.json",
+          "sha256": "656af93ac4077eb6368b253ea20e7a83c3aeac28ef69647503d9c7672e2a2455",
+          "bytes": 12201,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_base_rebuilt/run_manifest.json"
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\generation.json",
+          "sha256": "337fc891906c3861e0c3486888d55dc3d5393e4c00cfd15f4ae0f90de06f534d",
+          "bytes": 2992,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_base_rebuilt/010_generation/generation.json"
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\compiled_prompt.json",
+          "sha256": "56cc4abd711ace06559c25d2403360710faab48e232e309239f607ca3e65d7a5",
+          "bytes": 4729,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_base_rebuilt/010_generation/compiled_prompt.json"
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\workflow.json",
+          "sha256": "ca1a970d898a2a22c95bf4fe7a5d60b79b4dba1678f6d7ee0dc49abe6530f94a",
+          "bytes": 3242,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_base_rebuilt/010_generation/workflow.json"
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_base_rebuilt\\route_decision.json",
+          "sha256": "b2ce087cee64cba853af00a46a7ec05df715ee06171d3c186c4bfd6acca6154e",
+          "bytes": 1119,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_base_rebuilt/route_decision.json"
+        }
+      }
+    },
+    "STYLE-004_anima_turbo": {
+      "phase": "R2",
+      "asset_id": "STYLE_004_anima_turbo_r2",
+      "style_id": "STYLE-004",
+      "workflow_id": "anima_turbo",
+      "workflow_sha256": "34c66b56e2e8ac7b911d7e99ea6c4fb4f2400b28dc607800fd40a5b477b69319",
+      "model": "anima-turbo-v1.1.safetensors",
+      "compiler_revision": "anima_hybrid_v2",
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-turbo",
+      "prompt_id": "6ed7022c-1659-4494-b7cb-30ac5d732b3f",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 10,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\001_STYLE_004_anima_turbo_r2_00001_.png",
+          "sha256": "e95028703309fa63e4434d6f454ac49a22059d91ff1b0904881a2105bb34f7e7",
+          "bytes": 430625,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_turbo/010_generation/001_STYLE_004_anima_turbo_r2_00001_.png"
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\run_manifest.json",
+          "sha256": "86b5c36547253293ae7b9d3acbd5d88f82ebb935f2e3667e4ec03e86ef508e85",
+          "bytes": 12138,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_turbo/run_manifest.json"
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\generation.json",
+          "sha256": "3f4d3b47dfb4784531c6cf0314a6593929ac8c9a5354e6ddb4c2ccabbed9f978",
+          "bytes": 2964,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_turbo/010_generation/generation.json"
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\compiled_prompt.json",
+          "sha256": "307833ba54202a382c5fe78fb645d2e927034053d4f3d2f40a5f6645aa8c68a6",
+          "bytes": 4722,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_turbo/010_generation/compiled_prompt.json"
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\workflow.json",
+          "sha256": "46904efae6d06946e7b2103e90f56645f67e1ccdbcd2751526ef57259551a480",
+          "bytes": 3235,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_turbo/010_generation/workflow.json"
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\anima-family-r2\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R2_20261005\\runs\\STYLE-004_anima_turbo\\route_decision.json",
+          "sha256": "00eb08e6c6a9c16235bdb3454e122a7d70545f1579c1d5e68871957198970df1",
+          "bytes": 1119,
+          "repo_path": "workspace/style_menu/experiments/ANIMA_FAMILY_R2_20261005/runs/STYLE-004_anima_turbo/route_decision.json"
+        }
+      }
+    }
+  },
+  "r1_historical_evidence": {
+    "STYLE-001_anima_base_rebuilt": {
+      "phase": "R1",
+      "asset_id": "STYLE_001_anima_base_rebuilt_r1",
+      "style_id": "STYLE-001",
+      "workflow_id": "anima_base_rebuilt",
+      "workflow_sha256": "fa645baddd1f50ccc983a745339bb478d43ee69c7e993322f4eb5536f6744ac8",
+      "model": "anima-base-v1.0.safetensors",
+      "compiler_revision": null,
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-base-rebuilt",
+      "prompt_id": "d08e2c14-f97d-474f-9322-fff49c7fd752",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\001_STYLE_001_anima_base_rebuilt_r1_00001_.png",
+          "sha256": "8b49e0d5460b18f5814f2677035546f21afd9ec8e515ecca8f3ea40c12b20ee4",
+          "bytes": 269823
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_base_rebuilt\\run_manifest.json",
+          "sha256": "e4ae192c68d16efcf6aaf40c2b5f7b255f2ce7d5150739d7591957a347ac2353",
+          "bytes": 12727
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\generation.json",
+          "sha256": "f573bedd06f3ca3dc31767119deb78e0d301621616c580fde82caee6aabb1aa2",
+          "bytes": 3309
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\compiled_prompt.json",
+          "sha256": "e1eca9d7ef0e500bf2b2c076b4cee872a73fa97404f6d2c688a7f60ec7dd917f",
+          "bytes": 4926
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_base_rebuilt\\010_generation\\workflow.json",
+          "sha256": "f889a4f52c197f13460cc796a72e0cf82719b28740952c592e20feb66ed6b899",
+          "bytes": 3561
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_base_rebuilt\\route_decision.json",
+          "sha256": "b2ce087cee64cba853af00a46a7ec05df715ee06171d3c186c4bfd6acca6154e",
+          "bytes": 1119
+        }
+      }
+    },
+    "STYLE-001_anima_turbo": {
+      "phase": "R1",
+      "asset_id": "STYLE_001_anima_turbo_r1",
+      "style_id": "STYLE-001",
+      "workflow_id": "anima_turbo",
+      "workflow_sha256": "34c66b56e2e8ac7b911d7e99ea6c4fb4f2400b28dc607800fd40a5b477b69319",
+      "model": "anima-turbo-v1.1.safetensors",
+      "compiler_revision": null,
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-turbo",
+      "prompt_id": "6be7bce8-7943-45a5-88ac-b524cd7cb307",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 10,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\001_STYLE_001_anima_turbo_r1_00001_.png",
+          "sha256": "9b7c910390b663d178e619db5c88605aa2142d29e64f7a277fc9e7e292e46270",
+          "bytes": 241312
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_turbo\\run_manifest.json",
+          "sha256": "39b9d347d70cba1fa0192102b614e9041540939eb463215e2bb0e030cb0df29c",
+          "bytes": 12664
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\generation.json",
+          "sha256": "855ab5f135b22750d331f07ef729bd4162e65d29d4a7c49ed1b3dfbf113aa9f7",
+          "bytes": 3281
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\compiled_prompt.json",
+          "sha256": "baf0edcfbf35b0cec6d880626bf99d1615bf5253df98bf38e682c6d7e27391ea",
+          "bytes": 4919
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_turbo\\010_generation\\workflow.json",
+          "sha256": "2562511bffb6eeefc99a44be33fda928375b0d3b5221e164b0bf792ff1872261",
+          "bytes": 3554
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-001_anima_turbo\\route_decision.json",
+          "sha256": "00eb08e6c6a9c16235bdb3454e122a7d70545f1579c1d5e68871957198970df1",
+          "bytes": 1119
+        }
+      }
+    },
+    "STYLE-004_anima_base_rebuilt": {
+      "phase": "R1",
+      "asset_id": "STYLE_004_anima_base_rebuilt_r1",
+      "style_id": "STYLE-004",
+      "workflow_id": "anima_base_rebuilt",
+      "workflow_sha256": "fa645baddd1f50ccc983a745339bb478d43ee69c7e993322f4eb5536f6744ac8",
+      "model": "anima-base-v1.0.safetensors",
+      "compiler_revision": null,
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-base-rebuilt",
+      "prompt_id": "ecdc069c-f47c-445c-8f81-c14d5464d1fa",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 30,
+        "cfg": 4.0,
+        "sampler": "er_sde",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\001_STYLE_004_anima_base_rebuilt_r1_00001_.png",
+          "sha256": "8b47ea219618286e1cf987ca0ca179377b02cf043066f89aa7c8e1dc6fc55cf0",
+          "bytes": 477371
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_base_rebuilt\\run_manifest.json",
+          "sha256": "6e2d498dbeb60d6f92d3f699f19398172fd8870017dc23ee50e7aa475105f012",
+          "bytes": 12751
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\generation.json",
+          "sha256": "81f671e5705c77f3194f44457aa8701c64eb898af867707b709972183e715ce9",
+          "bytes": 3321
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\compiled_prompt.json",
+          "sha256": "63bf4b9b2a59fbac9be38a38428ca11315f7c565174f7fefb1554c499a846001",
+          "bytes": 4941
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_base_rebuilt\\010_generation\\workflow.json",
+          "sha256": "854a52dfe832031bf031a0729493dea8def2434761fa8b0687e7bf7af845d9bb",
+          "bytes": 3573
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_base_rebuilt\\route_decision.json",
+          "sha256": "b2ce087cee64cba853af00a46a7ec05df715ee06171d3c186c4bfd6acca6154e",
+          "bytes": 1119
+        }
+      }
+    },
+    "STYLE-004_anima_turbo": {
+      "phase": "R1",
+      "asset_id": "STYLE_004_anima_turbo_r1",
+      "style_id": "STYLE-004",
+      "workflow_id": "anima_turbo",
+      "workflow_sha256": "34c66b56e2e8ac7b911d7e99ea6c4fb4f2400b28dc607800fd40a5b477b69319",
+      "model": "anima-turbo-v1.1.safetensors",
+      "compiler_revision": null,
+      "prompt_adapter": "anima_hybrid",
+      "profile_id": "anima-turbo",
+      "prompt_id": "7385f678-5e49-49fe-9f2f-0b9bbf88f5c3",
+      "parameters": {
+        "width": 512,
+        "height": 768,
+        "steps": 10,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "seed": 7725,
+        "lora_strength": null
+      },
+      "qa": "PASS",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "approval_effect": "NONE",
+      "resolution": [
+        512,
+        768
+      ],
+      "files": {
+        "original_png": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\001_STYLE_004_anima_turbo_r1_00001_.png",
+          "sha256": "abaedc2e3e08109b94ace51f66490723b34f6a26f863ea85355588ba0a3e4ff1",
+          "bytes": 471159
+        },
+        "run_manifest": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_turbo\\run_manifest.json",
+          "sha256": "319b9b063130c8442c09dc667428e19250658644dac5e2c470865afa34c7250d",
+          "bytes": 12688
+        },
+        "generation": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\generation.json",
+          "sha256": "357cd431a883cb2dfdedd7cfc839b97339698b7244dc1a7368d117126339286e",
+          "bytes": 3293
+        },
+        "compiled_prompt": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\compiled_prompt.json",
+          "sha256": "ad4f91b596b12ab18086f5b0b8ddad40773b15234ed9d2a581367108ee6bc5be",
+          "bytes": 4934
+        },
+        "workflow": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_turbo\\010_generation\\workflow.json",
+          "sha256": "0229f7b870d4c5fd9befa5bf71824ba0de5af28225d65efd2f58336b4225ea44",
+          "bytes": 3566
+        },
+        "route_decision": {
+          "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\ANIMA_FAMILY_R1_20261005\\runs\\STYLE-004_anima_turbo\\route_decision.json",
+          "sha256": "00eb08e6c6a9c16235bdb3454e122a7d70545f1579c1d5e68871957198970df1",
+          "bytes": 1119
+        }
+      }
+    }
+  },
+  "b1_krea_context_only": {
+    "STYLE-001": {
+      "phase": "B1_CONTEXT_ONLY",
+      "style_id": "STYLE-001",
+      "model": "krea2_base",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "sha256": "0af2dfebdff514284fac0e0176c5d599c3ba3233a8217e866018220718f4cf38",
+      "bytes": 1047989,
+      "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\STYLE_MENU_NONPIXEL_PILOT_B1\\runs\\STYLE-001_krea2_turbo\\010_generation\\001_STYLE-001_krea2_turbo_00001_.png",
+      "manifest_path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\STYLE_MENU_NONPIXEL_PILOT_B1\\runs\\STYLE-001_krea2_turbo\\run_manifest.json",
+      "manifest_sha256": "407c0ce831a0f91ee4efbd7181aa99457df8f03c268d642ef93d14993e6ae69d"
+    },
+    "STYLE-004": {
+      "phase": "B1_CONTEXT_ONLY",
+      "style_id": "STYLE-004",
+      "model": "krea2_base",
+      "resolution": [
+        1024,
+        1024
+      ],
+      "sha256": "929de6864435009e1583d3b2ff3a327199c4ff2501f8c15904f650625167f531",
+      "bytes": 1185242,
+      "path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\STYLE_MENU_NONPIXEL_PILOT_B1\\runs\\STYLE-004_krea2_turbo\\010_generation\\001_STYLE-004_krea2_turbo_00001_.png",
+      "manifest_path": "C:\\Users\\seung\\.codex\\worktrees\\style-pilot-b1\\asset-pipeline\\workspace\\style_menu\\experiments\\STYLE_MENU_NONPIXEL_PILOT_B1\\runs\\STYLE-004_krea2_turbo\\run_manifest.json",
+      "manifest_sha256": "07dc6eab8592f89f2328bb2fbc3547bb0cdac85ff64020c32ccdf2e47437863e"
+    }
+  }
+}

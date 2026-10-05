@@ -32,9 +32,9 @@ connection or required deterministic compiler is unavailable, report it and stop
 before generation.
 
 When project owners request **NONPIXEL_IMAGE** style work, prioritize
-[Anima/Krea2 source-researched prompts](../../../docs/style_menu/NONPIXEL_PROMPT_RESEARCH_v0.1.md),
+[Style Intelligence](../../references/STYLE_INTELLIGENCE.md),
 the machine-readable `config/style_menu/nonpixel_prompt_research_v0.yaml`,
-and [local Codex experiment work order](../../../docs/style_menu/CODEX_NONPIXEL_WORK_ORDER_v0.1.md).
+and [Production Instructions](../../instructions/PRODUCTION.md).
 Study-only recipes can be exported with `python scripts/nonpixel_research.py export`;
 those study packets are not native production PromptSpecs. Protect project SOT
 identity; vary one palette/linework/shading/texture variable at a time and retain
@@ -44,8 +44,8 @@ REAL_GENERATION_VERIFIED records; validate files/sha before planning any new
 paid smoke, and do not batch stylistic cross-model experiments for them.
 
 When project owners request an **illustrated style menu**, read
-[Numbered Candidate Style Menu](../../../docs/style_menu/NUMBERED_CANDIDATE_MENU_v0.1.md)
-and [Agent Recipe Selection Guide](../../../docs/style_menu/AGENT_RECIPE_SELECTION_GUIDE_v0.1.md).
+[Style Intelligence](../../references/STYLE_INTELLIGENCE.md)
+and [Agent Prompt Production](../../references/AGENT_PROMPT_WORKFLOW.md).
 Menu IDs are external preview candidates (Krea2 creator examples) only;
 EXTERNAL_PREVIEW_ONLY must never be silently promoted to locally VERIFIED or
 PROJECT_APPROVED. Do not claim 32px pixel quality from a pixel-themed preview.
@@ -56,7 +56,7 @@ materials, LoRA, VAE and model workflow, but all changed combinations need
 independent compatibility and actual-image review, not silent production fallback.
 
 For a user asking how to design a project's own reference, model choice or style,
-read [Model & Style Handbook](../../../docs/ASSET_PIPELINE_MODEL_STYLE_HANDBOOK_v0.1.md)
+read [Style Intelligence](../../references/STYLE_INTELLIGENCE.md)
 and the live model/workflow/style registries. The handbook is pipeline-side usage
 knowledge, **not** a mandatory project reference-document schema. Project visual
 SOT controls art identity and style choice; keep the existing Asset Brief/PromptSpec
@@ -64,7 +64,7 @@ as the tool interchange contract. Distinguish capability, comparative evidence a
 human-approved Golden styles; never invent performance preferences.
 
 Before recommending model, style, LoRA or workflow to a project, consult
-[Offline Model Knowledge Guide](../../../docs/knowledge/MODEL_CAPABILITY_GUIDE_v0.1.md)
+[Style Routing](../../references/STYLE_ROUTING.md)
 and run `assetpipe knowledge --model-id <model_variant>` or
 `assetpipe knowledge --style-id <style_id>` if the local CLI is available.
 The command reads checked-in registry and report metadata only; output
@@ -74,9 +74,9 @@ If knowledge validation fails, report the contradiction without silently choosin
 another model. This query is optional metadata inspection and never overrides
 project visual SOT, existing six MCP tool schemas or runtime routing.
 
-Research caution (2026-10-04): [Model & Style Evidence Audit](../../../docs/research/MODEL_STYLE_EVIDENCE_AUDIT_20261004.md)
+Research caution (2026-10-04): [Style Routing](../../references/STYLE_ROUTING.md)
 records that the handbook remains INVENTORY_ONLY and model-specific art quality
-is NOT established. The [benchmark protocol](../../../docs/research/MODEL_STYLE_BENCHMARK_PROTOCOL_v0.1.md)
+is NOT established. The [benchmark protocol notes](../../references/STYLE_ROUTING.md)
 is a proposal, not authorization to generate. Model/recipe recommendation requires
 actual comparable outputs and reviewed evidence; never infer superiority from tags,
 workflow ACTIVE status, partial smoke QA or offline-compiled prompts.

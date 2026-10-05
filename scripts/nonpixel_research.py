@@ -11,6 +11,8 @@ from pathlib import Path
 
 import yaml
 
+from assetpipe.styles.contracts import load_style_contract
+
 ROOT = Path(__file__).resolve().parents[1]
 MENU = "config/style_menu/candidates_v0.yaml"
 RESEARCH = "config/style_menu/nonpixel_prompt_research_v0.yaml"
@@ -76,9 +78,19 @@ def inspect(root=ROOT):
             raise ValueError(f"Research candidate attempts an unreviewed promotion: {style_id}")
         if not entry["krea2_base"].get("style_clause") or entry["krea2_base"]["negative_native"] != "UNSUPPORTED":
             raise ValueError(f"Krea2 style clause / capability invalid: {style_id}")
-        if (not entry["anima_base"].get("positive_tags") or
-                not entry["anima_base"].get("natural_language_caption") or
-                entry["anima_base"].get("optional_negative") != []):
+        anima = entry["anima_base"]
+        if style_id in {"STYLE-001", "STYLE-004"}:
+            contract = load_style_contract(root, style_id)
+            expected_ref = f"config/styles/catalog.yaml#/styles/{style_id}/style_contract"
+            if (anima.get("contract_ref") != expected_ref or
+                    anima.get("positive_dialect") != "STRUCTURED_STYLE_CONTRACT" or
+                    "positive_tags" in anima or "natural_language_caption" in anima):
+                raise ValueError(f"Invalid structured Anima Style Contract reference: {style_id}")
+            if contract["id"] != style_id:
+                raise ValueError(f"Anima Style Contract identity mismatch: {style_id}")
+        elif (not anima.get("positive_tags") or
+              not anima.get("natural_language_caption") or
+              anima.get("optional_negative") != []):
             raise ValueError(f"Invalid Anima research dialect or unapproved negative: {style_id}")
         if "project_subject_identity" not in entry["locked_axes"]:
             raise ValueError(f"Canon may not be edited by style recipe: {style_id}")
@@ -104,9 +116,16 @@ def export_packet(root, style_id, workflow_id, subject_text):
     if not isinstance(subject_text, str) or len(subject_text.strip()) < 15:
         raise ValueError("Subject facts must come from validated project SOT or a labelled synthetic fixture")
     details = style[workflow_id]
+    contract_ref = None
     if workflow_id == "krea2_base":
         prototype = subject_text.strip() + " Style direction: " + details["style_clause"]
         dialect = "NATURAL_LANGUAGE; mandatory independent semantic review before actual runtime PromptSpec"
+    elif details.get("contract_ref"):
+        # Research export preserves provenance and the structured reference only.
+        # Final model text is compiled from PromptSpec at runtime, never authored here.
+        prototype = None
+        contract_ref = details["contract_ref"]
+        dialect = "STRUCTURED_STYLE_CONTRACT; compiled by the PromptSpec model-dialect compiler"
     else:
         prototype = ", ".join(details["positive_tags"]) + ". " + subject_text.strip() + " " + details["natural_language_caption"]
         dialect = "ANIMA_TAGS_PLUS_CAPTION; preserve original model native prompt compiler"
@@ -119,7 +138,8 @@ def export_packet(root, style_id, workflow_id, subject_text):
         "output_class": "NONPIXEL_IMAGE", "workflow_id": workflow_id,
         "model_weight": model["base_model"], "text_encoder": model["text_encoder"],
         "vae": model["vae"], "loras": [],
-        "prompt_dialect": dialect, "example_unapproved_compiled_text": prototype,
+        "prompt_dialect": dialect, "style_contract_ref": contract_ref,
+        "example_unapproved_compiled_text": prototype,
         "suggested_editable_axes": style["editable_axes"], "canon_locked_axes": style["locked_axes"],
         "prompt_risk": style["failure_risk"],
         "original_image_reproduction": "NOT_RUN",

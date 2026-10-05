@@ -46,7 +46,8 @@
             "front",
             "rear",
             "left",
-            "right"
+            "right",
+            "three_quarter"
           ]
         },
         "equipment": {
@@ -80,6 +81,12 @@
                   "rear",
                   "left",
                   "right"
+                ]
+              },
+              "subject_side": {
+                "enum": [
+                  "SUBJECT_LEFT",
+                  "SUBJECT_RIGHT"
                 ]
               }
             }
@@ -138,6 +145,10 @@
           "const": true
         }
       }
+    },
+    "style_contract_id": {
+      "type": "string",
+      "pattern": "^STYLE-[0-9]{3}$"
     },
     "subject": {
       "type": "string",

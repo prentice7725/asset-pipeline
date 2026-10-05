@@ -1,11 +1,13 @@
 import hashlib
 import json
+from pathlib import Path
 
 import pytest
 from PIL import Image
 
 from assetpipe.manifests import write
 from assetpipe.visual_review import build_review
+from assetpipe.styles.contracts import load_style_contract, style_contract_review_template
 
 
 def candidate(tmp_path, kind='PIXEL_STATIC'):
@@ -91,4 +93,22 @@ def test_subject_contract_review_never_invents_semantic_or_art_pass(tmp_path):
     report = json.loads(build_review(tmp_path).read_text())
     assert set(report['review_domains']) == {'SEMANTIC', 'COMPOSITION', 'ART'}
     assert all(domain['status'] == 'NOT_VALIDATED' for domain in report['review_domains'].values())
+    assert report['approval_effect'] == 'NONE'
+
+
+def test_visual_review_exposes_style_contract_failure_code_checklist(tmp_path):
+    candidate(tmp_path, 'NONPIXEL_IMAGE')
+    manifest = tmp_path / 'run_manifest.json'
+    value = json.loads(manifest.read_text())
+    contract = load_style_contract(Path(__file__).resolve().parents[2], 'STYLE-001')
+    value['generation'] = {'compiled_prompt': {
+        'style_contract_review': style_contract_review_template(contract),
+    }}
+    write(manifest, value)
+    report = json.loads(build_review(tmp_path).read_text())
+    checklist = report['style_contract_review']
+    assert checklist['status'] == 'NOT_REVIEWED'
+    assert checklist['failure_codes'] == []
+    assert 'STYLE001_RED_LIGHT_MISSING' in {item['code'] for item in checklist['required_features']}
+    assert 'STYLE001_WHITE_NEUTRAL_BACKGROUND_PRESENT' in {item['code'] for item in checklist['forbidden_features']}
     assert report['approval_effect'] == 'NONE'

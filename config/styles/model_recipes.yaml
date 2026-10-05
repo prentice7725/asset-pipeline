@@ -76,6 +76,56 @@ recipes:
       - *id001
       note: Candidate wiring only; no measured quality score or model preference.
         Human approval required for default routing.
+  STYLE-001:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 534b4081e0efeef6e711080b19254b717721ee4c417ce8ec08283316c4939e3f
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: [negative_prompt]
+      sources:
+      - url: https://kreastyles.thetacursed.com/
+        description: Krea Style Explorer entry aaea31dc325f; preserved source provenance
+        entry_id: aaea31dc325f
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 534b4081e0efeef6e711080b19254b717721ee4c417ce8ec08283316c4939e3f
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: [negative_prompt]
+      sources:
+      - url: https://kreastyles.thetacursed.com/
+        description: Krea Style Explorer entry aaea31dc325f; preserved source provenance
+        entry_id: aaea31dc325f
+  STYLE-004:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 0576c4f988146599dbeb906292cb0312c8817da2aed6b0dfcd98388c2abc543e
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: [negative_prompt]
+      sources:
+      - url: https://kreastyles.thetacursed.com/
+        description: Krea Style Explorer entry b0c422916b0d; preserved source provenance
+        entry_id: b0c422916b0d
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 0576c4f988146599dbeb906292cb0312c8817da2aed6b0dfcd98388c2abc543e
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: [negative_prompt]
+      sources:
+      - url: https://kreastyles.thetacursed.com/
+        description: Krea Style Explorer entry b0c422916b0d; preserved source provenance
+        entry_id: b0c422916b0d
   ink-storybook:
     anima_base:
       version: 1.0.0

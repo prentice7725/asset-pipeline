@@ -1,0 +1,70 @@
+{
+  "cohort": "ANIMA_FAMILY_R2_20261005",
+  "authorization_note": "User authorized ANIMA_FAMILY_R2_20261005: exactly four real cells, fresh reservation, no retries or fallback (2026-10-05).",
+  "reserved_calls": 4,
+  "attempted_calls": 4,
+  "completed_calls": 4,
+  "failed_calls": 0,
+  "retries_allowed": 0,
+  "models_preflight": {
+    "status": "PIPELINE_CONFIG_VALID",
+    "generation_requests": 0,
+    "workflows": {
+      "anima_base_rebuilt": {
+        "profile": "anima-base-rebuilt",
+        "workflow_hash": "fa645baddd1f50ccc983a745339bb478d43ee69c7e993322f4eb5536f6744ac8",
+        "checkpoint": "anima-base-v1.0.safetensors",
+        "preset": {
+          "width": 512,
+          "height": 768,
+          "steps": 30,
+          "cfg": 4.0,
+          "sampler": "er_sde",
+          "scheduler": "simple"
+        },
+        "real_generation": "NOT_RUN"
+      },
+      "anima_turbo": {
+        "profile": "anima-turbo",
+        "workflow_hash": "34c66b56e2e8ac7b911d7e99ea6c4fb4f2400b28dc607800fd40a5b477b69319",
+        "checkpoint": "anima-turbo-v1.1.safetensors",
+        "preset": {
+          "width": 512,
+          "height": 768,
+          "steps": 10,
+          "cfg": 1.0,
+          "sampler": "euler",
+          "scheduler": "simple"
+        },
+        "real_generation": "NOT_RUN"
+      }
+    },
+    "model_files": {
+      "anima-base-v1.0.safetensors": {
+        "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\diffusion_models\\anima-base-v1.0.safetensors",
+        "bytes": 4182218328,
+        "present": true,
+        "sha256": "bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e"
+      },
+      "anima-turbo-v1.1.safetensors": {
+        "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\diffusion_models\\anima-turbo-v1.1.safetensors",
+        "bytes": 4182230656,
+        "present": true,
+        "sha256": "fba11953276b57edf59d1dc4f1857ac05aa079c56f982b4d7c20298d57d3f7eb"
+      },
+      "qwen_3_06b_base.safetensors": {
+        "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\text_encoders\\qwen_3_06b_base.safetensors",
+        "bytes": 1192135096,
+        "present": true,
+        "sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba"
+      },
+      "qwen_image_vae.safetensors": {
+        "path": "C:\\Users\\seung\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Shared\\models\\vae\\qwen_image_vae.safetensors",
+        "bytes": 253806246,
+        "present": true,
+        "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f"
+      }
+    },
+    "local_model_preflight": "PASS"
+  }
+}
