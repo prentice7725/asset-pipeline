@@ -1,0 +1,5 @@
+
+# Preserve byte-identical historical evidence across Windows/Linux checkouts.
+research/style_catalog/style_menu_v1/evidence/** -text -diff
+research/style_catalog/krea1596_classification_v0.1.json -text
+research/style_catalog/krea1596_shortlist_v0.1.yaml -text

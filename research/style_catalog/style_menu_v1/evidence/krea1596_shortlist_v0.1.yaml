@@ -1,0 +1,221 @@
+schema_version: 1
+source_commit: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+state: RESEARCH_SHORTLIST_NOT_GENERATED
+purpose: 'Representative non-photoreal candidates selected from the full 1,596-entry explorer for Anima/Krea2 empirical comparison.'
+candidates:
+  - id: CAND-001
+    group: ANIME_90S_CEL
+    source_id: "2296994da9bc"
+    name: "90s nocturnal cel anime"
+    summary: "Hand-painted cel look, vintage OVA mood, city-night palette."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/2296994da9bc.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-002
+    group: ANIME_90S_CEL
+    source_id: "2dfd01bda89f"
+    name: "90s gothic fantasy cel"
+    summary: "Cel-shaded fantasy with twilight indigo/magenta and painted background."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/2dfd01bda89f.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-003
+    group: ANIME_RETRO_SCIFI
+    source_id: "fbd56820d95e"
+    name: "retro sci-fi anime"
+    summary: "Retro-futuristic anime with chrome/neon and analog texture."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/fbd56820d95e.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-004
+    group: ANIME_MODERN_FLAT
+    source_id: "03efebcc9262"
+    name: "modern flat manga"
+    summary: "Bold manga linework, flat color blocks, high-contrast graphic treatment."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/03efebcc9262.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-005
+    group: ANIME_KAWAII_POP
+    source_id: "97e333d71519"
+    name: "kawaii pop anime"
+    summary: "Clean pop-anime linework, pastel/neon accents and playful styling."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/97e333d71519.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-006
+    group: CARTOON_RUBBERHOSE
+    source_id: "db8c68866056"
+    name: "rubber-hose cartoon"
+    summary: "Retro mascot/cartoon language with pie eyes, thick outlines and flat color."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/db8c68866056.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-007
+    group: CARTOON_FLAT_VECTOR
+    source_id: "2bcaf2310be4"
+    name: "flat western action cartoon"
+    summary: "Angular western-cartoon proportions with clean vector shapes and bold flats."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/2bcaf2310be4.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-008
+    group: COMIC_MANGA_INK
+    source_id: "0125469b3037"
+    name: "graphic novel ink"
+    summary: "Dense ink/cross-hatching with high-contrast graphic-novel shadows."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/0125469b3037.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-009
+    group: COMIC_MANGA_INK
+    source_id: "76b16196fa43"
+    name: "manga screentone noir"
+    summary: "Monochrome manga ink with screentone/halftone and dramatic shadows."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/76b16196fa43.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-010
+    group: STORYBOOK_GOUACHE
+    source_id: "b0c422916b0d"
+    name: "cozy gouache storybook"
+    summary: "Textured gouache, simplified features, warm children's-book rendering."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/b0c422916b0d.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-011
+    group: STORYBOOK_WATERCOLOR
+    source_id: "05cc22b89e34"
+    name: "watercolor storybook"
+    summary: "Delicate ink outlines, watercolor washes and muted cozy architecture."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/05cc22b89e34.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-012
+    group: FOLK_NAIVE
+    source_id: "853235279ae7"
+    name: "folk fairytale gouache"
+    summary: "Naive/folk shapes with textured gouache and nocturnal fairytale lighting."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/853235279ae7.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-013
+    group: INK_ENGRAVING_WOODCUT
+    source_id: "af0b541cf454"
+    name: "vintage engraving"
+    summary: "Monochrome woodcut/engraving with cross-hatching and book-plate texture."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/af0b541cf454.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-014
+    group: OIL_IMPASTO
+    source_id: "cd08de37ef98"
+    name: "impasto painterly"
+    summary: "Heavy oil/impasto surface, palette-knife texture and dramatic value grouping."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/cd08de37ef98.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-015
+    group: RISOGRAPH_SCREENPRINT
+    source_id: "f85870d45ffe"
+    name: "duotone risograph"
+    summary: "Duotone risograph/screenprint with halftone and registration texture."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/f85870d45ffe.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-016
+    group: PUNK_ZINE_MONO
+    source_id: "960625243657"
+    name: "punk photocopy zine"
+    summary: "Stark black/white photocopy and distressed halftone punk-zine treatment."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/960625243657.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-017
+    group: VECTOR_EDITORIAL
+    source_id: "64964c86fc9d"
+    name: "flat vector editorial"
+    summary: "Clean vector shapes, saturated color masses and simplified character design."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/64964c86fc9d.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-018
+    group: COLLAGE_MIXED_MEDIA
+    source_id: "77f621a958d9"
+    name: "mixed-media collage"
+    summary: "Torn-paper collage with print textures and high-contrast graphic assembly."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/77f621a958d9.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-019
+    group: CYBERPUNK_NEON
+    source_id: "c6b9ccfa8cca"
+    name: "graphic neon cyberpunk"
+    summary: "Non-photographic neon-noir with electric palette, graphic texture and retro-future mood."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/c6b9ccfa8cca.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-020
+    group: DARK_FANTASY_GOTHIC
+    source_id: "dc53ab5f5a17"
+    name: "inked dark fantasy"
+    summary: "Dark-fantasy ink/engraving language with crimson accents and gothic surrealism."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/dc53ab5f5a17.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-021
+    group: SURREAL_DREAMCORE
+    source_id: "00f0d9768d93"
+    name: "clean dreamcore surreal"
+    summary: "Liminal green/blue dreamscape with crisp magical-realist simplification."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/00f0d9768d93.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-022
+    group: RETRO_AIRBRUSH_SYNTH
+    source_id: "aef97ec94d3f"
+    name: "retro airbrush future"
+    summary: "Airbrushed silhouette/gradient treatment with retro-futuristic neon mood."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/aef97ec94d3f.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-023
+    group: CLAY_TOY_3D
+    source_id: "699838cf2d6c"
+    name: "clay toy character"
+    summary: "Rounded claymation/vinyl-toy volumes with matte tactile material."
+    preview_url: "https://kreastyles.thetacursed.com/images/2/699838cf2d6c.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]
+  - id: CAND-024
+    group: VOXEL_LOW_POLY
+    source_id: "d56af712ee40"
+    name: "voxel diorama"
+    summary: "Isometric voxel/block geometry with soft studio lighting and miniature composition."
+    preview_url: "https://kreastyles.thetacursed.com/images/1/d56af712ee40.webp"
+    experiment_state: NOT_RUN
+    model_winner: UNMEASURED
+    models_to_compare: [anima_base_rebuilt, anima_turbo, krea2_base]

@@ -1,0 +1,1164 @@
+{
+  "reviewer": "Codex visual inspection",
+  "authority": "ADVISORY_NOT_HUMAN_APPROVAL",
+  "status": "COMPLETED_REVIEW_REQUIRED",
+  "repeatability": "NOT_MEASURED",
+  "cells": {
+    "CAND-002/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have white outer backgrounds and compass at image left. First face is black featureless; second is a featureless magenta mask. Third face is readable but gothic twilight/painted background is absent. Complete bodies and blue coats are visible.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_MISSING",
+        "FACE_READABILITY_FAILED"
+      ],
+      "style_consistency": "Weak gothic style transfer; facial rendering unstable across seeds"
+    },
+    "CAND-003/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show blue/purple/cyan cosmic neon backgrounds and cel-rendered full adult travelers. Coats, trousers, shoes and faces are readable. Compass is at image left in first two samples (first held with overlapping hands), image right in third.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE"
+      ],
+      "style_consistency": "Cosmic neon palette and cel rendering consistent; laterality varies"
+    },
+    "CAND-001/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three retain full bodies, blue coats, trousers and shoes. Night city fills samples 7726/7727, but 7725 has a small night backdrop inset in white. Compass is at image right in 7725, image left in 7726, absent in 7727.",
+      "failure_codes": [
+        "COMPASS_MISSING",
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_PARTIAL"
+      ],
+      "style_consistency": "Night/cel palette partly consistent; background coverage and equipment vary"
+    },
+    "CAND-004/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show blue coats, complete bodies and simple bold flat outlines. All have featureless faces and white backgrounds instead of the specified saturated solid backdrop. Compass is image left in first two, image right in third.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "STYLE_BACKGROUND_MISSING",
+        "WRONG_IMAGE_SIDE"
+      ],
+      "style_consistency": "Flat graphic treatment consistent; manga facial information and background weak"
+    },
+    "CAND-005/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have pastel/neon pop motifs and halftone backgrounds, blue coats and complete clothed bodies. 7725 holds compass near center with both hands; 7726 holds it high at image left; 7727 has a compass floating in the background with empty hands. Faces appear youthful; adult age is uncertain.",
+      "failure_codes": [
+        "COMPASS_SPATIAL_AMBIGUOUS",
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "ADULT_APPEARANCE_UNCERTAIN"
+      ],
+      "style_consistency": "Pop palette and printed motifs consistent; equipment relationship unstable"
+    },
+    "CAND-006/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three are faceless adult-shaped flat figures in blue coats. First compass floats or attaches above wrist at image left, second held image left, third missing. Bodies/trousers/shoes complete. Rubber-hose and pie-eye character language is weak.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "COMPASS_MISSING",
+        "STYLE_MEDIUM_WEAK"
+      ],
+      "style_consistency": "Generic flat icon rendering rather than distinctive rubber-hose animation"
+    },
+    "CAND-007/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have angular geometric coats and complete bodies, but featureless faces and white backgrounds. First two compasses at image left, third absent. Strong geometric flat form, weaker outlined western action-cartoon specificity.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_MISSING",
+        "STYLE_BACKGROUND_MISSING"
+      ],
+      "style_consistency": "Angular geometric language consistent; facial and equipment detail lost"
+    },
+    "CAND-008/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show convincing cross-hatched graphic-novel coats and gothic ink scenery (first background mostly white). First face is blacked out, second has no facial features, third heavily occludes the eyes. All compasses appear image left. Coats, trousers, shoes and complete bodies remain.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_PARTIAL"
+      ],
+      "style_consistency": "Ink/hatching strong and consistent; facial legibility poor"
+    },
+    "CAND-009/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show manga ink, black/white surroundings and blue screentone coats. Eyes are visible; middle lower face is almost blank. Complete bodies, shoes and one compass are present. Compasses all at image left.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "FACE_DETAIL_PARTIAL"
+      ],
+      "style_consistency": "Manga screentone medium consistent, with documented blue-coat exception"
+    },
+    "CAND-010/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show warm matte painted/storybook rooms and blue coats. All faces are featureless. Backgrounds contain faint humanoid/coat-shaped silhouettes, especially the second/third, requiring human review for extra-character interpretation. Compasses all image left. Complete bodies and dark shoes remain.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "EXTRA_BACKGROUND_FIGURE_SUSPECTED"
+      ],
+      "style_consistency": "Warm textured storybook scene consistent; figure gouache texture varies and faces absent"
+    },
+    "CAND-011/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three retain complete clothed figures and one compass at image left. Faces are featureless. Fine ink architectural insets, warm paper and mild wash/grain are visible, but coats remain relatively flat; white outer margins substantial.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "STYLE_FIGURE_TEXTURE_WEAK"
+      ],
+      "style_consistency": "Watercolor/storybook environment consistent, weaker watercolor figure rendering"
+    },
+    "CAND-012/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three retain full bodies and blue coats, with compass image left. First two faces are featureless; third has a readable youthful cartoon face. No nocturnal forest or glowing magical light is visible: backgrounds are white, gray, and dark flat fields respectively.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_MISSING",
+        "STYLE_LIGHTING_MISSING"
+      ],
+      "style_consistency": "Folk/nocturnal forest style poorly transferred; dark palette alone is insufficient"
+    },
+    "CAND-013/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have monochrome ink print marks and blue-coat exception, complete bodies, but blank faces. 7725 has a large compass cradled near the middle/left with both hands. 7726/7727 instead hold rectangular book/plate-like objects with circular compass markings; exact brass hand-held compass semantics are lost. Backgrounds remain white.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "COMPASS_SUBSTITUTED",
+        "COMPASS_SPATIAL_AMBIGUOUS",
+        "STYLE_NOUN_OBJECT_LEAKAGE_SUSPECTED"
+      ],
+      "style_consistency": "Engraved/printed hatching consistent, but book-illustration wording may leak book-shaped props; this is a suspected prompt/model interaction, not a proven cause"
+    },
+    "CAND-014/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have broad oil-painted brushwork and atmospheric teal/sage chiaroscuro, readable adult faces, complete bodies and one compass at image left. Coats shift toward teal rather than plain blue. Anatomical hand detail varies but no extra subject evident.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "COAT_HUE_DRIFT"
+      ],
+      "style_consistency": "Strong painterly medium transfer across seeds; realistic portrait rendering remains visibly painted"
+    },
+    "CAND-015/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have pale paper and flat blue coats with very sparse print texture. Faces are blank/hidden. 7725 has an elongated/stacked brass object with a small dial at image left: compass form/count requires closer human review. Other two compasses image left. Full clothed figures remain. Halftone/misregistration is weak.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_FORM_AMBIGUOUS",
+        "STYLE_PRINT_TEXTURE_WEAK"
+      ],
+      "style_consistency": "Mostly flat icon rendering; distinctive risograph misregistration not convincing"
+    },
+    "CAND-016/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show newspaper/photocopy backgrounds and blue halftone coats. First face blacked out, second blank, third readable. All have complete clothed bodies and compass image left. Distressed photographic/zine collage texture is stronger than generic flat styles; blue exception remains.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE"
+      ],
+      "style_consistency": "Photocopy/halftone scene and coat consistent; face stability weak"
+    },
+    "CAND-017/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have clean flat vector shapes, blue coats and complete bodies, but faces are blank. Organic abstract background shapes appear in first two; third white. Compasses all image left, first reduced to a small generic pendant rather than readable compass.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_FORM_AMBIGUOUS"
+      ],
+      "style_consistency": "Vector editorial form consistent; facial specificity and compass legibility reduced"
+    },
+    "CAND-018/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Paper cutout/halftone graphic treatment appears across seeds. First face hidden by high collar, second blank, third readable. Third coat becomes quilted/puffer-style instead of plain; extra large hand shapes appear behind figure and compass floats next to it. First two compasses image left. Full bodies/shoes visible.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "COAT_DESIGN_CHANGED",
+        "EXTRA_HAND_SHAPES"
+      ],
+      "style_consistency": "Collage treatment varies: cutout border, halftone and torn-paper frame differ by seed"
+    },
+    "CAND-019/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show strong electric blue/hot-pink nighttime graphic chiaroscuro, readable faces and full bodies in blue coats. Compasses all image left; coat halftone prominent in second. Heavy impasto is not convincingly present.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_IMPASTO_TEXTURE_WEAK"
+      ],
+      "style_consistency": "Neon graphic palette and night atmosphere consistent; impasto surface weaker than source requirement"
+    },
+    "CAND-020/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show parchment, dark etched/inked coats and crimson accents. First two faces obscured/blank; third eyes obscured by hair. First coat gains belt and ornamental hems, and hair becomes longer in later samples. Second compass appears embedded in a square ornate plate; all equipment at image left. Full clothed bodies remain.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "COAT_DESIGN_CHANGED",
+        "HAIR_LENGTH_DRIFT",
+        "COMPASS_FORM_AMBIGUOUS"
+      ],
+      "style_consistency": "Dark-fantasy ink mood consistent, but fixture hair/clothing/equipment drift"
+    },
+    "CAND-021/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show clean blue sky, clouds and green hills with flat blue full-body travelers. Faces have no features; middle head turns into profile. First two compasses image left; third has TWO compasses, one at each hand.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_COMPASS",
+        "HEAD_PROFILE_DRIFT"
+      ],
+      "style_consistency": "Sky/hill palette consistent, but exact-one equipment fails and dreamcore mood is mostly simple flat scenery"
+    },
+    "CAND-022/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have pastel luminous radial/psychedelic backgrounds and blue coats, but faces lack features. Middle hair length changes and figure appears rear-facing or face completely obscured by hair, requiring human view confirmation. Compasses image left, full clothed bodies remain. Airbrush surface is weak compared with graphic line/ray backgrounds.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "HAIR_LENGTH_DRIFT",
+        "REAR_VIEW_SUSPECTED",
+        "STYLE_AIRBRUSH_WEAK"
+      ],
+      "style_consistency": "Radial luminous motif consistent; airbrush medium and FRONT/short-hair preservation weak"
+    },
+    "CAND-023/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have blue full-body coats and rounded simplified forms; middle has some soft sculpted 3D volume, while first/third are primarily flat cel/vector. All faces blank; compasses image left. Tactile matte clay-toy rendering does not consistently carry across all seeds.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "WRONG_IMAGE_SIDE",
+        "STYLE_CLAY_VOLUME_WEAK"
+      ],
+      "style_consistency": "Clay 3D transfer inconsistent; only middle sample has clear volume"
+    },
+    "CAND-024/anima_base_rebuilt": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have dark backgrounds, angular low-poly geometry, full blue-coated bodies and blank/faceted faces. First cradles equipment with both hands centrally; second holds compass image left; third lacks compass. Triangular faceting is stronger than cubical voxel/diorama language.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "COMPASS_SPATIAL_AMBIGUOUS",
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_MISSING",
+        "STYLE_VOXEL_WEAK"
+      ],
+      "style_consistency": "Low-poly facets consistent; voxel block identity and equipment not preserved"
+    },
+    "CAND-001/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Faces readable and blue full-body coats present. All backgrounds mainly white with small dark city insets. Compasses at image left; 7727 has TWO travelers, with compass hanging from a strap on the first and empty hands.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_PARTIAL",
+        "DUPLICATE_SUBJECT",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "EXTRA_STRAP"
+      ],
+      "style_consistency": "Generic anime traveler consistent; nocturnal setting limited to inset"
+    },
+    "CAND-002/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Readable anime faces and blue full bodies in all samples. Backgrounds white/very pale, with faint cathedral only in middle instead of indigo/magenta twilight. 7727 has TWO travelers and strap-mounted compass. Middle coat gains belt. First two compasses image left.",
+      "failure_codes": [
+        "STYLE_BACKGROUND_MISSING",
+        "STYLE_LIGHTING_MISSING",
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Generic anime baseline dominates; gothic twilight style weak"
+    },
+    "CAND-003/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All faces readable and coats blue. Middle/third have cosmic neon technical backgrounds; first large white area with tiny cosmic upper inset. 7727 contains one traveler (unlike other inspected Turbo seed7727 outputs), with one compass image left. All three compasses image left, full bodies/shoes visible.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_PARTIAL"
+      ],
+      "style_consistency": "Cosmic neon style reasonably consistent in two samples; first weak background coverage"
+    },
+    "CAND-004/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All retain readable detailed anime faces and blue full-body coats. White backgrounds instead of saturated color field. Third contains TWO travelers plus an extra arm/hand reaching over shoulder with compass; equipment not connected to intended anatomical left hand. First two compasses image left.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_MISSING",
+        "DUPLICATE_SUBJECT",
+        "EXTRA_ARM",
+        "COMPASS_NOT_HAND_CONNECTED"
+      ],
+      "style_consistency": "Bold ink/cel shading rather than strong minimalist flat-manga adaptation"
+    },
+    "CAND-005/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Readable pop-anime faces, pastel/halftone motifs and blue full-body coats. Middle gains belt. Third contains TWO travelers, extra backpack straps/bag and compass-like dial on both strap and bag; duplicate equipment suspected. First two compasses image left.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "DUPLICATE_COMPASS_SUSPECTED",
+        "EXTRA_BAG_STRAPS",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Pop backgrounds distinguish style, but subject remains generic anime and third equipment multiplies"
+    },
+    "CAND-006/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All readable adult anime faces and blue full bodies. Not rubber-hose/pie-eye character language: generic anime men, middle sticker border. Third TWO travelers and a strap-mounted compass. First two held compasses image left.",
+      "failure_codes": [
+        "STYLE_MEDIUM_MISSING",
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "EXTRA_STRAP"
+      ],
+      "style_consistency": "Distinct rubber-hose medium not transferred despite readable subjects"
+    },
+    "CAND-007/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Readable anime/cel faces and full blue-coated bodies, not strong angular western-cartoon design. All white backgrounds. Third TWO travelers with extra arm over shoulder holding compass; first two compasses image left.",
+      "failure_codes": [
+        "STYLE_MEDIUM_WEAK",
+        "STYLE_BACKGROUND_MISSING",
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "EXTRA_ARM"
+      ],
+      "style_consistency": "Generic anime treatment stable; angular cartoon identity weak"
+    },
+    "CAND-008/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three show readable faces, ink contours/hatching and complete blue-coated bodies. Middle/third have convincing graphic-novel gothic arches; first white. All compasses image left. Middle gains coat belt; stubble appears but was unspecified.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "COAT_DESIGN_CHANGED",
+        "STYLE_BACKGROUND_PARTIAL"
+      ],
+      "style_consistency": "Graphic-novel ink transfer stronger than generic Turbo styles; facial readability better than Base"
+    },
+    "CAND-009/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "First two single manga travelers with readable faces, blue coats and ink shadows; middle coat gains tie/double-breasted design. Third has THREE full figures: foreground traveler plus two black/white figures, one rear-facing. One foreground compass image left, as in other seeds.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "EXTRA_REAR_VIEW",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Manga/ink treatment visible; seed7727 introduces model-sheet-like extra views"
+    },
+    "CAND-010/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Warm broad painted interior backgrounds across seeds; readable faces and blue coats. First central figure mostly smooth cel, second more realistic painted/portrait-like, third TWO anime travelers with strap-mounted compass. Middle coat has belt. Compasses image left.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "EXTRA_STRAP",
+        "COAT_DESIGN_CHANGED",
+        "STYLE_FIGURE_TEXTURE_WEAK"
+      ],
+      "style_consistency": "Painterly background transfer consistent; figure medium shifts from cel to realistic painted portrait"
+    },
+    "CAND-011/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Warm architectural insets behind readable, mainly cel-rendered travelers; watercolor washes weak on figures. Middle gains belt. Third contains one complete traveler plus an additional headless clothed body and extra arm over shoulder holding compass. First two compasses image left.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "EXTRA_HEADLESS_BODY",
+        "EXTRA_ARM",
+        "COAT_DESIGN_CHANGED",
+        "STYLE_FIGURE_TEXTURE_WEAK"
+      ],
+      "style_consistency": "Warm storybook environment partial, watercolor figure medium weak"
+    },
+    "CAND-012/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single readable generic anime travelers, full blue coats and one compass image left. First two white backgrounds, third brown solid/frame. No nocturnal forest, folk gouache texture or magical glow.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_MEDIUM_MISSING",
+        "STYLE_BACKGROUND_MISSING",
+        "STYLE_LIGHTING_MISSING"
+      ],
+      "style_consistency": "Distinct folk fairytale medium/background does not transfer"
+    },
+    "CAND-013/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Readable engraved/inked adult faces and complete bodies; first two compasses image left. Middle coat becomes double-breasted. Third TWO travelers holding rectangular brass book/case-like objects with compass markings: equipment form ambiguous and extra subject/equipment present.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "EXTRA_REQUIRED_EQUIPMENT",
+        "COMPASS_FORM_AMBIGUOUS",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Engraved hatching visible; third book-like prop recurrence and duplication"
+    },
+    "CAND-014/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have strong painterly oil texture and readable realistic adult faces with full bodies. First compass image left, second compass-like spiral dial ambiguous, third missing. Coats shift teal; middle gains belt. No obvious extra figure.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_FORM_AMBIGUOUS",
+        "COMPASS_MISSING",
+        "COAT_HUE_DRIFT",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Painterly medium strong and consistent, equipment/color drift remains"
+    },
+    "CAND-015/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Generic cel-rendered readable travelers on pale paper; little distinctive risograph misregistration. Third includes an extra headless body and arm holding a bell/cap-like brass prop over shoulder; main compass at image left. Middle gains belt. All intended bodies/shoes complete.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "EXTRA_HEADLESS_BODY",
+        "EXTRA_ARM",
+        "EXTRA_PROP",
+        "STYLE_PRINT_TEXTURE_WEAK",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Paper background consistent; print-specific style weak"
+    },
+    "CAND-016/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Ink/halftone editorial backgrounds, readable faces and complete figures. Middle has an enormous newspaper face in background. Third TWO travelers, one gray coat, one blue coat, both without compass. First two compasses image left.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "COMPASS_MISSING",
+        "COAT_HUE_DRIFT",
+        "EXTRA_BACKGROUND_FACE_SUSPECTED"
+      ],
+      "style_consistency": "Zine/ink texture visible but varies from sparse panels to newspaper collage"
+    },
+    "CAND-017/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single full-body travelers with readable faces, blue coats, flat geometric shading and organic colored background shapes. One compass each at image left. Texture clean and figure more detailed than minimal source.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE"
+      ],
+      "style_consistency": "Vector/graphic simplification moderately consistent with readable faces"
+    },
+    "CAND-018/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Paper panel/halftone/collage motifs across seeds with readable blue-coated travelers. Middle gains belt. Third foreground traveler plus TWO full paper/mannequin-like figures in background; foreground compass is correctly at image right in third, image left in first two.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "EXTRA_BACKGROUND_FIGURES",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Collage marks consistent, but graphic cutouts introduce extra humanoid forms"
+    },
+    "CAND-019/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Readable graphic-ink blue/pink travelers with one compass each at image left. First white background, middle/third dark neon-noir settings. No heavy impasto; linework/hatching stronger. Full bodies and footwear retained.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_BACKGROUND_PARTIAL",
+        "STYLE_IMPASTO_TEXTURE_WEAK"
+      ],
+      "style_consistency": "Neon/ink direction consistent in two samples, first background weak"
+    },
+    "CAND-020/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Readable dark-ink adult faces, blue coats and parchment backgrounds. Middle gains belt. Third compass hangs at chest/neck instead of a hand, with both hands empty. First two held compasses image left; all full bodies clothed.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "COAT_DESIGN_CHANGED"
+      ],
+      "style_consistency": "Dark engraving/parchment mood reasonably consistent"
+    },
+    "CAND-021/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single readable travelers with blue coats, full bodies, green hills and blue sky/clouds. First two compasses held image left; third hangs at neck/chest with empty hands. No duplicated subject or compass apparent.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "COMPASS_NOT_HAND_CONNECTED"
+      ],
+      "style_consistency": "Dreamscape palette and simple clean scenery consistent; stronger facial readability than Base"
+    },
+    "CAND-022/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Radial psychedelic neon backgrounds consistent; first face readable, middle completely blacked out, third readable. Third foreground traveler plus two extra large humanoid bodies behind, including bare feet/legs. Compasses image left. Hard cel edges dominate soft airbrush rendering.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "FACE_READABILITY_FAILED",
+        "EXTRA_BACKGROUND_FIGURES",
+        "STYLE_AIRBRUSH_WEAK"
+      ],
+      "style_consistency": "Luminous psychedelic direction consistent, soft airbrush figure texture weak"
+    },
+    "CAND-023/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "First two look like realistic human studio portraits/renders in blue coats, not whimsical matte clay toys. Third TWO realistic human-like figures: first compass appears at shoulder rather than hand; second lacks trousers and shoes with bare legs/feet. First two held compasses image left.",
+      "failure_codes": [
+        "CAND023_PHOTOGRAPHY_PRESENT",
+        "CAND023_MEDIUM_REQUIRED",
+        "CAND023_TEXTURE_REQUIRED",
+        "WRONG_IMAGE_SIDE",
+        "DUPLICATE_SUBJECT",
+        "COMPASS_NOT_HAND_CONNECTED",
+        "MISSING_TROUSERS_EXTRA_SUBJECT",
+        "MISSING_SHOES_EXTRA_SUBJECT"
+      ],
+      "style_consistency": "Photo-like human rendering dominates rather than clay-toy style"
+    },
+    "CAND-024/anima_turbo": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Three single complete travelers with compass image left and blue coats. First angular cel/vector on white; second realistic human studio render with weak faceting; third angular low-poly 3D against dark background. Cubical voxel/diorama language weak across seeds.",
+      "failure_codes": [
+        "WRONG_IMAGE_SIDE",
+        "STYLE_VOXEL_WEAK",
+        "CAND024_MEDIUM_REQUIRED",
+        "PHOTO_LIKE_RENDERING_SUSPECTED"
+      ],
+      "style_consistency": "Medium inconsistent: cel, realistic render and triangular low-poly vary by seed"
+    },
+    "CAND-001/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single readable cel-like travelers with blue coats, dark trousers/shoes and complete framing. Night city fills the background consistently. Exactly one open/hinged brass compass in anatomical left hand at image right in each sample; hinged lid is not an extra compass.",
+      "failure_codes": [],
+      "style_consistency": "Nocturnal painted/cel scene and fixture more consistent than either Anima row"
+    },
+    "CAND-002/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single full blue-coated figures with readable faces and one open brass compass at image right. Indigo/magenta watercolor twilight/cloud-like backgrounds consistent, but architectural/gothic specificity remains weak.",
+      "failure_codes": [
+        "STYLE_GOTHIC_SETTING_WEAK"
+      ],
+      "style_consistency": "Twilight palette much stronger than white Anima results"
+    },
+    "CAND-003/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single readable cel-like figures with blue coats, full framing and one compass at image right. Dark cosmic gradient with pink/cyan light and small stars is consistent, but futuristic scenery/analog detail less rich than Base.",
+      "failure_codes": [
+        "STYLE_RETRO_SCIFI_DETAIL_WEAK"
+      ],
+      "style_consistency": "Palette/fixture stable; retro-scifi specificity weaker than Base"
+    },
+    "CAND-004/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single full-body manga-like figures with readable adult faces, blue coats, dark trousers/shoes and one hinged brass compass in left hand at image right. Saturated yellow/orange background consistent, but gradient rather than perfectly solid flat field. Fine sketch shading adds detail beyond minimal manga.",
+      "failure_codes": [
+        "STYLE_SOLID_BACKGROUND_PARTIAL"
+      ],
+      "style_consistency": "Best saturated-background/fixture retention; flat medium partially textured"
+    },
+    "CAND-005/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single readable cute pop-anime/cartoon travelers with plain blue coats, full framing and one brass compass at image right. Pastel/neon sprinkle motifs and paper/halftone texture consistent. Age reads stylized/youthful, requiring adult-age human review.",
+      "failure_codes": [
+        "ADULT_APPEARANCE_UNCERTAIN"
+      ],
+      "style_consistency": "Pop palette and fixture stable; adult-age interpretation uncertain"
+    },
+    "CAND-006/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three bold rounded cartoon/sticker figures with complete blue coats, trousers/shoes and one open compass at image right. First two are angled front/three-quarter rather than strict front; third clearly REAR view. Consequently third compass is not safely assigned to intended SUBJECT_LEFT under FRONT contract.",
+      "failure_codes": [
+        "VIEW_DRIFT",
+        "REAR_VIEW",
+        "ANATOMICAL_SIDE_NOT_VALIDATED"
+      ],
+      "style_consistency": "Cartoon/sticker medium stronger than Anima but camera contract fails"
+    },
+    "CAND-007/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Single angular flat/geometric figures, blue coats and complete bodies across seeds, faces blank. Compasses at image right, but third open lid/hand region is clipped at right edge and large black/white streak artifacts appear behind figure. First two backgrounds plain white.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "EQUIPMENT_CROPPED",
+        "BACKGROUND_STREAK_ARTIFACT"
+      ],
+      "style_consistency": "Angular graphic rendering consistent; third edge/framing/artifact issue"
+    },
+    "CAND-008/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have readable foreground adult travelers, full blue coats, correct image-right brass compass and strong gothic ink/cross-hatched architecture. ALL three backgrounds also contain obvious additional dark human silhouettes (seated/standing hat-wearing figures).",
+      "failure_codes": [
+        "EXTRA_BACKGROUND_FIGURES"
+      ],
+      "style_consistency": "Graphic-novel ink scene consistent but violates no-extra-character fixture"
+    },
+    "CAND-009/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "One blue-coated ink traveler and compass image right per image. First full body with blank face; second and third crop head/upper body entirely out of frame, retaining coat, legs and shoes. Ink/halftone gray background present but coat screentone weaker than Base.",
+      "failure_codes": [
+        "CROPPED_SUBJECT",
+        "HEAD_MISSING",
+        "FACE_READABILITY_FAILED",
+        "STYLE_SCREENTONE_WEAK"
+      ],
+      "style_consistency": "Framing fails in two seeds; manga print texture partial"
+    },
+    "CAND-010/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single friendly storybook figures with matte opaque brush texture on BOTH blue coat and warm dappled background. Faces readable but youthful/stylized; adult interpretation needs human review. Full dark trousers/shoes and one compass at image right in each. Third has an incidental yellow paint/light spot on coat.",
+      "failure_codes": [
+        "ADULT_APPEARANCE_UNCERTAIN"
+      ],
+      "style_consistency": "Strong consistent gouache/storybook medium throughout subject and background"
+    },
+    "CAND-011/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single readable watercolor figures with translucent blue-coat washes, delicate ink contours and warm paper/architecture background. Complete body, dark trousers/shoes and one compass image right in each. Friendly simplified faces appear youthful/stylized, requiring adult-age review.",
+      "failure_codes": [
+        "ADULT_APPEARANCE_UNCERTAIN"
+      ],
+      "style_consistency": "Watercolor medium visibly consistent on figure and surroundings"
+    },
+    "CAND-012/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three single friendly folk/gouache travelers in deep nocturnal forest, with warm magical ground/firefly-like glow. Blue coats have matte paint texture, full bodies/trousers/shoes and compass correctly image right. Simplified faces appear youthful; adult interpretation needs reviewer confirmation.",
+      "failure_codes": [
+        "ADULT_APPEARANCE_UNCERTAIN"
+      ],
+      "style_consistency": "Nocturnal forest, glowing light and folk paint texture consistent"
+    },
+    "CAND-013/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Readable engraved portrait faces, dense crosshatching and blue-coat exception on white paper. Single full figure and one open brass compass at image right in all three. Faces have realistic portrait proportions requiring style review.",
+      "failure_codes": [],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-014/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Heavy impasto ridges cover both figure and muted teal/sage background. All three have full blue-coated adults, dark trousers/shoes and one compass at image right.",
+      "failure_codes": [],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-015/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have blue/brown printed ink, paper grain, readable faces and full figures. Compass at image right. Seed 7726 has an upper ring around the hand and lower compass disk: open-lid geometry versus duplicate/disconnected equipment is ambiguous even in original PNG.",
+      "failure_codes": [
+        "EQUIPMENT_GEOMETRY_AMBIGUOUS"
+      ],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-016/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Photocopy black ink and blue printed coats, readable faces and full figures. One compass at image right each. Seed 7727 includes an extra black human silhouette in the background.",
+      "failure_codes": [
+        "EXTRA_CHARACTER"
+      ],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-017/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Bold flat vector shapes, saturated abstract backgrounds, full figures, blue coats and compass at image right all three. Faces intentionally featureless; third open compass lid is not counted as duplicate.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED"
+      ],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-018/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Full flat printed figures with layered offset paper silhouettes in neon colors. Single compass at image right each, blue coats/pants/shoes retained. Faces featureless. Offset silhouettes may read as extra bodies rather than abstract paper layers.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "BACKGROUND_FIGURE_AMBIGUOUS"
+      ],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-019/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three have single full readable adults, blue coats, one compass at image right and dark blue/magenta neon environments. Texture is softer/painterly than the hard graphic source intent.",
+      "failure_codes": [],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-020/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Dark ink/wash fantasy silhouettes surround blue coats. Full figures and one image-right compass each. Seed 7726 face completely black, hair longer/shaggier than fixture.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED",
+        "HAIR_IDENTITY_DRIFT"
+      ],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-021/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Three consistent full readable single travelers over soft green hills/cloud skies; blue coats/dark pants/shoes and one image-right compass each. Clear dreamy atmosphere but little explicit surreal content.",
+      "failure_codes": [],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-022/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "Soft retro airbrush rainbow halo surrounds complete blue-coated single figures. One compass image right each. Middle face lacks eyes and clothing/hair interpretation differs between seeds.",
+      "failure_codes": [
+        "FACE_READABILITY_FAILED"
+      ],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-023/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three clearly clay toy figures with tactile rounded blue coats, dark pants/shoes, full bodies and one brass compass held image right. Friendly childlike toy faces require adult-fixture interpretation review.",
+      "failure_codes": [],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    },
+    "CAND-024/krea2_base": {
+      "reviewed_seeds": [
+        7725,
+        7726,
+        7727
+      ],
+      "observations": "All three clearly block-built voxel figures, dark studio background, full blue coats/pants/shoes and one hinged brass compass image right. Body turns slightly three-quarter, not strict FRONT.",
+      "failure_codes": [
+        "CAMERA_VIEW_DRIFT"
+      ],
+      "style_consistency": "See observations; three-seed visual assessment only"
+    }
+  },
+  "comparisons": {
+    "CAND-001": {
+      "provisional_preference": "krea2_base",
+      "reason": "Krea maintains night-city backgrounds and correct equipment across three seeds; Base background/equipment vary and Turbo duplicates a subject.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-002": {
+      "provisional_preference": "krea2_base",
+      "reason": "Best indigo/magenta atmosphere and fixture preservation; gothic setting specificity remains a limitation.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-003": {
+      "provisional_preference": "HOLD",
+      "reason": "Base has richer retro/cosmic anime art but wrong side in two samples; Krea preserves fixture in all three but uses simpler gradient scenery. Tradeoff requires reviewer choice.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-004": {
+      "provisional_preference": "krea2_base",
+      "reason": "Krea retains readable single figure and correct equipment in three samples; Anima backgrounds white, Base faces blank and Turbo third duplicated.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-005": {
+      "provisional_preference": "krea2_base",
+      "reason": "Most consistent pop rendering and equipment preservation; Base equipment disconnected/ambiguous and Turbo introduces duplicate figure/extra gear.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-006": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea is clearly closer to cartoon style, but view drift/rear rendering invalidates strict common FRONT fixture; Anima does not reproduce rubber-hose style well.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-007": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea improves equipment side and geometric style, but third crops equipment and has streak artifacts; Base loses compass and Turbo duplicates a subject. No consistently qualified cell.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-008": {
+      "provisional_preference": "HOLD",
+      "reason": "Turbo provides readable cleaner ink subjects but wrong compass side; Krea provides strong ink scene/correct foreground equipment but adds crowds. Base facial legibility weak.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-009": {
+      "provisional_preference": "HOLD",
+      "reason": "Base has the strongest consistent screentone treatment but wrong side; Turbo adds extra views in third; Krea crops head in two samples. Need fixture-correct review before model winner.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-010": {
+      "provisional_preference": "krea2_base",
+      "reason": "Krea transfers figure and background gouache while preserving equipment; Base blank faces and Turbo medium shifts/duplicate figure.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-011": {
+      "provisional_preference": "krea2_base",
+      "reason": "Krea has the strongest complete watercolor transfer and equipment preservation; Anima stays largely cel/flat with wrong-side compass and Turbo extra body.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-012": {
+      "provisional_preference": "krea2_base",
+      "reason": "Krea consistently restores the forest/gouache/magical-light features absent from both Anima rows and holds equipment side.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approval": false
+    },
+    "CAND-013": {
+      "provisional_preference": "krea2_base",
+      "reason": "More complete fixture and readable engraving than Base blank faces/book-like equipment and Turbo duplicate figure.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-014": {
+      "provisional_preference": "krea2_base",
+      "reason": "Strong impasto plus fixture adherence; Anima color/side drift and Turbo missing compass remain.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-015": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea has stronger print texture, but middle compass construction is unresolved; no qualified winner.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-016": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea readable and correct side, but extra person; Base blank faces/wrong side and Turbo duplication prevent winner.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-017": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea best palette/side but blank faces; Turbo readable vector faces but compass on wrong side. Requires game usability decision.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-018": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea strongest layered cut-paper effect but face/offset-body ambiguity; Anima alternative defects persist.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-019": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea correct fixture but softer graphic linework; Base has stronger graphic neon art and wrong side. Style-versus-fixture tradeoff unresolved.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-020": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea fantasy background stronger but face/hair integrity fails; Turbo necklace compass and Base unreadable faces/wrong side remain.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-021": {
+      "provisional_preference": "krea2_base",
+      "reason": "Most consistent completed fixture; Base duplicate compass and Turbo necklace equipment fail. Surreal specificity still needs review.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-022": {
+      "provisional_preference": "HOLD",
+      "reason": "Airbrush medium clearer in Krea but middle unreadable face; Anima rear/extra-figure defects leave no qualified winner.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-023": {
+      "provisional_preference": "krea2_base",
+      "reason": "Only consistent clear clay toy medium with complete equipment; Anima Base generic flat forms and Turbo photo-like humans/duplicates fail.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    },
+    "CAND-024": {
+      "provisional_preference": "HOLD",
+      "reason": "Krea strongest voxel medium, but FRONT lock not maintained; Anima low-poly/cel/photo variation and equipment failures prevent winner.",
+      "decision": "REVIEW_REQUIRED",
+      "golden_approved": false
+    }
+  },
+  "reviewed_image_count": 216,
+  "reviewed_comparison_cards": 24,
+  "limitations": [
+    "Advisory visual review, not human approval",
+    "Three seeds measure variation; exact same-seed rerun repeatability NOT_MEASURED",
+    "Preference applies to this contract/compiler/fixture/settings combination only",
+    "Blank faces in minimal graphic styles are usability observations, not automatic anatomy violations",
+    "Open compass lid is not a second compass"
+  ]
+}

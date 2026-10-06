@@ -1,0 +1,41 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\seung\.codex\worktrees\anima-family-r2\asset-pipeline
+configfile: pyproject.toml
+testpaths: tests, integrations/mcp/tests
+plugins: anyio-4.13.0
+collected 333 items
+
+tests\integration\test_static_wiring.py ...                              [  0%]
+tests\test_aseprite_bridge.py ......                                     [  2%]
+tests\test_comfy_workflows.py ......                                     [  4%]
+tests\test_motion_extractor.py .                                         [  4%]
+tests\test_motion_keyframes.py ..                                        [  5%]
+tests\test_pixel_analyzer.py ....                                        [  6%]
+tests\test_refiner.py ......                                             [  8%]
+tests\test_resolution_gate.py ...                                        [  9%]
+tests\test_subject_refiner.py .....                                      [ 10%]
+tests\unit\test_anima_family_pipeline.py ........                        [ 13%]
+tests\unit\test_anima_r3_contracts.py ................                   [ 18%]
+tests\unit\test_art_direction.py .........                               [ 20%]
+tests\unit\test_asset_production_skill.py ...                            [ 21%]
+tests\unit\test_assetpipe.py ............s                               [ 25%]
+tests\unit\test_cli_providers.py ....................................... [ 37%]
+..............                                                           [ 41%]
+tests\unit\test_knowledge.py ..............                              [ 45%]
+tests\unit\test_krea1596_benchmark.py ............................       [ 54%]
+tests\unit\test_nonpixel_research.py ......                              [ 55%]
+tests\unit\test_prompt_mining.py ...................................     [ 66%]
+tests\unit\test_prompts.py .....                                         [ 67%]
+tests\unit\test_sfx.py ......                                            [ 69%]
+tests\unit\test_style_lab.py .............                               [ 73%]
+tests\unit\test_style_menu.py ........                                   [ 75%]
+tests\unit\test_styles.py ..................                             [ 81%]
+tests\unit\test_subject_contract.py .........................            [ 88%]
+tests\unit\test_visual_review.py .........                               [ 91%]
+integrations\mcp\tests\test_adapter.py .........................         [ 99%]
+integrations\mcp\tests\test_package.py ...                               [100%]
+
+=========================== short test summary info ===========================
+SKIPPED [1] tests\unit\test_assetpipe.py:125: Local migration benchmark data unavailable
+================= 332 passed, 1 skipped in 112.79s (0:01:52) ==================

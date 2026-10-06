@@ -1,0 +1,11 @@
+{
+  "cohort": "KREA1596_24X3X3_20261006",
+  "reserved_calls": 216,
+  "attempted_calls": 216,
+  "completed_calls": 216,
+  "failed_calls": 0,
+  "retry_budget": 0,
+  "authorization": "User authorized 24 candidates x 3 models x 3 common seeds; 216 maximum calls",
+  "status": "COMPLETED_REVIEW_REQUIRED",
+  "current_job": "CAND_024_krea2_base_s7727"
+}

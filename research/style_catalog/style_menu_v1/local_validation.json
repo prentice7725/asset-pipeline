@@ -1,0 +1,40 @@
+{
+  "diff_check": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "assetpipe_help": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "anima_offline": {
+    "status": "PASS",
+    "exit_code": 0
+  },
+  "pytest": {
+    "passed": 332,
+    "skipped": 1,
+    "skip_reason": "Local migration benchmark data unavailable"
+  },
+  "route_compile": {
+    "executed": 25,
+    "status": "PASS",
+    "new_generations": 0
+  },
+  "sot_conflicts": {
+    "executed": 5,
+    "status": "PASS"
+  },
+  "review_state": "REVIEW_REQUIRED",
+  "publication_checks": {
+    "pytest": "332 passed, 1 skipped",
+    "skip_reason": "Local migration benchmark data unavailable",
+    "editable_install": "PASS dev,motion",
+    "diff_check": "PASS",
+    "assetpipe_help": "PASS",
+    "anima_offline": "PASS",
+    "original_hashes": "216 PASS",
+    "portable_exemplars": "48 PASS",
+    "cleanup": "Temporary sot_probe and task cache directories removed; historical evidence preserved"
+  }
+}
