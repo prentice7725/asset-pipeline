@@ -1,3 +1,5 @@
+> **Operational menu entrypoint:** read [Agent Guide v1](AGENT_RECIPE_SELECTION_GUIDE_v1.md) and workspace `config/styles/style_menu_v1.yaml` first for current NONPIXEL_IMAGE style selection. User-selected `art_style` binds an explicit model/recipe/workflow; it does not manufacture APPROVED/Golden state. The M2/research rules below still govern generic catalog routing and historical studies.
+
 # Style Intelligence (M2)
 
 The local engine owns `config/styles/catalog.yaml`, `model_recipes.yaml`, and

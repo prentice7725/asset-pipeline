@@ -1,3 +1,5 @@
+> **DEPRECATED AS PRODUCTION ENTRYPOINT / RESEARCH HISTORY ONLY.** 현재 운영 선택 계약은 [Agent Guide v1](AGENT_RECIPE_SELECTION_GUIDE_v1.md) 및 [STYLE MENU v1](STYLE_MENU_v1.md)이다. 아래 과거 내용은 증거 보존용이며 새 생성 승인이나 production defaults가 아니다.
+
 # 비픽셀 화풍 프롬프트 연구 v0.1 — Anima / Krea2
 
 > **OFFLINE_PROMPT_STUDY / NOT_RUN** · 픽셀 연구 HOLD. 본 문서는 인터넷 자료를 바탕으로 한 **프롬프트 가설**이지, 실제 이미지 품질 검증/Golden 승인이 아니다. Source first: `docs/style_menu/NUMBERED_CANDIDATE_MENU_v0.1.md`, `config/style_menu/nonpixel_prompt_research_v0.yaml`, `config/workflow_registry.yaml`.
