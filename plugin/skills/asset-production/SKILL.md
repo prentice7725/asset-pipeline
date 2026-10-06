@@ -31,29 +31,21 @@ or experimental recovery for the configured production path. When the local MCP
 connection or required deterministic compiler is unavailable, report it and stop
 before generation.
 
-When project owners request **NONPIXEL_IMAGE** style work, prioritize
-[Style Intelligence](../../references/STYLE_INTELLIGENCE.md),
-the machine-readable `config/style_menu/nonpixel_prompt_research_v0.yaml`,
-and [Production Instructions](../../instructions/PRODUCTION.md).
-Study-only recipes can be exported with `python scripts/nonpixel_research.py export`;
-those study packets are not native production PromptSpecs. Protect project SOT
-identity; vary one palette/linework/shading/texture variable at a time and retain
-failed candidates. PIXEL style STYLE-005 is HOLD and excluded from all nonpixel
-pilot generation. Codex/Grok CLI providers have separate historical 2026-10-01
-REAL_GENERATION_VERIFIED records; validate files/sha before planning any new
-paid smoke, and do not batch stylistic cross-model experiments for them.
+When project owners request **NONPIXEL_IMAGE** style selection, first read
+[Agent Recipe Selection Guide v1](../../references/AGENT_RECIPE_SELECTION_GUIDE_v1.md)
+and the workspace's `config/styles/style_menu_v1.yaml`. Read project ACTIVE/SOT;
+select one of the 24 independent STYLE-101..124 styles via `art_style`.
+Families are navigation only. STYLE-117 requires an explicit purpose policy.
+Use the configured primary model, recipe and model-specific compiler/workflow;
+retain known limitations, original images and all QA/human-review gates.
+Runner-up is reference information, never automatic fallback or retry.
+Menu selection does not authorize generation spend or imply Golden approval.
 
-When project owners request an **illustrated style menu**, read
-[Style Intelligence](../../references/STYLE_INTELLIGENCE.md)
-and [Agent Prompt Production](../../references/AGENT_PROMPT_WORKFLOW.md).
-Menu IDs are external preview candidates (Krea2 creator examples) only;
-EXTERNAL_PREVIEW_ONLY must never be silently promoted to locally VERIFIED or
-PROJECT_APPROVED. Do not claim 32px pixel quality from a pixel-themed preview.
-The menu may help shortlisting but can never overwrite project SOT identity,
-required output class, or actual style approvals. As the user requests,
-Codex/Claude may propose *separate trial variants* of palette, linework,
-materials, LoRA, VAE and model workflow, but all changed combinations need
-independent compatibility and actual-image review, not silent production fallback.
+CAND IDs, legacy STYLE-001..012, `config/style_menu/candidates_v0.yaml` and
+`nonpixel_prompt_research_v0.yaml` are research/history, not the production entrypoint.
+Read them only when historical evidence or a separately authorized study is needed.
+The operational nonpixel menu does not authorize pixel experiments or change
+PIXEL/SFX routes. Project SOT identity and output contracts remain authoritative.
 
 For a user asking how to design a project's own reference, model choice or style,
 read [Style Intelligence](../../references/STYLE_INTELLIGENCE.md)
