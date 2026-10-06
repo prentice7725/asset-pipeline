@@ -133,6 +133,10 @@ def anima_hybrid_prompt(spec, profile, style_contract_caption=None):
 
 
 def compile_prompt(brief, workflow, root):
+    from ..styles.menu import bind_menu
+    brief, menu_decision = bind_menu(brief, root)
+    if menu_decision and brief['workflow_preferences']['id'] != workflow['id']:
+        raise ValueError('Workflow conflicts with style menu binding')
     from ..styles import resolve_style, select_recipe, apply_style, public_selection
     spec = from_brief(brief)
     contract_id = spec.get('style_contract_id')
@@ -150,6 +154,8 @@ def compile_prompt(brief, workflow, root):
         result['art_direction'] = intent
     if selection:
         result['style_selection'] = public_selection(selection)
+    if menu_decision:
+        result['style_menu'] = menu_decision
     return result
 
 
@@ -167,7 +173,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     style_contract = None
     style_contract_compilation = None
     if spec.get('style_contract_id'):
-        from ..styles.contracts import compile_anima_style_contract, load_style_contract
+        from ..styles.contracts import compile_anima_style_contract, compile_krea_style_contract, load_style_contract
         contract_id = spec['style_contract_id']
         if style_context and style_context.get('definition', {}).get('style_contract'):
             style_contract = style_context['definition']['style_contract']
@@ -177,7 +183,8 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
             style_contract = load_style_contract(Path(root), contract_id)
         if spec.get('style') or spec.get('styleSources'):
             raise ValueError('STYLE_CONTRACT_CONFLICT: free-text style cannot be mixed with a structured contract')
-        style_contract_compilation = compile_anima_style_contract(
+        contract_compiler = compile_krea_style_contract if adapter == 'krea2' else compile_anima_style_contract
+        style_contract_compilation = contract_compiler(
             style_contract, adapter=adapter, dialect=profile.get('style_dialect', ''),
             model_profile=profile_id, workflow_id=workflow['id'])
     native_negative = bool(caps.get('negative_prompt'))
@@ -213,6 +220,8 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         positive = anima_hybrid_prompt(spec, profile,
                                        style_contract_compilation['caption'] if style_contract_compilation else None)
     elif adapter == 'krea2':
+        if style_contract_compilation:
+            fields.append(style_contract_compilation['caption'])
         positive = '. '.join(value.rstrip('. ') for value in fields) + '.'
     else:
         raise ValueError('Prompt adapter is not installed: ' + adapter)
@@ -245,7 +254,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
             'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(negative_items),
             'negative_mode': negative_mode, 'negative_instruction': list(negative_items) if instructed_negative else [],
             'contract_negative_guards': contract_negative_guards,
-            'compiler_revision': ('anima_hybrid_v3' if style_contract_compilation else
+            'compiler_revision': (style_contract_compilation['dialect'] if style_contract_compilation else
                                   'anima_hybrid_v2' if adapter == 'anima_hybrid' else 'legacy'),
             'aspect_ratio': spec.get('aspectRatio'), 'defaults': profile.get('defaults', {})}
     if style_contract_compilation:

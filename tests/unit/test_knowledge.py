@@ -62,9 +62,9 @@ def test_complete_mapping_and_counts():
     assert result["counts"]["workflows"] == 11
     assert result["counts"]["model_variants"] == 10
     assert result["counts"]["model_profiles"] == 8
-    assert result["counts"]["styles"] == 9
-    assert result["counts"]["runtime_recipes"] == 19
-    assert result["counts"]["recipe_states"] == {"TESTED": 2, "UNTESTED": 17}
+    assert result["counts"]["styles"] == 33
+    assert result["counts"]["runtime_recipes"] == 91
+    assert result["counts"]["recipe_states"] == {"TESTED": 2, "UNTESTED": 89}
     assert result["counts"]["historical_report_records"] == 6
     assert "config/workflows/krea2_pixel64_smoke_experimental.json" in result["unregistered_workflow_graphs"]
     assert result["styles"]["ink-storybook"]["visual_grammar"]["linework"] == ["fine ink contours"]

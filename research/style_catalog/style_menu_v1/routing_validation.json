@@ -1,0 +1,182 @@
+{
+  "status": "PASS",
+  "routes": [
+    {
+      "style": "90s_nocturnal_cel",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-101",
+      "prompt_compiled": true
+    },
+    {
+      "style": "90s_gothic_fantasy_cel",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-102",
+      "prompt_compiled": true
+    },
+    {
+      "style": "retro_sci_fi_anime",
+      "policy": null,
+      "workflow": "anima_base_rebuilt",
+      "style_id": "STYLE-103",
+      "prompt_compiled": true
+    },
+    {
+      "style": "modern_flat_manga",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-104",
+      "prompt_compiled": true
+    },
+    {
+      "style": "kawaii_pop_anime",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-105",
+      "prompt_compiled": true
+    },
+    {
+      "style": "rubber_hose_cartoon",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-106",
+      "prompt_compiled": true
+    },
+    {
+      "style": "flat_western_action_cartoon",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-107",
+      "prompt_compiled": true
+    },
+    {
+      "style": "graphic_novel_ink",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-108",
+      "prompt_compiled": true
+    },
+    {
+      "style": "manga_screentone_noir",
+      "policy": null,
+      "workflow": "anima_base_rebuilt",
+      "style_id": "STYLE-109",
+      "prompt_compiled": true
+    },
+    {
+      "style": "cozy_gouache_storybook",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-110",
+      "prompt_compiled": true
+    },
+    {
+      "style": "watercolor_storybook",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-111",
+      "prompt_compiled": true
+    },
+    {
+      "style": "folk_fairytale_gouache",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-112",
+      "prompt_compiled": true
+    },
+    {
+      "style": "vintage_engraving",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-113",
+      "prompt_compiled": true
+    },
+    {
+      "style": "impasto_painterly",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-114",
+      "prompt_compiled": true
+    },
+    {
+      "style": "duotone_risograph",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-115",
+      "prompt_compiled": true
+    },
+    {
+      "style": "punk_photocopy_zine",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-116",
+      "prompt_compiled": true
+    },
+    {
+      "style": "flat_vector_editorial",
+      "policy": "style_fidelity",
+      "workflow": "krea2_base",
+      "style_id": "STYLE-117",
+      "prompt_compiled": true
+    },
+    {
+      "style": "flat_vector_editorial",
+      "policy": "character_readability",
+      "workflow": "anima_turbo",
+      "style_id": "STYLE-117",
+      "prompt_compiled": true
+    },
+    {
+      "style": "mixed_media_collage",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-118",
+      "prompt_compiled": true
+    },
+    {
+      "style": "graphic_neon_cyberpunk",
+      "policy": null,
+      "workflow": "anima_base_rebuilt",
+      "style_id": "STYLE-119",
+      "prompt_compiled": true
+    },
+    {
+      "style": "inked_dark_fantasy",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-120",
+      "prompt_compiled": true
+    },
+    {
+      "style": "clean_dreamcore_surreal",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-121",
+      "prompt_compiled": true
+    },
+    {
+      "style": "retro_airbrush_future",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-122",
+      "prompt_compiled": true
+    },
+    {
+      "style": "clay_toy_character",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-123",
+      "prompt_compiled": true
+    },
+    {
+      "style": "voxel_diorama",
+      "policy": null,
+      "workflow": "krea2_base",
+      "style_id": "STYLE-124",
+      "prompt_compiled": true
+    }
+  ],
+  "generation_calls": 0,
+  "original_hashes_verified": 216
+}

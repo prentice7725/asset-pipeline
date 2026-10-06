@@ -12,6 +12,8 @@ def obj(properties, required=()):
 
 SCHEMA = obj({
     'art_direction': ART_DIRECTION_SCHEMA,
+    'art_style': {'type': 'string', 'pattern': '^[a-z0-9_]+$'},
+    'style_selection_policy': {'enum': ['style_fidelity', 'character_readability']},
     'style_id': {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'},
     'project_id': {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'},
     'asset_id': {'type': 'string', 'pattern': '^[A-Za-z0-9_-]+$'},
