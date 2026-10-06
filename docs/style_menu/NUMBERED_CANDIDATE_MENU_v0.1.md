@@ -1,3 +1,5 @@
+> **DEPRECATED AS PRODUCTION ENTRYPOINT / RESEARCH HISTORY ONLY.** 현재 운영 선택 계약은 [Agent Guide v1](AGENT_RECIPE_SELECTION_GUIDE_v1.md) 및 [STYLE MENU v1](STYLE_MENU_v1.md)이다. 아래 과거 내용은 증거 보존용이며 새 생성 승인이나 production defaults가 아니다.
+
 # 화풍 번호 메뉴판 v0.1 — Krea2 Style Explorer 후보
 
 > **EXTERNAL_PREVIEW_ONLY / 실험 미완료 / 승인 0**. 이 이미지들은 원저작자가 공개한 Krea2 예시다. 현재 Asset-Pipeline에서 새로 생성하거나 재현·인게임 검증한 결과가 아니다.

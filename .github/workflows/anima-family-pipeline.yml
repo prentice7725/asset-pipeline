@@ -44,12 +44,13 @@ jobs:
           python -m compileall -q src/assetpipe/prompts scripts/anima_family_pipeline.py
           python -m pytest -q tests/unit/test_prompts.py tests/unit/test_anima_family_pipeline.py
           python scripts/anima_family_pipeline.py check
-          python scripts/anima_family_pipeline.py plan --output /tmp/anima-family-r2.json
+          python scripts/anima_family_pipeline.py plan --output /tmp/anima-family-plan.json
           python - <<'PY'
           import json
-          p=json.load(open('/tmp/anima-family-r2.json', encoding='utf-8'))
+          from scripts.anima_family_pipeline import COHORT
+          p=json.load(open('/tmp/anima-family-plan.json', encoding='utf-8'))
           assert p['status']=='PREPARED_NOT_EXECUTED'
-          assert p['cohort']=='ANIMA_FAMILY_R2_20261005'
+          assert p['cohort']==COHORT
           assert p['reserved_calls_required']==4
           assert p['generation_requests']==0
           assert {j['workflow_id'] for j in p['jobs']}=={'anima_base_rebuilt','anima_turbo'}

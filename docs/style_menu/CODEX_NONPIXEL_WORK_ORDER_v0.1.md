@@ -1,3 +1,5 @@
+> **DEPRECATED AS PRODUCTION ENTRYPOINT / RESEARCH HISTORY ONLY.** 현재 운영 선택 계약은 [Agent Guide v1](AGENT_RECIPE_SELECTION_GUIDE_v1.md) 및 [STYLE MENU v1](STYLE_MENU_v1.md)이다. 아래 과거 내용은 증거 보존용이며 새 생성 승인이나 production defaults가 아니다.
+
 # CODEX WORK ORDER — NONPIXEL STYLE MENU RESEARCH / REPRODUCTION
 
 > READY_FOR_LOCAL_CODEX — **작업 실행 여부: NOT_STARTED**. 이 Markdown은 Codex CLI에 직접 제공할 실행 지시서다. GitHub issue만 작성하는 것은 Codex가 실행됐다는 뜻이 아니다.
