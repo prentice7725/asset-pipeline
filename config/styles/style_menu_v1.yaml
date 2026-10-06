@@ -1,0 +1,1301 @@
+version: 1
+status: USER_AUTHORIZED_ROUTING_REVIEW_REQUIRED
+styles:
+  90s_nocturnal_cel:
+    style_id: STYLE-101
+    family: ANIME
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-101
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-101/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-101
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-101/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-101
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-101/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations: []
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-001
+    exemplar:
+      candidate_id: CAND-001
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-101_best.png
+      sha256: 92daa79803a57faa69a82d0e4be649e0351a6377a4b9ce70befb303fbe1ebb0c
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-001
+      model: anima_turbo
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-101_failure.png
+      sha256: 7ca4f7e33f2c06f270b018394230a8be4e9e36a26afefdb687a3a597a48a9643
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  90s_gothic_fantasy_cel:
+    style_id: STYLE-102
+    family: ANIME
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-102
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-102/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-102
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-102/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-102
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-102/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations: []
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-002
+    exemplar:
+      candidate_id: CAND-002
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-102_best.png
+      sha256: fdd81a5e2dc804dd341df5ef7a4f5df74bf981644c166da340e12dc76772bb37
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-002
+      model: anima_base_rebuilt
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-102_failure.png
+      sha256: ff574cc44cfc81c3fa1b9f44af5fcaddb01b079d53c7974df6dbd5f3dfc92073
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  retro_sci_fi_anime:
+    style_id: STYLE-103
+    family: ANIME
+    primary_model: anima_base_rebuilt
+    runner_up: anima_turbo
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-103
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-103/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-103
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-103/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-103
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-103/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - WRONG_IMAGE_SIDE
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-003
+    exemplar:
+      candidate_id: CAND-003
+      model: anima_base_rebuilt
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-103_best.png
+      sha256: 5025a57e975ac40b21f566315ecd014b1ea7141790e70e647a709b2d45391d9a
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-003
+      model: anima_base_rebuilt
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-103_failure.png
+      sha256: 07141f72700c00ca39c82f2222aeea697efb5a8ab33ea24b037a8c22dc50a9e4
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  modern_flat_manga:
+    style_id: STYLE-104
+    family: ANIME
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-104
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-104/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-104
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-104/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-104
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-104/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations: []
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-004
+    exemplar:
+      candidate_id: CAND-004
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-104_best.png
+      sha256: 9128250172f0cb9556a478a2defbd56d54e96fa9c7001b7e223cf789978699f5
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-004
+      model: anima_turbo
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-104_failure.png
+      sha256: 6d1ca0720cc0e110b4d5e88f7394ca2a21844c732ddf815f9743ce6c78454594
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  kawaii_pop_anime:
+    style_id: STYLE-105
+    family: ANIME
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-105
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-105/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-105
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-105/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-105
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-105/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - ADULT_APPEARANCE_UNCERTAIN
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-005
+    exemplar:
+      candidate_id: CAND-005
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-105_best.png
+      sha256: 80da769b596a35b8d5fa7dbc0000395053417eff81e86699a373db1af302e37a
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-005
+      model: anima_turbo
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-105_failure.png
+      sha256: 978eced79eb8b2f79d368c8c3b9edc24a5a6563d6c3fb6a1e6f88d189766180a
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  rubber_hose_cartoon:
+    style_id: STYLE-106
+    family: WESTERN_CARTOON
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-106
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-106/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-106
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-106/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-106
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-106/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - VIEW_DRIFT
+    - REAR_VIEW
+    - ANATOMICAL_SIDE_NOT_VALIDATED
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-006
+    exemplar:
+      candidate_id: CAND-006
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-106_best.png
+      sha256: d8269d76da097bcb92284a7aebf7a949b548b53edc32157a2d98c98b375dbdbe
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-006
+      model: krea2_base
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-106_failure.png
+      sha256: 63bd203f041be710e99b8f649d10315640338fb46f9e3fb02b3d6352b0cf63c3
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  flat_western_action_cartoon:
+    style_id: STYLE-107
+    family: WESTERN_CARTOON
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-107
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-107/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-107
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-107/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-107
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-107/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - FACE_READABILITY_FAILED
+    - EQUIPMENT_CROPPED
+    - BACKGROUND_STREAK_ARTIFACT
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-007
+    exemplar:
+      candidate_id: CAND-007
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-107_best.png
+      sha256: af2f0099cdc37d26780a42cbf304583e21c4fd1d65a8389fa4d82d93b7f896c9
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-007
+      model: krea2_base
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-107_failure.png
+      sha256: 7c003f93dabe2ae248b5cf5098dbe3f8b9ad07ef3c41acad7c29a218248f6987
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  graphic_novel_ink:
+    style_id: STYLE-108
+    family: INK_PRINT
+    primary_model: krea2_base
+    runner_up: anima_turbo
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-108
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-108/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_turbo:
+        style_id: STYLE-108
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-108/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - EXTRA_BACKGROUND_FIGURES
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-008
+    exemplar:
+      candidate_id: CAND-008
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-108_best.png
+      sha256: 2c8d50ea2a995ab873ea6fe1b2f5f1c166b85a69afc603df30e30cbb28d7d875
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-008
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-108_failure.png
+      sha256: 2c8d50ea2a995ab873ea6fe1b2f5f1c166b85a69afc603df30e30cbb28d7d875
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  manga_screentone_noir:
+    style_id: STYLE-109
+    family: INK_PRINT
+    primary_model: anima_base_rebuilt
+    runner_up: anima_turbo
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-109
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-109/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-109
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-109/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-109
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-109/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - WRONG_IMAGE_SIDE
+    - FACE_DETAIL_PARTIAL
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-009
+    exemplar:
+      candidate_id: CAND-009
+      model: anima_base_rebuilt
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-109_best.png
+      sha256: 4cb943126009ff691562742216c5cb43ebee8591468c3f9d7f6de29d0ebc4354
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-009
+      model: anima_base_rebuilt
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-109_failure.png
+      sha256: 4cb943126009ff691562742216c5cb43ebee8591468c3f9d7f6de29d0ebc4354
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  cozy_gouache_storybook:
+    style_id: STYLE-110
+    family: STORYBOOK
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-110
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-110/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-110
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-110/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-110
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-110/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - ADULT_APPEARANCE_UNCERTAIN
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-010
+    exemplar:
+      candidate_id: CAND-010
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-110_best.png
+      sha256: 46dd0bf3c379706fbe96dd6b9684ec0d22904281138a0ee74ea4c6fc6a4dbcaf
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-010
+      model: anima_turbo
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-110_failure.png
+      sha256: 6f371d3b80cead95244503a10401c750eba41ef865af49966097b9be16e5b0a6
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  watercolor_storybook:
+    style_id: STYLE-111
+    family: STORYBOOK
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-111
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-111/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-111
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-111/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-111
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-111/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - ADULT_APPEARANCE_UNCERTAIN
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-011
+    exemplar:
+      candidate_id: CAND-011
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-111_best.png
+      sha256: fa3db6209943f9973562538cfa2b74cf92022a3a718e7b2afd4d4ccccd618ce5
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-011
+      model: anima_turbo
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-111_failure.png
+      sha256: ccf61e3d7da1a5dfa39d67047a2f74c3fb03832fa935c16f50bf86391662595d
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  folk_fairytale_gouache:
+    style_id: STYLE-112
+    family: STORYBOOK
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-112
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-112/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-112
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-112/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-112
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-112/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - ADULT_APPEARANCE_UNCERTAIN
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-012
+    exemplar:
+      candidate_id: CAND-012
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-112_best.png
+      sha256: bef56bce0914b6665c0cb67c7da0b13e8c2c66675741224bedeaa486717a5ce0
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-012
+      model: anima_base_rebuilt
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-112_failure.png
+      sha256: b48daf7916379351ee7b4372bc9a5744066b4634639c33681d4b40f0132f62a6
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  vintage_engraving:
+    style_id: STYLE-113
+    family: INK_PRINT
+    primary_model: krea2_base
+    runner_up: anima_turbo
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-113
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-113/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_turbo:
+        style_id: STYLE-113
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-113/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations: []
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-013
+    exemplar:
+      candidate_id: CAND-013
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-113_best.png
+      sha256: 5636da56caa4c95b854fa3cf99d9d95a5703b9a88d498d29218eb658db68830f
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-013
+      model: anima_base_rebuilt
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-113_failure.png
+      sha256: 1eeb6f68c7b27e5694471af48902410255e743df813c0d698fd8f0d6ca9519f7
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  impasto_painterly:
+    style_id: STYLE-114
+    family: PAINTERLY
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-114
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-114/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-114
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-114/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-114
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-114/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations: []
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-014
+    exemplar:
+      candidate_id: CAND-014
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-114_best.png
+      sha256: ab21b479cc7ccf4aec0bc2af4b2fc088153211039e51bff95fda71dd6d959d45
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-014
+      model: anima_turbo
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-114_failure.png
+      sha256: ba7175534dc82edb1d73caf0ad4398598d2ed8ea4cd2a9ca5cfaa193cea8c8a1
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  duotone_risograph:
+    style_id: STYLE-115
+    family: INK_PRINT
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-115
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-115/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-115
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-115/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-115
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-115/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - EQUIPMENT_GEOMETRY_AMBIGUOUS
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-015
+    exemplar:
+      candidate_id: CAND-015
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-115_best.png
+      sha256: 3058c05445cf9430383ecab44fb4996c29861d0a33091ea290515d663fd1846c
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-015
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-115_failure.png
+      sha256: 7c07850e721cae516487c986e312114c0aa2af8d2bd2b13f55b3092488075196
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  punk_photocopy_zine:
+    style_id: STYLE-116
+    family: INK_PRINT
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-116
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-116/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-116
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-116/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-116
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-116/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - EXTRA_CHARACTER
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-016
+    exemplar:
+      candidate_id: CAND-016
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-116_best.png
+      sha256: 55f1e55aa92abf48954269201e43e5fa37752e08b398daff685be5d195e36452
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-016
+      model: krea2_base
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-116_failure.png
+      sha256: 5a53b13f3e51c02627e313e51af81a9ff21cfa38432f37dc43f63c063cb52b54
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  flat_vector_editorial:
+    style_id: STYLE-117
+    family: VECTOR_EDITORIAL
+    primary_model: unresolved
+    runner_up: anima_turbo
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy:
+      style_fidelity: krea2_base
+      character_readability: anima_turbo
+    bindings:
+      krea2_base:
+        style_id: STYLE-117
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-117/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_turbo:
+        style_id: STYLE-117
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-117/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - FACE_READABILITY_FAILED
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-017
+    exemplar:
+      candidate_id: CAND-017
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-117_best.png
+      sha256: 24fbf381b4c02568dcdf8c9f73a80c4f2fb1abf52bdebae37d3044b700d791fb
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-017
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-117_failure.png
+      sha256: 24fbf381b4c02568dcdf8c9f73a80c4f2fb1abf52bdebae37d3044b700d791fb
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  mixed_media_collage:
+    style_id: STYLE-118
+    family: COLLAGE
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-118
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-118/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-118
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-118/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-118
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-118/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - FACE_READABILITY_FAILED
+    - BACKGROUND_FIGURE_AMBIGUOUS
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-018
+    exemplar:
+      candidate_id: CAND-018
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-118_best.png
+      sha256: 2bf9240baf4fa0717be0be5fa671093c9868cdbf2edd6b4b21f34eaa2949d627
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-018
+      model: krea2_base
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-118_failure.png
+      sha256: 0de95c9bc3652a97cca31aced41a0602dbbf537c28fd83c7d59306f01fe5a586
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  graphic_neon_cyberpunk:
+    style_id: STYLE-119
+    family: CYBERPUNK
+    primary_model: anima_base_rebuilt
+    runner_up: anima_turbo
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-119
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-119/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-119
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-119/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-119
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-119/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - WRONG_IMAGE_SIDE
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-019
+    exemplar:
+      candidate_id: CAND-019
+      model: anima_base_rebuilt
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-119_best.png
+      sha256: f7eebec1b13e2008cfeb728009851480744b922eb45f124f3310ee05e10a0173
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-019
+      model: anima_base_rebuilt
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-119_failure.png
+      sha256: eccbb89d0848ecf63a6a30bccc357f27700a9e41f40467a502ce713b345b8b4e
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  inked_dark_fantasy:
+    style_id: STYLE-120
+    family: DARK_FANTASY
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-120
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-120/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-120
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-120/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-120
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-120/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - FACE_READABILITY_FAILED
+    - HAIR_IDENTITY_DRIFT
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-020
+    exemplar:
+      candidate_id: CAND-020
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-120_best.png
+      sha256: f631cd125170d7273043f25637d2530a77091100f814cb35a8999200b96b8c46
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-020
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-120_failure.png
+      sha256: f245517694627e2e0cdad486617114499f1eab40344fac30b81aec48fc8346ef
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  clean_dreamcore_surreal:
+    style_id: STYLE-121
+    family: SURREAL
+    primary_model: krea2_base
+    runner_up: anima_turbo
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-121
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-121/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_turbo:
+        style_id: STYLE-121
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-121/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations: []
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-021
+    exemplar:
+      candidate_id: CAND-021
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-121_best.png
+      sha256: 65b78c90cfb765ad25ee7d6d4155d6436b0624c67cdf417e0749e1789cb209b9
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-021
+      model: anima_base_rebuilt
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-121_failure.png
+      sha256: 126376c4727011f54edbc252e082a98bce170309d54cb4e7da617d2d0f386a6a
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  retro_airbrush_future:
+    style_id: STYLE-122
+    family: AIRBRUSH
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-122
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-122/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-122
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-122/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-122
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-122/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - FACE_READABILITY_FAILED
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-022
+    exemplar:
+      candidate_id: CAND-022
+      model: krea2_base
+      seed: 7725
+      path: research/style_catalog/style_menu_v1/previews/STYLE-122_best.png
+      sha256: 91996570581f64de5e4dc6e2076c9aafc27e02aa8e2ea3b00a873bdfbb019507
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-022
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-122_failure.png
+      sha256: 021170fe972878b13bc13a25fc354cb244858ce9949aba4aef8079ed1d87a4a6
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  clay_toy_character:
+    style_id: STYLE-123
+    family: CLAY_TOY
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-123
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-123/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-123
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-123/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-123
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-123/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations: []
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-023
+    exemplar:
+      candidate_id: CAND-023
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-123_best.png
+      sha256: f8d9087277af7dcc419deeb3eefa561214caf6a5a69d413bb83fdc2f73575b44
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-023
+      model: anima_turbo
+      seed: 7727
+      path: research/style_catalog/style_menu_v1/previews/STYLE-123_failure.png
+      sha256: a34773ff4087490d415dad88a128459628de5629839fd12c6f7559870fd7853c
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED
+  voxel_diorama:
+    style_id: STYLE-124
+    family: VOXEL
+    primary_model: krea2_base
+    runner_up: anima_base_rebuilt
+    fallback_policy: NONE_AUTOMATIC
+    selection_policy: {}
+    bindings:
+      krea2_base:
+        style_id: STYLE-124
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-124/krea2_base
+        workflow_id: krea2_base
+        workflow_file: config/workflows/krea2_turbo_api.json
+        model_profile: krea2
+      anima_base_rebuilt:
+        style_id: STYLE-124
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-124/anima_base_rebuilt
+        workflow_id: anima_base_rebuilt
+        workflow_file: config/workflows/anima_base_rebuilt_api.json
+        model_profile: anima-base-rebuilt
+      anima_turbo:
+        style_id: STYLE-124
+        recipe: config/styles/model_recipes.yaml#recipes/STYLE-124/anima_turbo
+        workflow_id: anima_turbo
+        workflow_file: config/workflows/anima_turbo_api.json
+        model_profile: anima-turbo
+    known_limitations:
+    - CAMERA_VIEW_DRIFT
+    review_state: REVIEW_REQUIRED
+    routing_authorization: USER_SELECTED_STYLE_MENU
+    allow_experimental: true
+    evidence:
+      seeds:
+      - 7725
+      - 7726
+      - 7727
+      images: 9
+      archive: research/style_catalog/style_menu_v1/evidence_archive.json
+      candidate_id: CAND-024
+    exemplar:
+      candidate_id: CAND-024
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-124_best.png
+      sha256: c525f7b61a39e6fdc39f3b8d487738601c67c2b6c31336528a18b30a2a2e85f6
+      selection_reason: Style-fidelity exemplar; does not imply full fixture pass
+      approval: REVIEW_REQUIRED
+    failure:
+      candidate_id: CAND-024
+      model: krea2_base
+      seed: 7726
+      path: research/style_catalog/style_menu_v1/previews/STYLE-124_failure.png
+      sha256: c525f7b61a39e6fdc39f3b8d487738601c67c2b6c31336528a18b30a2a2e85f6
+      selection_reason: Recorded production defect; inspect linked cell observations
+      approval: REVIEW_REQUIRED

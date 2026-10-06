@@ -53,6 +53,7 @@ profiles:
 
   krea2:
     prompt_adapter: krea2
+    style_dialect: krea_contract_v1
     defaults: {}
     sources:
       - https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md

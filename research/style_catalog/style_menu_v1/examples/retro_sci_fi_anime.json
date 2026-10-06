@@ -1,0 +1,45 @@
+{
+  "asset_id": "game_style_example",
+  "asset_type": "character",
+  "output_class": "NONPIXEL_IMAGE",
+  "purpose": "game asset candidate",
+  "source": {
+    "type": "PROMPT",
+    "paths": [],
+    "references": []
+  },
+  "identity": {
+    "canonical_traits": [],
+    "visual_traits": []
+  },
+  "constraints": {
+    "resolution": null,
+    "transparency": null,
+    "palette": [],
+    "silhouette": null,
+    "style": null
+  },
+  "animation": {
+    "action": null,
+    "frame_target": null,
+    "motion_constraints": []
+  },
+  "workflow_preferences": {},
+  "forbidden_elements": [],
+  "unspecified_elements": [
+    "identity",
+    "resolution",
+    "palette",
+    "silhouette",
+    "style"
+  ],
+  "source_notes": [
+    {
+      "classification": "EXPLICIT",
+      "text": "An adult traveler specified by game canon.",
+      "source": "user input"
+    }
+  ],
+  "prompt": "An adult traveler specified by game canon.",
+  "art_style": "retro_sci_fi_anime"
+}

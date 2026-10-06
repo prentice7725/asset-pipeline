@@ -181,7 +181,8 @@ def select_recipe(selection, workflow, root, explicit=False):
     style = selection['definition']
     required = set(style['required_capabilities']) | set(recipe.get('required_capabilities', []))
     contract_forbids = style.get('style_contract', {}).get('forbidden_style_features', [])
-    if style['forbidden_elements'] or recipe.get('negative', []) or contract_forbids:
+    contract_native = contract_forbids and not (workflow['id'] == 'krea2_base' and recipe.get('exclusion_mode') == 'POSITIVE_TEXT_INSTRUCTION')
+    if style['forbidden_elements'] or recipe.get('negative', []) or contract_native:
         required.add('negative_prompt')
     from ..router import satisfied
     missing = [cap for cap in sorted(required) if not satisfied(workflow['capabilities'], cap)]

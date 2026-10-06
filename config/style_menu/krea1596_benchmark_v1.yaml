@@ -1,0 +1,178 @@
+schema_version: 1
+cohort: KREA1596_24X3X3_20261006
+seeds:
+- 7725
+- 7726
+- 7727
+generation_budget: 216
+retry_budget: 0
+source_revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+candidates:
+- candidate_id: CAND-001
+  style_contract_id: STYLE-101
+  source_id: 2296994da9bc
+  source_prompt_sha256: 2296994da9bc53a6328837e65ea33f2a64cd8044457b15c69689bfffd592d7f3
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/2296994da9bc.webp
+- candidate_id: CAND-002
+  style_contract_id: STYLE-102
+  source_id: 2dfd01bda89f
+  source_prompt_sha256: 2dfd01bda89fb2c14da027a5c78e33383be87dedad75b0d39c0a00c99d6d7adf
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/2dfd01bda89f.webp
+- candidate_id: CAND-003
+  style_contract_id: STYLE-103
+  source_id: fbd56820d95e
+  source_prompt_sha256: fbd56820d95e3c6ba06adf8721a74a649007b20091af3ee6a0e0d0eda094ea58
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/fbd56820d95e.webp
+- candidate_id: CAND-004
+  style_contract_id: STYLE-104
+  source_id: 03efebcc9262
+  source_prompt_sha256: 03efebcc9262b72d59956bc1005f7d951e86c297bc82c1c29c111e9b592d8e5b
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/03efebcc9262.webp
+- candidate_id: CAND-005
+  style_contract_id: STYLE-105
+  source_id: 97e333d71519
+  source_prompt_sha256: 97e333d71519fa405da059850a0d874083ad83ff24191ebc71cdc1b37f8576ef
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/97e333d71519.webp
+- candidate_id: CAND-006
+  style_contract_id: STYLE-106
+  source_id: db8c68866056
+  source_prompt_sha256: db8c688660565c518a8921f74d760beed5efcbc7bdb2ee40466521202ea75155
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/db8c68866056.webp
+- candidate_id: CAND-007
+  style_contract_id: STYLE-107
+  source_id: 2bcaf2310be4
+  source_prompt_sha256: 2bcaf2310be4873e3ca19c6b25d8afdee0efa4dbc89b13edae0c49c674218d12
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/2bcaf2310be4.webp
+- candidate_id: CAND-008
+  style_contract_id: STYLE-108
+  source_id: 0125469b3037
+  source_prompt_sha256: 0125469b3037e8d87e5990332b782db4467abaa1fa545c8bfd29161f3230db82
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/0125469b3037.webp
+- candidate_id: CAND-009
+  style_contract_id: STYLE-109
+  source_id: 76b16196fa43
+  source_prompt_sha256: 76b16196fa43f39fa801ac9e28182abe0362cd8039c77a67dba2dc2e57f4cc0c
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/76b16196fa43.webp
+- candidate_id: CAND-010
+  style_contract_id: STYLE-110
+  source_id: b0c422916b0d
+  source_prompt_sha256: b0c422916b0dc1eda4a92257b9ba4026ec72c0f63360b583030b3c0c797a6a9e
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/b0c422916b0d.webp
+- candidate_id: CAND-011
+  style_contract_id: STYLE-111
+  source_id: 05cc22b89e34
+  source_prompt_sha256: 05cc22b89e3487e6c2cc4e2d5079702ea4b0c5d9766c57e12e93dffec14b7529
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/05cc22b89e34.webp
+- candidate_id: CAND-012
+  style_contract_id: STYLE-112
+  source_id: 853235279ae7
+  source_prompt_sha256: 853235279ae766a304f393dae1ebcd202164ac43b70a95bcc2ffb66090eb541d
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/853235279ae7.webp
+- candidate_id: CAND-013
+  style_contract_id: STYLE-113
+  source_id: af0b541cf454
+  source_prompt_sha256: af0b541cf454a3820092b71876233dbe9b8c180efbd00f7da6c45a77b495e16e
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/af0b541cf454.webp
+- candidate_id: CAND-014
+  style_contract_id: STYLE-114
+  source_id: cd08de37ef98
+  source_prompt_sha256: cd08de37ef985c76d381be30b6bdc9f60a175e5b06f91aa14414d7b13299e88c
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/cd08de37ef98.webp
+- candidate_id: CAND-015
+  style_contract_id: STYLE-115
+  source_id: f85870d45ffe
+  source_prompt_sha256: f85870d45ffe55450502a41bdc0ac1a0397811586c36fdebd987cd1484b4581c
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/f85870d45ffe.webp
+- candidate_id: CAND-016
+  style_contract_id: STYLE-116
+  source_id: '960625243657'
+  source_prompt_sha256: 9606252436579009ab32d82eaa5816411d6c04269706c649e3443edde9439a13
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/960625243657.webp
+- candidate_id: CAND-017
+  style_contract_id: STYLE-117
+  source_id: 64964c86fc9d
+  source_prompt_sha256: 64964c86fc9db37fb5f9124e78a7d10ee2c86082730277471237cb02b93896df
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/64964c86fc9d.webp
+- candidate_id: CAND-018
+  style_contract_id: STYLE-118
+  source_id: 77f621a958d9
+  source_prompt_sha256: 77f621a958d9f45d1ea4b052e1e110da965a35f807811c7c7f175f05c1564fbe
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/77f621a958d9.webp
+- candidate_id: CAND-019
+  style_contract_id: STYLE-119
+  source_id: c6b9ccfa8cca
+  source_prompt_sha256: c6b9ccfa8cca02f777f51b7b145710701bb7654b1416375482934067e76e7b8b
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/c6b9ccfa8cca.webp
+- candidate_id: CAND-020
+  style_contract_id: STYLE-120
+  source_id: dc53ab5f5a17
+  source_prompt_sha256: dc53ab5f5a17ca309993c75bd3fb35763322a6c0ee1cf9080bfeb732be23e020
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/dc53ab5f5a17.webp
+- candidate_id: CAND-021
+  style_contract_id: STYLE-121
+  source_id: 00f0d9768d93
+  source_prompt_sha256: 00f0d9768d9338248068bbf013b05f58763a805db638a4af15e2767f8d299554
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/00f0d9768d93.webp
+- candidate_id: CAND-022
+  style_contract_id: STYLE-122
+  source_id: aef97ec94d3f
+  source_prompt_sha256: aef97ec94d3f566ef468fac6c3d815de347e399e8eeb644efdf90b20a59ad46c
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/aef97ec94d3f.webp
+- candidate_id: CAND-023
+  style_contract_id: STYLE-123
+  source_id: 699838cf2d6c
+  source_prompt_sha256: 699838cf2d6c56b5d0e29fb5aa46a95a892c4fb0a79b175e5bfd5a006c1ba768
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/2/699838cf2d6c.webp
+- candidate_id: CAND-024
+  style_contract_id: STYLE-124
+  source_id: d56af712ee40
+  source_prompt_sha256: d56af712ee40a79c1a861747e32acaa24928437fabb1d7ee6591b0d7ef0e5dca
+  adaptation: FRONT fixture and clothing take priority over source camera, costumes
+    and extra-character motifs
+  preview_url: https://kreastyles.thetacursed.com/images/1/d56af712ee40.webp

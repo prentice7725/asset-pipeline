@@ -278,3 +278,1395 @@ styles:
         original_sha256s:
           STYLE-004_anima_base_rebuilt: ddd11fc37b65040ba4b37b735406d4dc71330f9d694c9632325ad4a8bf4b2f4d
           STYLE-004_anima_turbo: e95028703309fa63e4434d6f454ac49a22059d91ff1b0904881a2105bb34f7e7
+  STYLE-101:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 2296994da9bc; candidate CAND-001; not visual approval
+      entry_id: 2296994da9bc
+    style_contract:
+      id: STYLE-101
+      version: 1.0.0
+      medium:
+      - painted 1990s animation cel
+      palette:
+      - moody city-night colors
+      linework:
+      - clean hand-inked outlines
+      shading:
+      - hard-edged cel shadows
+      lighting:
+      - nocturnal city light
+      background:
+      - painted nighttime city
+      texture:
+      - subtle analog video texture
+      value_structure:
+      - clear figure against dark city
+      required_style_features:
+      - code: CAND001_MEDIUM_REQUIRED
+        text: painted 1990s animation cel
+      - code: CAND001_TEXTURE_REQUIRED
+        text: subtle analog video texture
+      - code: CAND001_LIGHTING_REQUIRED
+        text: nocturnal city light
+      forbidden_style_features:
+      - code: CAND001_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND001_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 2296994da9bc
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/2296994da9bc.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-001
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-102:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 2dfd01bda89f; candidate CAND-002; not visual approval
+      entry_id: 2dfd01bda89f
+    style_contract:
+      id: STYLE-102
+      version: 1.0.0
+      medium:
+      - retro fantasy animation cel
+      palette:
+      - indigo twilight and luminous magenta
+      linework:
+      - fine anime ink contours
+      shading:
+      - discrete cel shadow regions
+      lighting:
+      - magenta glow in twilight
+      background:
+      - painted gothic twilight scenery
+      texture:
+      - watercolor background texture
+      value_structure:
+      - high-contrast silhouette with readable face
+      required_style_features:
+      - code: CAND002_MEDIUM_REQUIRED
+        text: retro fantasy animation cel
+      - code: CAND002_TEXTURE_REQUIRED
+        text: watercolor background texture
+      - code: CAND002_LIGHTING_REQUIRED
+        text: magenta glow in twilight
+      forbidden_style_features:
+      - code: CAND002_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND002_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 2dfd01bda89f
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/2dfd01bda89f.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-002
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-103:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer fbd56820d95e; candidate CAND-003; not visual approval
+      entry_id: fbd56820d95e
+    style_contract:
+      id: STYLE-103
+      version: 1.0.0
+      medium:
+      - retro science-fiction animation
+      palette:
+      - synthwave neon colors
+      linework:
+      - precise retro anime ink
+      shading:
+      - cel shadows and restrained chrome highlights
+      lighting:
+      - neon gradient light
+      background:
+      - painted cosmic futuristic setting
+      texture:
+      - subtle analog grain
+      value_structure:
+      - luminous accents against dark masses
+      required_style_features:
+      - code: CAND003_MEDIUM_REQUIRED
+        text: retro science-fiction animation
+      - code: CAND003_TEXTURE_REQUIRED
+        text: subtle analog grain
+      - code: CAND003_LIGHTING_REQUIRED
+        text: neon gradient light
+      forbidden_style_features:
+      - code: CAND003_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND003_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: fbd56820d95e
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/fbd56820d95e.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-003
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-104:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 03efebcc9262; candidate CAND-004; not visual approval
+      entry_id: 03efebcc9262
+    style_contract:
+      id: STYLE-104
+      version: 1.0.0
+      medium:
+      - minimal flat manga illustration
+      palette:
+      - vibrant solid colors
+      linework:
+      - bold ink contours
+      shading:
+      - flat blocked shadows
+      lighting:
+      - clear graphic lighting
+      background:
+      - solid saturated background
+      texture:
+      - clean printed surface
+      value_structure:
+      - high-contrast graphic masses
+      required_style_features:
+      - code: CAND004_MEDIUM_REQUIRED
+        text: minimal flat manga illustration
+      - code: CAND004_TEXTURE_REQUIRED
+        text: clean printed surface
+      - code: CAND004_LIGHTING_REQUIRED
+        text: clear graphic lighting
+      forbidden_style_features:
+      - code: CAND004_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND004_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 03efebcc9262
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/03efebcc9262.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-004
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-105:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 97e333d71519; candidate CAND-005; not visual approval
+      entry_id: 97e333d71519
+    style_contract:
+      id: STYLE-105
+      version: 1.0.0
+      medium:
+      - pop anime illustration
+      palette:
+      - pastel palette with neon accents
+      linework:
+      - bold clean ink lines
+      shading:
+      - simple cel shading
+      lighting:
+      - bright diffuse pop lighting
+      background:
+      - whimsical abstract motifs
+      texture:
+      - light halftone texture
+      value_structure:
+      - readable figure and separated color blocks
+      required_style_features:
+      - code: CAND005_MEDIUM_REQUIRED
+        text: pop anime illustration
+      - code: CAND005_TEXTURE_REQUIRED
+        text: light halftone texture
+      - code: CAND005_LIGHTING_REQUIRED
+        text: bright diffuse pop lighting
+      forbidden_style_features:
+      - code: CAND005_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND005_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 97e333d71519
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/97e333d71519.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-005
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-106:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer db8c68866056; candidate CAND-006; not visual approval
+      entry_id: db8c68866056
+    style_contract:
+      id: STYLE-106
+      version: 1.0.0
+      medium:
+      - retro rubber-hose cartoon illustration
+      palette:
+      - vibrant flat colors
+      linework:
+      - heavy black contours
+      shading:
+      - simple flat shadow shapes
+      lighting:
+      - even graphic lighting
+      background:
+      - clean sticker-like background
+      texture:
+      - smooth printed flat fills
+      value_structure:
+      - bold silhouette with adult human proportions
+      required_style_features:
+      - code: CAND006_MEDIUM_REQUIRED
+        text: retro rubber-hose cartoon illustration
+      - code: CAND006_TEXTURE_REQUIRED
+        text: smooth printed flat fills
+      - code: CAND006_LIGHTING_REQUIRED
+        text: even graphic lighting
+      forbidden_style_features:
+      - code: CAND006_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND006_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: db8c68866056
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/db8c68866056.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-006
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-107:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 2bcaf2310be4; candidate CAND-007; not visual approval
+      entry_id: 2bcaf2310be4
+    style_contract:
+      id: STYLE-107
+      version: 1.0.0
+      medium:
+      - angular western cartoon vector illustration
+      palette:
+      - bold flat colors
+      linework:
+      - sharp geometric contours
+      shading:
+      - hard graphic shadow planes
+      lighting:
+      - directional cartoon lighting
+      background:
+      - high-contrast solid background
+      texture:
+      - clean digital fills
+      value_structure:
+      - angular shape masses with preserved adult body
+      required_style_features:
+      - code: CAND007_MEDIUM_REQUIRED
+        text: angular western cartoon vector illustration
+      - code: CAND007_TEXTURE_REQUIRED
+        text: clean digital fills
+      - code: CAND007_LIGHTING_REQUIRED
+        text: directional cartoon lighting
+      forbidden_style_features:
+      - code: CAND007_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND007_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 2bcaf2310be4
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/2bcaf2310be4.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-007
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-108:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 0125469b3037; candidate CAND-008; not visual approval
+      entry_id: 0125469b3037
+    style_contract:
+      id: STYLE-108
+      version: 1.0.0
+      medium:
+      - inked graphic novel illustration
+      palette:
+      - triadic colors
+      linework:
+      - bold outlines and dense cross-hatching
+      shading:
+      - high-contrast ink shadow masses
+      lighting:
+      - dramatic illustrated light
+      background:
+      - gothic illustrated scenery without other figures
+      texture:
+      - cross-hatched ink texture
+      value_structure:
+      - separated light and dark shapes
+      required_style_features:
+      - code: CAND008_MEDIUM_REQUIRED
+        text: inked graphic novel illustration
+      - code: CAND008_TEXTURE_REQUIRED
+        text: cross-hatched ink texture
+      - code: CAND008_LIGHTING_REQUIRED
+        text: dramatic illustrated light
+      forbidden_style_features:
+      - code: CAND008_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND008_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 0125469b3037
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/0125469b3037.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-008
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-109:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 76b16196fa43; candidate CAND-009; not visual approval
+      entry_id: 76b16196fa43
+    style_contract:
+      id: STYLE-109
+      version: 1.0.0
+      medium:
+      - manga screentone illustration
+      palette:
+      - black and white with blue coat color exception
+      linework:
+      - manga ink contours
+      shading:
+      - dramatic screentone shadows
+      lighting:
+      - noir illustrated light
+      background:
+      - graphic noir setting
+      texture:
+      - halftone and stippled ink
+      value_structure:
+      - high-contrast light and shadow
+      required_style_features:
+      - code: CAND009_MEDIUM_REQUIRED
+        text: manga screentone illustration
+      - code: CAND009_TEXTURE_REQUIRED
+        text: halftone and stippled ink
+      - code: CAND009_LIGHTING_REQUIRED
+        text: noir illustrated light
+      forbidden_style_features:
+      - code: CAND009_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND009_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 76b16196fa43
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/76b16196fa43.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-009
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-110:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer b0c422916b0d; candidate CAND-010; not visual approval
+      entry_id: b0c422916b0d
+    style_contract:
+      id: STYLE-110
+      version: 1.0.0
+      medium:
+      - storybook gouache painting
+      palette:
+      - warm saturated colors
+      linework:
+      - soft painted contours
+      shading:
+      - opaque painted shadow patches
+      lighting:
+      - warm dappled light
+      background:
+      - cozy painted setting
+      texture:
+      - visible matte gouache brush texture on figure and background
+      value_structure:
+      - readable face and coat against layered paint
+      required_style_features:
+      - code: CAND010_MEDIUM_REQUIRED
+        text: storybook gouache painting
+      - code: CAND010_TEXTURE_REQUIRED
+        text: visible matte gouache brush texture on figure and background
+      - code: CAND010_LIGHTING_REQUIRED
+        text: warm dappled light
+      forbidden_style_features:
+      - code: CAND010_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND010_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: b0c422916b0d
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/b0c422916b0d.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-010
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-111:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 05cc22b89e34; candidate CAND-011; not visual approval
+      entry_id: 05cc22b89e34
+    style_contract:
+      id: STYLE-111
+      version: 1.0.0
+      medium:
+      - storybook watercolor illustration
+      palette:
+      - muted earth tones with blue coat
+      linework:
+      - delicate ink contours
+      shading:
+      - transparent watercolor shadows
+      lighting:
+      - soft warm ambient light
+      background:
+      - cozy architectural background
+      texture:
+      - paper grain and watercolor washes
+      value_structure:
+      - gentle value separation with readable figure
+      required_style_features:
+      - code: CAND011_MEDIUM_REQUIRED
+        text: storybook watercolor illustration
+      - code: CAND011_TEXTURE_REQUIRED
+        text: paper grain and watercolor washes
+      - code: CAND011_LIGHTING_REQUIRED
+        text: soft warm ambient light
+      forbidden_style_features:
+      - code: CAND011_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND011_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 05cc22b89e34
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/05cc22b89e34.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-011
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-112:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 853235279ae7; candidate CAND-012; not visual approval
+      entry_id: 853235279ae7
+    style_contract:
+      id: STYLE-112
+      version: 1.0.0
+      medium:
+      - folk fairytale gouache illustration
+      palette:
+      - deep forest colors and warm glow
+      linework:
+      - naive painted contours
+      shading:
+      - simplified opaque painted shadows
+      lighting:
+      - magical nocturnal light
+      background:
+      - nocturnal forest without additional characters
+      texture:
+      - rough gouache marks
+      value_structure:
+      - glowing accents against dark forest
+      required_style_features:
+      - code: CAND012_MEDIUM_REQUIRED
+        text: folk fairytale gouache illustration
+      - code: CAND012_TEXTURE_REQUIRED
+        text: rough gouache marks
+      - code: CAND012_LIGHTING_REQUIRED
+        text: magical nocturnal light
+      forbidden_style_features:
+      - code: CAND012_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND012_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 853235279ae7
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/853235279ae7.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-012
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-113:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer af0b541cf454; candidate CAND-013; not visual approval
+      entry_id: af0b541cf454
+    style_contract:
+      id: STYLE-113
+      version: 1.0.0
+      medium:
+      - vintage engraved book illustration
+      palette:
+      - black and white with blue coat color exception
+      linework:
+      - detailed engraved cross-hatching
+      shading:
+      - hatched ink shadow shapes
+      lighting:
+      - etched directional lighting
+      background:
+      - bookplate scenery
+      texture:
+      - stippled print texture
+      value_structure:
+      - strong black-white value separation
+      required_style_features:
+      - code: CAND013_MEDIUM_REQUIRED
+        text: vintage engraved book illustration
+      - code: CAND013_TEXTURE_REQUIRED
+        text: stippled print texture
+      - code: CAND013_LIGHTING_REQUIRED
+        text: etched directional lighting
+      forbidden_style_features:
+      - code: CAND013_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND013_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: af0b541cf454
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/af0b541cf454.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-013
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-114:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer cd08de37ef98; candidate CAND-014; not visual approval
+      entry_id: cd08de37ef98
+    style_contract:
+      id: STYLE-114
+      version: 1.0.0
+      medium:
+      - impasto oil painting
+      palette:
+      - muted teal and sage with blue coat
+      linework:
+      - painted edges
+      shading:
+      - sculptural palette-knife shadows
+      lighting:
+      - moody chiaroscuro light
+      background:
+      - painterly atmospheric setting
+      texture:
+      - thick oil ridges and swirling brush marks
+      value_structure:
+      - grouped dramatic light and dark masses
+      required_style_features:
+      - code: CAND014_MEDIUM_REQUIRED
+        text: impasto oil painting
+      - code: CAND014_TEXTURE_REQUIRED
+        text: thick oil ridges and swirling brush marks
+      - code: CAND014_LIGHTING_REQUIRED
+        text: moody chiaroscuro light
+      forbidden_style_features:
+      - code: CAND014_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND014_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: cd08de37ef98
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/cd08de37ef98.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-014
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-115:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer f85870d45ffe; candidate CAND-015; not visual approval
+      entry_id: f85870d45ffe
+    style_contract:
+      id: STYLE-115
+      version: 1.0.0
+      medium:
+      - risograph screenprint illustration
+      palette:
+      - blue and warm contrasting duotone
+      linework:
+      - graphic print contours
+      shading:
+      - halftone shadow blocks
+      lighting:
+      - flat printed lighting
+      background:
+      - textured off-white paper setting
+      texture:
+      - subtle print misregistration
+      value_structure:
+      - two-color value separation
+      required_style_features:
+      - code: CAND015_MEDIUM_REQUIRED
+        text: risograph screenprint illustration
+      - code: CAND015_TEXTURE_REQUIRED
+        text: subtle print misregistration
+      - code: CAND015_LIGHTING_REQUIRED
+        text: flat printed lighting
+      forbidden_style_features:
+      - code: CAND015_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND015_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: f85870d45ffe
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/f85870d45ffe.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-015
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-116:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 960625243657; candidate CAND-016; not visual approval
+      entry_id: '960625243657'
+    style_contract:
+      id: STYLE-116
+      version: 1.0.0
+      medium:
+      - punk photocopy zine illustration
+      palette:
+      - black and white with blue coat color exception
+      linework:
+      - distressed ink edges
+      shading:
+      - stark photocopied shadow masses
+      lighting:
+      - hard graphic contrast
+      background:
+      - collaged editorial background
+      texture:
+      - gritty halftone and distressed print
+      value_structure:
+      - stark light-dark organization
+      required_style_features:
+      - code: CAND016_MEDIUM_REQUIRED
+        text: punk photocopy zine illustration
+      - code: CAND016_TEXTURE_REQUIRED
+        text: gritty halftone and distressed print
+      - code: CAND016_LIGHTING_REQUIRED
+        text: hard graphic contrast
+      forbidden_style_features:
+      - code: CAND016_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND016_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: '960625243657'
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/960625243657.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-016
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-117:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 64964c86fc9d; candidate CAND-017; not visual approval
+      entry_id: 64964c86fc9d
+    style_contract:
+      id: STYLE-117
+      version: 1.0.0
+      medium:
+      - flat vector editorial illustration
+      palette:
+      - vibrant saturated colors
+      linework:
+      - clean vector contours
+      shading:
+      - simple flat geometric shadows
+      lighting:
+      - even graphic light
+      background:
+      - organic abstract shapes
+      texture:
+      - smooth vector fills
+      value_structure:
+      - large separated color masses
+      required_style_features:
+      - code: CAND017_MEDIUM_REQUIRED
+        text: flat vector editorial illustration
+      - code: CAND017_TEXTURE_REQUIRED
+        text: smooth vector fills
+      - code: CAND017_LIGHTING_REQUIRED
+        text: even graphic light
+      forbidden_style_features:
+      - code: CAND017_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND017_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 64964c86fc9d
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/64964c86fc9d.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-017
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-118:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 77f621a958d9; candidate CAND-018; not visual approval
+      entry_id: 77f621a958d9
+    style_contract:
+      id: STYLE-118
+      version: 1.0.0
+      medium:
+      - mixed-media paper collage
+      palette:
+      - graphic neutrals with neon accents and blue coat
+      linework:
+      - cut-paper edges
+      shading:
+      - layered paper shadow blocks
+      lighting:
+      - illustrated graphic light
+      background:
+      - torn-paper assemblage without extra figures
+      texture:
+      - halftone print and risograph paper
+      value_structure:
+      - high-contrast layered shape masses
+      required_style_features:
+      - code: CAND018_MEDIUM_REQUIRED
+        text: mixed-media paper collage
+      - code: CAND018_TEXTURE_REQUIRED
+        text: halftone print and risograph paper
+      - code: CAND018_LIGHTING_REQUIRED
+        text: illustrated graphic light
+      forbidden_style_features:
+      - code: CAND018_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND018_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 77f621a958d9
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/77f621a958d9.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-018
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-119:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer c6b9ccfa8cca; candidate CAND-019; not visual approval
+      entry_id: c6b9ccfa8cca
+    style_contract:
+      id: STYLE-119
+      version: 1.0.0
+      medium:
+      - graphic neon-noir illustration
+      palette:
+      - electric blue and hot pink
+      linework:
+      - graphic textured contours
+      shading:
+      - high-contrast illustrated shadow masses
+      lighting:
+      - synthwave neon atmospheric light
+      background:
+      - retro-futuristic nighttime scenery
+      texture:
+      - impasto and screenprint texture
+      value_structure:
+      - chiaroscuro with readable facial features
+      required_style_features:
+      - code: CAND019_MEDIUM_REQUIRED
+        text: graphic neon-noir illustration
+      - code: CAND019_TEXTURE_REQUIRED
+        text: impasto and screenprint texture
+      - code: CAND019_LIGHTING_REQUIRED
+        text: synthwave neon atmospheric light
+      forbidden_style_features:
+      - code: CAND019_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND019_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: c6b9ccfa8cca
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/c6b9ccfa8cca.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-019
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-120:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer dc53ab5f5a17; candidate CAND-020; not visual approval
+      entry_id: dc53ab5f5a17
+    style_contract:
+      id: STYLE-120
+      version: 1.0.0
+      medium:
+      - dark fantasy ink-wash engraving
+      palette:
+      - dark ink with crimson accents and blue coat
+      linework:
+      - intricate engraved contours
+      shading:
+      - high-contrast ink-wash shadows
+      lighting:
+      - gothic dramatic light
+      background:
+      - gothic scenery without skeletal figures
+      texture:
+      - textured parchment
+      value_structure:
+      - dark masses with clear subject separation
+      required_style_features:
+      - code: CAND020_MEDIUM_REQUIRED
+        text: dark fantasy ink-wash engraving
+      - code: CAND020_TEXTURE_REQUIRED
+        text: textured parchment
+      - code: CAND020_LIGHTING_REQUIRED
+        text: gothic dramatic light
+      forbidden_style_features:
+      - code: CAND020_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND020_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: dc53ab5f5a17
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/dc53ab5f5a17.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-020
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-121:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 00f0d9768d93; candidate CAND-021; not visual approval
+      entry_id: 00f0d9768d93
+    style_contract:
+      id: STYLE-121
+      version: 1.0.0
+      medium:
+      - minimal surreal dreamscape illustration
+      palette:
+      - vivid sky blue and hill green
+      linework:
+      - crisp simplified contours
+      shading:
+      - smooth simplified shadow shapes
+      lighting:
+      - clear daylight
+      background:
+      - rolling green hills and fluffy clouds
+      texture:
+      - clean painted surface
+      value_structure:
+      - clear daylight values and readable figure
+      required_style_features:
+      - code: CAND021_MEDIUM_REQUIRED
+        text: minimal surreal dreamscape illustration
+      - code: CAND021_TEXTURE_REQUIRED
+        text: clean painted surface
+      - code: CAND021_LIGHTING_REQUIRED
+        text: clear daylight
+      forbidden_style_features:
+      - code: CAND021_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND021_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 00f0d9768d93
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/00f0d9768d93.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-021
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-122:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer aef97ec94d3f; candidate CAND-022; not visual approval
+      entry_id: aef97ec94d3f
+    style_contract:
+      id: STYLE-122
+      version: 1.0.0
+      medium:
+      - retro-futuristic airbrush illustration
+      palette:
+      - neon gradients with preserved blue coat
+      linework:
+      - soft airbrushed edges
+      shading:
+      - smooth gradient shadow planes
+      lighting:
+      - radial luminous aura
+      background:
+      - psychedelic abstract dreamscape
+      texture:
+      - fine paper grain
+      value_structure:
+      - strong silhouette with visible face and clothing
+      required_style_features:
+      - code: CAND022_MEDIUM_REQUIRED
+        text: retro-futuristic airbrush illustration
+      - code: CAND022_TEXTURE_REQUIRED
+        text: fine paper grain
+      - code: CAND022_LIGHTING_REQUIRED
+        text: radial luminous aura
+      forbidden_style_features:
+      - code: CAND022_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND022_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: aef97ec94d3f
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/aef97ec94d3f.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-022
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-123:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer 699838cf2d6c; candidate CAND-023; not visual approval
+      entry_id: 699838cf2d6c
+    style_contract:
+      id: STYLE-123
+      version: 1.0.0
+      medium:
+      - stylized clay-toy rendering
+      palette:
+      - bright playful colors and blue coat
+      linework:
+      - rounded clean volume edges
+      shading:
+      - matte sculpted shadows
+      lighting:
+      - soft studio light
+      background:
+      - vibrant minimalist studio background
+      texture:
+      - tactile matte clay surface
+      value_structure:
+      - soft volume shading with clear figure separation
+      required_style_features:
+      - code: CAND023_MEDIUM_REQUIRED
+        text: stylized clay-toy rendering
+      - code: CAND023_TEXTURE_REQUIRED
+        text: tactile matte clay surface
+      - code: CAND023_LIGHTING_REQUIRED
+        text: soft studio light
+      forbidden_style_features:
+      - code: CAND023_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND023_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: 699838cf2d6c
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/2/699838cf2d6c.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-023
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
+  STYLE-124:
+    version: 1.0.0
+    status: UNTESTED
+    expression: []
+    colors: []
+    linework: []
+    shading: []
+    texture: []
+    forbidden_elements: []
+    required_capabilities: []
+    sources:
+    - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+      description: Model-neutral adaptation of Explorer d56af712ee40; candidate CAND-024; not visual approval
+      entry_id: d56af712ee40
+    style_contract:
+      id: STYLE-124
+      version: 1.0.0
+      medium:
+      - stylized voxel diorama rendering
+      palette:
+      - restrained block colors and blue coat
+      linework:
+      - crisp block geometry
+      shading:
+      - faceted block shadows
+      lighting:
+      - soft studio light
+      background:
+      - solid dark miniature setting in front view
+      texture:
+      - nonpixel geometric material surfaces
+      value_structure:
+      - atmospheric shadow separation with complete body
+      required_style_features:
+      - code: CAND024_MEDIUM_REQUIRED
+        text: stylized voxel diorama rendering
+      - code: CAND024_TEXTURE_REQUIRED
+        text: nonpixel geometric material surfaces
+      - code: CAND024_LIGHTING_REQUIRED
+        text: soft studio light
+      forbidden_style_features:
+      - code: CAND024_PHOTOGRAPHY_PRESENT
+        text: photorealistic skin or photographic camera rendering
+      - code: CAND024_PIXEL_PRESENT
+        text: raster pixel-art rendering
+      priority: 85
+      source:
+        provider: KREA_STYLE_EXPLORER
+        entry_id: d56af712ee40
+        revision: eb690aa57bc6974af6b4b3b8c5a780195bcadf78
+        card_url: https://kreastyles.thetacursed.com/
+        preview_url: https://kreastyles.thetacursed.com/images/1/d56af712ee40.webp
+        catalog_path: research/style_catalog/krea1596_shortlist_v0.1.yaml#CAND-024
+      evidence:
+      - path: research/style_catalog/krea1596_classification_v0.1.json
+        role: prompt-based shortlist provenance; no generated or approved evidence
+        original_sha256s:
+          classification: ebb9900895551c924d4deb4e99ce031ae6167b46de68109fba69f61517c4d933
