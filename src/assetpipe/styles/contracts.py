@@ -119,6 +119,24 @@ def compile_anima_style_contract(contract: dict, *, adapter: str, dialect: str,
     }
 
 
+
+def compile_krea_style_contract(contract: dict, *, adapter: str, dialect: str,
+                                model_profile: str, workflow_id: str) -> dict:
+    """Compile structured style as Krea prose; exclusions are instructions, not native negatives."""
+    validate_style_contract(contract)
+    if adapter != 'krea2' or dialect != 'krea_contract_v1':
+        raise ValueError('STYLE_DIALECT_UNSUPPORTED')
+    parts = ['; '.join(contract[field]) for field in CONTRACT_FIELDS]
+    parts.append('Required visual features: ' + '; '.join(v['text'] for v in contract['required_style_features']))
+    parts.append('Exclude these visual features: ' + '; '.join(v['text'] for v in contract['forbidden_style_features']))
+    return {'contract_id': contract['id'], 'contract_version': contract['version'],
+            'contract_sha256': contract_digest(contract), 'priority': contract['priority'],
+            'model_profile': model_profile, 'workflow_id': workflow_id,
+            'adapter': adapter, 'dialect': dialect, 'caption': '. '.join(parts) + '.',
+            'forbidden_negative_terms': [], 'exclusion_mode': 'POSITIVE_TEXT_INSTRUCTION',
+            'source': contract['source'], 'evidence': contract['evidence']}
+
+
 def style_contract_review_template(contract: dict) -> dict:
     validate_style_contract(contract)
     return {

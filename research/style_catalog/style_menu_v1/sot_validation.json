@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "locked_sot_binding": "STYLE-103/anima_base_rebuilt",
+  "conflict_checks": [
+    "Visual SOT art_style lock conflicts with requested style",
+    "Style menu conflicts with explicit style_id or Visual SOT style lock",
+    "Explicit workflow/model conflicts with style menu binding",
+    "Style menu supports NONPIXEL_IMAGE only",
+    "Visual SOT selection policy lock conflicts with requested policy"
+  ]
+}

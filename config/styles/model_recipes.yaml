@@ -271,3 +271,771 @@ recipes:
       - *id003
       note: Candidate wiring only; no measured quality score or model preference.
         Human approval required for default routing.
+  STYLE-101:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: ef24d05b325cf8c4e11892e1db3893d4ec5e71c8577f19cc664b2d3177d94d14
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id001
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 2296994da9bc; candidate CAND-001; not visual approval
+        entry_id: 2296994da9bc
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: ef24d05b325cf8c4e11892e1db3893d4ec5e71c8577f19cc664b2d3177d94d14
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id001
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: ef24d05b325cf8c4e11892e1db3893d4ec5e71c8577f19cc664b2d3177d94d14
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id001
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-102:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 60ec53313adcb189a21fd5d031f0a8de3a625129a15739adb89fa3e680761912
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id002
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 2dfd01bda89f; candidate CAND-002; not visual approval
+        entry_id: 2dfd01bda89f
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 60ec53313adcb189a21fd5d031f0a8de3a625129a15739adb89fa3e680761912
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id002
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 60ec53313adcb189a21fd5d031f0a8de3a625129a15739adb89fa3e680761912
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id002
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-103:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: fd2f310ef54addda96ae7270905ee526a88792bd9835efd48f2fbebf8681ac7e
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id003
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer fbd56820d95e; candidate CAND-003; not visual approval
+        entry_id: fbd56820d95e
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: fd2f310ef54addda96ae7270905ee526a88792bd9835efd48f2fbebf8681ac7e
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id003
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: fd2f310ef54addda96ae7270905ee526a88792bd9835efd48f2fbebf8681ac7e
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id003
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-104:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: fe4534e1027ed2d2fd57f298c11359a9a98611c3043c1f08dab6e50e36a6c14f
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id004
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 03efebcc9262; candidate CAND-004; not visual approval
+        entry_id: 03efebcc9262
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: fe4534e1027ed2d2fd57f298c11359a9a98611c3043c1f08dab6e50e36a6c14f
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id004
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: fe4534e1027ed2d2fd57f298c11359a9a98611c3043c1f08dab6e50e36a6c14f
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id004
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-105:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: c61797963f8754273d6a43f5bad0e445c60ce9a88d4de095af79e9aef3559e06
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id005
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 97e333d71519; candidate CAND-005; not visual approval
+        entry_id: 97e333d71519
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: c61797963f8754273d6a43f5bad0e445c60ce9a88d4de095af79e9aef3559e06
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id005
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: c61797963f8754273d6a43f5bad0e445c60ce9a88d4de095af79e9aef3559e06
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id005
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-106:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 56cd4107fe569e3a395385b0788ec5a7e842b2c53158f02246ff830d6f194d4b
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id006
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer db8c68866056; candidate CAND-006; not visual approval
+        entry_id: db8c68866056
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 56cd4107fe569e3a395385b0788ec5a7e842b2c53158f02246ff830d6f194d4b
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id006
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 56cd4107fe569e3a395385b0788ec5a7e842b2c53158f02246ff830d6f194d4b
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id006
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-107:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 757b021b5a6fdee7f5ea6998884896b1eb37a2792877891ceaffb48779197111
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id007
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 2bcaf2310be4; candidate CAND-007; not visual approval
+        entry_id: 2bcaf2310be4
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 757b021b5a6fdee7f5ea6998884896b1eb37a2792877891ceaffb48779197111
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id007
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 757b021b5a6fdee7f5ea6998884896b1eb37a2792877891ceaffb48779197111
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id007
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-108:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 1c986521faab95be171624a025244400377f4cd4d0639435cc2ec103273f6ce4
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id008
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 0125469b3037; candidate CAND-008; not visual approval
+        entry_id: 0125469b3037
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 1c986521faab95be171624a025244400377f4cd4d0639435cc2ec103273f6ce4
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id008
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 1c986521faab95be171624a025244400377f4cd4d0639435cc2ec103273f6ce4
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id008
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-109:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 492b1b1e9ca83175446669cd22690326eab5d32de3874571c385eb3021017b5a
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id009
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 76b16196fa43; candidate CAND-009; not visual approval
+        entry_id: 76b16196fa43
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 492b1b1e9ca83175446669cd22690326eab5d32de3874571c385eb3021017b5a
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id009
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 492b1b1e9ca83175446669cd22690326eab5d32de3874571c385eb3021017b5a
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id009
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-110:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 7e97e845d43ec1e1777a3b1e73ea0bb08bc43cacc6ad8dbf37294a47b8dc5e11
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id010
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer b0c422916b0d; candidate CAND-010; not visual approval
+        entry_id: b0c422916b0d
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 7e97e845d43ec1e1777a3b1e73ea0bb08bc43cacc6ad8dbf37294a47b8dc5e11
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id010
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 7e97e845d43ec1e1777a3b1e73ea0bb08bc43cacc6ad8dbf37294a47b8dc5e11
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id010
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-111:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a2cd962efbf57527be29828c808f7c05f45bb108d5306ec4be7e9992167841f3
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id011
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 05cc22b89e34; candidate CAND-011; not visual approval
+        entry_id: 05cc22b89e34
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a2cd962efbf57527be29828c808f7c05f45bb108d5306ec4be7e9992167841f3
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id011
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a2cd962efbf57527be29828c808f7c05f45bb108d5306ec4be7e9992167841f3
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id011
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-112:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a3f9701d12f683caf8eb8c86abad622c872c3c1a5b20794be3c53d24f8164bb6
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id012
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 853235279ae7; candidate CAND-012; not visual approval
+        entry_id: 853235279ae7
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a3f9701d12f683caf8eb8c86abad622c872c3c1a5b20794be3c53d24f8164bb6
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id012
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a3f9701d12f683caf8eb8c86abad622c872c3c1a5b20794be3c53d24f8164bb6
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id012
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-113:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 5364ecb864896b33fe7a9445f01e8597f6408bdeaf20dd82cc7d5766cdf33ba2
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id013
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer af0b541cf454; candidate CAND-013; not visual approval
+        entry_id: af0b541cf454
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 5364ecb864896b33fe7a9445f01e8597f6408bdeaf20dd82cc7d5766cdf33ba2
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id013
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 5364ecb864896b33fe7a9445f01e8597f6408bdeaf20dd82cc7d5766cdf33ba2
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id013
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-114:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 3168731cec70ed1731faec343f47dbf396b05dbea4db1bc8a1072d4c7ac33188
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id014
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer cd08de37ef98; candidate CAND-014; not visual approval
+        entry_id: cd08de37ef98
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 3168731cec70ed1731faec343f47dbf396b05dbea4db1bc8a1072d4c7ac33188
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id014
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 3168731cec70ed1731faec343f47dbf396b05dbea4db1bc8a1072d4c7ac33188
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id014
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-115:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a16a1f0751d738ac43d6038c0e289a9c25da1710bd7e0da3be8f577748aa1806
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id015
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer f85870d45ffe; candidate CAND-015; not visual approval
+        entry_id: f85870d45ffe
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a16a1f0751d738ac43d6038c0e289a9c25da1710bd7e0da3be8f577748aa1806
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id015
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a16a1f0751d738ac43d6038c0e289a9c25da1710bd7e0da3be8f577748aa1806
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id015
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-116:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 9c3fbf747f735bf9009dca53c561031f1941039431a7c9ad6ea101ba2c6f7747
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id016
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 960625243657; candidate CAND-016; not visual approval
+        entry_id: '960625243657'
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 9c3fbf747f735bf9009dca53c561031f1941039431a7c9ad6ea101ba2c6f7747
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id016
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 9c3fbf747f735bf9009dca53c561031f1941039431a7c9ad6ea101ba2c6f7747
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id016
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-117:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 21a28c19216c48a39c9383cfd9ff8359d70f4e0e545162df254b5d7b3e4d7f97
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id017
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 64964c86fc9d; candidate CAND-017; not visual approval
+        entry_id: 64964c86fc9d
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 21a28c19216c48a39c9383cfd9ff8359d70f4e0e545162df254b5d7b3e4d7f97
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id017
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 21a28c19216c48a39c9383cfd9ff8359d70f4e0e545162df254b5d7b3e4d7f97
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id017
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-118:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: afcd95a05209b2213ab1f18fde4d8ffde5eb779220e71ee77b2e6f36040665c0
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id018
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 77f621a958d9; candidate CAND-018; not visual approval
+        entry_id: 77f621a958d9
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: afcd95a05209b2213ab1f18fde4d8ffde5eb779220e71ee77b2e6f36040665c0
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id018
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: afcd95a05209b2213ab1f18fde4d8ffde5eb779220e71ee77b2e6f36040665c0
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id018
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-119:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: d576e0b9b504aa0b6f854dcea81e34780dfe16f52c01c0abaf789504069a5b4b
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id019
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer c6b9ccfa8cca; candidate CAND-019; not visual approval
+        entry_id: c6b9ccfa8cca
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: d576e0b9b504aa0b6f854dcea81e34780dfe16f52c01c0abaf789504069a5b4b
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id019
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: d576e0b9b504aa0b6f854dcea81e34780dfe16f52c01c0abaf789504069a5b4b
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id019
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-120:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 63de8dcfde952855cc39d57a45b9d1bb5233907eaa0f652d6fa7f6e86dc577e4
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id020
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer dc53ab5f5a17; candidate CAND-020; not visual approval
+        entry_id: dc53ab5f5a17
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 63de8dcfde952855cc39d57a45b9d1bb5233907eaa0f652d6fa7f6e86dc577e4
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id020
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 63de8dcfde952855cc39d57a45b9d1bb5233907eaa0f652d6fa7f6e86dc577e4
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id020
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-121:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 0e4d19ab8be7e775b3042d305fed990aa3d5db0301c379ee747fc270babfcc1b
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id021
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 00f0d9768d93; candidate CAND-021; not visual approval
+        entry_id: 00f0d9768d93
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 0e4d19ab8be7e775b3042d305fed990aa3d5db0301c379ee747fc270babfcc1b
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id021
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 0e4d19ab8be7e775b3042d305fed990aa3d5db0301c379ee747fc270babfcc1b
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id021
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-122:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: d5df475b58575df4fed7e90b0e93def9a8ec1478acf52334216486c8c8c82603
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id022
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer aef97ec94d3f; candidate CAND-022; not visual approval
+        entry_id: aef97ec94d3f
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: d5df475b58575df4fed7e90b0e93def9a8ec1478acf52334216486c8c8c82603
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id022
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: d5df475b58575df4fed7e90b0e93def9a8ec1478acf52334216486c8c8c82603
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id022
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-123:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 1d29b39b76c5a422637fc2d3a1683e4950c7dc676060a08e53ce4e2cd1e7b9f6
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id023
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer 699838cf2d6c; candidate CAND-023; not visual approval
+        entry_id: 699838cf2d6c
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 1d29b39b76c5a422637fc2d3a1683e4950c7dc676060a08e53ce4e2cd1e7b9f6
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id023
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: 1d29b39b76c5a422637fc2d3a1683e4950c7dc676060a08e53ce4e2cd1e7b9f6
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id023
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION
+  STYLE-124:
+    anima_base_rebuilt:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a13acb7c21bd708847c8febf82f6222033cc9558de43beca62bbafbf9556a4de
+      model_profile: anima-base-rebuilt
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: &benchmark_id024
+      - url: https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js
+        description: Model-neutral adaptation of Explorer d56af712ee40; candidate CAND-024; not visual approval
+        entry_id: d56af712ee40
+    anima_turbo:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a13acb7c21bd708847c8febf82f6222033cc9558de43beca62bbafbf9556a4de
+      model_profile: anima-turbo
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id024
+    krea2_base:
+      version: 1.0.0
+      status: UNTESTED
+      style_sha256: a13acb7c21bd708847c8febf82f6222033cc9558de43beca62bbafbf9556a4de
+      model_profile: krea2
+      positive: []
+      negative: []
+      required_capabilities: []
+      sources: *benchmark_id024
+      exclusion_mode: POSITIVE_TEXT_INSTRUCTION

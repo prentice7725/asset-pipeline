@@ -11,6 +11,8 @@ def route(brief, registry, root=None):
     validate(brief)
     from ..styles import resolve_style, select_recipe, public_selection
     root = root or getattr(registry, 'root', None)
+    from ..styles.menu import bind_menu
+    brief, menu_decision = bind_menu(brief, root)
     if brief.get('style_id') and root is None:
         raise ValueError('Style routing requires a configuration root')
     style = resolve_style(brief, root) if root is not None else None
@@ -97,4 +99,7 @@ def route(brief, registry, root=None):
         decision['selection_reason'] = recipes[key]['reason'] + '; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults'
     if intent:
         decision['art_direction'] = intent
+    if menu_decision:
+        decision['style_menu'] = menu_decision
+        decision['fallback_candidates'] = []
     return decision
