@@ -82,6 +82,8 @@ def create(brief, root, output=None, seed=None):
         write(directory / 'route_decision.json', decision)
         if decision.get('style_selection'):
             manifest['style_selection'] = decision['style_selection']
+        if decision.get('override'):
+            manifest['override'] = decision['override']
         if decision['status'] == 'BLOCKED':
             raise ValueError('; '.join(decision['missing_requirements']) or decision['reason'])
         workflow = registry[decision['selected_workflow']]
@@ -106,8 +108,19 @@ def create(brief, root, output=None, seed=None):
         elif kind == 'PIXEL_STATIC':
             pixel_static.run(brief, workflow, config, directory, manifest, chosen_seed)
         elif kind == 'NONPIXEL_IMAGE':
+            if decision.get('override'):
+                # Validate the existing model-specific compiler before reserving
+                # a single dispatch. No recipe/capability bypass on this path.
+                from ..prompts import compile_prompt
+                from ..styles.overrides import reserve_generation
+                manifest['generation']['compiled_prompt'] = compile_prompt(brief, workflow, root)
+                manifest['override']['budget_reservation'] = reserve_generation(brief, root, decision)
+                manifest['override']['generation_state'] = 'DISPATCH_STARTED'
+                write(path, manifest)
             # CLI provider에는 임의로 만든 seed를 넘기지 않는다(사용자가 지정한 값만 '요청됨'으로 기록).
             nonpixel_image.run(brief, workflow, config, directory, manifest, chosen_seed if engine == 'comfyui' else seed)
+            if decision.get('override'):
+                manifest['override']['generation_state'] = 'GENERATED_REVIEW_REQUIRED'
         else:
             nonpixel_animation.run()
     except Exception as exc:
@@ -129,5 +142,11 @@ def create(brief, root, output=None, seed=None):
                 manifest['generation'].pop('resolution', None)
                 manifest['generation']['duration_seconds'] = generated['generation_parameters']['duration_seconds']
         manifest['timestamps']['finished'] = now()
+        if manifest.get('override'):
+            import hashlib
+            originals = manifest['outputs'] + manifest['generation'].get('rejected_outputs', [])
+            manifest['override']['original_outputs'] = [
+                {'path': str(file), 'sha256': hashlib.sha256(Path(file).read_bytes()).hexdigest()}
+                for file in dict.fromkeys(originals) if Path(file).is_file()]
         write(path, manifest)
     return path
