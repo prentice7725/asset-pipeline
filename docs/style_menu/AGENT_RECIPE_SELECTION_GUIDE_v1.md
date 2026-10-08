@@ -25,7 +25,19 @@
 - Anima Base rebuilt: STYLE-103 `retro_sci_fi_anime`, STYLE-109 `manga_screentone_noir`, STYLE-119 `graphic_neon_cyberpunk`.
 - STYLE-117 `flat_vector_editorial`: primary unresolved. `style_selection_policy: style_fidelity`는 Krea2, `character_readability`는 Anima Turbo를 선택한다. 정책 미지정은 차단된다.
 - Anima Turbo: 기본 화풍 경쟁군에서는 optional/experimental. 117의 명시적 readable-face 정책으로 선택 가능하다.
-- runner_up은 비교 참고 정보다. 자동 fallback/retry가 아니다. 명시 모델/워크플로와 메뉴 binding 충돌 또는 SOT lock 충돌은 fail-closed한다.
+- runner_up은 비교 참고 정보다. 자동 fallback/retry가 아니다. 승인된 실행별 override 없이 메뉴 binding과 충돌하면 fail-closed한다. STYLE 및 정체성 잠금은 override에서도 유지한다.
+
+## Manual / Rescue Override
+
+STYLE MENU primary model is an evidence-informed default for the evaluated fixtures and style-fidelity goals, not a universal subject-capability lock or production approval.
+
+승인된 USER_MANUAL은 해당 자산·실행에서 모델 기본값보다 우선한다. model_override는 model_profile, workflow_override는 workflow ID이며 executor와 provider는 독립적이다. `krea2` / `krea2_base`를 구별한다. 승인 파일·사유·원래 선택·실제 선택·fingerprint를 기록하고 모든 출력은 REVIEW_REQUIRED를 유지한다.
+
+subject_domain은 선택 필드이며 asset_type에서 추론하지 않는다. SUBJECT_RESCUE는 실제 원본/검토 기록의 해시와 승인된 반복 실패 근거를 요구한다. `assetpipe rescue-plan`은 최대 3개 후보의 기존 compiler/recipe 호환성을 검사하며 생성하지 않는다. 생성에는 별도 exploration 승인 및 영구 예약되는 1회 예산 승인이 필요하다. 자동 fallback/retry와 global primary 변경은 없다.
+
+Grok/Codex/Claude executor 연결은 현재 미구현이며 EXECUTOR_UNAVAILABLE로 차단된다. Grok용 STYLE-103 recipe도 없으므로 기존 recipe gate에서 차단된다. 로컬 GREEN은 실제 그림 품질·화풍 호환 승인 근거가 아니다.
+
+실제 fixture 범위, 승인 JSON, SOT 예외, 기능·예산·감사 계약과 SKY RENDEZVOUS 후속 변경안은 [Manual / Rescue Override 상세](MANUAL_RESCUE_OVERRIDE.md)를 따른다. Google Drive SOT는 별도 소유자 검토·수정이 필요하다.
 
 ## SOT / Brief 예시
 

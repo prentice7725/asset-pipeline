@@ -4,6 +4,7 @@ import yaml
 from jsonschema import Draft202012Validator
 from ..prompts import SCHEMA as PROMPT_SPEC_SCHEMA
 from ..art_direction import SCHEMA as ART_DIRECTION_SCHEMA
+from ..styles.overrides import DOMAINS, OVERRIDE_FIELDS
 
 OUTPUT_CLASSES = ['PIXEL_STATIC', 'PIXEL_ANIMATION', 'NONPIXEL_IMAGE', 'NONPIXEL_ANIMATION', 'SFX']
 STRINGS = {'type': 'array', 'items': {'type': 'string'}}
@@ -11,6 +12,16 @@ def obj(properties, required=()):
     return {'type': 'object', 'properties': properties, 'required': list(required), 'additionalProperties': False}
 
 SCHEMA = obj({
+    'subject_domain': {'enum': DOMAINS},
+    'style_lock': {'type': 'boolean', 'default': True},
+    'model_override': {'type': 'string', 'minLength': 1},
+    'workflow_override': {'type': 'string', 'minLength': 1},
+    'executor_override': {'enum': ['codex', 'grok', 'claude', 'local_python']},
+    'override_mode': {'enum': ['USER_MANUAL', 'SUBJECT_RESCUE']},
+    'override_reason': {'type': 'string', 'minLength': 1},
+    'override_approval': {'type': 'string', 'minLength': 1},
+    'failure_evidence': STRINGS,
+    'generation_authorization': {'type': 'string', 'minLength': 1},
     'art_direction': ART_DIRECTION_SCHEMA,
     'art_style': {'type': 'string', 'pattern': '^[a-z0-9_]+$'},
     'style_selection_policy': {'enum': ['style_fidelity', 'character_readability']},
@@ -37,6 +48,11 @@ def validate(brief):
     errors = sorted(Draft202012Validator(SCHEMA).iter_errors(brief), key=lambda e: str(e.path))
     if errors:
         raise ValueError('; '.join(f'{".".join(map(str, e.path)) or "brief"}: {e.message}' for e in errors))
+    if OVERRIDE_FIELDS & brief.keys():
+        if brief['output_class'] != 'NONPIXEL_IMAGE' or not brief.get('art_style'):
+            raise ValueError('Override requires NONPIXEL_IMAGE and an explicit art_style')
+        if (brief.get('model_override') or brief.get('workflow_override') or brief.get('executor_override')) and not brief.get('override_mode'):
+            raise ValueError('Explicit override requires override_mode and user approval')
     if 'art_direction' in brief and brief['output_class'] != 'NONPIXEL_IMAGE':
         raise ValueError('Art direction supports NONPIXEL_IMAGE only')
     if brief.get('prompt_spec', {}).get('subject_integrity') or brief.get('prompt_spec', {}).get('art_direction'):

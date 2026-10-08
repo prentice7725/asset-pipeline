@@ -1,5 +1,13 @@
 # Asset Pipeline
 
+STYLE MENU v1 supports approved run-scoped Manual / Rescue Override for
+NONPIXEL_IMAGE. Primary models are evidence-informed fixture defaults; style and
+canon remain locked. `assetpipe rescue-plan` prepares candidates without generation.
+Overrides require scoped approval and a durable one-request budget before dispatch;
+no automatic fallback or winner promotion. See
+[Manual / Rescue Override](docs/style_menu/MANUAL_RESCUE_OVERRIDE.md) for schema,
+executor availability, evidence, routing priority and SOT follow-up requirements.
+
 한국어 | [日本語](README.ja.md)
 
 프롬프트, 레퍼런스 이미지, 프로젝트 기획문서를 바탕으로 게임용 이미지와 효과음 후보를 만드는 Python CLI 도구입니다. ComfyUI 생성, 후처리·검증, Aseprite 내보내기를 연결합니다.
