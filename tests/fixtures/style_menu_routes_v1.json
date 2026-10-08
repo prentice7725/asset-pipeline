@@ -1,0 +1,3097 @@
+[
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "90s_nocturnal_cel"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-101",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "ef24d05b325cf8c4e11892e1db3893d4ec5e71c8577f19cc664b2d3177d94d14",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 2296994da9bc; candidate CAND-001; not visual approval",
+            "entry_id": "2296994da9bc"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "a5e529906e247707060b4b23658adf179d9e6894d5770553a38c1acaa62cacb1",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 2296994da9bc; candidate CAND-001; not visual approval",
+            "entry_id": "2296994da9bc"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "90s_nocturnal_cel",
+        "style_id": "STYLE-101",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-101/krea2_base",
+        "known_limitations": [],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-001",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-101_best.png",
+          "sha256": "92daa79803a57faa69a82d0e4be649e0351a6377a4b9ce70befb303fbe1ebb0c",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "90s_gothic_fantasy_cel"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-102",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "60ec53313adcb189a21fd5d031f0a8de3a625129a15739adb89fa3e680761912",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 2dfd01bda89f; candidate CAND-002; not visual approval",
+            "entry_id": "2dfd01bda89f"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "5136005ca2faeac47d8bbb242868c993d367c24a4f09ba2d13df50c6068dbd0d",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 2dfd01bda89f; candidate CAND-002; not visual approval",
+            "entry_id": "2dfd01bda89f"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "90s_gothic_fantasy_cel",
+        "style_id": "STYLE-102",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-102/krea2_base",
+        "known_limitations": [],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-002",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-102_best.png",
+          "sha256": "fdd81a5e2dc804dd341df5ef7a4f5df74bf981644c166da340e12dc76772bb37",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "retro_sci_fi_anime"
+    },
+    "decision": {
+      "selected_workflow": "anima_base_rebuilt",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "krea2_base": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-103",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "fd2f310ef54addda96ae7270905ee526a88792bd9835efd48f2fbebf8681ac7e",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer fbd56820d95e; candidate CAND-003; not visual approval",
+            "entry_id": "fbd56820d95e"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "f7ac50c3afbfb75c048c59136f5c4cc3760ba32ca02be5e0e6afe559d908228f",
+        "workflow_id": "anima_base_rebuilt",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer fbd56820d95e; candidate CAND-003; not visual approval",
+            "entry_id": "fbd56820d95e"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "retro_sci_fi_anime",
+        "style_id": "STYLE-103",
+        "primary_model": "anima_base_rebuilt",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-103/anima_base_rebuilt",
+        "known_limitations": [
+          "WRONG_IMAGE_SIDE"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-003",
+          "model": "anima_base_rebuilt",
+          "seed": 7727,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-103_best.png",
+          "sha256": "5025a57e975ac40b21f566315ecd014b1ea7141790e70e647a709b2d45391d9a",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "modern_flat_manga"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-104",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "fe4534e1027ed2d2fd57f298c11359a9a98611c3043c1f08dab6e50e36a6c14f",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 03efebcc9262; candidate CAND-004; not visual approval",
+            "entry_id": "03efebcc9262"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "46e652676529c0b5dfa5d6291977f800e5549ee2848f78e2ecfca970a6478f08",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 03efebcc9262; candidate CAND-004; not visual approval",
+            "entry_id": "03efebcc9262"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "modern_flat_manga",
+        "style_id": "STYLE-104",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-104/krea2_base",
+        "known_limitations": [],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-004",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-104_best.png",
+          "sha256": "9128250172f0cb9556a478a2defbd56d54e96fa9c7001b7e223cf789978699f5",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "kawaii_pop_anime"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-105",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "c61797963f8754273d6a43f5bad0e445c60ce9a88d4de095af79e9aef3559e06",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 97e333d71519; candidate CAND-005; not visual approval",
+            "entry_id": "97e333d71519"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "5cfe37f588ad62c80a0ccb39ee949147ee98460e9b68fce6f72be25a812243c5",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 97e333d71519; candidate CAND-005; not visual approval",
+            "entry_id": "97e333d71519"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "kawaii_pop_anime",
+        "style_id": "STYLE-105",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-105/krea2_base",
+        "known_limitations": [
+          "ADULT_APPEARANCE_UNCERTAIN"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-005",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-105_best.png",
+          "sha256": "80da769b596a35b8d5fa7dbc0000395053417eff81e86699a373db1af302e37a",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "rubber_hose_cartoon"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-106",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "56cd4107fe569e3a395385b0788ec5a7e842b2c53158f02246ff830d6f194d4b",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer db8c68866056; candidate CAND-006; not visual approval",
+            "entry_id": "db8c68866056"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "6289b06ab92ed4a21b6668fea64f384e460dac95aa53f86e938a0a8dfa468014",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer db8c68866056; candidate CAND-006; not visual approval",
+            "entry_id": "db8c68866056"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "rubber_hose_cartoon",
+        "style_id": "STYLE-106",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-106/krea2_base",
+        "known_limitations": [
+          "VIEW_DRIFT",
+          "REAR_VIEW",
+          "ANATOMICAL_SIDE_NOT_VALIDATED"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-006",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-106_best.png",
+          "sha256": "d8269d76da097bcb92284a7aebf7a949b548b53edc32157a2d98c98b375dbdbe",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "flat_western_action_cartoon"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-107",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "757b021b5a6fdee7f5ea6998884896b1eb37a2792877891ceaffb48779197111",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 2bcaf2310be4; candidate CAND-007; not visual approval",
+            "entry_id": "2bcaf2310be4"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "ea9a42521f31bee781d61d011c8d836b248f4c4a693380f424fe186ed043e477",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 2bcaf2310be4; candidate CAND-007; not visual approval",
+            "entry_id": "2bcaf2310be4"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "flat_western_action_cartoon",
+        "style_id": "STYLE-107",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-107/krea2_base",
+        "known_limitations": [
+          "FACE_READABILITY_FAILED",
+          "EQUIPMENT_CROPPED",
+          "BACKGROUND_STREAK_ARTIFACT"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-007",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-107_best.png",
+          "sha256": "af2f0099cdc37d26780a42cbf304583e21c4fd1d65a8389fa4d82d93b7f896c9",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "graphic_novel_ink"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-108",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "1c986521faab95be171624a025244400377f4cd4d0639435cc2ec103273f6ce4",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 0125469b3037; candidate CAND-008; not visual approval",
+            "entry_id": "0125469b3037"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "2d652f501b8e3144b31ca581de0bf1ea66add5f68068d63841808d09b98a3f40",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 0125469b3037; candidate CAND-008; not visual approval",
+            "entry_id": "0125469b3037"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "graphic_novel_ink",
+        "style_id": "STYLE-108",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-108/krea2_base",
+        "known_limitations": [
+          "EXTRA_BACKGROUND_FIGURES"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-008",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-108_best.png",
+          "sha256": "2c8d50ea2a995ab873ea6fe1b2f5f1c166b85a69afc603df30e30cbb28d7d875",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "manga_screentone_noir"
+    },
+    "decision": {
+      "selected_workflow": "anima_base_rebuilt",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "krea2_base": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-109",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "492b1b1e9ca83175446669cd22690326eab5d32de3874571c385eb3021017b5a",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 76b16196fa43; candidate CAND-009; not visual approval",
+            "entry_id": "76b16196fa43"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "da2731f24785891a4717e466fc2b3ade256809c8274be3d3caf854d9891e0d25",
+        "workflow_id": "anima_base_rebuilt",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 76b16196fa43; candidate CAND-009; not visual approval",
+            "entry_id": "76b16196fa43"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "manga_screentone_noir",
+        "style_id": "STYLE-109",
+        "primary_model": "anima_base_rebuilt",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-109/anima_base_rebuilt",
+        "known_limitations": [
+          "WRONG_IMAGE_SIDE",
+          "FACE_DETAIL_PARTIAL"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-009",
+          "model": "anima_base_rebuilt",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-109_best.png",
+          "sha256": "4cb943126009ff691562742216c5cb43ebee8591468c3f9d7f6de29d0ebc4354",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "cozy_gouache_storybook"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-110",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "7e97e845d43ec1e1777a3b1e73ea0bb08bc43cacc6ad8dbf37294a47b8dc5e11",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer b0c422916b0d; candidate CAND-010; not visual approval",
+            "entry_id": "b0c422916b0d"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "7c2dc79e68fb4e69b691ef20813af9622e03182ca3e03687ef4a65f8273a8fdb",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer b0c422916b0d; candidate CAND-010; not visual approval",
+            "entry_id": "b0c422916b0d"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "cozy_gouache_storybook",
+        "style_id": "STYLE-110",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-110/krea2_base",
+        "known_limitations": [
+          "ADULT_APPEARANCE_UNCERTAIN"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-010",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-110_best.png",
+          "sha256": "46dd0bf3c379706fbe96dd6b9684ec0d22904281138a0ee74ea4c6fc6a4dbcaf",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "watercolor_storybook"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-111",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "a2cd962efbf57527be29828c808f7c05f45bb108d5306ec4be7e9992167841f3",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 05cc22b89e34; candidate CAND-011; not visual approval",
+            "entry_id": "05cc22b89e34"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "9456ff0c7525ec9eff152581f7017b28497c094c04d448e4bdf2f8353d0abda2",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 05cc22b89e34; candidate CAND-011; not visual approval",
+            "entry_id": "05cc22b89e34"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "watercolor_storybook",
+        "style_id": "STYLE-111",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-111/krea2_base",
+        "known_limitations": [
+          "ADULT_APPEARANCE_UNCERTAIN"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-011",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-111_best.png",
+          "sha256": "fa3db6209943f9973562538cfa2b74cf92022a3a718e7b2afd4d4ccccd618ce5",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "folk_fairytale_gouache"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-112",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "a3f9701d12f683caf8eb8c86abad622c872c3c1a5b20794be3c53d24f8164bb6",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 853235279ae7; candidate CAND-012; not visual approval",
+            "entry_id": "853235279ae7"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "c8e7707c2e2d52e485b9eab3f05468e063cba7150800d948d7b3c76b9ac9029c",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 853235279ae7; candidate CAND-012; not visual approval",
+            "entry_id": "853235279ae7"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "folk_fairytale_gouache",
+        "style_id": "STYLE-112",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-112/krea2_base",
+        "known_limitations": [
+          "ADULT_APPEARANCE_UNCERTAIN"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-012",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-112_best.png",
+          "sha256": "bef56bce0914b6665c0cb67c7da0b13e8c2c66675741224bedeaa486717a5ce0",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "vintage_engraving"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-113",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "5364ecb864896b33fe7a9445f01e8597f6408bdeaf20dd82cc7d5766cdf33ba2",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer af0b541cf454; candidate CAND-013; not visual approval",
+            "entry_id": "af0b541cf454"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "4668c19c462b534c728a0b55a947171681e92ed930b7349e48be40573b3815ef",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer af0b541cf454; candidate CAND-013; not visual approval",
+            "entry_id": "af0b541cf454"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "vintage_engraving",
+        "style_id": "STYLE-113",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-113/krea2_base",
+        "known_limitations": [],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-013",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-113_best.png",
+          "sha256": "5636da56caa4c95b854fa3cf99d9d95a5703b9a88d498d29218eb658db68830f",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "impasto_painterly"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-114",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "3168731cec70ed1731faec343f47dbf396b05dbea4db1bc8a1072d4c7ac33188",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer cd08de37ef98; candidate CAND-014; not visual approval",
+            "entry_id": "cd08de37ef98"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "150a41a86d814e8297ced1e6c0eff2f9bdbc28418995083434b5bcd2683c94a0",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer cd08de37ef98; candidate CAND-014; not visual approval",
+            "entry_id": "cd08de37ef98"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "impasto_painterly",
+        "style_id": "STYLE-114",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-114/krea2_base",
+        "known_limitations": [],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-014",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-114_best.png",
+          "sha256": "ab21b479cc7ccf4aec0bc2af4b2fc088153211039e51bff95fda71dd6d959d45",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "duotone_risograph"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-115",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "a16a1f0751d738ac43d6038c0e289a9c25da1710bd7e0da3be8f577748aa1806",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer f85870d45ffe; candidate CAND-015; not visual approval",
+            "entry_id": "f85870d45ffe"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "ae03faf061a7b5b0eddc9e3d6164c47684c36850b6cd8ea1e0a62960e6d14e0b",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer f85870d45ffe; candidate CAND-015; not visual approval",
+            "entry_id": "f85870d45ffe"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "duotone_risograph",
+        "style_id": "STYLE-115",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-115/krea2_base",
+        "known_limitations": [
+          "EQUIPMENT_GEOMETRY_AMBIGUOUS"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-015",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-115_best.png",
+          "sha256": "3058c05445cf9430383ecab44fb4996c29861d0a33091ea290515d663fd1846c",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "punk_photocopy_zine"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-116",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "9c3fbf747f735bf9009dca53c561031f1941039431a7c9ad6ea101ba2c6f7747",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 960625243657; candidate CAND-016; not visual approval",
+            "entry_id": "960625243657"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "79af04aad075724e4474da86ea8115d345e40231ab2a76ab24cc4654b44183c6",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 960625243657; candidate CAND-016; not visual approval",
+            "entry_id": "960625243657"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "punk_photocopy_zine",
+        "style_id": "STYLE-116",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-116/krea2_base",
+        "known_limitations": [
+          "EXTRA_CHARACTER"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-016",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-116_best.png",
+          "sha256": "55f1e55aa92abf48954269201e43e5fa37752e08b398daff685be5d195e36452",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "flat_vector_editorial",
+      "style_selection_policy": "style_fidelity"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-117",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "21a28c19216c48a39c9383cfd9ff8359d70f4e0e545162df254b5d7b3e4d7f97",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 64964c86fc9d; candidate CAND-017; not visual approval",
+            "entry_id": "64964c86fc9d"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "f357e1373b7f301fc34eb092cdffacd500c8dd45b52bbcd8614b73f681ec76eb",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 64964c86fc9d; candidate CAND-017; not visual approval",
+            "entry_id": "64964c86fc9d"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "flat_vector_editorial",
+        "style_id": "STYLE-117",
+        "primary_model": "krea2_base",
+        "selection_policy": "style_fidelity",
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-117/krea2_base",
+        "known_limitations": [
+          "FACE_READABILITY_FAILED"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-017",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-117_best.png",
+          "sha256": "24fbf381b4c02568dcdf8c9f73a80c4f2fb1abf52bdebae37d3044b700d791fb",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "flat_vector_editorial",
+      "style_selection_policy": "character_readability"
+    },
+    "decision": {
+      "selected_workflow": "anima_turbo",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "krea2_base": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-117",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "21a28c19216c48a39c9383cfd9ff8359d70f4e0e545162df254b5d7b3e4d7f97",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 64964c86fc9d; candidate CAND-017; not visual approval",
+            "entry_id": "64964c86fc9d"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "01e13ad95254d22acc849d96b672117baa5b90b029491aad0bc06b644d46e5b7",
+        "workflow_id": "anima_turbo",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 64964c86fc9d; candidate CAND-017; not visual approval",
+            "entry_id": "64964c86fc9d"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "flat_vector_editorial",
+        "style_id": "STYLE-117",
+        "primary_model": "anima_turbo",
+        "selection_policy": "character_readability",
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-117/anima_turbo",
+        "known_limitations": [
+          "FACE_READABILITY_FAILED"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-017",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-117_best.png",
+          "sha256": "24fbf381b4c02568dcdf8c9f73a80c4f2fb1abf52bdebae37d3044b700d791fb",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "mixed_media_collage"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-118",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "afcd95a05209b2213ab1f18fde4d8ffde5eb779220e71ee77b2e6f36040665c0",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 77f621a958d9; candidate CAND-018; not visual approval",
+            "entry_id": "77f621a958d9"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "93ef49f8f343300f3abfb02f1255dca1ec6018ae5ae41f5156587c864ebcd716",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 77f621a958d9; candidate CAND-018; not visual approval",
+            "entry_id": "77f621a958d9"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "mixed_media_collage",
+        "style_id": "STYLE-118",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-118/krea2_base",
+        "known_limitations": [
+          "FACE_READABILITY_FAILED",
+          "BACKGROUND_FIGURE_AMBIGUOUS"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-018",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-118_best.png",
+          "sha256": "2bf9240baf4fa0717be0be5fa671093c9868cdbf2edd6b4b21f34eaa2949d627",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "graphic_neon_cyberpunk"
+    },
+    "decision": {
+      "selected_workflow": "anima_base_rebuilt",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "krea2_base": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-119",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "d576e0b9b504aa0b6f854dcea81e34780dfe16f52c01c0abaf789504069a5b4b",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer c6b9ccfa8cca; candidate CAND-019; not visual approval",
+            "entry_id": "c6b9ccfa8cca"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "3bbc6cb9c9ca157211ee89bce0846c2f3ab263f0acaf0e73d6250ddfaba05cfc",
+        "workflow_id": "anima_base_rebuilt",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer c6b9ccfa8cca; candidate CAND-019; not visual approval",
+            "entry_id": "c6b9ccfa8cca"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "graphic_neon_cyberpunk",
+        "style_id": "STYLE-119",
+        "primary_model": "anima_base_rebuilt",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-119/anima_base_rebuilt",
+        "known_limitations": [
+          "WRONG_IMAGE_SIDE"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-019",
+          "model": "anima_base_rebuilt",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-119_best.png",
+          "sha256": "f7eebec1b13e2008cfeb728009851480744b922eb45f124f3310ee05e10a0173",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "inked_dark_fantasy"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-120",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "63de8dcfde952855cc39d57a45b9d1bb5233907eaa0f652d6fa7f6e86dc577e4",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer dc53ab5f5a17; candidate CAND-020; not visual approval",
+            "entry_id": "dc53ab5f5a17"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "01f0d8ac7cdc31173dc42526c91f3ac6606f776478d60e07ec48cea45ee914a5",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer dc53ab5f5a17; candidate CAND-020; not visual approval",
+            "entry_id": "dc53ab5f5a17"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "inked_dark_fantasy",
+        "style_id": "STYLE-120",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-120/krea2_base",
+        "known_limitations": [
+          "FACE_READABILITY_FAILED",
+          "HAIR_IDENTITY_DRIFT"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-020",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-120_best.png",
+          "sha256": "f631cd125170d7273043f25637d2530a77091100f814cb35a8999200b96b8c46",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "clean_dreamcore_surreal"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-121",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "0e4d19ab8be7e775b3042d305fed990aa3d5db0301c379ee747fc270babfcc1b",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 00f0d9768d93; candidate CAND-021; not visual approval",
+            "entry_id": "00f0d9768d93"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "7466c23562de8091f4555c0a955e650017af6c8c22b738e81d7f119aed4340f4",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 00f0d9768d93; candidate CAND-021; not visual approval",
+            "entry_id": "00f0d9768d93"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "clean_dreamcore_surreal",
+        "style_id": "STYLE-121",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-121/krea2_base",
+        "known_limitations": [],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-021",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-121_best.png",
+          "sha256": "65b78c90cfb765ad25ee7d6d4155d6436b0624c67cdf417e0749e1789cb209b9",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "retro_airbrush_future"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-122",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "d5df475b58575df4fed7e90b0e93def9a8ec1478acf52334216486c8c8c82603",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer aef97ec94d3f; candidate CAND-022; not visual approval",
+            "entry_id": "aef97ec94d3f"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "5a437dd920af359e67f0ed451b2671ad33fb77d3eca0abdb56337dc07ff324bb",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer aef97ec94d3f; candidate CAND-022; not visual approval",
+            "entry_id": "aef97ec94d3f"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "retro_airbrush_future",
+        "style_id": "STYLE-122",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-122/krea2_base",
+        "known_limitations": [
+          "FACE_READABILITY_FAILED"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-022",
+          "model": "krea2_base",
+          "seed": 7725,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-122_best.png",
+          "sha256": "91996570581f64de5e4dc6e2076c9aafc27e02aa8e2ea3b00a873bdfbb019507",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "clay_toy_character"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-123",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "1d29b39b76c5a422637fc2d3a1683e4950c7dc676060a08e53ce4e2cd1e7b9f6",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 699838cf2d6c; candidate CAND-023; not visual approval",
+            "entry_id": "699838cf2d6c"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "76998a79f70fbd82387eddfbf0e7d609545699aa9bff8f950ce3be62bf6da640",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer 699838cf2d6c; candidate CAND-023; not visual approval",
+            "entry_id": "699838cf2d6c"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "clay_toy_character",
+        "style_id": "STYLE-123",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-123/krea2_base",
+        "known_limitations": [],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-023",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-123_best.png",
+          "sha256": "f8d9087277af7dcc419deeb3eefa561214caf6a5a69d413bb83fdc2f73575b44",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  },
+  {
+    "brief": {
+      "asset_id": "regression",
+      "asset_type": "character",
+      "output_class": "NONPIXEL_IMAGE",
+      "purpose": "game asset candidate",
+      "source": {
+        "type": "PROMPT",
+        "paths": [],
+        "references": []
+      },
+      "identity": {
+        "canonical_traits": [],
+        "visual_traits": []
+      },
+      "constraints": {
+        "resolution": null,
+        "transparency": null,
+        "palette": [],
+        "silhouette": null,
+        "style": null
+      },
+      "animation": {
+        "action": null,
+        "frame_target": null,
+        "motion_constraints": []
+      },
+      "workflow_preferences": {},
+      "forbidden_elements": [],
+      "unspecified_elements": [
+        "identity",
+        "resolution",
+        "palette",
+        "silhouette",
+        "style"
+      ],
+      "source_notes": [
+        {
+          "classification": "EXPLICIT",
+          "text": "An adult traveler specified by game canon.",
+          "source": "user input"
+        }
+      ],
+      "prompt": "An adult traveler specified by game canon.",
+      "art_style": "voxel_diorama"
+    },
+    "decision": {
+      "selected_workflow": "krea2_base",
+      "output_class": "NONPIXEL_IMAGE",
+      "matching_tags": [
+        "character"
+      ],
+      "selection_reason": "explicit compatible workflow; style priority: Visual SOT > approved project Style Pack > common catalog > model defaults",
+      "fallback_candidates": [],
+      "rejected_candidates": {
+        "anima_pixelate_x4_vae": "output_class mismatch",
+        "anima_base": "requested model_profile mismatch",
+        "anima_base_rebuilt": "requested model_profile mismatch",
+        "anima_turbo": "requested model_profile mismatch",
+        "tomohi_character": "requested model_profile mismatch",
+        "minimax_character_motion_reference": "output_class mismatch",
+        "nonpixel_motion_contract": "output_class mismatch",
+        "audio_stable_audio_3_medium": "output_class mismatch",
+        "codex_imagegen": "requested model_profile mismatch",
+        "grok_imagine": "requested model_profile mismatch"
+      },
+      "execution_mode": "GENERATE",
+      "required_capabilities": [
+        "text_to_image"
+      ],
+      "style_selection": {
+        "style_id": "STYLE-124",
+        "selection_source": "COMMON_STYLE_CATALOG",
+        "selection_file": "config/styles/catalog.yaml",
+        "style_version": "1.0.0",
+        "style_sha256": "a13acb7c21bd708847c8febf82f6222033cc9558de43beca62bbafbf9556a4de",
+        "style_status": "UNTESTED",
+        "sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer d56af712ee40; candidate CAND-024; not visual approval",
+            "entry_id": "d56af712ee40"
+          }
+        ],
+        "locked": false,
+        "recipe_version": "1.0.0",
+        "recipe_status": "UNTESTED",
+        "recipe_sha256": "14b3d2c449985524b8e9aeefeaf330c177e775222f6f462aabfa24f89edf8533",
+        "workflow_id": "krea2_base",
+        "recipe_sources": [
+          {
+            "url": "https://github.com/ThetaCursed/Krea2-Style-Explorer/blob/eb690aa57bc6974af6b4b3b8c5a780195bcadf78/app/data.js",
+            "description": "Model-neutral adaptation of Explorer d56af712ee40; candidate CAND-024; not visual approval",
+            "entry_id": "d56af712ee40"
+          }
+        ],
+        "evidence": null,
+        "recipe_file": "config/styles/model_recipes.yaml",
+        "reason": "explicit compatible workflow"
+      },
+      "style_menu": {
+        "art_style": "voxel_diorama",
+        "style_id": "STYLE-124",
+        "primary_model": "krea2_base",
+        "selection_policy": null,
+        "recipe": "config/styles/model_recipes.yaml#recipes/STYLE-124/krea2_base",
+        "known_limitations": [
+          "CAMERA_VIEW_DRIFT"
+        ],
+        "review_state": "REVIEW_REQUIRED",
+        "fallback_policy": "NONE_AUTOMATIC",
+        "exemplar": {
+          "candidate_id": "CAND-024",
+          "model": "krea2_base",
+          "seed": 7726,
+          "path": "research/style_catalog/style_menu_v1/previews/STYLE-124_best.png",
+          "sha256": "c525f7b61a39e6fdc39f3b8d487738601c67c2b6c31336528a18b30a2a2e85f6",
+          "selection_reason": "Style-fidelity exemplar; does not imply full fixture pass",
+          "approval": "REVIEW_REQUIRED"
+        },
+        "source": "USER_SELECTED_STYLE_MENU"
+      }
+    }
+  }
+]

@@ -9,10 +9,15 @@ def satisfied(capabilities, capability):
 
 def route(brief, registry, root=None):
     validate(brief)
-    from ..styles import resolve_style, select_recipe, public_selection
     root = root or getattr(registry, 'root', None)
     from ..styles.menu import bind_menu
-    brief, menu_decision = bind_menu(brief, root)
+    brief, menu_decision = bind_menu(brief, root, registry)
+    return _route_bound(brief, registry, root, menu_decision)
+
+
+def _route_bound(brief, registry, root, menu_decision=None):
+    """Shared capability/recipe checks for already bound Briefs and offline plans."""
+    from ..styles import resolve_style, select_recipe, public_selection
     if brief.get('style_id') and root is None:
         raise ValueError('Style routing requires a configuration root')
     style = resolve_style(brief, root) if root is not None else None
@@ -102,4 +107,10 @@ def route(brief, registry, root=None):
     if menu_decision:
         decision['style_menu'] = menu_decision
         decision['fallback_candidates'] = []
+        if menu_decision.get('override'):
+            decision['override'] = menu_decision['override']
+            decision['override']['style_sha256'] = decision['style_selection']['style_sha256']
+            decision['override']['recipe'] = decision['style_selection']
+            decision['override']['rejected_routes'] = rejections
+            decision['selection_reason'] = decision['override']['route_decision'] + '; explicit approved run-scoped override'
     return decision

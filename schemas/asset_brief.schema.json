@@ -1,6 +1,63 @@
 {
   "type": "object",
   "properties": {
+    "subject_domain": {
+      "enum": [
+        "character",
+        "aircraft",
+        "vehicle",
+        "mecha",
+        "architecture",
+        "creature",
+        "environment",
+        "prop",
+        "ui_illustration"
+      ]
+    },
+    "style_lock": {
+      "type": "boolean",
+      "default": true
+    },
+    "model_override": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow_override": {
+      "type": "string",
+      "minLength": 1
+    },
+    "executor_override": {
+      "enum": [
+        "codex",
+        "grok",
+        "claude",
+        "local_python"
+      ]
+    },
+    "override_mode": {
+      "enum": [
+        "USER_MANUAL",
+        "SUBJECT_RESCUE"
+      ]
+    },
+    "override_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "override_approval": {
+      "type": "string",
+      "minLength": 1
+    },
+    "failure_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "generation_authorization": {
+      "type": "string",
+      "minLength": 1
+    },
     "art_direction": {
       "type": "object",
       "additionalProperties": false,
@@ -32,9 +89,19 @@
         }
       }
     },
+    "art_style": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "style_selection_policy": {
+      "enum": [
+        "style_fidelity",
+        "character_readability"
+      ]
+    },
     "style_id": {
       "type": "string",
-      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
     },
     "project_id": {
       "type": "string",
@@ -318,7 +385,8 @@
                 "front",
                 "rear",
                 "left",
-                "right"
+                "right",
+                "three_quarter"
               ]
             },
             "equipment": {
@@ -352,6 +420,12 @@
                       "rear",
                       "left",
                       "right"
+                    ]
+                  },
+                  "subject_side": {
+                    "enum": [
+                      "SUBJECT_LEFT",
+                      "SUBJECT_RIGHT"
                     ]
                   }
                 }
@@ -410,6 +484,10 @@
               "const": true
             }
           }
+        },
+        "style_contract_id": {
+          "type": "string",
+          "pattern": "^STYLE-[0-9]{3}$"
         },
         "subject": {
           "type": "string",
