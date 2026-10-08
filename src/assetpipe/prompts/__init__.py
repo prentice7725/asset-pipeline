@@ -137,6 +137,11 @@ def compile_prompt(brief, workflow, root):
     brief, menu_decision = bind_menu(brief, root)
     if menu_decision and brief['workflow_preferences']['id'] != workflow['id']:
         raise ValueError('Workflow conflicts with style menu binding')
+    return _compile_bound_prompt(brief, workflow, root, menu_decision)
+
+
+def _compile_bound_prompt(brief, workflow, root, menu_decision=None):
+    """Existing compiler for bound runtime Briefs or advisory rescue candidates."""
     from ..styles import resolve_style, select_recipe, apply_style, public_selection
     spec = from_brief(brief)
     contract_id = spec.get('style_contract_id')

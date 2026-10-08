@@ -31,6 +31,10 @@ def main(argv=None):
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
+    rescue = commands.add_parser('rescue-plan', help='Propose at most three subject rescue candidates; never generates')
+    rescue.add_argument('--brief', type=Path, required=True)
+    rescue.add_argument('--output', type=Path, required=True)
+    rescue.add_argument('--inspect-installation', action='store_true', help='Read live ComfyUI node/model inventories; no generation')
     prompt_parser = commands.add_parser('compile-prompt', help='Compile canonical PromptSpec for the selected workflow without generating')
     prompt_parser.add_argument('--brief', required=True, type=Path)
     prompt_parser.add_argument('--output', required=True, type=Path)
@@ -85,7 +89,11 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'knowledge':
+        if args.command == 'rescue-plan':
+            from ..styles.overrides import propose_rescue
+            write(args.output, propose_rescue(load(args.brief), args.root, inspect_installation=args.inspect_installation))
+            print(args.output)
+        elif args.command == 'knowledge':
             from ..knowledge import build_snapshot, inspect, scan_expected_weights
             if (args.hash_models or args.discover_unregistered) and not args.models_root:
                 raise ValueError('--hash-models/--discover-unregistered require explicit --models-root')
