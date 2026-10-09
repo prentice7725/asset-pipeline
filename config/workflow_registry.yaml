@@ -334,6 +334,7 @@ workflows:
       status: PASS
       missing: []
   krea2_base:
+    delivery_resolution_multiple: 8
     model_profile: krea2
     output_class: NONPIXEL_IMAGE
     engine: comfyui

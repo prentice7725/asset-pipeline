@@ -115,6 +115,9 @@ def build_review(run, *, image=None, display_size=None, matte=(255, 255, 255)):
                 ('thumbnail_readability', 'grayscale_value_masses', 'blurred_shadow_groups', 'background_noise')}},
         }
     compiled = manifest.get('generation', {}).get('compiled_prompt', {})
+    if compiled.get('exclusion_review'):
+        report['exclusion_review'] = copy.deepcopy(compiled['exclusion_review'])
+        report['portrait_delivery'] = copy.deepcopy(manifest.get('portrait_delivery', []))
     if compiled.get('style_contract_review'):
         report['style_contract_review'] = copy.deepcopy(compiled['style_contract_review'])
         report['style_contract_review']['status'] = 'NOT_REVIEWED'

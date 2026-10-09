@@ -173,7 +173,9 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     profile = profiles['profiles'][profile_id]
     spec = validate_spec(spec)
     caps = workflow['capabilities']
-    spec = prepare_spec(spec, brief, caps, style_context)
+    from .exclusion_policy import instruction_review_allowed, review_template, MODE
+    instruction_review = instruction_review_allowed(brief, style_context, workflow['id'])
+    spec = prepare_spec(spec, brief, caps, style_context, instruction_review=instruction_review)
     adapter = profile['prompt_adapter']
     style_contract = None
     style_contract_compilation = None
@@ -205,7 +207,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
     contract_forbidden = style_contract_compilation['forbidden_negative_terms'] if style_contract_compilation else []
     negative_items = list(dict.fromkeys(profile_negative + spec.get('negative', []) + contract_forbidden + contract_negative_guards))
     # 자연어 금지 지시는 프롬프트 안의 문장일 뿐 모델이 보장하지 않으므로, 네이티브 negative prompt와 구분한다.
-    instructed_negative = adapter == 'natural_language' and bool(caps.get('negative_prompt_instruction'))
+    instructed_negative = (adapter == 'natural_language' and bool(caps.get('negative_prompt_instruction'))) or instruction_review
     if negative_items and not (native_negative or instructed_negative):
         raise ValueError('Selected workflow does not support negative prompts')
     if spec.get('textInImage') and not caps.get('text_rendering'):
@@ -253,7 +255,9 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
             positive += '\n' + tail
     if spec.get('textInImage') and adapter != 'natural_language':
         positive += ' Text in the image: ' + ', '.join(json.dumps(t, ensure_ascii=False) for t in spec['textInImage']) + '.'
-    negative_mode = 'NONE' if not negative_items else 'NATURAL_LANGUAGE_INSTRUCTION' if instructed_negative else 'NATIVE'
+    if instruction_review and negative_items:
+        positive += '\nStrictly do not include any of the following: ' + '; '.join(negative_items) + '.'
+    negative_mode = MODE if instruction_review else 'NONE' if not negative_items else 'NATURAL_LANGUAGE_INSTRUCTION' if instructed_negative else 'NATIVE'
     result = {'schema_version': 1, 'adapter': adapter, 'profile_id': profile_id,
             'profile_sha256': hashlib.sha256(json.dumps(profile, sort_keys=True).encode()).hexdigest(),
             'prompt_spec': spec, 'positive': positive, 'negative': '' if instructed_negative else ', '.join(negative_items),
@@ -266,6 +270,12 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         from ..styles.contracts import style_contract_review_template
         result['style_contract_compilation'] = style_contract_compilation
         result['style_contract_review'] = style_contract_review_template(style_contract)
+    if instruction_review:
+        result['exclusion_review'] = review_template(negative_items)
+    from ..portrait_delivery import profile as delivery_profile
+    delivery = delivery_profile(brief, root, workflow['id'])
+    if delivery:
+        result['delivery_profile'] = delivery
     if spatial['mappings']:
         result['spatial_relationships'] = spatial['mappings']
     if spec.get('subject_integrity'):
@@ -292,6 +302,9 @@ def workflow_values(compiled, workflow, brief):
             if resolution[0] * h != resolution[1] * w:
                 raise ValueError('PromptSpec aspect ratio conflicts with explicit resolution')
         values['width'], values['height'] = resolution
+        if compiled.get('delivery_profile'):
+            multiple = workflow.get('delivery_resolution_multiple', 8)
+            values['width'], values['height'] = [(v + multiple - 1) // multiple * multiple for v in resolution]
     elif ratio:
         w, h = map(int, ratio.split(':'))
         base = min(values['width'], values['height'])

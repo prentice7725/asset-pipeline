@@ -17,6 +17,7 @@
         "class": {
           "enum": [
             "full_character",
+            "character_portrait",
             "costume_item",
             "prop",
             "environment"
@@ -113,6 +114,7 @@
         "focal_target": {
           "enum": [
             "full_character",
+            "character_portrait",
             "costume_item",
             "prop",
             "environment"
