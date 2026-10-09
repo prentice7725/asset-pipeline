@@ -3,6 +3,10 @@ from ...providers.comfyui import ComfyUIProvider
 from ...qa import basic_image_qa
 
 def run(brief, workflow, config, directory, manifest, seed):
+    from ...portrait_delivery import profile, preflight, process
+    delivery = profile(brief, config.root, workflow['id'])
+    if delivery:
+        preflight(delivery)
     engine = workflow.get('engine', 'comfyui')
     external = engine in CLI_ENGINES
     if not external:
@@ -18,6 +22,22 @@ def run(brief, workflow, config, directory, manifest, seed):
         manifest['generation']['provider'] = result.record
     if not paths:
         raise ValueError('Generation produced no outputs')
+    compiled_path = directory / '010_generation' / 'compiled_prompt.json'
+    if compiled_path.is_file():
+        import json
+        compiled = json.loads(compiled_path.read_text(encoding='utf-8'))
+        manifest['generation']['compiled_prompt'] = compiled
+        if compiled.get('exclusion_review'):
+            manifest['exclusion_review'] = compiled['exclusion_review']
+    elif delivery:
+        raise ValueError('Portrait delivery requires preserved compiled prompt evidence')
+    if delivery:
+        manifest['generation']['raw_outputs'] = [str(path) for path in paths]
+        processed = [process(path, brief['constraints']['resolution'], delivery,
+                             directory / '020_delivery' / str(index)) for index, path in enumerate(paths)]
+        paths = [row[0] for row in processed]
+        manifest['portrait_delivery'] = [row[1] for row in processed]
+        manifest['delivery_ready'] = False
     reports = [basic_image_qa(path, brief, external_engine=external) for path in paths]
     manifest['qa_results'].extend(reports)
     failed = [reason for report in reports for reason in report['reasons']]

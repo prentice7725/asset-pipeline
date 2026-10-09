@@ -2,7 +2,7 @@
 import copy
 import re
 
-CLASSES = ['full_character', 'costume_item', 'prop', 'environment']
+CLASSES = ['full_character', 'character_portrait', 'costume_item', 'prop', 'environment']
 TEXT = {'type': 'string', 'minLength': 1}
 STRINGS = {'type': 'array', 'uniqueItems': True, 'items': TEXT}
 INTEGRITY_SCHEMA = {
@@ -67,6 +67,11 @@ def validate_contract(spec, brief=None, style_context=None, *, check_style=True)
     if kind == 'full_character':
         if integrity.get('whole_subject_required') is not True or integrity.get('physically_connected_body') is not True:
             raise ValueError('Full character requires explicit whole-subject and connected-body locks')
+    elif kind == 'character_portrait':
+        if integrity.get('whole_subject_required') is True:
+            raise ValueError('BRIEF_COMPOSITION_CONFLICT: portrait cannot require the whole character in frame')
+        if integrity.get('physically_connected_body') is not True or not integrity.get('mandatory_parts'):
+            raise ValueError('Portrait requires explicit connected-body and source-required visible parts')
     elif integrity.get('physically_connected_body') or integrity.get('mandatory_parts'):
         raise ValueError('SUBJECT_CLASS_CONFLICT: non-character subject cannot acquire body requirements')
     source_view = camera_from_source(spec)
@@ -132,7 +137,7 @@ def assessment_limits(spec):
     }
 
 
-def prepare_spec(spec, brief, caps, style_context=None):
+def prepare_spec(spec, brief, caps, style_context=None, *, instruction_review=False):
     validate_contract(spec, brief, style_context)
     if 'subject_integrity' not in spec:
         return spec
@@ -155,7 +160,7 @@ def prepare_spec(spec, brief, caps, style_context=None):
         raise ValueError('SUBJECT_SOURCE_CONFLICT: recipe removed forbidden requirements')
     spec = copy.deepcopy(spec)
     substitutes = spec['subject_integrity'].get('forbidden_substitutions', [])
-    if substitutes and not caps.get('negative_prompt'):
+    if substitutes and not caps.get('negative_prompt') and not instruction_review:
         raise ValueError('Subject forbidden substitutions require native negative prompt support')
     spec['negative'] = list(dict.fromkeys(spec.get('negative', []) + substitutes))
     return spec
@@ -171,6 +176,8 @@ def subject_lead(spec, adapter):
         lead += '.'
         if adapter in {'anima', 'anima_hybrid'}:
             lead += ' Full body, complete character.'
+    elif kind == 'character_portrait':
+        lead = f"Depict the character portrait described here: {spec['subject']}. Preserve the source crop and keep the visible body parts physically connected."
     else:
         lead = f"Depict the {kind.replace('_', ' ')} described here: {spec['subject']}."
         if integrity.get('whole_subject_required'):

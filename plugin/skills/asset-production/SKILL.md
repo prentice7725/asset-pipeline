@@ -47,6 +47,17 @@ Read them only when historical evidence or a separately authorized study is need
 The operational nonpixel menu does not authorize pixel experiments or change
 PIXEL/SFX routes. Project SOT identity and output contracts remain authoritative.
 
+Project adaptations must include the registered `project_id`; set
+`project_contract_required: true` when common-catalog fallback is prohibited.
+The isekai examiner portrait binding is `project_id: isekai_examiner`,
+`asset_type: character_portrait`. Its source-backed adaptation is scoped to
+portraits; environments have no selected route. Use the portrait subject class
+and source-defined visible parts, not a full-character framing lock. Do not mix
+the unchanged common structured STYLE-104 contract with project free-text style.
+See [project portrait handoff](../../references/PROJECT_PORTRAIT_HANDOFF.md).
+Krea2 alpha, native negatives and arbitrary delivery dimensions remain blocked
+until supported and validated; never remove project requirements to route.
+
 For a user asking how to design a project's own reference, model choice or style,
 read [Style Intelligence](../../references/STYLE_INTELLIGENCE.md)
 and the live model/workflow/style registries. The handbook is pipeline-side usage

@@ -1,0 +1,119 @@
+version: 1.0.0
+source: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
+review_state: REVIEW_REQUIRED
+asset_class_contracts:
+  environment_background_layer:
+    source: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
+    review_state: REVIEW_REQUIRED
+    art_style: watercolor_storybook
+    style_id: STYLE-111
+    workflow_id: krea2_base
+    model_profile: krea2
+    exclusion_policy:
+      mode: POSITIVE_TEXT_INSTRUCTION_REVIEW_REQUIRED
+      workflow_id: krea2_base
+      human_review_required: true
+    style:
+      version: 1.0.0
+      status: UNTESTED
+      expression:
+      - Project adaptation of STYLE MENU v1 STYLE-111 watercolor_storybook for the
+        Day 01 wall layer.
+      colors:
+      - Preserve source-defined warm ivory wall and pale marble treatment; do not
+        impose sepia or brown-gold color grading.
+      linework:
+      - Delicate ink contours; keep the wide wall plane quiet and readable at game-screen
+        scale.
+      shading:
+      - Soft transparent watercolor washes with even neutral office lighting.
+      texture:
+      - Restrained watercolor paper grain and wash texture; avoid heavy impasto.
+      forbidden_elements: []
+      required_capabilities: []
+      sources:
+      - url: https://github.com/prentice7725/asset-pipeline/blob/5d6353ffa58a05e80a1821d402ca29fdf67da6cf/config/styles/style_menu_v1.yaml
+        description: User-selected STYLE MENU v1 STYLE-111; review state remains REVIEW_REQUIRED.
+      - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
+        description: Day 01 environment SOT controls wall palette, public-office function
+          and background hierarchy.
+      - url: C:/workspace/isekai/workspace/asset-pipeline_handoff_20261008/iex_env_day01_backwall_style111_source_extract.md
+        description: Source-grounded extraction for the wall-only opaque candidate.
+    recipes:
+      STYLE-111:
+        krea2_base:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: 405aa4d75d13e1cb1100bd7b2f96c79a846d05a0fa4b25e7f497fb974a40d97a
+          model_profile: krea2
+          positive:
+          - Storybook watercolor illustration with delicate ink contours and soft
+            translucent washes.
+          - Keep the wide public-service office wall quiet; preserve warm ivory and
+            pale marble roles under bright even neutral light.
+          - Use restrained paper grain; practical maintained construction with only
+            source-authorized architectural forms.
+          negative: []
+          required_capabilities: []
+          sources:
+          - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
+            description: Project environment adaptation; recipe is untested and not
+              art approval.
+  character_portrait:
+    delivery_profile:
+      workflow_id: krea2_base
+      operation: LOCAL_MASK_UNIFORM_CONTAIN
+      human_review_required: true
+      model_path: C:/workspace/asset-pipeline/workspace/local_models/u2netp.onnx
+      model_roots:
+      - C:/workspace/asset-pipeline/workspace/local_models
+    exclusion_policy:
+      mode: POSITIVE_TEXT_INSTRUCTION_REVIEW_REQUIRED
+      workflow_id: krea2_base
+      human_review_required: true
+    art_style: modern_flat_manga
+    style_id: STYLE-104
+    workflow_id: krea2_base
+    model_profile: krea2
+    style:
+      version: 1.0.0
+      status: UNTESTED
+      expression:
+      - Project portrait adaptation of flat manga; preserve the applicant's source-defined
+        identity and age.
+      colors:
+      - Low to low-medium saturation; preserve source-defined colors and leave unspecified
+        colors unapproved.
+      linework:
+      - Thin clean dark lines; minimal eye highlights and iris detail.
+      shading:
+      - Simple 2–3-step cel shading; skin in large color planes with minimal cheek
+        and nose gradients.
+      texture:
+      - Hair in large silhouette masses rather than fine strands; clothing defined
+        by shape and collar construction.
+      forbidden_elements: []
+      required_capabilities: []
+      sources:
+      - url: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
+        description: Portrait adaptation supersedes the common bold, saturated STYLE-104
+          appearance; it is not art approval.
+      - url: https://drive.google.com/file/d/103t3T4Wvg1cAoxBC-kgfDdSyGHJNU6Eh/view
+        description: Portrait crop, neutral office lighting, 1212x1300 PNG RGBA and
+          human review requirements.
+    recipes:
+      STYLE-104:
+        krea2_base:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: 141f12de1e90ef52b3dc3f6a7d820cab25f47a898e7077e6c7ad93ea5463c168
+          model_profile: krea2
+          positive:
+          - Flat functional neutral office light; near-frontal 0–10 degree head-to-chest
+            portrait with common camera distance and eye line.
+          negative: []
+          required_capabilities: []
+          sources:
+          - url: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
+            description: Source-grounded project adaptation; no generation evidence
+              or human art approval.
