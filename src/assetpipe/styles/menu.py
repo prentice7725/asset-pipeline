@@ -12,8 +12,8 @@ def bind_menu(brief, root, registry=None):
         return result, None
     root = Path(root).resolve()
     project = result.get('project_id', 'default')
-    sot_path = root / 'config/styles/projects' / project / 'visual_sot.yaml'
-    sot = yaml.safe_load(sot_path.read_text(encoding='utf-8')) or {} if sot_path.exists() else {}
+    from .project import project_sot
+    sot, sot_path = project_sot(result, root)
     if not isinstance(sot, dict):
         raise ValueError('Visual SOT must be a mapping')
     asset_bindings = sot.get('asset_model_bindings', {})
@@ -107,6 +107,9 @@ def bind_menu(brief, root, registry=None):
             raise ValueError('SOT_BINDING_CONFLICT: project model binding precedes rescue; request USER_MANUAL exception')
         binding = {'workflow_id': selected['id'], 'model_profile': selected['model_profile'],
                    'recipe': 'config/styles/model_recipes.yaml#recipes/' + style_id + '/' + selected['id']}
+    project_recipe = sot.get('recipes', {}).get(style_id, {}).get(binding['workflow_id'])
+    if project_recipe is not None:
+        binding['recipe'] = sot_path.relative_to(root).as_posix() + '#recipes/' + style_id + '/' + binding['workflow_id']
     preferences = result['workflow_preferences']
     if preferences.get('id') not in (None, binding['workflow_id']) or preferences.get('model_profile') not in (None, binding['model_profile']):
         raise ValueError('Explicit workflow/model conflicts with style menu binding')
@@ -121,6 +124,9 @@ def bind_menu(brief, root, registry=None):
                 'known_limitations': item['known_limitations'], 'review_state': item['review_state'],
                 'fallback_policy': 'NONE_AUTOMATIC', 'exemplar': item['exemplar'],
                 'source': 'PROJECT_VISUAL_SOT' if locked else 'USER_SELECTED_STYLE_MENU'}
+    if project_recipe is not None:
+        decision['source_file'] = 'config/styles/style_menu_v1.yaml'
+        decision['menu_candidate_id'] = item.get('exemplar', {}).get('candidate_id')
     if selection_source:
         decision['binding_source'] = selection_source
         decision['original_binding'] = original

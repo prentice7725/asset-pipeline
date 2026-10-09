@@ -12,6 +12,7 @@ def obj(properties, required=()):
     return {'type': 'object', 'properties': properties, 'required': list(required), 'additionalProperties': False}
 
 SCHEMA = obj({
+    'project_contract_required': {'type': 'boolean'},
     'subject_domain': {'enum': DOMAINS},
     'style_lock': {'type': 'boolean', 'default': True},
     'model_override': {'type': 'string', 'minLength': 1},
@@ -48,6 +49,8 @@ def validate(brief):
     errors = sorted(Draft202012Validator(SCHEMA).iter_errors(brief), key=lambda e: str(e.path))
     if errors:
         raise ValueError('; '.join(f'{".".join(map(str, e.path)) or "brief"}: {e.message}' for e in errors))
+    if brief.get('project_contract_required') and (not brief.get('project_id') or brief['output_class'] != 'NONPIXEL_IMAGE'):
+        raise ValueError('Required project contract needs project_id and NONPIXEL_IMAGE')
     if OVERRIDE_FIELDS & brief.keys():
         if brief['output_class'] != 'NONPIXEL_IMAGE' or not brief.get('art_style'):
             raise ValueError('Override requires NONPIXEL_IMAGE and an explicit art_style')

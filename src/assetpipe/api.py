@@ -64,7 +64,7 @@ def route_brief(brief, root):
         validate(brief)
         decision = route(brief, load_registry(root))
     except ValueError as exc:
-        return {'status': 'BLOCKED', 'selected_pipeline': brief.get('output_class', 'UNKNOWN'), 'selected_workflow': None, 'reason': str(exc), 'required_capabilities': [], 'missing_requirements': [str(exc)], 'fallback_candidates': []}
+        return {'status': 'BLOCKED', 'selected_pipeline': brief.get('output_class', 'UNKNOWN'), 'selected_workflow': None, 'reason': str(exc), 'required_capabilities': [], 'missing_requirements': [str(exc)], 'fallback_candidates': [], **getattr(exc, 'details', {})}
     if brief['source']['type'] == 'DOCUMENTS' and not brief['identity']['canonical_traits']:
         missing.append('Source-backed canonical traits must be extracted into a prepared brief before generation')
     if brief['output_class'] == 'NONPIXEL_ANIMATION':

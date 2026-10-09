@@ -121,7 +121,8 @@ def resolve_style(brief, root):
     catalog_path = root / 'config/styles/catalog.yaml'
     project = root / 'config/styles/projects' / brief.get('project_id', 'default')
     sot_path, pack_path = project / 'visual_sot.yaml', project / 'style_pack.yaml'
-    sot = read(sot_path) if sot_path.exists() else {}
+    from .project import project_sot
+    sot, sot_path = project_sot(brief, root)
     pack = read(pack_path) if pack_path.exists() else {}
     if pack:
         if pack.get('status') != 'APPROVED':
@@ -152,7 +153,9 @@ def resolve_style(brief, root):
     return {'style_id': chosen, 'selection_source': source, 'selection_file': selection_path.relative_to(root).as_posix(),
             'style_version': style['version'], 'style_sha256': style_digest(style), 'style_status': style['status'],
             'sources': style['sources'], 'definition': style, 'locked': bool(locked),
-            '_project_recipes': pack.get('recipes', {}), '_pack_file': pack_path.relative_to(root).as_posix()}
+            '_project_recipes': sot.get('recipes', pack.get('recipes', {})),
+            '_exclusion_policy': sot.get('exclusion_policy', {}),
+            '_pack_file': (sot_path if sot.get('recipes') else pack_path).relative_to(root).as_posix()}
 
 
 def select_recipe(selection, workflow, root, explicit=False):
@@ -195,12 +198,13 @@ def select_recipe(selection, workflow, root, explicit=False):
             'recipe_status': recipe['status'], 'recipe_sha256': digest(recipe), 'workflow_id': workflow['id'],
             'recipe_sources': recipe.get('sources', []), 'evidence': recipe.get('evidence'),
             'recipe_file': selection['_pack_file'] if local is not None else 'config/styles/model_recipes.yaml',
+            '_exclusion_policy': copy.deepcopy(selection.get('_exclusion_policy', {})),
             'reason': 'explicit compatible workflow' if explicit else 'human-approved compatible style/model combination',
             'definition': style, 'recipe': copy.deepcopy(recipe)}
 
 
 def public_selection(selection):
-    return {k: v for k, v in selection.items() if k not in {'definition', 'recipe'}} if selection else None
+    return {k: v for k, v in selection.items() if k not in {'definition', 'recipe'} and not k.startswith('_')} if selection else None
 
 
 def apply_style(spec, selection):
