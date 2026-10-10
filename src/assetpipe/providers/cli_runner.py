@@ -13,6 +13,7 @@ import os
 import re
 import shutil
 import signal
+import stat
 import subprocess
 import tempfile
 import time
@@ -306,6 +307,29 @@ def preserve_outputs(sources: list[Path], destination: Path, allowed_roots=None)
     return rows
 
 
+def session_scope(session_parent: Path, session: str) -> Path:
+    """Bind a reported ID to its real directory, never to a session alias.
+
+    Canonicalize the trusted parent first. Inspect the session entry without
+    following it: Windows junctions are reparse points, not POSIX symlinks.
+    A missing session directory simply supplies no output.
+    """
+    try:
+        scope = Path(session_parent).resolve() / session
+        try:
+            entry = scope.lstat()
+        except FileNotFoundError:
+            return scope
+        reparse = getattr(entry, 'st_file_attributes', 0) & getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0x400)
+        if stat.S_ISLNK(entry.st_mode) or reparse or scope.resolve(strict=True) != scope:
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Reported output session directory is an alias')
+        if not stat.S_ISDIR(entry.st_mode):
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Reported output session is not a directory')
+        return scope
+    except (OSError, RuntimeError) as exc:
+        raise ProviderFailed('OUTPUT_UNCORRELATED', 'Cannot verify output session directory identity') from exc
+
+
 def correlated_images(result, parsed, job, state, *, session_parent):
     """Accept only a newly reported session or this invocation's private workdir.
 
@@ -322,9 +346,7 @@ def correlated_images(result, parsed, job, state, *, session_parent):
     if session:
         if not re.fullmatch(r'[A-Za-z0-9_\-]{1,80}', str(session)):
             raise ProviderFailed('OUTPUT_UNCORRELATED', 'Invalid output session identifier')
-        scope = session_parent / str(session)
-        if not is_within(scope, [session_parent]):
-            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Output session escaped its configured root')
+        scope = session_scope(session_parent, str(session))
         if (any(Path(p).is_relative_to(scope) for p in state['before'])
                 and new_images([scope], state['before'])):
             raise ProviderFailed('OUTPUT_UNCORRELATED', 'Output session was already used before this invocation')
@@ -340,4 +362,6 @@ def correlated_images(result, parsed, job, state, *, session_parent):
             found.append(path)
     if not session and not found and explicit:
         raise ProviderFailed('OUTPUT_UNCORRELATED', 'No reliable output correlation')
+    if session:
+        session_scope(session_parent, str(session))
     return list({str(p.resolve(strict=True)): p.resolve(strict=True) for p in found}.values())

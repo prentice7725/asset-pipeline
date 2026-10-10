@@ -23,6 +23,11 @@ def put(path, value):
     return path
 
 
+def provider_roots(provider, home, session_parent):
+    return provider.snapshot_roots({'CODEX_HOME': str(home), 'GROK_HOME': str(home),
+        'ASSETPIPE_GROK_SESSION_PARENT': str(session_parent)})
+
+
 @pytest.fixture
 def provenance(tmp_path):
     root = tmp_path / 'allowed'
@@ -172,7 +177,7 @@ def test_harvest_correlation(tmp_path, engine, mode):
     provider = object.__new__(CodexCliProvider if engine == 'codex' else GrokCliProvider)
     result = SimpleNamespace(stdout=json.dumps(values))
     parsed = {'session_id': None if mode == 'missing_id' else session, 'values': values}
-    state = {'roots': [home / 'generated_images' if engine == 'codex' else home], 'before': before}
+    state = {'roots': provider_roots(provider, home, parent), 'before': before}
     if mode in ('explicit_other', 'reused'):
         with pytest.raises(ProviderFailed) as exc:
             provider.harvest(result, parsed, SimpleNamespace(work=work), {}, state)
@@ -209,7 +214,33 @@ def test_explicit_and_scanned_session_symlinks_fail_closed(tmp_path, engine):
     values = [{'session_id': 'session_123', 'path': str(parent / 'session_123/image.png')}]
     with pytest.raises(ProviderFailed) as exc:
         provider.harvest(SimpleNamespace(stdout=''), {'session_id': 'session_123', 'values': values},
-            SimpleNamespace(work=work), {}, {'roots': [home / 'generated_images' if engine == 'codex' else home], 'before': {}})
+            SimpleNamespace(work=work), {}, {'roots': provider_roots(provider, home, parent), 'before': {}})
+    assert exc.value.code == 'OUTPUT_UNCORRELATED'
+
+
+@pytest.mark.parametrize('engine', ['codex', 'grok'])
+@pytest.mark.parametrize('kind', ['symlink', 'junction'])
+@pytest.mark.parametrize('explicit', [False, True], ids=['scan', 'explicit'])
+def test_sibling_session_alias_rejected_before_image_access(tmp_path, monkeypatch, engine, kind, explicit):
+    from assetpipe.providers import cli_runner
+    home, work = tmp_path / 'home', tmp_path / 'job'
+    home.mkdir(); work.mkdir()
+    parent = home / ('generated_images' if engine == 'codex' else 'sessions')
+    parent.mkdir()
+    other = parent / 'other_session'
+    other.mkdir()
+    Image.new('RGB', (8, 8)).save(other / 'foreign.png')
+    alias = parent / 'reported_session'
+    link_directory(alias, other, kind)
+    values = [{'session_id': 'reported_session'}]
+    if explicit:
+        values[0]['path'] = str(alias / 'foreign.png')
+    provider = object.__new__(CodexCliProvider if engine == 'codex' else GrokCliProvider)
+    monkeypatch.setattr(cli_runner, 'new_images', lambda *a, **k: pytest.fail('Must reject alias before scanning images'))
+    monkeypatch.setattr(cli_runner, 'usable_image', lambda *a, **k: pytest.fail('Must reject alias before image access'))
+    with pytest.raises(ProviderFailed) as exc:
+        provider.harvest(SimpleNamespace(stdout=''), {'session_id': 'reported_session', 'values': values},
+            SimpleNamespace(work=work), {}, {'roots': provider_roots(provider, home, parent), 'before': {}})
     assert exc.value.code == 'OUTPUT_UNCORRELATED'
 
 
