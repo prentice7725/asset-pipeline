@@ -2,17 +2,16 @@
 
 공식 OpenAI API 키를 직접 쓰지 않고, 사용자가 `codex login`으로 만든 로그인 상태만 사용한다.
 로그인되어 있지 않으면 BLOCKED로 보고하고 생성 요청을 보내지 않는다.
-생성된 이미지는 Codex가 `$CODEX_HOME/generated_images/` 아래에 저장하므로, 실행 시간대에 만들어진 파일만 수집한다.
+생성된 이미지는 Codex가 `$CODEX_HOME/generated_images/` 아래에 저장하므로, 이번 실행에서 보고한 세션에 속한 새 파일만 수집한다.
 """
 from __future__ import annotations
 
 import os
-import re
 from pathlib import Path
 
 from ..base import AVAILABLE, BLOCKED, UNAVAILABLE, Diagnosis
 from ..cli_base import CliImageProvider
-from ..cli_runner import JobDir, image_paths_in, is_new, is_within, new_images, probe, usable_image
+from ..cli_runner import correlated_images, JobDir, probe
 
 
 def codex_home() -> Path:
@@ -84,12 +83,4 @@ class CodexCliProvider(CliImageProvider):
         return [Path(env.get('CODEX_HOME') or codex_home()) / 'generated_images']
 
     def harvest(self, result, parsed, job, env, state):
-        root, before = state['roots'][0], state['before']
-        found: list[Path] = []
-        session = parsed.get('session_id')
-        if session and re.fullmatch(r'[A-Za-z0-9_\-]{6,80}', str(session)) and (root / str(session)).is_dir():
-            found = new_images([root / str(session)], before)
-        if not found:
-            found = new_images([root], before)
-        explicit = [p for p in image_paths_in(parsed['values'], result.stdout) if usable_image(p) and is_within(p, [root, job.work]) and is_new(p, before)]
-        return list({str(p.resolve()): p for p in [*found, *explicit]}.values())
+        return correlated_images(result, parsed, job, state, session_parent=state['roots'][0])

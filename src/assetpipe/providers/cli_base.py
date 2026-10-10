@@ -179,7 +179,7 @@ class CliImageProvider(ImageProvider):
             elif stdin_text is None:
                 stdin_text = prompt_text
             roots = self.snapshot_roots(env)
-            state = {'roots': roots, 'before': snapshot_images(roots)}
+            state = {'roots': roots, 'before': snapshot_images([*roots, job.work])}
             record['retry']['attempts'] = 1
             timeout = float(backend.get('timeout_seconds', 600))
             try:
@@ -213,7 +213,7 @@ class CliImageProvider(ImageProvider):
             if len(candidates) > int(backend.get('max_outputs', 1)):
                 record['orphan_outputs'] = [str(p) for p in candidates]
                 raise ProviderFailed('OUTPUT_AMBIGUOUS', f'{len(candidates)} image files appeared; refusing to guess which belongs to this request')
-            rows = preserve_outputs(candidates, log_dir / 'raw')
+            rows = preserve_outputs(candidates, log_dir / 'raw', state.get('correlated_roots', []))
             record['outputs'] = rows
             record['status'] = 'COMPLETED'
             return ProviderRun([Path(r['path']) for r in rows], record)

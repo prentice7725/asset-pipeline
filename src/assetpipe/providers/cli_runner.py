@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Iterator
 
-from .base import ProviderBlocked
+from .base import ProviderBlocked, ProviderFailed
 
 # 자식 CLI 안에서 assetpipe 계열 도구가 다시 시작되는 것을 막는 표식.
 DEPTH_ENV = 'ASSETPIPE_PROVIDER_DEPTH'
@@ -265,7 +265,7 @@ def snapshot_images(roots: Iterable[Path]) -> dict[str, int]:
     for root in roots:
         if Path(root).is_dir():
             for path in Path(root).rglob('*'):
-                if path.suffix.lower() in IMAGE_EXTENSIONS:
+                if path.suffix.lower() in IMAGE_EXTENSIONS and is_within(path, [root]):
                     try:
                         state[str(path)] = path.stat().st_mtime_ns
                     except OSError:
@@ -286,17 +286,58 @@ def new_images(roots: Iterable[Path], before: dict[str, int]) -> list[Path]:
     for root in roots:
         if Path(root).is_dir():
             for path in Path(root).rglob('*'):
-                if path.suffix.lower() in IMAGE_EXTENSIONS and usable_image(path) and is_new(path, before):
+                if (path.suffix.lower() in IMAGE_EXTENSIONS and is_within(path, [root])
+                        and usable_image(path) and is_new(path, before)):
                     rows.append((path.stat().st_mtime_ns, path))
     return [path for _m, path in sorted(rows)]
 
 
-def preserve_outputs(sources: list[Path], destination: Path) -> list[dict[str, Any]]:
+def preserve_outputs(sources: list[Path], destination: Path, allowed_roots=None) -> list[dict[str, Any]]:
     """원본 이미지를 이름·내용 그대로 복사해 보존하고 해시를 계산한다. 원본 위치는 건드리지 않는다."""
     destination.mkdir(parents=True, exist_ok=True)
     rows = []
     for index, source in enumerate(sources, 1):
+        if allowed_roots is not None and not is_within(source, allowed_roots):
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Output escaped containment before preservation')
+        source = source.resolve(strict=True)
         target = destination / f'{index:02d}_{source.name}'
         shutil.copy2(source, target)
         rows.append({'path': str(target), 'sha256': sha256_file(target), 'bytes': target.stat().st_size, 'source_path': str(source)})
     return rows
+
+
+def correlated_images(result, parsed, job, state, *, session_parent):
+    """Accept only a newly reported session or this invocation's private workdir.
+
+    Shared-home freshness is never evidence of invocation ownership. Explicit
+    paths must meet the same boundary before any file metadata is read.
+    """
+    ids = {str(item) for value in parsed['values'] for key, item in walk(value)
+           if key in ('thread_id', 'session_id', 'sessionId', 'conversation_id')
+           and isinstance(item, str) and item}
+    if len(ids) > 1:
+        raise ProviderFailed('OUTPUT_UNCORRELATED', 'Conflicting session identifiers in CLI output')
+    session = next(iter(ids), parsed.get('session_id'))
+    roots = [job.work]
+    if session:
+        if not re.fullmatch(r'[A-Za-z0-9_\-]{1,80}', str(session)):
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Invalid output session identifier')
+        scope = session_parent / str(session)
+        if not is_within(scope, [session_parent]):
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Output session escaped its configured root')
+        if (any(Path(p).is_relative_to(scope) for p in state['before'])
+                and new_images([scope], state['before'])):
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Output session was already used before this invocation')
+        roots.append(scope)
+    state['correlated_roots'] = [p.resolve() for p in roots]
+    before = state['before']
+    found = new_images(roots, before)
+    explicit = image_paths_in(parsed['values'], result.stdout)
+    for path in explicit:
+        if not is_within(path, roots):
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'CLI output path lacks invocation/session containment')
+        if usable_image(path) and is_new(path, before):
+            found.append(path)
+    if not session and not found and explicit:
+        raise ProviderFailed('OUTPUT_UNCORRELATED', 'No reliable output correlation')
+    return list({str(p.resolve(strict=True)): p.resolve(strict=True) for p in found}.values())
