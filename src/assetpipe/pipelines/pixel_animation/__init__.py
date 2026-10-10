@@ -1,4 +1,5 @@
 from pathlib import Path
+from ...paths import resolve_path
 import hashlib
 import json
 from PIL import Image
@@ -9,14 +10,19 @@ from ...providers.aseprite import AsepriteProvider
 from ...manifests import write
 from ...motion.extractor import decode_direct_reference
 
-def preflight(brief):
+def preflight(brief, resolver=None):
     production = brief.get('production', {})
     required = ['static_master', 'approval_record', 'motion_reference', 'selection', 'direct_profile']
     if any(not production.get(k) for k in required):
         raise ValueError('Pixel animation requires approved static master, approval record, existing motion reference, reviewed semantic selection, and explicit direct_profile')
+    production = dict(production)
+    for key in ('static_master', 'approval_record'):
+        production[key] = str(resolve_path(production[key], resolver))
     master = Path(production['static_master'])
     from ..pixel_static.approval import validate_approval
-    validate_approval(master, production['approval_record'])
+    validate_approval(master, production['approval_record'], resolver)
+    for key in ('selection', 'motion_reference'):
+        production[key] = str(resolve_path(production[key], resolver))
     selection = json.loads(Path(production['selection']).read_text(encoding='utf-8'))
     phases = ['CONTACT_A', 'DOWN_A', 'PASSING_A', 'UP_A', 'CONTACT_B', 'DOWN_B', 'PASSING_B', 'UP_B']
     rows = selection.get('selection', [])
@@ -30,7 +36,7 @@ def preflight(brief):
     if brief['animation']['frame_target'] not in (None, 8):
         raise ValueError('Verified direct profile requires eight frames')
     video = Path(production['motion_reference']).resolve()
-    if Path(selection.get('source_video', '')).resolve() != video:
+    if resolve_path(selection.get('source_video', ''), resolver) != video:
         raise ValueError('Semantic selection source video mismatch')
     if production['direct_profile'] != 'blue_tunic_white_matte_v1':
         raise ValueError('Unknown verified direct profile')

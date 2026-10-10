@@ -1,5 +1,6 @@
 """High-level core contracts shared by CLI integrations; no MCP dependency."""
 import copy
+from .paths import resolve_path, validate_references
 from pathlib import Path
 import json
 import shutil
@@ -58,7 +59,7 @@ def build_brief(*, request_text, output_class, asset_id='asset', source_document
         brief['workflow_preferences']['id'] = workflow_id
     return validate(brief)
 
-def route_brief(brief, root):
+def route_brief(brief, root, resolver=None):
     missing = []
     try:
         validate(brief)
@@ -71,15 +72,16 @@ def route_brief(brief, root):
         missing.append('NONPIXEL_ANIMATION production execution is unavailable in v0.1')
     if brief['output_class'] == 'PIXEL_ANIMATION':
         try:
-            animation_preflight(brief)
+            animation_preflight(brief, resolver)
         except (ValueError, OSError, KeyError) as exc:
             missing.append(str(exc))
     return {**decision, 'status': 'BLOCKED' if missing else 'ROUTED', 'selected_pipeline': brief['output_class'],
         'reason': decision['selection_reason'], 'missing_requirements': missing}
 
-def inspect_manifest(path):
-    path = Path(path)
+def inspect_manifest(path, resolver=None):
+    path = resolve_path(path, resolver)
     manifest = json.loads(path.read_text(encoding='utf-8'))
+    validate_references(manifest, resolver)
     raw_status = manifest['status']
     if raw_status == 'FAILED':
         status = 'FAILED'
@@ -87,7 +89,7 @@ def inspect_manifest(path):
         status = 'REVIEW_REQUIRED'
     else:
         status = raw_status
-    route_path = path.parent / 'route_decision.json'
+    route_path = resolve_path(path.parent / 'route_decision.json', resolver, strict=False)
     review = [raw_status] if status == 'REVIEW_REQUIRED' else []
     qa = [{'status': r.get('status'), 'step': r.get('step', 'pixel_gate' if 'alpha' in r else 'aseprite' if 'pixel_integrity' in r else 'qa')} for r in manifest.get('qa_results', [])]
     return {'status': status, 'engine_status': raw_status, 'asset_id': manifest['asset_id'], 'output_class': manifest['output_class'],

@@ -34,12 +34,12 @@
 | Codex | `-c project_doc_max_bytes=0`이 유효한 설정 키(`login`에는 `--strict-config`가 없어 검증 불가). 알 수 없는 키는 무시되므로 해롭지 않고, 작업 폴더가 프로젝트 트리 밖이라 1차 격리는 그쪽이 담당 | 영향 없음 |
 | Codex | JSONL 이벤트의 `thread_id`, `usage`, `model` 키 이름 | 값이 비어 `usage_support: NOT_REPORTED`로 기록될 뿐 생성에는 영향 없음 |
 | Grok | `--permission-mode dontAsk --allow image_gen` 조합으로 도구 호출이 승인됨 | 도구가 거부돼 `OUTPUT_MISSING`/`REFUSED`. registry의 `backend.cli_args`로 조정(격리를 약화하는 인자는 로더가 거부) |
-| Grok | 출력 JSON에 저장 경로가 들어 있거나 `~/.grok/sessions/` 아래에 파일이 생김 | 두 방법 모두 실패하면 `OUTPUT_MISSING` |
+| Grok | 출력 JSON에서 이번 invocation의 단일 session ID와 해당 session 경로를 보고하거나 private workdir에 결과를 저장 | correlation/containment 불충족 시 `OUTPUT_UNCORRELATED` 또는 `OUTPUT_MISSING` |
 | Grok | `image_edit` 경로(레퍼런스 이미지 복사본의 절대경로 전달) | 이 경로는 E2E 범위에 포함하지 않았음 |
 
 ## 4. 설계 결정
 
-**이미지 수집은 실행 전 스냅샷과의 비교로 합니다.** 처음에는 "실행 시각 ±2초 안에 만들어진 파일"을 썼는데, 직전 실행이 방금 만든 이미지를 다음 실행이 자기 결과로 오인하는 결함을 테스트에서 발견했습니다. 지금은 실행 전에 저장 폴더의 이미지 목록을 기록하고, 실행 후 새로 생겼거나 갱신된 파일만 후보로 봅니다(`test_previous_runs_image_is_never_mistaken_for_a_new_result`). 다른 프로세스가 같은 폴더에 동시에 이미지를 만들면 구분할 수 없으므로 하나보다 많이 발견되면 고르지 않고 `OUTPUT_AMBIGUOUS`로 멈춥니다.
+**이미지 수집은 invocation/session correlation + resolved containment + 실행 전 스냅샷 비교를 모두 요구합니다.** 2026-10-10 보안 강화 이후 Codex `generated_images` 전역 fallback과 Grok shared sessions/home fallback은 제거했습니다. CLI stdout에서 보고한 단일 세션 아래 또는 이번 invocation의 private work directory 아래에서만 새 파일을 수집합니다. 명시 경로도 같은 경계를 적용합니다. 다른 세션·상충하는 세션 ID·root 밖 symlink/junction은 `OUTPUT_UNCORRELATED`로 차단합니다. correlation 없이 공유 홈에 나타난 이미지는 수집하지 않으며 `OUTPUT_MISSING`으로 종료합니다. 새 파일이 여러 개면 기존 `OUTPUT_AMBIGUOUS` 게이트가 유지됩니다. 스냅샷에는 복사한 reference input도 포함합니다.
 
 **작업 폴더는 프로젝트 트리 밖의 임시 폴더입니다.** 프로젝트 안에 만들면 CLI가 상위 폴더의 지침 파일(`AGENTS.md` 등)을 자동으로 읽을 수 있어서 프로젝트 문서가 모델에 전달됩니다. 감사용 기록(프롬프트, 마스킹된 로그, 원본 이미지)은 실행 폴더로 복사해 남깁니다.
 

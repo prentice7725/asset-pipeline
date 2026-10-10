@@ -12,6 +12,7 @@ from jsonschema import Draft202012Validator
 from assetpipe import api
 from assetpipe.brief import load, validate
 from assetpipe.manifests import now, write
+from assetpipe.paths import RootResolver, ROOTS_ENV
 
 class Adapter:
     def __init__(self, config):
@@ -27,6 +28,8 @@ class Adapter:
             raise ValueError('Configured source roots must be directories')
         self.output = (path.parent / values['output_root']).resolve()
         self.output.mkdir(parents=True, exist_ok=True)
+        self.resolver = RootResolver([*self.sources, self.output], base=self.root)
+        self.output_resolver = RootResolver([self.output])
         self._children = {}
         status = json.loads((self.root / 'docs/bootstrap_status.json').read_text(encoding='utf-8'))
         if status.get('status') != 'ASSET_PIPELINE_V0_1_BOOTSTRAP_PASS':
@@ -35,18 +38,13 @@ class Adapter:
     def source(self, value, *, file=True):
         if not isinstance(value, str) or not value or '\x00' in value:
             raise ValueError('Invalid source path')
-        path = (self.root / value).resolve(strict=True)
-        if not any(path.is_relative_to(root) for root in [*self.sources, self.output]):
-            raise ValueError('Path is outside configured source/output roots')
+        path = self.resolver(value)
         if file and not path.is_file():
             raise ValueError('Expected a regular source file')
         return path
 
     def output_path(self, value):
-        path = Path(value).resolve()
-        if not path.is_relative_to(self.output):
-            raise ValueError('Output reference is outside the configured output root')
-        return path
+        return self.output_resolver(value, strict=False)
 
     def secure_brief(self, brief):
         brief = validate(copy.deepcopy(brief))
@@ -89,7 +87,7 @@ class Adapter:
         return {'status': 'BRIEF_READY', 'brief': self.secure_brief(brief), 'review_items': brief['unspecified_elements']}
 
     def route(self, brief):
-        return api.route_brief(self.secure_brief(brief), self.root)
+        return api.route_brief(self.secure_brief(brief), self.root, self.resolver)
 
     def generate(self, *, brief=None, brief_file=None, seed=None):
         if (brief is None) == (brief_file is None):
@@ -97,7 +95,7 @@ class Adapter:
         if seed is not None and (type(seed) is not int or not 0 <= seed <= 2**64 - 1):
             raise ValueError('seed must be an unsigned 64-bit integer')
         value = self.secure_brief(load(self.source(brief_file)) if brief_file else brief)
-        decision = api.route_brief(value, self.root)
+        decision = api.route_brief(value, self.root, self.resolver)
         if decision['status'] == 'BLOCKED':
             return {**decision, 'run_id': None, 'outputs': [], 'review_items': decision['missing_requirements']}
         run_id = uuid4().hex
@@ -119,7 +117,7 @@ class Adapter:
             log_path = self.output_path(request_dir / f'{run_id}.log')
             with log_path.open('xb') as log:
                 child = subprocess.Popen(command, cwd=self.root, stdin=subprocess.DEVNULL, stdout=log, stderr=log,
-                    shell=False, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+                    shell=False, env={**os.environ, ROOTS_ENV: self.resolver.environment()}, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
             self._children[run_id] = child
             receipt.update({'pid': child.pid, 'log': str(log_path)})
             write(receipt_path, receipt)
@@ -157,7 +155,7 @@ class Adapter:
             poll = getattr(child, 'poll', None)
             if callable(poll) and poll() is not None:
                 self._children.pop(run_id, None)
-        result = api.inspect_manifest(manifest)
+        result = api.inspect_manifest(manifest, self.resolver)
         result['outputs'] = [str(self.output_path(p)) for p in result['outputs']]
         return {'run_id': run_id, 'project_id': receipt.get('project_id', 'default'), **result}
 
