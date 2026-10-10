@@ -15,7 +15,7 @@ from pathlib import Path
 
 from ..base import AVAILABLE, BLOCKED, UNAVAILABLE, Diagnosis
 from ..cli_base import CliImageProvider
-from ..cli_runner import JobDir, image_paths_in, is_new, is_within, new_images, probe, usable_image
+from ..cli_runner import correlated_images, JobDir, probe
 from ..base import ProviderFailed
 
 # Grok image_gen / image_edit 도구가 받는 aspect_ratio 값(CLI 바이너리의 도구 설명 기준).
@@ -103,8 +103,4 @@ class GrokCliProvider(CliImageProvider):
         return [home]
 
     def harvest(self, result, parsed, job, env, state):
-        home, before = state['roots'][0], state['before']
-        explicit = [p for p in image_paths_in(parsed['values'], result.stdout) if usable_image(p) and is_within(p, [home, job.work]) and is_new(p, before)]
-        if explicit:
-            return list({str(p.resolve()): p for p in explicit}.values())
-        return new_images([home / 'sessions' if (home / 'sessions').is_dir() else home], before)
+        return correlated_images(result, parsed, job, state, session_parent=state['roots'][0] / 'sessions')
