@@ -1,6 +1,6 @@
 # M3 factory planning index
 
-**Status:** PROPOSED / DOCUMENTATION_ONLY. The target factory architecture and implementation plan are recorded, but none of the new factory routes have yet been implemented or activated.
+**Status:** M3.0 offline contract implemented; factory execution and activation remain unimplemented.
 
 ## Read in order
 
@@ -23,3 +23,5 @@
 | Existing six MCP tools | Preserve compatibility; do not expand in planning PR |
 
 No runtime files, registry entries, workflow graphs, operational status, SOT documents, or approved masters are changed by this planning package.
+
+[M3.0 contract](M30_OFFLINE_CONTRACT.md).

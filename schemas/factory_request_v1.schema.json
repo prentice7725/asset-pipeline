@@ -1,0 +1,616 @@
+{
+  "type": "object",
+  "properties": {
+    "factory_contract_version": {
+      "const": 1,
+      "type": "integer"
+    },
+    "factory_line": {
+      "enum": [
+        "NONPIXEL",
+        "REFERENCE_MOTION",
+        "SFX",
+        "PIXEL64"
+      ]
+    },
+    "output_mode": {
+      "enum": [
+        "IMAGE_ONLY",
+        "IMAGE_TO_SPRITE",
+        "AUDIO_ONLY"
+      ]
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "asset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "GENERATE",
+            "EXISTING_RUN",
+            "EXTERNAL_IMAGES"
+          ]
+        },
+        "brief_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "role": {
+                "enum": [
+                  "IDENTITY_PRIMARY",
+                  "ALTERNATE_VIEW",
+                  "POSE_ANCHOR",
+                  "START_FRAME",
+                  "END_FRAME",
+                  "STYLE_REFERENCE"
+                ]
+              },
+              "ownership": {
+                "type": "string",
+                "minLength": 1
+              },
+              "license": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "path",
+              "sha256",
+              "role"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "style_source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "logical_size": {
+          "const": [
+            64,
+            64
+          ]
+        }
+      },
+      "required": [
+        "style_source"
+      ],
+      "additionalProperties": false
+    },
+    "motion": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "minLength": 1
+            },
+            "fps": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "duration_seconds": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "target_frames": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "background_policy": {
+              "enum": [
+                "PRESERVE_OR_REVIEW",
+                "EXPLICIT_ALPHA_REVIEW"
+              ]
+            },
+            "workflow_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "action",
+            "fps",
+            "duration_seconds",
+            "target_frames",
+            "background_policy"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "audio": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "duration_seconds": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 30
+            }
+          },
+          "required": [
+            "duration_seconds"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "authorization": {
+      "type": "object",
+      "properties": {
+        "generation_budget": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approval_source": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "factory_contract_version",
+    "factory_line",
+    "output_mode",
+    "project_id",
+    "asset_id",
+    "source"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:assetpipe:factory-request:1",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "factory_line": {
+            "enum": [
+              "NONPIXEL",
+              "PIXEL64"
+            ]
+          }
+        },
+        "required": [
+          "factory_line"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_mode": {
+            "enum": [
+              "IMAGE_ONLY",
+              "IMAGE_TO_SPRITE"
+            ]
+          },
+          "source": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "GENERATE",
+                  "EXISTING_RUN"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "image"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "factory_line": {
+            "const": "REFERENCE_MOTION"
+          }
+        },
+        "required": [
+          "factory_line"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_mode": {
+            "const": "IMAGE_TO_SPRITE"
+          },
+          "source": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "EXISTING_RUN",
+                  "EXTERNAL_IMAGES"
+                ]
+              },
+              "images": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "images"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "factory_line": {
+            "const": "SFX"
+          }
+        },
+        "required": [
+          "factory_line"
+        ]
+      },
+      "then": {
+        "properties": {
+          "output_mode": {
+            "const": "AUDIO_ONLY"
+          },
+          "image": false,
+          "audio": {
+            "type": "object",
+            "properties": {
+              "duration_seconds": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 30
+              }
+            },
+            "required": [
+              "duration_seconds"
+            ],
+            "additionalProperties": false
+          },
+          "source": {
+            "properties": {
+              "kind": {
+                "const": "GENERATE"
+              }
+            }
+          }
+        },
+        "required": [
+          "audio"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "factory_line": {
+            "const": "PIXEL64"
+          }
+        },
+        "required": [
+          "factory_line"
+        ]
+      },
+      "then": {
+        "properties": {
+          "image": {
+            "required": [
+              "logical_size"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "output_mode": {
+            "enum": [
+              "IMAGE_ONLY",
+              "AUDIO_ONLY"
+            ]
+          }
+        },
+        "required": [
+          "output_mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "motion": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "output_mode": {
+            "const": "IMAGE_TO_SPRITE"
+          }
+        },
+        "required": [
+          "output_mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "motion": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fps": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "duration_seconds": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "target_frames": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "background_policy": {
+                "enum": [
+                  "PRESERVE_OR_REVIEW",
+                  "EXPLICIT_ALPHA_REVIEW"
+                ]
+              },
+              "workflow_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "action",
+              "fps",
+              "duration_seconds",
+              "target_frames",
+              "background_policy"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "motion"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "factory_line": {
+            "enum": [
+              "NONPIXEL",
+              "PIXEL64"
+            ]
+          },
+          "output_mode": {
+            "enum": [
+              "IMAGE_ONLY",
+              "IMAGE_TO_SPRITE"
+            ]
+          }
+        },
+        "required": [
+          "factory_line",
+          "output_mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "audio": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "factory_line": {
+            "const": "REFERENCE_MOTION"
+          }
+        },
+        "required": [
+          "factory_line"
+        ]
+      },
+      "then": {
+        "properties": {
+          "audio": {
+            "type": "null"
+          },
+          "image": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "kind": {
+                "const": "GENERATE"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "required": [
+              "brief_ref"
+            ],
+            "properties": {
+              "manifest_ref": false,
+              "manifest_sha256": false,
+              "images": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "kind": {
+                "const": "EXISTING_RUN"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "required": [
+              "manifest_ref",
+              "manifest_sha256",
+              "images"
+            ],
+            "properties": {
+              "brief_ref": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "kind": {
+                "const": "EXTERNAL_IMAGES"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "required": [
+              "images"
+            ],
+            "properties": {
+              "brief_ref": false,
+              "manifest_ref": false,
+              "manifest_sha256": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "kind": {
+                "const": "EXTERNAL_IMAGES"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "images": {
+                "items": {
+                  "required": [
+                    "ownership",
+                    "license"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
