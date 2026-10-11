@@ -1,5 +1,10 @@
 # Codex에서 SFX 만들기
 
+M3.1 오프라인 receipt·청취 기록 절차는 [SFX 운영 계약](factory/M31_SFX_OFFLINE.md)을
+참조하세요. 기술 QA 통과 시에도 승인하지 않습니다. `clip_receipt.json`과
+검토 템플릿을 보존하며, `sfx-review`는 명시적 청취 관찰만 기록합니다.
+새 factory plan은 생성이나 예산 예약을 수행하지 않습니다.
+
 `audio_stable_audio_3_medium`을 `SFX` 출력 유형의 ACTIVE workflow로 등록했습니다.
 현재 설치된 체크포인트와 텍스트 인코더를 사용합니다. 기존 템플릿의 생성 노드는
 유지하고 선택적인 Qwen 프롬프트 확장·카테고리 분기를 제외한 직접 입력 경로입니다.

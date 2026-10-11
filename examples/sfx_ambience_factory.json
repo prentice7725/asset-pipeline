@@ -1,0 +1,18 @@
+{
+  "factory_contract_version": 1,
+  "factory_line": "SFX",
+  "output_mode": "AUDIO_ONLY",
+  "project_id": "example_game",
+  "asset_id": "ambience",
+  "source": {
+    "kind": "GENERATE",
+    "brief_ref": "sfx_ambience_brief.json"
+  },
+  "audio": {
+    "duration_seconds": 8,
+    "category": "AMBIENCE",
+    "clip_name": "ambience",
+    "no_music": true,
+    "no_voice": true
+  }
+}

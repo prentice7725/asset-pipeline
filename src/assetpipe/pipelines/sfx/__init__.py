@@ -32,32 +32,74 @@ def analyze_audio(path, expected_duration):
             'reasons': reasons, 'listening_review': 'REQUIRED'}
 
 
-def run(brief, workflow, config, directory, manifest, seed):
+def run(brief, workflow, config, directory, manifest, seed, *, clip=None):
     from ...prompts import from_brief
+    from ...brief import validate
+    from ...paths import RootResolver
+    from ...audio.sfx import clip_contract, sha, probe_flac, review_template
+    validate(brief)
+    if brief['output_class'] != 'SFX' or brief['source']['type'] not in {'PROMPT','DOCUMENTS'} or brief['source']['references']:
+        raise ValueError('SFX supports text only')
     spec = from_brief(brief)
-    if spec.get('textInImage') or spec.get('aspectRatio'):
+    if spec.get('textInImage') or spec.get('aspectRatio') or spec.get('negative') or brief.get('negative_prompt') or brief['forbidden_elements']:
         raise ValueError('Visual text/aspect ratio is not supported for SFX')
     duration = brief.get('audio', {}).get('duration_seconds', 5)
+    metadata = clip_contract(clip if clip is not None else {'duration_seconds':duration},brief['asset_id'])
+    if metadata['duration_seconds'] != duration:
+        raise ValueError('SFX clip duration differs from Brief')
+    directory = Path(directory).resolve(strict=True)
+    resolver = RootResolver([directory],base=directory)
+    output = resolver(directory / '020_audio',strict=False)
+    output.mkdir()  # One invocation only; do not dispatch again into a used run.
+    receipt_path = output / 'clip_receipt.json'
+    receipt = {'schema_version':1,'type':'SFX_CLIP_RECEIPT','project_id':brief.get('project_id','default'),
+               'asset_id':brief['asset_id'],'run_id':directory.name,'clip':metadata,
+               'status':'GENERATION_PENDING','game_ready':False,'listening_review':'REQUIRED',
+               'artifacts':[],'attempts':1,'fallback':'NONE','workflow':manifest.get('workflow',{})}
+    manifest['audio_clip_receipt_path'] = str(receipt_path)
+    manifest['game_ready'] = False
+    write(receipt_path,receipt)
     prompt = '. '.join([spec['subject'], *spec.get('appearance', []),
         *[spec[k] for k in ('environment', 'mood', 'pose') if spec.get(k)],
         *spec.get('style', []), *spec.get('constraints', [])])
-    paths = run_workflow(config, workflow_name=workflow['workflow_name'], prompt=prompt,
-        seed=seed, output_dir=directory / '010_generation', workflow_inputs={'duration_seconds': duration},
-        filename_prefix=f'assetpipe/{brief["asset_id"]}')
-    manifest['outputs'] = [str(p) for p in paths]
-    if len(paths) != 1:
-        raise ValueError('SFX expects one audio candidate')
-    output = directory / '020_audio'
-    output.mkdir()
-    wav = output / (brief['asset_id'] + '.wav')
-    subprocess.run(['ffmpeg', '-v', 'error', '-i', str(paths[0]), '-c:a', 'pcm_s16le', str(wav)],
-        check=True, capture_output=True, timeout=60)
-    manifest['outputs'].append(str(wav))
-    report = analyze_audio(wav, duration)
-    report['sha256'] = hashlib.sha256(wav.read_bytes()).hexdigest()
-    write(output / 'audio_qa.json', report)
-    manifest['qa_results'].append(report)
-    manifest['pipeline_steps'].append({'step': 'basic_audio_qa', 'status': report['status']})
-    if report['status'] != 'PASS':
-        raise ValueError('Audio QA failed; listening/export approval blocked')
-    manifest['status'] = 'AUDIO_CANDIDATE_READY_REVIEW_REQUIRED'
+    try:
+        scope = hashlib.sha256(str(directory).encode()).hexdigest()[:12]
+        paths = run_workflow(config, workflow_name=workflow['workflow_name'], prompt=prompt,
+            seed=seed, output_dir=directory / '010_generation', workflow_inputs={'duration_seconds': duration},
+            filename_prefix=f'assetpipe/{receipt["project_id"]}/{brief["asset_id"]}/{scope}')
+        paths = [resolver(p) for p in paths]
+        manifest['outputs'] = [str(p) for p in paths]
+        receipt['artifacts'] = [{'role':'ORIGINAL_FLAC','path':str(p),'sha256':sha(p)} for p in paths]
+        write(receipt_path,receipt)
+        if len(paths) != 1:
+            raise ValueError('SFX expects one audio candidate')
+        original = probe_flac(paths[0])
+        receipt['artifacts'][0]['format'] = original
+        generated = resolver(directory/'010_generation/generation.json')
+        receipt['generation_evidence'] = {'path':str(generated),'sha256':sha(generated)}
+        wav = resolver(output / (metadata['clip_name'] + '.wav'),strict=False)
+        subprocess.run(['ffmpeg','-nostdin','-n','-v','error','-i',str(paths[0]),'-c:a','pcm_s16le',str(wav)],
+            check=True,capture_output=True,timeout=60)
+        manifest['outputs'].append(str(wav))
+        receipt['artifacts'].append({'role':'PCM_WAV','path':str(wav),'sha256':sha(wav)})
+        report = analyze_audio(wav,duration)
+        report['sha256'] = sha(wav)
+        if report['sample_rate'] != original['sample_rate'] or report['channels'] != original['channels']:
+            report['status'] = 'FAIL';report['reasons'].append('Source sample rate/channels changed')
+        qa_path = output / 'audio_qa.json'
+        write(qa_path,report)
+        receipt['qa'] = {'path':str(qa_path),'sha256':sha(qa_path)}
+        receipt['sample_format'] = {k:report[k] for k in ['sample_rate','channels','duration_seconds','requested_duration_seconds','peak','rms','clipped_sample_fraction']}
+        manifest['qa_results'].append(report)
+        manifest['pipeline_steps'].append({'step':'basic_audio_qa','status':report['status']})
+        if report['status'] != 'PASS':
+            raise ValueError('Audio QA failed; listening/export approval blocked')
+        receipt['status'] = 'AUDIO_CANDIDATE_READY_REVIEW_REQUIRED'
+        write(receipt_path,receipt)
+        write(output/'listening_review_template.json',review_template(directory))
+        manifest['status'] = receipt['status']
+    except Exception as exc:
+        receipt.update(status='FAILED',error=str(exc))
+        manifest['status'] = 'FAILED'
+        write(receipt_path,receipt)
+        raise

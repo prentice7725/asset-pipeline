@@ -1,6 +1,8 @@
 # M3 factory planning index
 
-**Status:** PROPOSED / DOCUMENTATION_ONLY. The target factory architecture and implementation plan are recorded, but none of the new factory routes have yet been implemented or activated.
+**Status:** M3.0 offline contracts and M3.1 offline SFX receipts are implemented; factory dispatch, real milestone acceptance and runtime activation remain unimplemented/unverified.
+
+Implementation references: [M3.0 contract](M30_OFFLINE_CONTRACT.md), [M3.1 SFX](M31_SFX_OFFLINE.md).
 
 ## Read in order
 

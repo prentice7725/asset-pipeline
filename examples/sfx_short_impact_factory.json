@@ -1,0 +1,18 @@
+{
+  "factory_contract_version": 1,
+  "factory_line": "SFX",
+  "output_mode": "AUDIO_ONLY",
+  "project_id": "example_game",
+  "asset_id": "short_impact",
+  "source": {
+    "kind": "GENERATE",
+    "brief_ref": "sfx_short_impact_brief.json"
+  },
+  "audio": {
+    "duration_seconds": 1,
+    "category": "IMPACT",
+    "clip_name": "short_impact",
+    "no_music": true,
+    "no_voice": true
+  }
+}
