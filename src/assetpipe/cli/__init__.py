@@ -11,6 +11,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory')
     parser.add_argument('--root', type=Path, default=Path.cwd(), help='Repository/config root')
     commands = parser.add_subparsers(dest='command', required=True)
+    audio_review = commands.add_parser('sfx-review',help='Record explicit listening observations; no generation or game approval')
+    audio_review.add_argument('--run',required=True,type=Path)
+    audio_review.add_argument('--review',required=True,type=Path)
+    audio_review.add_argument('--listened',required=True,action='store_true')
     knowledge = commands.add_parser('knowledge', help='Offline model/style/evidence lookup; never generates or approves')
     knowledge.add_argument('--model-id', help='Known model variant key')
     knowledge.add_argument('--style-id', help='Known style key')
@@ -28,6 +32,12 @@ def main(argv=None):
     style_review.add_argument('--observed-features', required=True, type=Path, help='JSON object mapping every feature code to true/false observed in the image')
     style_review.add_argument('--reviewed-by', required=True)
     style_review.add_argument('--reason', required=True)
+    factory = commands.add_parser('factory', help='Offline factory plans; no generation, reservations or approval')
+    factory_commands = factory.add_subparsers(dest='factory_command', required=True)
+    for name in ['plan', 'dry-run', 'inspect']:
+        presentation = factory_commands.add_parser(name, help='Validate inputs and print a read-only factory plan')
+        presentation.add_argument('--request', required=True, type=Path)
+        presentation.add_argument('--allowed-root', action='append', type=Path, help='Explicit source roots; repository root is the default')
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -89,7 +99,17 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'rescue-plan':
+        if args.command == 'sfx-review':
+            from ..paths import RootResolver
+            from ..audio.sfx import record_review
+            resolver = RootResolver([args.root],base=args.root)
+            run = resolver(args.run)
+            review = json.loads(resolver(args.review).read_text(encoding='utf-8'))
+            print(record_review(run,review,listened=args.listened,resolver=resolver))
+        elif args.command == 'factory':
+            from ..api import factory_plan
+            print(json.dumps(factory_plan(args.request, args.root, allowed_roots=args.allowed_root), indent=2, ensure_ascii=False))
+        elif args.command == 'rescue-plan':
             from ..styles.overrides import propose_rescue
             write(args.output, propose_rescue(load(args.brief), args.root, inspect_installation=args.inspect_installation))
             print(args.output)

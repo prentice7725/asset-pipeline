@@ -1,0 +1,18 @@
+{
+  "factory_contract_version": 1,
+  "factory_line": "SFX",
+  "output_mode": "AUDIO_ONLY",
+  "project_id": "example_game",
+  "asset_id": "ui_cue",
+  "source": {
+    "kind": "GENERATE",
+    "brief_ref": "sfx_ui_cue_brief.json"
+  },
+  "audio": {
+    "duration_seconds": 2,
+    "category": "UI_CUE",
+    "clip_name": "ui_cue",
+    "no_music": true,
+    "no_voice": true
+  }
+}
