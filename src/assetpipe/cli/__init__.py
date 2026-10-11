@@ -32,12 +32,17 @@ def main(argv=None):
     style_review.add_argument('--observed-features', required=True, type=Path, help='JSON object mapping every feature code to true/false observed in the image')
     style_review.add_argument('--reviewed-by', required=True)
     style_review.add_argument('--reason', required=True)
-    factory = commands.add_parser('factory', help='Offline factory plans; no generation, reservations or approval')
+    factory = commands.add_parser('factory', help='Read-only plans or explicitly authorized one-attempt still/audio execution')
     factory_commands = factory.add_subparsers(dest='factory_command', required=True)
     for name in ['plan', 'dry-run', 'inspect']:
         presentation = factory_commands.add_parser(name, help='Validate inputs and print a read-only factory plan')
         presentation.add_argument('--request', required=True, type=Path)
         presentation.add_argument('--allowed-root', action='append', type=Path, help='Explicit source roots; repository root is the default')
+    execution = factory_commands.add_parser('execute', help='One authorized still/audio attempt; no motion, retry or approval')
+    execution.add_argument('--request', required=True, type=Path)
+    execution.add_argument('--seed', required=True, type=int)
+    execution.add_argument('--authorize-generation', required=True, action='store_true')
+    execution.add_argument('--allowed-root', action='append', type=Path)
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -107,8 +112,12 @@ def main(argv=None):
             review = json.loads(resolver(args.review).read_text(encoding='utf-8'))
             print(record_review(run,review,listened=args.listened,resolver=resolver))
         elif args.command == 'factory':
-            from ..api import factory_plan
-            print(json.dumps(factory_plan(args.request, args.root, allowed_roots=args.allowed_root), indent=2, ensure_ascii=False))
+            from ..api import factory_plan, factory_execute
+            if args.factory_command == 'execute':
+                print(factory_execute(args.request, args.root, authorize_generation=args.authorize_generation,
+                                      seed=args.seed, allowed_roots=args.allowed_root))
+            else:
+                print(json.dumps(factory_plan(args.request, args.root, allowed_roots=args.allowed_root), indent=2, ensure_ascii=False))
         elif args.command == 'rescue-plan':
             from ..styles.overrides import propose_rescue
             write(args.output, propose_rescue(load(args.brief), args.root, inspect_installation=args.inspect_installation))

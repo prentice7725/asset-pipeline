@@ -17,6 +17,11 @@ def factory_plan(request_path, root, *, allowed_roots=None):
     from .factory import plan_file
     return plan_file(request_path, root, allowed_roots=allowed_roots)
 
+def factory_execute(request_path, root, *, authorize_generation=False, seed=None, allowed_roots=None):
+    from .factory.executor import execute_file
+    return execute_file(request_path, root, authorize_generation=authorize_generation,
+                        seed=seed, allowed_roots=allowed_roots)
+
 def capabilities(root):
     registry = load_registry(root)
     config = load_config(Path(root) / 'config/pipeline.yaml')
