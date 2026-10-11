@@ -1,6 +1,8 @@
 # M3 factory planning index
 
-**Status:** M3.0 offline contract implemented; factory execution and activation remain unimplemented.
+**Status:** M3.0 offline contracts and M3.1 offline SFX receipts are implemented; factory dispatch, real milestone acceptance and runtime activation remain unimplemented/unverified.
+
+Implementation references: [M3.0 contract](M30_OFFLINE_CONTRACT.md), [M3.1 SFX](M31_SFX_OFFLINE.md).
 
 ## Read in order
 
@@ -23,5 +25,3 @@
 | Existing six MCP tools | Preserve compatibility; do not expand in planning PR |
 
 No runtime files, registry entries, workflow graphs, operational status, SOT documents, or approved masters are changed by this planning package.
-
-[M3.0 contract](M30_OFFLINE_CONTRACT.md).

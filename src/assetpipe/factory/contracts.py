@@ -2,6 +2,7 @@
 from copy import deepcopy
 from jsonschema import Draft202012Validator
 from ..brief import obj, SCHEMA as BRIEF_SCHEMA
+from ..audio.sfx import AUDIO_CONTRACT
 
 ROLES = ['IDENTITY_PRIMARY', 'ALTERNATE_VIEW', 'POSE_ANCHOR', 'START_FRAME', 'END_FRAME', 'STYLE_REFERENCE']
 TEXT = {'type': 'string', 'minLength': 1}
@@ -23,7 +24,7 @@ SCHEMA = obj({'factory_contract_version': {'const': 1, 'type': 'integer'},
               'project_id': IDENTIFIER, 'asset_id': IDENTIFIER, 'source': SOURCE,
               'image': obj({'style_source': TEXT, 'logical_size': {'const': [64, 64]}}, ['style_source']),
               'motion': {'oneOf': [{'type': 'null'}, MOTION]},
-              'audio': {'oneOf': [{'type': 'null'}, obj({'duration_seconds': {'type': 'number', 'minimum': 1, 'maximum': 30}}, ['duration_seconds'])]},
+              'audio': {'oneOf': [{'type': 'null'}, AUDIO_CONTRACT]},
               'authorization': obj({'generation_budget': TEXT, 'approval_source': TEXT})},
              ['factory_contract_version', 'factory_line', 'output_mode', 'project_id', 'asset_id', 'source'])
 SCHEMA['$schema'] = 'https://json-schema.org/draft/2020-12/schema'
@@ -41,7 +42,7 @@ SCHEMA['allOf'] = [
                          'source': {'properties': {'kind': {'enum': ['EXISTING_RUN', 'EXTERNAL_IMAGES']}, 'images': {'minItems': 1}}, 'required': ['images']}}}),
     rule({'factory_line': {'const': 'SFX'}},
          {'properties': {'output_mode': {'const': 'AUDIO_ONLY'}, 'image': False,
-                         'audio': obj({'duration_seconds': {'type': 'number', 'minimum': 1, 'maximum': 30}}, ['duration_seconds']),
+                         'audio': AUDIO_CONTRACT,
                          'source': {'properties': {'kind': {'const': 'GENERATE'}}}}, 'required': ['audio']}),
     rule({'factory_line': {'const': 'PIXEL64'}}, {'properties': {'image': {'required': ['logical_size']}}}),
     rule({'output_mode': {'enum': ['IMAGE_ONLY', 'AUDIO_ONLY']}}, {'properties': {'motion': {'type': 'null'}}}),

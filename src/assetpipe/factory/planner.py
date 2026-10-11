@@ -24,7 +24,7 @@ def plan(request, root, *, resolver=None, base=None):
             raise ValueError('FACTORY_BRIEF_MISMATCH: project, asset or output class differs')
         if line == 'PIXEL64' and brief['constraints']['resolution'] != [64,64]:
             raise ValueError('FACTORY_BRIEF_MISMATCH: PIXEL64 needs explicit 64x64 logical output')
-        if line == 'SFX' and brief.get('audio') != request['audio']:
+        if line == 'SFX' and brief.get('audio',{}).get('duration_seconds') != request['audio']['duration_seconds']:
             raise ValueError('FACTORY_BRIEF_MISMATCH: audio duration differs')
     else:
         images = [sources.image(item, base) for item in source['images']]
@@ -77,10 +77,12 @@ def plan(request, root, *, resolver=None, base=None):
             'parent_manifest_sha256':parent['manifest_sha256'] if parent else None,
             'image_sha256':[i['sha256'] for i in images], 'required_before_dispatch':True}
     mapped_class = ('PIXEL_ANIMATION' if line == 'PIXEL64' else 'NONPIXEL_ANIMATION') if mode == 'IMAGE_TO_SPRITE' else static_class
+    from ..audio.sfx import clip_contract
     return {'factory_contract_version':1, 'status':'OFFLINE_CONTRACT_PASS', 'execution_status':'NOT_IMPLEMENTED_FACTORY_DISPATCH',
             'factory_line':line,'output_mode':mode,'project_id':request['project_id'],'asset_id':request['asset_id'],
             'mapped_output_class':mapped_class,'source_brief':deepcopy(brief),'tasks':tasks,'parent':parent,'images':images,
             'source_documents':sources.receipts, 'motion_contract':deepcopy(request.get('motion')),
+            'audio_contract':clip_contract(request['audio'],request['asset_id']) if line == 'SFX' else None,
             'authorization_evaluated':False,'dispatches':0,'budget_reservations':0,'provider_allocations':0,
             'retry':'NONE','fallback':'NONE','game_ready':False,'review_state':'NOT_EVALUATED',
             'remaining_gates':(['BLOCKED_BACKEND_NOT_VERIFIED','REFERENCE_CONTRACT_CAPABILITY_CHECK','SPRITE_QA','HUMAN_MOTION_REVIEW'] if mode == 'IMAGE_TO_SPRITE' else []) +

@@ -37,3 +37,5 @@ bind exact source receipts before dispatch. A valid plan returns
 `OFFLINE_CONTRACT_PASS` and `NOT_IMPLEMENTED_FACTORY_DISPATCH`; execution, QA,
 review and SOT gates remain pending. Motion retains `BLOCKED_BACKEND_NOT_VERIFIED`.
 Legacy routing, motion fixtures and six MCP schemas remain unchanged.
+
+See [M3.1 SFX metadata](M31_SFX_OFFLINE.md).
