@@ -97,11 +97,17 @@ def inspect_manifest(path, resolver=None):
     route_path = resolve_path(path.parent / 'route_decision.json', resolver, strict=False)
     review = [raw_status] if status == 'REVIEW_REQUIRED' else []
     qa = [{'status': r.get('status'), 'step': r.get('step', 'pixel_gate' if 'alpha' in r else 'aseprite' if 'pixel_integrity' in r else 'qa')} for r in manifest.get('qa_results', [])]
-    return {'status': status, 'engine_status': raw_status, 'asset_id': manifest['asset_id'], 'output_class': manifest['output_class'],
+    result = {'status': status, 'engine_status': raw_status, 'asset_id': manifest['asset_id'], 'output_class': manifest['output_class'],
         'workflow_id': manifest.get('workflow', {}).get('id'), 'workflow': manifest.get('workflow', {}),
         'manifest': str(path), 'qa': qa, 'outputs': manifest.get('outputs', []), 'review_items': review,
         'route': json.loads(route_path.read_text(encoding='utf-8')) if route_path.exists() else None,
         'error': manifest.get('error'), 'error_code': manifest.get('error_code'), 'provider': provider_summary(manifest), 'game_ready': manifest.get('game_ready', False)}
+    if manifest.get('audio_clip_receipt_path'):
+        receipt = resolve_path(manifest['audio_clip_receipt_path'],resolver,strict=False)
+        if not receipt.is_relative_to(path.parent):
+            raise ValueError('SFX receipt must remain inside its run')
+        result['audio_clip_receipt'] = str(receipt)
+    return result
 
 
 def provider_summary(manifest):
