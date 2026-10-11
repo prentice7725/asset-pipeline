@@ -34,8 +34,10 @@ consumption remains unverified.
 PIXEL64 requires explicit logical 64x64 in request and source Brief, without 32px
 promotion. Motion is a separate child run; frames/sprites belong to it and must
 bind exact source receipts before dispatch. A valid plan returns
-`OFFLINE_CONTRACT_PASS` and `NOT_IMPLEMENTED_FACTORY_DISPATCH`; execution, QA,
-review and SOT gates remain pending. Motion retains `BLOCKED_BACKEND_NOT_VERIFIED`.
+`OFFLINE_CONTRACT_PASS`; motion/read-only-source plans retain `NOT_IMPLEMENTED_FACTORY_DISPATCH`,
+while generated still/audio terminal plans report `NOT_RUN_REQUIRES_EXPLICIT_AUTHORIZATION`
+after the [explicit executor](FACTORY_EXECUTION.md) addition. Planning does not execute;
+QA, review and SOT gates remain pending. Motion retains `BLOCKED_BACKEND_NOT_VERIFIED`.
 Legacy routing, motion fixtures and six MCP schemas remain unchanged.
 
 See [M3.1 SFX metadata](M31_SFX_OFFLINE.md).

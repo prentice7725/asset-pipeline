@@ -32,11 +32,10 @@ def analyze_audio(path, expected_duration):
             'reasons': reasons, 'listening_review': 'REQUIRED'}
 
 
-def run(brief, workflow, config, directory, manifest, seed, *, clip=None):
+def preflight(brief, *, clip=None):
     from ...prompts import from_brief
     from ...brief import validate
-    from ...paths import RootResolver
-    from ...audio.sfx import clip_contract, sha, probe_flac, review_template
+    from ...audio.sfx import clip_contract
     validate(brief)
     if brief['output_class'] != 'SFX' or brief['source']['type'] not in {'PROMPT','DOCUMENTS'} or brief['source']['references']:
         raise ValueError('SFX supports text only')
@@ -47,6 +46,14 @@ def run(brief, workflow, config, directory, manifest, seed, *, clip=None):
     metadata = clip_contract(clip if clip is not None else {'duration_seconds':duration},brief['asset_id'])
     if metadata['duration_seconds'] != duration:
         raise ValueError('SFX clip duration differs from Brief')
+    return spec, metadata
+
+
+def run(brief, workflow, config, directory, manifest, seed, *, clip=None):
+    from ...paths import RootResolver
+    from ...audio.sfx import sha, probe_flac, review_template
+    spec, metadata = preflight(brief, clip=clip)
+    duration = metadata['duration_seconds']
     directory = Path(directory).resolve(strict=True)
     resolver = RootResolver([directory],base=directory)
     output = resolver(directory / '020_audio',strict=False)

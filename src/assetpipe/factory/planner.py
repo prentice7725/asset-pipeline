@@ -78,7 +78,9 @@ def plan(request, root, *, resolver=None, base=None):
             'image_sha256':[i['sha256'] for i in images], 'required_before_dispatch':True}
     mapped_class = ('PIXEL_ANIMATION' if line == 'PIXEL64' else 'NONPIXEL_ANIMATION') if mode == 'IMAGE_TO_SPRITE' else static_class
     from ..audio.sfx import clip_contract
-    return {'factory_contract_version':1, 'status':'OFFLINE_CONTRACT_PASS', 'execution_status':'NOT_IMPLEMENTED_FACTORY_DISPATCH',
+    executable_terminal = source['kind'] == 'GENERATE' and mode in {'IMAGE_ONLY', 'AUDIO_ONLY'}
+    return {'factory_contract_version':1, 'status':'OFFLINE_CONTRACT_PASS',
+            'execution_status':'NOT_RUN_REQUIRES_EXPLICIT_AUTHORIZATION' if executable_terminal else 'NOT_IMPLEMENTED_FACTORY_DISPATCH',
             'factory_line':line,'output_mode':mode,'project_id':request['project_id'],'asset_id':request['asset_id'],
             'mapped_output_class':mapped_class,'source_brief':deepcopy(brief),'tasks':tasks,'parent':parent,'images':images,
             'source_documents':sources.receipts, 'motion_contract':deepcopy(request.get('motion')),
