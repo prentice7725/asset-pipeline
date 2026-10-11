@@ -12,6 +12,11 @@ from ._ported.comfy_bridge.client import ComfyClient
 from ._ported.aseprite_bridge.runner import find_aseprite, get_version
 from .pipelines.pixel_animation import preflight as animation_preflight
 
+def factory_plan(request_path, root, *, allowed_roots=None):
+    """Read-only M3.0 presentation; no change to six MCP argument schemas."""
+    from .factory import plan_file
+    return plan_file(request_path, root, allowed_roots=allowed_roots)
+
 def capabilities(root):
     registry = load_registry(root)
     config = load_config(Path(root) / 'config/pipeline.yaml')

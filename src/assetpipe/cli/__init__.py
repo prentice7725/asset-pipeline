@@ -28,6 +28,12 @@ def main(argv=None):
     style_review.add_argument('--observed-features', required=True, type=Path, help='JSON object mapping every feature code to true/false observed in the image')
     style_review.add_argument('--reviewed-by', required=True)
     style_review.add_argument('--reason', required=True)
+    factory = commands.add_parser('factory', help='Offline factory plans; no generation, reservations or approval')
+    factory_commands = factory.add_subparsers(dest='factory_command', required=True)
+    for name in ['plan', 'dry-run', 'inspect']:
+        presentation = factory_commands.add_parser(name, help='Validate inputs and print a read-only factory plan')
+        presentation.add_argument('--request', required=True, type=Path)
+        presentation.add_argument('--allowed-root', action='append', type=Path, help='Explicit source roots; repository root is the default')
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -89,7 +95,10 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'rescue-plan':
+        if args.command == 'factory':
+            from ..api import factory_plan
+            print(json.dumps(factory_plan(args.request, args.root, allowed_roots=args.allowed_root), indent=2, ensure_ascii=False))
+        elif args.command == 'rescue-plan':
             from ..styles.overrides import propose_rescue
             write(args.output, propose_rescue(load(args.brief), args.root, inspect_installation=args.inspect_installation))
             print(args.output)
