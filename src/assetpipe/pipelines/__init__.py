@@ -60,13 +60,20 @@ def revalidate_static_candidate(brief, candidate, root, output):
         write(path, manifest)
     return path
 
-def create(brief, root, output=None, seed=None):
+def create(brief, root, output=None, seed=None, *, resolver=None, clip=None, expected_workflow=None):
     # 생성 CLI 안에서 다시 시작된 assetpipe 실행(재귀·무한 호출)은 어떤 작업도 하기 전에 거부한다.
     assert_not_nested()
     validate(brief)
+    if resolver is not None:
+        from ..paths import validate_references
+        validate_references(brief, resolver)
+    if clip is not None and brief['output_class'] != 'SFX':
+        raise ValueError('Clip metadata is only supported for SFX')
     root = Path(root).resolve()
     project_id = brief.get('project_id', 'default')
     directory = Path(output).resolve() if output else root / 'workspace' / project_id / 'runs' / brief['asset_id'] / uuid4().hex[:12]
+    if resolver is not None:
+        directory = resolver(directory, strict=False)
     directory.mkdir(parents=True, exist_ok=False)
     manifest = {'schema_version': 1, 'project_id': project_id, 'asset_id': brief['asset_id'], 'input_type': brief['source']['type'], 'asset_brief': brief,
         'output_class': brief['output_class'], 'workflow': {}, 'generation': {}, 'pipeline_steps': [], 'qa_results': [],
@@ -78,7 +85,7 @@ def create(brief, root, output=None, seed=None):
         # Keep CLI/direct execution on the same blocking preflight used by MCP.
         # The import is local to avoid an import cycle while api.py imports pixel animation preflight.
         from ..api import route_brief
-        decision = route_brief(brief, root)
+        decision = route_brief(brief, root, resolver)
         write(directory / 'route_decision.json', decision)
         if decision.get('style_selection'):
             manifest['style_selection'] = decision['style_selection']
@@ -87,6 +94,8 @@ def create(brief, root, output=None, seed=None):
         if decision['status'] == 'BLOCKED':
             raise ValueError('; '.join(decision['missing_requirements']) or decision['reason'])
         workflow = registry[decision['selected_workflow']]
+        if expected_workflow is not None and expected_workflow != {'id': decision['selected_workflow'], 'hash': workflow['hash']}:
+            raise ValueError('FACTORY_AUTHORIZATION_MISMATCH: dispatch workflow changed')
         engine = workflow.get('engine', 'comfyui')
         manifest['workflow'] = {'id': decision['selected_workflow'], 'hash': workflow['hash'], 'version': workflow['version'], 'model': workflow['models'], 'loras': workflow.get('loras', workflow['models'].get('loras', []))}
         if engine != 'comfyui':
@@ -102,7 +111,10 @@ def create(brief, root, output=None, seed=None):
         kind = brief['output_class']
         if kind == 'SFX':
             from .sfx import run
-            run(brief, workflow, config, directory, manifest, chosen_seed)
+            if clip is None:
+                run(brief, workflow, config, directory, manifest, chosen_seed)
+            else:
+                run(brief, workflow, config, directory, manifest, chosen_seed, clip=clip)
         elif kind == 'PIXEL_ANIMATION':
             pixel_animation.run(brief, config, directory, manifest)
         elif kind == 'PIXEL_STATIC':

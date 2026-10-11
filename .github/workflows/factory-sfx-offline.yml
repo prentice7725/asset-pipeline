@@ -8,9 +8,11 @@ on:
       - "src/assetpipe/pipelines/sfx/**"
       - "src/assetpipe/api.py"
       - "src/assetpipe/cli/**"
+      - "src/assetpipe/pipelines/__init__.py"
       - "schemas/factory_request_v1.schema.json"
       - "examples/sfx_*"
       - "tests/unit/test_factory_contract.py"
+      - "tests/unit/test_factory_execution.py"
       - "tests/unit/test_sfx*.py"
       - ".github/workflows/factory-sfx-offline.yml"
   workflow_dispatch:
@@ -39,9 +41,10 @@ jobs:
           ffprobe -version
       - name: Test contracts and synthetic audio without model calls
         run: |
-          python -m pytest -q tests/unit/test_factory_contract.py tests/unit/test_sfx.py tests/unit/test_sfx_operations.py tests/unit/test_security_hardening.py integrations/mcp/tests/test_adapter.py
+          python -m pytest -q tests/unit/test_factory_contract.py tests/unit/test_factory_execution.py tests/unit/test_sfx.py tests/unit/test_sfx_operations.py tests/unit/test_security_hardening.py integrations/mcp/tests/test_adapter.py
           assetpipe --help
           assetpipe factory --help
+          assetpipe factory execute --help
           assetpipe sfx-review --help
           assetpipe factory plan --request examples/sfx_short_impact_factory.json
           assetpipe factory plan --request examples/sfx_ui_cue_factory.json
