@@ -6,8 +6,8 @@
 ## 기본 진입점
 
 1. 실제 게임 SOT를 읽고 `art_style`을 선택한다. family는 탐색용이며 recipe/model 선택 단위는 독립된 STYLE-101~124 24종이다.
-2. [config/styles/style_menu_v1.yaml](../../config/styles/style_menu_v1.yaml)에서 primary_model, binding, recipe, workflow, known_limitations를 읽는다.
-3. [실제 exemplar/failure 메뉴](../../research/style_catalog/style_menu_v1/STYLE_MENU_v1.md)의 원본 이미지를 확인한다. 대표 이미지와 SHA는 저장소 내부 경로로 연결돼 있다.
+2. [config/styles/style_menu_v1.yaml](ENGINE_RESOURCES.md#style-menu-configuration)에서 primary_model, binding, recipe, workflow, known_limitations를 읽는다.
+3. [실제 exemplar/failure 메뉴](ENGINE_RESOURCES.md#reviewed-menu-evidence)의 원본 이미지를 확인한다. 대표 이미지와 SHA는 저장소 내부 경로로 연결돼 있다.
 4. 기존 Brief/PromptSpec → model-specific compiler → 등록 workflow를 사용한다. 완성 프롬프트를 사람이 따로 작성하거나 우회하지 않는다.
 5. 생성 요청과 예산이 실제 승인된 경우에만 설치 모델·hash·VAE·encoder·workflow·라이선스·queue를 점검하고 generation을 실행한다. 메뉴 선택 또는 이 가이드만으로 생성 예산이 승인되지 않는다.
 6. 원본, 생성 파라미터, compiled prompt, workflow, route decision, manifest, QA와 실패를 보존한다. known limitations를 검토한 뒤 실제 human review를 받는다.
@@ -37,7 +37,7 @@ subject_domain은 선택 필드이며 asset_type에서 추론하지 않는다. S
 
 Grok/Codex/Claude executor 연결은 현재 미구현이며 EXECUTOR_UNAVAILABLE로 차단된다. Grok용 STYLE-103 recipe도 없으므로 기존 recipe gate에서 차단된다. 로컬 GREEN은 실제 그림 품질·화풍 호환 승인 근거가 아니다.
 
-실제 fixture 범위, 승인 JSON, SOT 예외, 기능·예산·감사 계약과 SKY RENDEZVOUS 후속 변경안은 [Manual / Rescue Override 상세](../../docs/style_menu/MANUAL_RESCUE_OVERRIDE.md)를 따른다. Google Drive SOT는 별도 소유자 검토·수정이 필요하다.
+실제 fixture 범위, 승인 JSON, SOT 예외, 기능·예산·감사 계약과 SKY RENDEZVOUS 후속 변경안은 [Manual / Rescue Override 상세](ENGINE_RESOURCES.md#manual-and-rescue-policy)를 따른다. Google Drive SOT는 별도 소유자 검토·수정이 필요하다.
 
 ## SOT / Brief 예시
 
@@ -64,7 +64,7 @@ assetpipe route --brief research/style_catalog/style_menu_v1/examples/retro_sci_
 
 ## 증거와 제작 한계
 
-24 styles × 3 models × 3 seeds = 216장 실제 생성 증거. 화풍 우세는 Krea20 / Base3 / unresolved1 / Turbo0. [메뉴 JSON](../../research/style_catalog/style_menu_v1/style_menu_v1.json)은 style fidelity와 production reliability를 분리한다. [고정 evidence archive](../../research/style_catalog/style_menu_v1/evidence_archive.json)는 원본 216장, 원본 SHA, 역사적 run records와 이전 판정을 연결한다.
+24 styles × 3 models × 3 seeds = 216장 실제 생성 증거. 화풍 우세는 Krea20 / Base3 / unresolved1 / Turbo0. [메뉴 JSON](ENGINE_RESOURCES.md#reviewed-menu-evidence)은 style fidelity와 production reliability를 분리한다. [고정 evidence archive](ENGINE_RESOURCES.md#reviewed-menu-evidence)는 원본 216장, 원본 SHA, 역사적 run records와 이전 판정을 연결한다.
 
 나침반 좌우, camera drift, crop, 추가 인물은 화풍 승자 판정을 자동 HOLD시키지 않는다. 하지만 해당 생산 결함은 경고로 남고, 기술 QA나 모델 배치만으로 실제 자산을 승인하지 않는다. 세 seed는 관찰된 변동만 보여준다. 동일 seed 재실행 repeatability는 NOT_MEASURED. 새 인물·소품·배경·게임 표시 크기에서 품질을 보장하지 않는다.
 
@@ -74,4 +74,4 @@ assetpipe route --brief research/style_catalog/style_menu_v1/examples/retro_sci_
 
 `CAND-*`, 옛 STYLE-001~012, `candidates_v0.yaml`, `nonpixel_prompt_research_v0.yaml`, `scripts/style_menu.py`와 `scripts/nonpixel_research.py`는 historical research/evidence 용도다. production agent는 이 자료를 기본 선택 계약으로 먼저 읽지 않는다. 역사적 Anima R1/R2/R3 compiler fixture는 증거 검증을 위해 그대로 유지한다.
 
-이전 가이드는 [history/v0.1](../../docs/style_menu/history/AGENT_RECIPE_SELECTION_GUIDE_v0.1.md)에 보존돼 있다. 과거 연구 지시서는 현재 생성 승인이나 운영 recipe를 대체하지 않는다.
+이전 가이드는 [history/v0.1](ENGINE_RESOURCES.md#historical-recipes)에 보존돼 있다. 과거 연구 지시서는 현재 생성 승인이나 운영 recipe를 대체하지 않는다.

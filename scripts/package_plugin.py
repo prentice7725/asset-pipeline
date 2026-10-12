@@ -53,6 +53,13 @@ def validate_package(root=PLUGIN):
         for link in re.findall(r'\]\(([^)]+)\)', text):
             target = (skill.parent / link).resolve()
             assert target.is_relative_to(root) and target.is_file(), link
+    # Validate every bundled document, not only direct SKILL links.
+    for document in root.rglob('*.md'):
+        for link in re.findall(r'\]\(([^)]+)\)', document.read_text(encoding='utf-8')):
+            if link.startswith(('https://', 'http://', 'mailto:', '#')):
+                continue
+            target = (document.parent / link.split('#')[0]).resolve()
+            assert target.is_relative_to(root) and target.is_file(), (str(document), link)
     assert not list(root.rglob('*.py')), 'Production/adapter code must not be copied into plugin'
     assert not any(p.suffix.lower() in {'.png', '.mp4', '.aseprite'} for p in root.rglob('*'))
     return {'status': 'PASS', 'validation_type': 'LOCAL_COMPATIBILITY_LAYOUT', 'hosts': sorted(MANIFESTS), 'creator_validation': 'NOT_RUN_CREATOR_UNAVAILABLE'}

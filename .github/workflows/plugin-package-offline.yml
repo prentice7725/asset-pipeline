@@ -1,0 +1,29 @@
+name: Plugin package offline
+
+on:
+  pull_request:
+    paths:
+      - "plugin/**"
+      - "scripts/package_plugin.py"
+      - "scripts/configure_local_plugin.py"
+      - "tests/unit/test_local_plugin_configuration.py"
+      - ".github/workflows/plugin-package-offline.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  plugin-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -e ".[dev]"
+      - name: Verify package and local preparation without generation
+        run: |
+          python -m pytest -q tests/unit/test_local_plugin_configuration.py
+          python -c "from scripts.package_plugin import validate_package; print(validate_package())"
+          python scripts/configure_local_plugin.py --help

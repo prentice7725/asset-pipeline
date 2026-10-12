@@ -3,7 +3,7 @@
 # Style research routing
 
 Model/style research preflight: use `assetpipe knowledge` and
-[MODEL_CAPABILITY_GUIDE](../../docs/knowledge/MODEL_CAPABILITY_GUIDE_v0.1.md)
+[MODEL_CAPABILITY_GUIDE](ENGINE_RESOURCES.md#model-knowledge)
 before telling a project which model is best. Catalog/style/recipe entries are
 candidates, not proven artistic strengths; preserve `art_quality=UNKNOWN` until
 human-reviewed original-image comparison exists. The knowledge command is
