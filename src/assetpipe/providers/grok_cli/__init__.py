@@ -11,11 +11,13 @@
 from __future__ import annotations
 
 import os
+import uuid
 from pathlib import Path
+from urllib.parse import quote
 
 from ..base import AVAILABLE, BLOCKED, UNAVAILABLE, Diagnosis
 from ..cli_base import CliImageProvider
-from ..cli_runner import correlated_images, JobDir, probe
+from ..cli_runner import correlated_images, JobDir, probe, session_scope
 from ..base import ProviderFailed
 
 # Grok image_gen / image_edit 도구가 받는 aspect_ratio 값(CLI 바이너리의 도구 설명 기준).
@@ -24,6 +26,29 @@ ASPECT_RATIOS = {'1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '2:1', '1:2'
 
 def grok_home() -> Path:
     return Path(os.environ.get('GROK_HOME') or (Path.home() / '.grok'))
+
+
+def cli_directory(path: Path) -> str:
+    """Use an existing Windows 8.3 name, never a truncated/hash cwd substitute."""
+    canonical = Path(path).resolve(strict=True)
+    if os.name != 'nt':
+        return str(canonical)
+    import ctypes
+    from ctypes import wintypes
+    get_short = ctypes.WinDLL('kernel32', use_last_error=True).GetShortPathNameW
+    get_short.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+    get_short.restype = wintypes.DWORD
+    buffer = ctypes.create_unicode_buffer(32768)
+    size = get_short(str(canonical), buffer, len(buffer))
+    if not size or size >= len(buffer) or Path(buffer.value).resolve(strict=True) != canonical:
+        raise ProviderFailed('SESSION_PATH_UNAVAILABLE', 'Cannot verify Grok cwd/home filesystem identity')
+    return buffer.value
+
+
+def invocation_id(job):
+    if not getattr(job, 'grok_session_id', None):
+        job.grok_session_id = str(uuid.uuid4())
+    return job.grok_session_id
 
 
 class GrokCliProvider(CliImageProvider):
@@ -36,9 +61,42 @@ class GrokCliProvider(CliImageProvider):
     def child_env(self, auth, job: JobDir):
         env = dict(self.isolation_env)
         if auth['mode'] == 'env_api_key':
-            home = job.root / 'grok_home'
+            home = job.root / 'h'
             home.mkdir(exist_ok=True)
-            env['GROK_HOME'] = str(home)
+            env['GROK_HOME'] = cli_directory(home)
+        session_home = Path(env.get('GROK_HOME') or grok_home())
+        session_home.mkdir(parents=True, exist_ok=True)
+        session_home = Path(cli_directory(session_home))
+        env['GROK_HOME'] = str(session_home)
+        encoded_cwd = quote(cli_directory(job.work), safe='')
+        session_parent = session_home / 'sessions' / encoded_cwd
+        # Keep one complete UUID session/image path within legacy Windows limits.
+        # No 8.3 support or an overlong configured home fails before generation.
+        if os.name == 'nt' and (len(encoded_cwd.encode('utf-8')) > 255 or
+                len(str(session_parent / invocation_id(job) / 'images')) >= 248 or
+                len(str(session_parent / invocation_id(job) / 'images' / '1.png')) >= 260):
+            raise ProviderFailed('SESSION_PATH_TOO_LONG', 'Grok session path exceeds the Windows path budget')
+        session_parent.mkdir(parents=True, exist_ok=True)
+        session_scope(session_home / 'sessions', encoded_cwd)
+        env['ASSETPIPE_GROK_SESSION_PARENT'] = str(session_parent)
+        # Grok 1.0.50 expands the verified 8.3 cwd before deriving its session store.
+        # Derive that one alternative from this job, never search the shared home.
+        from ..cli_runner import canonical_path
+        native_cwd = str(canonical_path(job.work, strict=True))
+        namespace = '\\\\?\\'
+        if native_cwd.startswith(namespace + 'UNC\\'):
+            native_cwd = '\\\\' + native_cwd[8:]
+        elif native_cwd.startswith(namespace):
+            native_cwd = native_cwd[4:]
+        canonical_encoded = quote(native_cwd, safe='')
+        # URL components over 255 bytes cannot exist on Windows. They provide no
+        # additional scope; legacy short-cwd clients retain their existing gate.
+        if canonical_encoded != encoded_cwd and len(canonical_encoded.encode('utf-8')) <= 255:
+            session_scope(session_home / 'sessions', canonical_encoded)
+            canonical_parent = canonical_path(session_home / 'sessions' / canonical_encoded)
+            canonical_parent.mkdir(parents=True, exist_ok=True)
+            env['ASSETPIPE_GROK_CANONICAL_SESSION_PARENT'] = str(canonical_parent)
+        env['ASSETPIPE_GROK_SESSION_ID'] = invocation_id(job)
         return env
 
     def check_features(self, exe, env, diagnosis: Diagnosis) -> None:
@@ -91,7 +149,8 @@ class GrokCliProvider(CliImageProvider):
         return '\n'.join(lines)
 
     def build_argv(self, exe, job: JobDir, backend, tool, reference):
-        argv = [exe, '--prompt-file', str(job.work / 'prompt.txt'), '--output-format', 'json', '--cwd', str(job.work),
+        argv = [exe, '--prompt-file', str(job.work / 'prompt.txt'), '--output-format', 'json', '--cwd', cli_directory(job.work),
+                '--session-id', invocation_id(job),
                 '--tools', tool, '--no-subagents', '--no-plan', '--disable-web-search', '--max-turns', str(backend.get('max_turns', 4))]
         if backend.get('model'):
             argv += ['-m', str(backend['model'])]
@@ -99,8 +158,16 @@ class GrokCliProvider(CliImageProvider):
         return argv, None, {'prompt_via': 'file', 'prompt_file': 'prompt.txt', 'sandbox': 'tool allowlist: ' + tool}
 
     def snapshot_roots(self, env):
-        home = Path(env.get('GROK_HOME') or grok_home())
-        return [home]
+        session_parent = env.get('ASSETPIPE_GROK_SESSION_PARENT')
+        if not session_parent:
+            raise ProviderFailed('SESSION_SCOPE_UNAVAILABLE', 'Grok invocation session directory was not configured')
+        roots = [Path(session_parent)]
+        if env.get('ASSETPIPE_GROK_CANONICAL_SESSION_PARENT'):
+            roots.append(Path(env['ASSETPIPE_GROK_CANONICAL_SESSION_PARENT']))
+        return roots
 
     def harvest(self, result, parsed, job, env, state):
-        return correlated_images(result, parsed, job, state, session_parent=state['roots'][0] / 'sessions')
+        expected = env.get('ASSETPIPE_GROK_SESSION_ID')
+        if expected and parsed.get('session_id') and parsed['session_id'] != expected:
+            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Grok reported a different invocation session')
+        return correlated_images(result, parsed, job, state, session_parent=state['roots'][0], session_parents=state['roots'])
