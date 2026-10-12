@@ -38,9 +38,11 @@ elif '--prompt-file' in args:
     if mode == 'no_output':
         print(json.dumps({'type': 'result', 'result': 'DONE'}))
         sys.exit(0)
-    image = home / 'sessions' / 'sess-1' / 'images' / '1.jpg'
+    session_parent = pathlib.Path(os.environ.get('ASSETPIPE_GROK_SESSION_PARENT') or (home / 'sessions'))
+    session_id = args[args.index('--session-id') + 1] if '--session-id' in args else 'sess-1'
+    image = session_parent / session_id / 'images' / '1.jpg'
     image.parent.mkdir(parents=True, exist_ok=True)
     Image.new('RGB', tuple(cfg.get('size', (64, 64))), (30, 90, 200)).save(image, 'JPEG')
-    print(json.dumps({'type': 'result', 'session_id': 'sess-1', 'model': 'grok-fake', 'usage': {'input_tokens': 7, 'output_tokens': 3}, 'result': f'saved {image}'}))
+    print(json.dumps({'type': 'result', 'session_id': session_id, 'model': 'grok-fake', 'usage': {'input_tokens': 7, 'output_tokens': 3}, 'result': f'saved {image}'}))
 else:
     sys.exit(64)
