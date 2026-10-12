@@ -229,7 +229,7 @@ def find_first(values: Iterable[Any], names: Iterable[str], kinds: tuple[type, .
     return None
 
 
-_PATH_IN_TEXT = re.compile(r'(?:[A-Za-z]:[\\/]|/)[^\s"\'<>|*?\x00]+?\.(?:png|jpe?g|webp)\b', re.IGNORECASE)
+_PATH_IN_TEXT = re.compile(r'(?:(?<![A-Za-z0-9_])[A-Za-z]:[\\/]|(?<![A-Za-z0-9_./\\:])/)[^\s"\'<>|*?\x00]+?\.(?:png|jpe?g|webp)\b', re.IGNORECASE)
 
 
 def image_paths_in(values: Iterable[Any], raw_text: str = '') -> list[Path]:
@@ -245,12 +245,38 @@ def image_paths_in(values: Iterable[Any], raw_text: str = '') -> list[Path]:
     return [Path(p) for p in found]
 
 
+def canonical_path(path: Path, *, strict=False) -> Path:
+    """Use one resolved Windows namespace for comparisons and long-path scans."""
+    path = Path(path).absolute()
+    if os.name == 'nt':
+        name = str(path)
+        if not name.startswith('\\\\?\\'):
+            name = '\\\\?\\UNC\\' + name[2:] if name.startswith('\\\\') else '\\\\?\\' + name
+        path = Path(name)
+    resolved = path.resolve(strict=strict)
+    if os.name == 'nt' and not str(resolved).startswith('\\\\?\\'):
+        name = str(resolved)
+        resolved = Path('\\\\?\\UNC\\' + name[2:] if name.startswith('\\\\') else '\\\\?\\' + name)
+    return resolved
+
+
+def output_path(path: Path) -> Path:
+    """Keep ordinary returned paths compatible; retain namespace for long reads."""
+    resolved = canonical_path(path, strict=True)
+    name = str(resolved)
+    if os.name == 'nt':
+        normal = '\\\\' + name[8:] if name.startswith('\\\\?\\UNC\\') else name[4:]
+        if len(normal) < 260:
+            return Path(normal)
+    return resolved
+
+
 def is_within(path: Path, roots: Iterable[Path]) -> bool:
     try:
-        resolved = path.resolve()
+        resolved = canonical_path(path)
     except OSError:
         return False
-    return any(resolved.is_relative_to(Path(root).resolve()) for root in roots)
+    return any(resolved.is_relative_to(canonical_path(root)) for root in roots)
 
 
 def usable_image(path: Path) -> bool:
@@ -276,7 +302,8 @@ def snapshot_images(roots: Iterable[Path]) -> dict[str, int]:
 
 def is_new(path: Path, before: dict[str, int]) -> bool:
     try:
-        return before.get(str(path)) != path.stat().st_mtime_ns
+        stamp = before.get(str(path), before.get(str(canonical_path(path))))
+        return stamp != path.stat().st_mtime_ns
     except OSError:
         return False
 
@@ -315,13 +342,13 @@ def session_scope(session_parent: Path, session: str) -> Path:
     A missing session directory simply supplies no output.
     """
     try:
-        scope = Path(session_parent).resolve() / session
+        scope = canonical_path(session_parent) / session
         try:
             entry = scope.lstat()
         except FileNotFoundError:
             return scope
         reparse = getattr(entry, 'st_file_attributes', 0) & getattr(stat, 'FILE_ATTRIBUTE_REPARSE_POINT', 0x400)
-        if stat.S_ISLNK(entry.st_mode) or reparse or scope.resolve(strict=True) != scope:
+        if stat.S_ISLNK(entry.st_mode) or reparse or canonical_path(scope, strict=True) != scope:
             raise ProviderFailed('OUTPUT_UNCORRELATED', 'Reported output session directory is an alias')
         if not stat.S_ISDIR(entry.st_mode):
             raise ProviderFailed('OUTPUT_UNCORRELATED', 'Reported output session is not a directory')
@@ -330,15 +357,18 @@ def session_scope(session_parent: Path, session: str) -> Path:
         raise ProviderFailed('OUTPUT_UNCORRELATED', 'Cannot verify output session directory identity') from exc
 
 
-def correlated_images(result, parsed, job, state, *, session_parent):
+def correlated_images(result, parsed, job, state, *, session_parent, session_parents=None):
     """Accept only a newly reported session or this invocation's private workdir.
 
     Shared-home freshness is never evidence of invocation ownership. Explicit
     paths must meet the same boundary before any file metadata is read.
     """
+    state['before'] = {str(canonical_path(p)): stamp for p, stamp in state['before'].items()}
     ids = {str(item) for value in parsed['values'] for key, item in walk(value)
            if key in ('thread_id', 'session_id', 'sessionId', 'conversation_id')
            and isinstance(item, str) and item}
+    if parsed.get('session_id'):
+        ids.add(str(parsed['session_id']))
     if len(ids) > 1:
         raise ProviderFailed('OUTPUT_UNCORRELATED', 'Conflicting session identifiers in CLI output')
     session = next(iter(ids), parsed.get('session_id'))
@@ -346,12 +376,13 @@ def correlated_images(result, parsed, job, state, *, session_parent):
     if session:
         if not re.fullmatch(r'[A-Za-z0-9_\-]{1,80}', str(session)):
             raise ProviderFailed('OUTPUT_UNCORRELATED', 'Invalid output session identifier')
-        scope = session_scope(session_parent, str(session))
-        if (any(Path(p).is_relative_to(scope) for p in state['before'])
-                and new_images([scope], state['before'])):
-            raise ProviderFailed('OUTPUT_UNCORRELATED', 'Output session was already used before this invocation')
-        roots.append(scope)
-    state['correlated_roots'] = [p.resolve() for p in roots]
+        scopes = [session_scope(parent, str(session)) for parent in (session_parents or [session_parent])]
+        for scope in scopes:
+            if (any(canonical_path(p).is_relative_to(scope) for p in state['before'])
+                    and new_images([scope], state['before'])):
+                raise ProviderFailed('OUTPUT_UNCORRELATED', 'Output session was already used before this invocation')
+            roots.append(scope)
+    state['correlated_roots'] = [canonical_path(p) for p in roots]
     before = state['before']
     found = new_images(roots, before)
     explicit = image_paths_in(parsed['values'], result.stdout)
@@ -363,5 +394,6 @@ def correlated_images(result, parsed, job, state, *, session_parent):
     if not session and not found and explicit:
         raise ProviderFailed('OUTPUT_UNCORRELATED', 'No reliable output correlation')
     if session:
-        session_scope(session_parent, str(session))
-    return list({str(p.resolve(strict=True)): p.resolve(strict=True) for p in found}.values())
+        for parent in (session_parents or [session_parent]):
+            session_scope(parent, str(session))
+    return list({str(canonical_path(p, strict=True)): output_path(p) for p in found}.values())
