@@ -71,7 +71,7 @@ Restrictions:
 5. Correlate exactly one newly created image to the **own request/conversation** and permitted artifact path using fresh snapshots, SHA256, file identity, no symlink/junction escape, no arbitrary shared-home fallback. Reject ambiguous, foreign or prior-session output.
 6. Preserve the original, editing reference bytes/hashes, prompt, reported image model label (`NOT_EXPOSED` when missing), version, usage (`NOT_REPORTED` when missing), tool calls and child/subagent evidence. Do not invent deterministic seed or exact backend name.
 7. No implicit rerun after timeout, ambiguous completion, malformed output or failed visual review. Reserve the budget durably **before** process launch.
-8. **Critical budget gate:** a CLI invocation can trigger up to 3 underlying image attempts via the built-in image-generator subagent. Until locally proven enforceable one-attempt behavior (or a separately reviewed budget contract explicitly authorizes the real maximum with reliable evidence), **block paid dispatch as `INTERNAL_GENERATION_ATTEMPTS_UNBOUNDED`**. Merely requesting "one tool call" in natural language is not sufficient.
+8. **Critical budget gate:** a CLI invocation can trigger up to 3 underlying image attempts via the built-in image-generator subagent. Until locally proven enforceable one-attempt behavior (or a separately reviewed budget contract explicitly authorizes the real maximum with reliable evidence), **block paid dispatch as `INTERNAL_ATTEMPT_BUDGET_UNVERIFIED`**. Merely requesting "one tool call" in natural language is not sufficient.
 
 The sample command is a research template, not approval to generate. Prefer a non-generating capability/permissions inspection first.
 
