@@ -10,6 +10,7 @@ on:
       - "tests/unit/test_cli_providers.py"
       - "tests/unit/test_grok*.py"
       - "tests/unit/test_security_hardening.py"
+      - "tests/unit/test_security_p1_revalidation.py"
       - ".github/workflows/cli-collection-offline.yml"
 
 permissions:
@@ -29,3 +30,17 @@ jobs:
         run: |
           python -m pytest -q tests/unit/test_cli_providers.py tests/unit/test_grok_windows_paths.py tests/unit/test_grok_canonical_collection.py tests/unit/test_security_hardening.py integrations/mcp/tests/test_adapter.py
           assetpipe --help
+
+  windows-session-aliases:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -e ".[dev,motion]"
+      - name: Windows sibling aliases, case variants and nested reparse points
+        run: python -m pytest -q tests/unit/test_security_p1_revalidation.py --junitxml=windows-p1.xml
+      - name: Require every Windows P1 case to execute
+        run: python -c "import xml.etree.ElementTree as E; s=E.parse('windows-p1.xml').getroot().find('testsuite'); assert int(s.attrib['tests']) == 22 and all(int(s.attrib[k]) == 0 for k in ('skipped', 'failures', 'errors')), s.attrib"
