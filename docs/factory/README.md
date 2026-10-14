@@ -10,6 +10,7 @@ Execution boundary: [explicit still/audio dispatch](FACTORY_EXECUTION.md).
 
 1. [Factory Architecture v1](FACTORY_ARCHITECTURE_V1.md) — four lines, conditional IMAGE_ONLY vs IMAGE_TO_SPRITE, versioned request envelope, multi-image role and provenance policy, child run isolation, release boundaries.
 2. [M3 Factory Workplan](M3_FACTORY_WORKPLAN.md) — main-branch inventory, phased implementation M3.0..M3.6, proposed PR order, negative tests, E2E gates and definition of done.
+3. [Project reorganization, 2026-10-11](PROJECT_REORGANIZATION_20261011.md) — integrated main, preserved local work, actual runtime boundaries and stabilization-first backlog. No M3 implementation or generation is authorized by this inventory.
 
 ## Decision register (2026-10-11)
 
@@ -27,3 +28,5 @@ Execution boundary: [explicit still/audio dispatch](FACTORY_EXECUTION.md).
 | Existing six MCP tools | Preserve compatibility; do not expand in planning PR |
 
 No runtime files, registry entries, workflow graphs, operational status, SOT documents, or approved masters are changed by this planning package.
+
+Current preservation review: [uncommitted-work triage, 2026-10-14](../maintenance/UNCOMMITTED_TRIAGE_20261014.md). Historical inventories below do not supersede current execution contracts.
