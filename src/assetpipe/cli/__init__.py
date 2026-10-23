@@ -17,6 +17,17 @@ def main(argv=None):
     motion_package.add_argument('--video-sha256', required=True)
     motion_package.add_argument('--output', required=True, type=Path)
     motion_package.add_argument('--allowed-root', action='append', type=Path)
+    for name in ['motion-preflight', 'motion-prepare', 'motion-inspect']:
+        motion = commands.add_parser(name, help='Read-only video gates or frozen research inputs; never generates')
+        motion.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-inspect':
+            motion.add_argument('--run', required=True, type=Path)
+        else:
+            motion.add_argument('--request', required=True, type=Path)
+        if name == 'motion-preflight':
+            motion.add_argument('--inspect-installation', action='store_true')
+        if name == 'motion-prepare':
+            motion.add_argument('--output', required=True, type=Path)
     audio_review = commands.add_parser('sfx-review',help='Record explicit listening observations; no generation or game approval')
     audio_review.add_argument('--run',required=True,type=Path)
     audio_review.add_argument('--review',required=True,type=Path)
@@ -110,7 +121,18 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'motion-package':
+        if args.command in {'motion-preflight', 'motion-prepare', 'motion-inspect'}:
+            from ..providers.video import preflight_file, prepare_file, inspect_prepared
+            if args.command == 'motion-preflight':
+                result = preflight_file(args.request, args.root, allowed_roots=args.allowed_root,
+                                        inspect_installation=args.inspect_installation)
+            elif args.command == 'motion-prepare':
+                result = {'prepared_path': str(prepare_file(args.request, args.output, args.root,
+                                                           allowed_roots=args.allowed_root))}
+            else:
+                result = inspect_prepared(args.run, args.root, allowed_roots=args.allowed_root)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'motion-package':
             from ..motion.package import package_video
             print(package_video(args.request, args.video, args.video_sha256, args.output,
                                 args.root, allowed_roots=args.allowed_root))

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — video preflight and prepared inputs, 2026-10-23
+
+- Add read-only motion preflight with explicit registered workflow, source,
+  timing, compiler-profile and optional local installation checks.
+- Preserve all ordered reference images and configuration fingerprints in a
+  fresh research directory; reject source/configuration/copy/review-state drift.
+- Keep PREPARED_BLOCKED, zero uploads/dispatches/reservations and unchanged six
+  MCP contracts. Actual generation adapter, role-consumption proof and real I2V
+  E2E are still pending. No deleted experimental executor is restored.
+
 ## Unreleased — M3 audit and offline motion packaging, 2026-10-23
 
 - Re-audit M3.0–M3.6 against main 4320bf864add; distinguish implementation,
