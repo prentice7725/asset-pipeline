@@ -11,6 +11,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory')
     parser.add_argument('--root', type=Path, default=Path.cwd(), help='Repository/config root')
     commands = parser.add_subparsers(dest='command', required=True)
+    motion_package = commands.add_parser('motion-package', help='Package an existing nonpixel video for research review; no generation')
+    motion_package.add_argument('--request', required=True, type=Path)
+    motion_package.add_argument('--video', required=True, type=Path)
+    motion_package.add_argument('--video-sha256', required=True)
+    motion_package.add_argument('--output', required=True, type=Path)
+    motion_package.add_argument('--allowed-root', action='append', type=Path)
     audio_review = commands.add_parser('sfx-review',help='Record explicit listening observations; no generation or game approval')
     audio_review.add_argument('--run',required=True,type=Path)
     audio_review.add_argument('--review',required=True,type=Path)
@@ -104,7 +110,11 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'sfx-review':
+        if args.command == 'motion-package':
+            from ..motion.package import package_video
+            print(package_video(args.request, args.video, args.video_sha256, args.output,
+                                args.root, allowed_roots=args.allowed_root))
+        elif args.command == 'sfx-review':
             from ..paths import RootResolver
             from ..audio.sfx import record_review
             resolver = RootResolver([args.root],base=args.root)
