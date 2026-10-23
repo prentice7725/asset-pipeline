@@ -4,6 +4,8 @@ M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_202610
 기존 영상의 [오프라인 모션 리뷰 패키지](docs/factory/MOTION_PACKAGE.md)를 추가했습니다.
 공통 I2V 실생성은 여전히 BLOCKED_BACKEND_NOT_VERIFIED이며 기술적 패키징은
 애니메이션 품질·Golden·게임 투입 승인을 뜻하지 않습니다.
+[모션 사전검증·입력 보존](docs/factory/MOTION_PREFLIGHT.md)은 참조 역할·순서·해시와
+설치 상태를 확인하며, 미검증 입력 지원이나 생성 승인을 자동으로 확정하지 않습니다.
 
 STYLE MENU v1 supports approved run-scoped Manual / Rescue Override for
 NONPIXEL_IMAGE. Primary models are evidence-informed fixture defaults; style and
