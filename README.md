@@ -6,6 +6,9 @@ M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_202610
 애니메이션 품질·Golden·게임 투입 승인을 뜻하지 않습니다.
 [모션 사전검증·입력 보존](docs/factory/MOTION_PREFLIGHT.md)은 참조 역할·순서·해시와
 설치 상태를 확인하며, 미검증 입력 지원이나 생성 승인을 자동으로 확정하지 않습니다.
+참조 1장의 [연구용 단일 시도 실행기](docs/factory/MOTION_EXECUTOR.md)도 추가했습니다.
+기본 비활성이며 별도 1회 예산·모델 해시·입력 검증 없이는 실행되지 않습니다.
+실제 I2V E2E와 참조 역할의 품질 검증은 아직 완료하지 않았습니다.
 
 STYLE MENU v1 supports approved run-scoped Manual / Rescue Override for
 NONPIXEL_IMAGE. Primary models are evidence-informed fixture defaults; style and
