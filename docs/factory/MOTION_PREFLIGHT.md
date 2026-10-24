@@ -1,5 +1,11 @@
 # Motion provider preflight and prepared inputs
 
+2026-10-24 follow-up: an explicitly disabled-by-default
+[single-reference research executor](MOTION_EXECUTOR.md) now consumes these
+prepared inputs. The commands on this page remain read-only/non-dispatching;
+the missing profile noted below describes the earlier preflight snapshot and
+is now represented by an unverified research mapping, not a quality approval.
+
 This is the next offline slice after [existing-video packaging](MOTION_PACKAGE.md).
 It reuses Factory v1 source/parent validation, the workflow registry/loader,
 configured-root boundaries and the ComfyUI client. No new generator, prompt

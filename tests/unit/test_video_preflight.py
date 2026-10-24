@@ -59,7 +59,6 @@ def test_counts_are_bound_without_claiming_supported_consumption(case, count):
     assert [item['role'] for item in result['references']] == [item['role'] for item in images[:count]]
     assert [item['order'] for item in result['references']] == list(range(count))
     assert 'REFERENCE_CAPABILITY_NOT_VERIFIED' in {item['code'] for item in result['issues']}
-    assert 'MOTION_PROMPT_PROFILE_MISSING' in {item['code'] for item in result['issues']}
     assert not (root / 'workspace').exists()
 
 
@@ -244,3 +243,35 @@ def test_prepared_copy_cannot_redirect_to_a_source_image(case):
     manifest.write_text(json.dumps(record))
     with pytest.raises(ValueError, match='MOTION_REFERENCE_BINDING_INVALID'):
         inspect_prepared(manifest.parent, root)
+
+
+def test_missing_video_profile_is_still_a_blocker(case):
+    root, path, *_ = case
+    file = root / 'config/workflow_registry.yaml'
+    registry = yaml.safe_load(file.read_text())
+    registry['workflows']['nonpixel_motion_contract'].pop('model_profile')
+    file.write_text(yaml.safe_dump(registry))
+    report = preflight_file(path, root)
+    assert 'MOTION_PROMPT_PROFILE_MISSING' in {item['code'] for item in report['issues']}
+
+
+def test_installation_queries_only_required_node_classes(case, monkeypatch):
+    from assetpipe._ported.comfy_bridge.client import ComfyClient
+    from assetpipe._ported.comfy_bridge.workflow_loader import load_workflow
+    root, path, *_ = case
+    graph = load_workflow('deno_minimax_h3_r2v_8step', root / 'config/workflows')
+    classes = {node['class_type'] for node in graph.api_prompt.values()}
+    visited = []
+    def schema(self, route):
+        assert route.startswith('/object_info/')
+        name = route.split('/')[-1]
+        assert name in classes
+        visited.append(name)
+        return {name: {'input': {}}}
+    monkeypatch.setattr(ComfyClient, 'check_connection', lambda self: {'system': {}})
+    monkeypatch.setattr(ComfyClient, '_json', schema)
+    monkeypatch.setattr(ComfyClient, 'list_models', lambda self, folder: [])
+    report = preflight_file(path, root, inspect_installation=True)
+    assert set(visited) == classes and len(visited) == len(classes)
+    assert report['installation']['status'] == 'INVENTORY_ONLY'
+    assert report['generation_allowed'] is False

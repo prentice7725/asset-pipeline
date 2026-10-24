@@ -452,6 +452,7 @@ workflows:
       status: PASS
       missing: []
   nonpixel_motion_contract:
+    model_profile: minimax-h3-reference-research
     output_class: NONPIXEL_ANIMATION
     engine: comfyui
     workflow_file: config/workflows/deno_minimax_h3_r2v_8step.json
@@ -474,6 +475,7 @@ workflows:
     capabilities:
       character_reference: true
       text_to_image: false
+      negative_prompt_instruction: true
     support: SUPPORTED_EXPERIMENTAL
     installation_check:
       status: PASS

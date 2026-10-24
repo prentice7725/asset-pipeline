@@ -28,6 +28,16 @@ def main(argv=None):
             motion.add_argument('--inspect-installation', action='store_true')
         if name == 'motion-prepare':
             motion.add_argument('--output', required=True, type=Path)
+    for name in ['motion-execution-plan', 'motion-execute']:
+        execution = commands.add_parser(name, help='Explicit one-reference research probe plan or one authorized generation attempt')
+        execution.add_argument('--run', required=True, type=Path)
+        execution.add_argument('--seed', required=True, type=int)
+        execution.add_argument('--width', required=True, type=int)
+        execution.add_argument('--height', required=True, type=int)
+        execution.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-execute':
+            execution.add_argument('--authorization', required=True, type=Path)
+            execution.add_argument('--authorize-generation', required=True, action='store_true')
     audio_review = commands.add_parser('sfx-review',help='Record explicit listening observations; no generation or game approval')
     audio_review.add_argument('--run',required=True,type=Path)
     audio_review.add_argument('--review',required=True,type=Path)
@@ -121,7 +131,17 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command in {'motion-preflight', 'motion-prepare', 'motion-inspect'}:
+        if args.command in {'motion-execution-plan', 'motion-execute'}:
+            from ..providers.video.executor import execution_plan, execute_prepared
+            options = dict(seed=args.seed, width=args.width, height=args.height, allowed_roots=args.allowed_root)
+            if args.command == 'motion-execution-plan':
+                result = execution_plan(args.run, args.root, **options)
+            else:
+                result = {'execution_receipt_path': str(execute_prepared(
+                    args.run, args.authorization, args.root,
+                    authorize_generation=args.authorize_generation, **options))}
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command in {'motion-preflight', 'motion-prepare', 'motion-inspect'}:
             from ..providers.video import preflight_file, prepare_file, inspect_prepared
             if args.command == 'motion-preflight':
                 result = preflight_file(args.request, args.root, allowed_roots=args.allowed_root,

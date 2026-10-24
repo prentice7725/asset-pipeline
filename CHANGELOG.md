@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — single-reference motion research executor, 2026-10-24
+
+- Connect one existing nonpixel parent through the shared prompt compiler,
+  explicit ComfyUI workflow, original-video preservation and existing sprite packer.
+- Require exact plan-bound one-request probe consent, all configured weight
+  hashes, live schema/inventory gates and a durable root-scoped reservation.
+- Correlate upload, submitted/history graph and video prefix; preserve failures,
+  block retries and revalidate sources after generation and packing.
+- Add an explicit natural-language research profile without replacing still/SFX
+  defaults. Research execution stays disabled, workflow stays EXPERIMENTAL and
+  no real model generation or reference-semantic approval is claimed.
+
 ## Unreleased — video preflight and prepared inputs, 2026-10-23
 
 - Add read-only motion preflight with explicit registered workflow, source,

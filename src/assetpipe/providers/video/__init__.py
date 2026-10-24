@@ -3,7 +3,7 @@ import json
 import math
 import shutil
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import quote, urlsplit
 
 import yaml
 
@@ -107,10 +107,16 @@ def preflight_file(request_path, root, *, allowed_roots=None, inspect_installati
         client = ComfyClient(address, request_timeout=3)
         try:
             stats = client.check_connection()
-            node_info = client._json('/object_info')
-            if not isinstance(node_info, dict):
-                raise ValueError('Invalid object_info response')
             classes = sorted({node['class_type'] for node in graph.api_prompt.values()})
+            node_info = {}
+            # A global catalog can run slow/broken schema hooks for unrelated
+            # extensions. Query every needed class directly; never skip a class.
+            for name in classes:
+                response = client._json('/object_info/' + quote(name, safe=''))
+                if not isinstance(response, dict):
+                    raise ValueError('Invalid object_info response')
+                if name in response:
+                    node_info[name] = response[name]
             installation.update(status='INVENTORY_ONLY', version=stats.get('system', {}).get('comfyui_version'),
                                 nodes={name: node_info.get(name) for name in classes})
             for name in classes:
