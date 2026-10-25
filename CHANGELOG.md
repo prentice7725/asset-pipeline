@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — Krea2 actual base contract probe, 2026-10-25
+
+- Extend the existing loader diagnostic with optional workflow-bound base hashing,
+  header/meta-device Krea2 detection and installed native key mapping.
+- Verify all 120 actual adapter targets' shapes and FP8 scale metadata. Reproduce
+  120 unloaded magnitude keys with that base-derived map; no complete adapter PASS.
+- Opt in to two actual base-only FP8 projection loads/dequantizations/CPU forwards;
+  preserve native layer flags and report quantized-vs-dense differences explicitly.
+- Record conditional PEFT alpha=rank source evidence without inventing authored
+  configuration or raw/Turbo base equivalence. Production remains BLOCKED.
+  See docs/research/KREA2_BASE_CONTRACT_20261025.md.
+
 ## Unreleased — Krea2 ordered dense inference candidate, 2026-10-25
 
 - Extend the existing offline diagnostic with an explicit ordered forward that

@@ -372,6 +372,8 @@ CPU 실행으로 재현했습니다. [호환성 조사](docs/research/KREA2_LOAD
 FP32·FP64 후보는 허용 오차 내 일치했지만 BF16 병합은 불일치하여 운영 연결을 차단했습니다.
 [연산 순서 보존 후보](docs/research/KREA2_DORA_ORDERED_20261025.md)는 합성 CPU 960건에서
 정확히 일치했습니다. 실제 가중치·FP8 베이스 모델 호환성과 운영 연결은 여전히 미검증입니다.
+[실제 베이스 계약 검사](docs/research/KREA2_BASE_CONTRACT_20261025.md)에서 LoRA 대상 120개의
+키·shape를 확인하고 FP8 투영 2개를 격리 실행했습니다. 전체 모델·LoRA 적용은 아직 미검증입니다.
 
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리

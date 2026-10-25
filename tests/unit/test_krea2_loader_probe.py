@@ -1,5 +1,7 @@
 """Reporting must not promote partial parser results to adapter compatibility."""
 import importlib.util
+import json
+import struct
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -33,3 +35,50 @@ def test_top_level_unloaded_scale_blocks_even_when_ab_consumed():
 def test_no_patches_cannot_pass_when_loader_is_silent():
     keys = {'x.lora_A.weight': None, 'x.lora_B.weight': None}
     assert probe.summarize(keys, keys, {}, [])['status'] == 'INCOMPLETE_ADAPTER'
+
+
+@pytest.fixture
+def contract():
+    base = {'__metadata__': {'_quantization_metadata': json.dumps({
+        'layers': {'layer': {'format': 'float8_e4m3fn'}}})},
+        'layer.weight': {'shape': [4, 3], 'dtype': 'F8_E4M3'},
+        'layer.weight_scale': {'shape': [], 'dtype': 'F32'}}
+    lora = {'diffusion_model.layer.lora_A.weight': {'shape': [2, 3]},
+            'diffusion_model.layer.lora_B.weight': {'shape': [4, 2]},
+            'diffusion_model.layer.magnitude': {'shape': [4]}}
+    mapping = {'diffusion_model.layer': 'diffusion_model.layer.weight'}
+    return base, lora, mapping
+
+
+def test_matching_base_shapes_do_not_infer_alpha_or_model_approval(contract):
+    result = probe.assess_base_contract(*contract)
+    assert result['shape_matches'] == result['quant_header_matches'] == 1
+    assert result['alpha_over_rank'] == 'UNKNOWN_NOT_INFERRED'
+    assert result['production_compatibility'] == 'BLOCKED'
+    assert result['actual_model_instantiation'] == 'NOT_RUN'
+
+
+@pytest.mark.parametrize('failure', ['missing_target', 'wrong_base_shape', 'wrong_magnitude'])
+def test_base_contract_rejects_mapping_and_shape_errors(contract, failure):
+    base, lora, mapping = contract
+    if failure == 'missing_target':
+        mapping.clear()
+    elif failure == 'wrong_base_shape':
+        base['layer.weight']['shape'] = [3, 4]
+    else:
+        lora['diffusion_model.layer.magnitude']['shape'] = [1, 4]
+    assert probe.assess_base_contract(*contract)['shape_matches'] == 0
+
+
+def test_missing_scale_never_passes_quantization_header_check(contract):
+    del contract[0]['layer.weight_scale']
+    result = probe.assess_base_contract(*contract)
+    assert result['shape_matches'] == 1 and result['quant_header_matches'] == 0
+
+
+def test_header_reader_rejects_offsets_outside_actual_payload(tmp_path):
+    path = tmp_path / 'bad.safetensors'
+    header = json.dumps({'weight': {'shape': [1], 'dtype': 'F32', 'data_offsets': [0, 4]}}).encode()
+    path.write_bytes(struct.pack('<Q', len(header)) + header)
+    with pytest.raises(ValueError, match='INVALID_TENSOR_HEADER'):
+        probe.read_header(path)
