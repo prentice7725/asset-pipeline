@@ -150,6 +150,10 @@ Resolve this regression gate before any integration/release work. The model
 header and isolated FP8 observations remain scoped component evidence; no whole
 pipeline PASS, quality improvement or operational activation is claimed.
 
+Follow-up: [Windows reservation namespace diagnosis and fix](../maintenance/FACTORY_ROOT_NAMESPACE_RACE_20261025.md)
+reproduces this rejection independently of full-suite order and preserves its
+original failure logs. The historical results above are not relabelled as PASS.
+
 Only the existing diagnostic/tests and documentation change. Production code,
 configuration, six MCP contracts, installed loader and original model files stay
 unchanged. Revert this commit to roll back; no runtime switch is needed.

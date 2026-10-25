@@ -136,14 +136,21 @@ def link_directory(link, target, kind):
 
 
 @pytest.mark.parametrize('kind', ['symlink', 'junction'])
-def test_resolver_and_scanned_images_reject_link_escape(tmp_path, kind):
+@pytest.mark.parametrize('extended', [False, True])
+def test_resolver_and_scanned_images_reject_link_escape(tmp_path, kind, extended):
+    if extended and os.name != 'nt':
+        pytest.skip('Windows extended namespace')
     root, outside = tmp_path / 'root', tmp_path / 'outside'
     root.mkdir(); outside.mkdir()
     Image.new('RGB', (8, 8)).save(outside / 'secret.png')
     link_directory(root / 'escape', outside, kind)
     resolver = RootResolver([root])
+    def spelling(path):
+        return Path('\\\\?\\' + str(path)) if extended else path
     with pytest.raises(ValueError, match='outside'):
-        resolver(root / 'escape/secret.png')
+        resolver(spelling(root / 'escape/secret.png'))
+    with pytest.raises(ValueError, match='outside'):
+        resolver(spelling(root / 'escape/missing.png'), strict=False)
     assert new_images([root], {}) == []
     assert snapshot_images([root]) == {}
 

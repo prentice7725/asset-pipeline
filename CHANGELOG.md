@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — Windows Factory reservation namespace race, 2026-10-25
+
+- Fix false configured-root rejection when concurrent directory creation leaves
+  an extended Windows prefix on an otherwise equivalent resolved budget path.
+- Keep filesystem resolution first, existing successful spellings, configured
+  roots, atomic reservation and provider retry behavior unchanged. Restrict
+  alias comparison to ordinary DOS/UNC semantics; retain special namespaces.
+- Add deterministic budget/reservation alias injection and boundary regression
+  tests, including existing/missing symlink and junction escape paths.
+  See docs/maintenance/FACTORY_ROOT_NAMESPACE_RACE_20261025.md.
+
 ## Unreleased — Krea2 actual base contract probe, 2026-10-25
 
 - Extend the existing loader diagnostic with optional workflow-bound base hashing,
