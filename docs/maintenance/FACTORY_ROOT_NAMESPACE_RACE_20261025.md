@@ -75,6 +75,11 @@ test-suite run or a filesystem/network test on that runtime.
   invocations received the same clock value and collided on the timestamp-only
   output directory (WinError 183). It is a separate, now evidenced issue; the
   whole regression gate remains BLOCKED pending its independent fix.
+  Follow-up: the [separate review allocation fix](REVIEW_DIRECTORY_COLLISION_20261025.md)
+  retains this failed run and records the combined final regression separately.
+  On that stacked branch, the final combined suite is **708 passed, 1 skipped**,
+  no failures, 257.68s. This clears the current offline regression gate; the
+  historical failed run above remains a failed run.
 - The migration benchmark skip is unchanged. `git diff --check` passed.
 
 Local ignored evidence: `workspace/factory-roots-debug-20261025/`, including

@@ -4,6 +4,7 @@ import io
 import json
 import copy
 from pathlib import Path
+from uuid import uuid4
 
 from PIL import Image, ImageFilter, ImageOps
 
@@ -66,7 +67,8 @@ def build_review(run, *, image=None, display_size=None, matte=(255, 255, 255)):
                 'blurred_thumbnail.png': thumb.filter(ImageFilter.GaussianBlur(2))}
     if display_size:
         previews['display_scale.png'] = flat.resize(tuple(display_size), resample)
-    directory = run / 'review_artifacts' / now().replace(':', '').replace('+', '_')
+    created_at = now()
+    directory = run / 'review_artifacts' / uuid4().hex
     directory.mkdir(parents=True, exist_ok=False)
     (directory / ('original' + source.suffix)).write_bytes(raw)
     artifacts = {}
@@ -84,7 +86,8 @@ def build_review(run, *, image=None, display_size=None, matte=(255, 255, 255)):
         draw.text((index * 256 + 4, 4), name, fill='black')
     sheet.save(directory / 'contact_sheet.png')
     artifacts['contact_sheet.png'] = hashlib.sha256((directory / 'contact_sheet.png').read_bytes()).hexdigest()
-    report = {'schema_version': 1, 'status': 'REVIEW_REQUIRED', 'advisory_only': True,
+    report = {'schema_version': 1, 'created_at': created_at,
+              'status': 'REVIEW_REQUIRED', 'advisory_only': True,
               'generation_requests': 0, 'source': str(source),
               'source_sha256': hashlib.sha256(raw).hexdigest(),
               'manifest_sha256': hashlib.sha256(manifest_bytes).hexdigest(),

@@ -20,7 +20,9 @@ def candidate(tmp_path, kind='PIXEL_STATIC'):
     return image
 
 
-def test_review_preserves_original_manifest_and_unreviewed_state(tmp_path):
+def test_review_preserves_original_manifest_and_unreviewed_state(tmp_path, monkeypatch):
+    frozen = '2026-10-25T00:00:00.000000+00:00'
+    monkeypatch.setattr('assetpipe.visual_review.now', lambda: frozen)
     image = candidate(tmp_path)
     source_bytes = image.read_bytes()
     manifest_bytes = (tmp_path / 'run_manifest.json').read_bytes()
@@ -35,7 +37,9 @@ def test_review_preserves_original_manifest_and_unreviewed_state(tmp_path):
     assert Image.open(path.parent / 'native_matte.png').getpixel((0, 0)) == (10, 20, 30)
     assert Image.open(path.parent / 'display_scale.png').size == (64, 128)
     assert report['settings']['resampling'] == 'NEAREST'
-    assert build_review(tmp_path).parent != path.parent
+    second = build_review(tmp_path)
+    assert second.parent != path.parent
+    assert json.loads(second.read_text())['created_at'] == report['created_at'] == frozen
 
 
 @pytest.mark.parametrize('status', ['FAILED', 'RUNNING', 'RESOLUTION_REVIEW_REQUIRED'])
