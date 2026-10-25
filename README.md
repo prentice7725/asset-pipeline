@@ -368,6 +368,8 @@ Krea 스타일 문구는 선택한 설명과 출처 URL을 기록할 수 있습�
 Krea2 Pixel64는 실험 상태입니다. 설치된 로더에서 magnitude 키 120개 누락을
 CPU 실행으로 재현했습니다. [호환성 조사](docs/research/KREA2_LOADER_COMPATIBILITY_20261025.md)는
 파싱 검증이며, 실생성·미술 승인·가중치 변환은 수행하지 않았습니다.
+이어 진행한 [소스 기반 수치 비교](docs/research/KREA2_DORA_NUMERIC_20261025.md)에서
+FP32·FP64 후보는 허용 오차 내 일치했지만 BF16 병합은 불일치하여 운영 연결을 차단했습니다.
 
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리

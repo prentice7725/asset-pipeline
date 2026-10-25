@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — Krea2 DoRA numeric candidate, 2026-10-25
+
+- Pin a public ai-toolkit commit declaring 0.12.9 and hash-check the inspected
+  version interval; the exact author's training checkout remains unverified.
+- Add an isolated dense CPU merge candidate and execute pinned upstream method
+  bodies on 216 synthetic fixtures, plus eight unsupported-input rejections.
+- FP32/FP64 meet the stated tolerances; all 48 nonzero BF16 cases mismatch.
+  Exit 2 records that blocked diagnostic instead of reporting full compatibility.
+- Preserve production code, weights, workflows, installed loaders and review
+  gates. No image generation or model-quality improvement is claimed.
+  See docs/research/KREA2_DORA_NUMERIC_20261025.md.
+
 ## Unreleased — Krea2 Pixel64 loader audit, 2026-10-25
 
 - Reproduce incomplete parsing with the installed CPU loader: 240 A/B tensors
