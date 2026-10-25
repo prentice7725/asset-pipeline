@@ -90,6 +90,10 @@ FP8/quantized-base inference behavior. CPU synthetic equality cannot clear those
 gates or authorize real image generation. No automatic retry, production workflow
 change, model/node installation, Golden/SOT change or review approval is included.
 
+Follow-up: [actual base contract probe](KREA2_BASE_CONTRACT_20261025.md) checks
+120 targets and executes two real FP8 base projections in isolation. Full model
+LoRA application and authored compatibility remain unverified.
+
 ## Validation and rollback
 
 Local ignored `workspace/krea2-dora-ordered-20261025/` contains `ordered-release.json`,

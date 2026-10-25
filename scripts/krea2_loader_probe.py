@@ -8,7 +8,9 @@ import hashlib
 import importlib
 import json
 import logging
+import struct
 import sys
+from types import SimpleNamespace
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -24,6 +26,141 @@ def diagnostic_map(keys):
     if not stems or any(stem + '.lora_B.weight' not in keys for stem in stems):
         raise ValueError('Expected paired lora_A.weight / lora_B.weight tensors')
     return {stem: stem + '.weight' for stem in stems}
+
+
+def read_header(path):
+    with path.open('rb') as stream:
+        prefix = stream.read(8)
+        if len(prefix) != 8:
+            raise ValueError('TRUNCATED_HEADER')
+        size = struct.unpack('<Q', prefix)[0]
+        if not 2 <= size <= 16_000_000:
+            raise ValueError('HEADER_SIZE_OUT_OF_SCOPE')
+        data = stream.read(size)
+        if len(data) != size:
+            raise ValueError('TRUNCATED_HEADER')
+    header = json.loads(data)
+    payload = path.stat().st_size - 8 - size
+    for key, value in header.items():
+        if key == '__metadata__':
+            continue
+        offsets, shape = value['data_offsets'], value['shape']
+        if (len(offsets) != 2 or any(type(n) is not int for n in offsets)
+                or not 0 <= offsets[0] <= offsets[1] <= payload
+                or any(type(n) is not int or n < 0 for n in shape)):
+            raise ValueError('INVALID_TENSOR_HEADER: ' + key)
+    return header
+
+
+def assess_base_contract(base, lora, key_map):
+    quant = json.loads(base.get('__metadata__', {}).get('_quantization_metadata', '{}')).get('layers', {})
+    rows = []
+    for stem in diagnostic_map(lora):
+        target = key_map.get(stem)
+        file_key = target.removeprefix('diffusion_model.') if isinstance(target, str) else None
+        tensor = base.get(file_key, {})
+        a, b = lora[stem + '.lora_A.weight']['shape'], lora[stem + '.lora_B.weight']['shape']
+        magnitude = lora.get(stem + '.magnitude', {}).get('shape')
+        match = (len(a) == len(b) == 2 and a[0] > 0 and a[0] == b[1]
+                 and tensor.get('shape') == [b[0], a[1]] and magnitude == [b[0]])
+        layer = file_key.removesuffix('.weight') if file_key else None
+        conf = quant.get(layer)
+        scale = base.get((layer + '.weight_scale') if layer else '', {})
+        rows.append({'lora_stem': stem, 'mapped_target': target, 'base_key': file_key,
+                     'base_shape': tensor.get('shape'), 'base_dtype': tensor.get('dtype'),
+                     'down_shape': a, 'up_shape': b, 'magnitude_shape': magnitude,
+                     'rank': a[0] if len(a) == 2 else None, 'shape_match': match,
+                     'quant_config': conf, 'scale_shape': scale.get('shape'),
+                     'scale_dtype': scale.get('dtype'),
+                     'quant_header_match': bool(conf and conf.get('format') == 'float8_e4m3fn'
+                         and tensor.get('dtype') == 'F8_E4M3' and scale.get('shape') == []
+                         and scale.get('dtype') == 'F32')})
+    return {'scope': 'INSTALLED_MAPPER_ON_HEADER_ONLY_KREA2_SKELETON',
+            'targets': len(rows), 'shape_matches': sum(r['shape_match'] for r in rows),
+            'quant_header_matches': sum(r['quant_header_match'] for r in rows),
+            'alpha_tensor_count': sum(k.endswith('.alpha') for k in lora),
+            'alpha_over_rank': 'UNKNOWN_NOT_INFERRED',
+            'authored_base': lora.get('__metadata__', {}).get('ss_base_model'),
+            'actual_model_instantiation': 'NOT_RUN', 'weight_application': 'NOT_RUN',
+            'production_compatibility': 'BLOCKED', 'rows': rows}
+
+
+def base_mapping(header, torch):
+    import comfy.lora
+    import comfy.model_base
+    import comfy.model_detection
+    types = {'F8_E4M3': torch.float8_e4m3fn, 'BF16': torch.bfloat16,
+             'F32': torch.float32, 'F16': torch.float16, 'I64': torch.int64, 'U8': torch.uint8}
+    shapes = {k: torch.empty(v['shape'], dtype=types[v['dtype']], device='meta')
+              for k, v in header.items() if k != '__metadata__'}
+    config = comfy.model_detection.detect_unet_config(shapes, '', metadata=header.get('__metadata__'))
+    if config.get('image_model') != 'krea2':
+        raise ValueError('BASE_NOT_DETECTED_AS_KREA2')
+
+    class HeaderKrea2(comfy.model_base.Krea2):
+        def __init__(self):
+            # Intentionally no Krea2 constructor or actual model layer allocation.
+            torch.nn.Module.__init__(self)
+            self.model_config = SimpleNamespace(unet_config=config)
+
+        def state_dict(self):
+            return {'diffusion_model.' + k: v for k, v in shapes.items()}
+
+    return comfy.lora.model_lora_keys_unet(HeaderKrea2(), {}), config
+
+
+def isolated_fp8_layers(base_path, header, torch):
+    from safetensors import safe_open
+    import comfy.ops
+    import comfy.utils
+    quant = json.loads(header['__metadata__']['_quantization_metadata'])['layers']
+    rows = []
+    for name in ['blocks.0.attn.wk', 'blocks.0.attn.gate']:
+        row = {'layer': name, 'scope': 'ACTUAL_BASE_PROJECTION_CPU_ONLY',
+               'lora_application': 'NOT_RUN', 'generation': 'NOT_RUN'}
+        phase = 'LOAD'
+        try:
+            spec = header[name + '.weight']
+            if spec['data_offsets'][1] - spec['data_offsets'][0] > 64 * 1024 * 1024:
+                raise ValueError('PROJECTION_EXCEEDS_READ_LIMIT')
+            with safe_open(str(base_path), framework='pt', device='cpu') as handle:
+                state = {name + '.weight': handle.get_tensor(name + '.weight'),
+                         name + '.weight_scale': handle.get_tensor(name + '.weight_scale')}
+            row['quant_config'] = quant[name]
+            row['actual_scale'] = state[name + '.weight_scale'].item()
+            if not torch.isfinite(state[name + '.weight_scale']).all() or row['actual_scale'] <= 0:
+                raise ValueError('INVALID_SCALE')
+            state, _ = comfy.utils.convert_old_quants(state, metadata={
+                '_quantization_metadata': json.dumps({'layers': {name: quant[name]}})})
+            local = {k.removeprefix(name + '.'): v for k, v in state.items()}
+            ops = comfy.ops.mixed_precision_ops(compute_dtype=torch.bfloat16)
+            module = ops.Linear(spec['shape'][1], spec['shape'][0], bias=False, device='cpu')
+            module.load_state_dict(local, strict=True)
+            row.update(load_status='PASS', weight_type=type(module.weight).__name__,
+                       full_precision_mm=module._full_precision_mm)
+            phase = 'DEQUANTIZE'
+            dense = module.weight.dequantize().to(torch.bfloat16)
+            row.update(dequantize_status='PASS', dense_dtype=str(dense.dtype),
+                       dense_finite=bool(torch.isfinite(dense).all()))
+            if not row['dense_finite']:
+                raise ValueError('NONFINITE_DEQUANTIZED_WEIGHT')
+            x = torch.randn(2, spec['shape'][1], generator=torch.Generator().manual_seed(7725),
+                            dtype=torch.bfloat16) * .1
+            phase = 'FORWARD'
+            with torch.no_grad():
+                expected = torch.nn.functional.linear(x, dense)
+                actual = module(x)
+            if not torch.isfinite(actual).all():
+                raise ValueError('NONFINITE_NATIVE_FORWARD')
+            row.update(forward_status='PASS', output_shape=list(actual.shape),
+                       dense_reference_max_abs_error=(actual.float() - expected.float()).abs().max().item(),
+                       dense_reference_exact_equal=torch.equal(actual, expected))
+        except Exception as exc:
+            row.update(blocked_phase=phase, status='BLOCKED', error=type(exc).__name__ + ': ' + str(exc))
+        else:
+            row['status'] = 'BASE_LAYER_CPU_EXECUTED_NOT_LORA_COMPATIBILITY'
+        rows.append(row)
+    return rows
 
 
 def summarize(state, converted, patches, warnings):
@@ -59,12 +196,20 @@ def main():
     parser.add_argument('--comfy-root', type=Path, required=True)
     parser.add_argument('--lora', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--base', type=Path, help='Optional real base: hash + header/meta mapper, never full model load')
+    parser.add_argument('--workflow', type=Path, help='Required with --base to bind current filenames')
+    parser.add_argument('--probe-layers', action='store_true', help='Read and execute only two bounded base FP8 projections on CPU')
     args = parser.parse_args()
     root, lora = args.comfy_root.resolve(), args.lora.resolve()
     if args.output.exists() or args.output.resolve() == lora:
         parser.error('Output must be a new file')
+    if bool(args.base) != bool(args.workflow) or (args.probe_layers and not args.base):
+        parser.error('--base and --workflow must be paired; --probe-layers needs both')
     relatives = ['comfy/lora.py', 'comfy/lora_convert.py',
                  'comfy/weight_adapter/lora.py', 'comfy/weight_adapter/base.py']
+    if args.base:
+        relatives += ['comfy/model_detection.py', 'comfy/model_base.py', 'comfy/utils.py',
+                      'comfy/ops.py', 'comfy/model_patcher.py']
     before = {relative: sha(root / relative) for relative in relatives}
     weight_before = sha(lora)
     # ComfyUI consumes argv at import time. Do not leak this script's arguments.
@@ -83,6 +228,27 @@ def main():
     with safe_open(str(lora), framework='pt', device='cpu') as handle:
         metadata = handle.metadata()
     converted = converter.convert_lora(state)
+    base_report = None
+    if args.base:
+        workflow_hash = sha(args.workflow)
+        workflow = json.loads(args.workflow.read_text(encoding='utf-8'))
+        if (workflow['10']['inputs']['unet_name'] != args.base.name
+                or workflow['15']['inputs']['lora_name'] != lora.name):
+            raise ValueError('WORKFLOW_WEIGHT_NAME_MISMATCH')
+        base_hash = sha(args.base)
+        base_header, lora_header = read_header(args.base), read_header(lora)
+        key_map, config = base_mapping(base_header, torch)
+        base_report = assess_base_contract(base_header, lora_header, key_map)
+        base_report.update(path=str(args.base.resolve()), sha256=base_hash, detected_config=config,
+                           workflow_sha256=workflow_hash, workflow_path=str(args.workflow.resolve()))
+        if base_report['shape_matches'] != base_report['targets'] or base_report['quant_header_matches'] != base_report['targets']:
+            raise ValueError('BASE_SHAPE_OR_QUANT_CONTRACT_MISMATCH')
+        if args.probe_layers:
+            base_report['isolated_layers'] = isolated_fp8_layers(args.base, base_header, torch)
+        if base_hash != sha(args.base) or workflow_hash != sha(args.workflow):
+            raise ValueError('BASE_OR_WORKFLOW_CHANGED')
+    else:
+        key_map = diagnostic_map(converted)
     messages = []
 
     class Capture(logging.Handler):
@@ -93,10 +259,12 @@ def main():
     logger = logging.getLogger()
     logger.addHandler(capture)
     try:
-        patches = loader.load_lora(converted, diagnostic_map(converted), log_missing=True)
+        patches = loader.load_lora(converted, key_map, log_missing=True)
     finally:
         logger.removeHandler(capture)
     result = summarize(state, converted, patches, messages)
+    if base_report is not None:
+        result['base_contract'] = base_report
     result.update(collected_at=datetime.now(timezone.utc).isoformat(),
                   python=sys.version, torch_version=torch.__version__, device='cpu',
                   probe_sha256=sha(Path(__file__)),
