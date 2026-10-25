@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — Krea2 ordered dense inference candidate, 2026-10-25
+
+- Extend the existing offline diagnostic with an explicit ordered forward that
+  preserves low-rank, scale, normalization, correction and addition ordering.
+- Match pinned upstream dense CPU outputs exactly in 960 FP64/FP32/BF16 cases;
+  reject twelve unsupported-input cases and verify input tensors are unchanged.
+- Keep the old merged candidate and its BF16 failure as a counterexample. Keep
+  actual weights, FP8/quantized integration and production compatibility blocked.
+- No generation, weight conversion, installed patch or CLI/MCP change. See
+  docs/research/KREA2_DORA_ORDERED_20261025.md.
+
 ## Unreleased — Krea2 DoRA numeric candidate, 2026-10-25
 
 - Pin a public ai-toolkit commit declaring 0.12.9 and hash-check the inspected

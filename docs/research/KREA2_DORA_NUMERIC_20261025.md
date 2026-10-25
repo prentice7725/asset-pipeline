@@ -105,6 +105,11 @@ a global loader patch, checkpoint rename or claimed quality improvement.
 
 ## Reproduce and remaining work
 
+Follow-up: the explicit [execution-order candidate](KREA2_DORA_ORDERED_20261025.md)
+matches the pinned dense CPU source exactly on an expanded 960-case matrix.
+The merged candidate described here retains its BF16 mismatch. Neither result
+verifies actual Krea2/FP8 integration or permits production activation.
+
 Use the existing ComfyUI Python environment, which already has torch. No package
 or node installation is needed. Put the four exact pinned files above in a local
 source directory (flattened filenames) and retain their MIT license.
