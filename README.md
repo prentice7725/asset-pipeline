@@ -9,6 +9,8 @@ M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_202610
 참조 1장의 [연구용 단일 시도 실행기](docs/factory/MOTION_EXECUTOR.md)도 추가했습니다.
 기본 비활성이며 별도 1회 예산·모델 해시·입력 검증 없이는 실행되지 않습니다.
 실제 I2V E2E와 참조 역할의 품질 검증은 아직 완료하지 않았습니다.
+Windows 예산 예약에서 간헐적으로 발생한 확장 경로 표기 오류는
+[원인·수정·보안 검증 기록](docs/maintenance/FACTORY_ROOT_NAMESPACE_RACE_20261025.md)을 참고하세요.
 
 STYLE MENU v1 supports approved run-scoped Manual / Rescue Override for
 NONPIXEL_IMAGE. Primary models are evidence-informed fixture defaults; style and
