@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — unique advisory review directories, 2026-10-25
+
+- Allocate each visual review a UUID directory and retain the clock value as
+  `created_at`, so identical timestamps cannot collide on the output directory.
+- Preserve source bytes, review/approval state and existing artifacts. Add a
+  frozen-clock regression to the existing review-preservation test; no retries
+  or generation changes. See docs/maintenance/REVIEW_DIRECTORY_COLLISION_20261025.md.
+
 ## Unreleased — Windows Factory reservation namespace race, 2026-10-25
 
 - Fix false configured-root rejection when concurrent directory creation leaves

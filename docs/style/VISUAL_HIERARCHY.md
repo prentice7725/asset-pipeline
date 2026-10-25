@@ -53,6 +53,8 @@ command. The selected image must be a manifest output inside the run directory;
 multiple outputs require an explicit selection. This command does not approve,
 revalidate or advance a run. Manifest, originals, QA and approval records remain
 untouched. Each invocation creates a separate review_artifacts directory.
+Review subdirectories use UUIDs; the report retains the invocation time in
+`created_at`, so repeated clock values do not collide or overwrite prior reviews.
 
 Artifacts: byte-identical original copy, native matte preview, 64px-long-side
 thumbnail without upscaling, grayscale thumbnail, blurred thumbnail and labeled
