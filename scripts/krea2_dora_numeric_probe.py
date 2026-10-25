@@ -108,7 +108,8 @@ def candidate_weight(weight, down, up, magnitude, *, strength, alpha_over_rank, 
     return adapted * (magnitude / norm)[:, None] + strength * (alpha_over_rank - 1) * delta
 
 
-def candidate_forward(x, weight, down, up, magnitude, bias, *, strength, alpha_over_rank, torch):
+def candidate_forward(x, weight, down, up, magnitude, bias, *, strength, alpha_over_rank, torch,
+                      base_forward=None):
     """Unregistered dense inference candidate preserving pinned source ordering.
 
     Keep the two low-rank linears, dtype-rounded runtime scale and multiplier,
@@ -127,7 +128,14 @@ def candidate_forward(x, weight, down, up, magnitude, bias, *, strength, alpha_o
         raise ValueError('MATCHING_BIAS_REQUIRED')
     if not torch.isfinite(x).all().item() or (bias is not None and not torch.isfinite(bias).all().item()):
         raise ValueError('NONFINITE_INPUT')
-    original = torch.nn.functional.linear(x, weight, bias)
+    if base_forward is not None and not callable(base_forward):
+        raise ValueError('EXPLICIT_BASE_FORWARD_CALLABLE_REQUIRED')
+    original = (torch.nn.functional.linear(x, weight, bias) if base_forward is None
+                else base_forward(x))
+    if (original.dtype != x.dtype or original.device != x.device
+            or original.shape != (*x.shape[:-1], weight.shape[0])
+            or not torch.isfinite(original).all().item()):
+        raise ValueError('BASE_FORWARD_OUTPUT_CONTRACT_MISMATCH')
     if strength == 0:
         return original
     runtime_scale = torch.tensor(alpha_over_rank, dtype=down.dtype)
@@ -280,6 +288,20 @@ def rejection_checks(torch, candidate='merged'):
                 rows.append({'case': name, 'status': 'REJECTED_AS_REQUIRED', 'reason': reason})
             else:
                 raise AssertionError('Unsupported case accepted: ' + name)
+        for name, callback, reason in [
+            ('noncallable_base', 'invalid', 'EXPLICIT_BASE_FORWARD_CALLABLE_REQUIRED'),
+            ('wrong_base_shape', lambda x: x[:, :1], 'BASE_FORWARD_OUTPUT_CONTRACT_MISMATCH'),
+            ('wrong_base_dtype', lambda x: x.double(), 'BASE_FORWARD_OUTPUT_CONTRACT_MISMATCH'),
+            ('nonfinite_base', lambda x: torch.full_like(x, float('nan')), 'BASE_FORWARD_OUTPUT_CONTRACT_MISMATCH'),
+        ]:
+            try:
+                candidate_forward(torch.ones(2, 3), bias=None, base_forward=callback, **defaults)
+            except ValueError as exc:
+                if str(exc) != reason:
+                    raise AssertionError((name, str(exc), reason)) from exc
+                rows.append({'case': name, 'status': 'REJECTED_AS_REQUIRED', 'reason': reason})
+            else:
+                raise AssertionError('Unsupported callback accepted: ' + name)
     return rows
 
 

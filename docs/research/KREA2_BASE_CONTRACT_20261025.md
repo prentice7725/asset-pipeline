@@ -122,6 +122,11 @@ Full model/GPU behavior, base provenance and separately budgeted generation A/B
 remain distinct gates. No retry, provider fallback, 32px promotion or Golden/SOT
 approval is authorized by the present results.
 
+Follow-up: [actual-tensor LoRA isolation](KREA2_FP8_LORA_ISOLATION_20261025.md)
+executes an explicit alpha/rank=1 hypothesis on these two projections against a
+controlled hybrid oracle. It does not relabel this earlier base-only run as
+LoRA application or establish authored whole-model compatibility.
+
 ## Validation and rollback
 
 Ignored `workspace/krea2-base-contract-20261025/` contains the complete `base.json`,

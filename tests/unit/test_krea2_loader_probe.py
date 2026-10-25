@@ -2,6 +2,7 @@
 import importlib.util
 import json
 import struct
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -82,3 +83,27 @@ def test_header_reader_rejects_offsets_outside_actual_payload(tmp_path):
     path.write_bytes(struct.pack('<Q', len(header)) + header)
     with pytest.raises(ValueError, match='INVALID_TENSOR_HEADER'):
         probe.read_header(path)
+
+
+@pytest.mark.parametrize('flags', [
+    ['--probe-lora', '--probe-layers', '--source-dir', 'SOURCE'],
+    ['--probe-lora', '--probe-layers', '--alpha-over-rank', '1'],
+    ['--probe-lora', '--source-dir', 'SOURCE', '--alpha-over-rank', '1'],
+    ['--probe-lora', '--probe-layers', '--source-dir', 'SOURCE', '--alpha-over-rank', 'nan'],
+    ['--probe-lora', '--probe-layers', '--source-dir', 'SOURCE', '--alpha-over-rank', '-1'],
+    ['--alpha-over-rank', '1'], ['--source-dir', 'SOURCE'],
+])
+def test_lora_probe_never_infers_hypothesis_or_reads_weights_before_guard(tmp_path, monkeypatch, flags):
+    output = tmp_path / 'evidence.json'
+    args = ['probe', '--comfy-root', str(tmp_path), '--lora', str(tmp_path / 'lora'),
+            '--base', str(tmp_path / 'base'), '--workflow', str(tmp_path / 'workflow'),
+            '--output', str(output)]
+    args += [str(tmp_path) if part == 'SOURCE' else part for part in flags]
+    monkeypatch.setattr(sys, 'argv', args)
+    def forbidden(*args):
+        pytest.fail('Invalid hypothesis must reject before any weight hashing/loading')
+    monkeypatch.setattr(probe, 'sha', forbidden)
+    with pytest.raises(SystemExit) as exc:
+        probe.main()
+    assert exc.value.code == 2
+    assert not output.exists()
