@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — isolated native-FP8 LoRA hypothesis, 2026-10-25
+
+- Extend existing research diagnostics with explicit alpha/source guards and a
+  native base-forward callback, preserving dense mode and native quantization flags.
+- Exercise real A/B/magnitude values on two actual FP8 projections: 24 exact
+  controlled-hybrid comparisons, zero-strength noops and magnitude sensitivity.
+- Check native quantized state, input/weight immutability and source/file hashes.
+  Reject blocked/mismatched requested probes with exit 2 and preserve evidence.
+- No full model integration, installed loader patch, generation or quality claim.
+  See docs/research/KREA2_FP8_LORA_ISOLATION_20261025.md.
+
 ## Unreleased — unique advisory review directories, 2026-10-25
 
 - Allocate each visual review a UUID directory and retain the clock value as

@@ -8,6 +8,7 @@ import hashlib
 import importlib
 import json
 import logging
+import math
 import struct
 import sys
 from types import SimpleNamespace
@@ -109,7 +110,84 @@ def base_mapping(header, torch):
     return comfy.lora.model_lora_keys_unet(HeaderKrea2(), {}), config
 
 
-def isolated_fp8_layers(base_path, header, torch):
+def tensor_digest(tensor, torch):
+    raw = tensor.detach().contiguous().reshape(-1).view(torch.uint8).numpy().tobytes()
+    metadata = json.dumps({'dtype': str(tensor.dtype), 'shape': list(tensor.shape)}, sort_keys=True).encode()
+    return hashlib.sha256(metadata + b'\n' + raw).hexdigest()
+
+
+def fp8_lora_cases(module, dense, state, name, ratio, texts, torch):
+    """Controlled hybrid oracle: pinned dense norm/correction + native base call.
+
+    This does not execute an author's quantization stack or install a model hook.
+    """
+    from krea2_dora_numeric_probe import candidate_forward, make_module, upstream_class
+    cls = upstream_class(texts, torch)
+    stem = 'diffusion_model.' + name
+    a, b, m = [state[stem + suffix] for suffix in
+               ['.lora_A.weight', '.lora_B.weight', '.magnitude']]
+    immutable = [a.clone(), b.clone(), m.clone(), dense.clone()]
+    native_before = {key: tensor_digest(value, torch) for key, value in module.state_dict().items()}
+    flags_before = {'full_precision_mm': module._full_precision_mm, 'quant_format': module.quant_format}
+    rows = []
+    for seed in [7, 7725]:
+        for shape in [(2, dense.shape[1]), (1, 3, dense.shape[1])]:
+            x = torch.randn(*shape, generator=torch.Generator().manual_seed(seed),
+                            dtype=torch.bfloat16) * .1
+            x_before = x.clone()
+            for strength in [0., .5, 1.]:
+                reference = make_module(cls, dense, a, b, m, None, strength, ratio, shape[0], torch)
+                # Keep the source's dense norm weight but bind its original
+                # forward to the real quantized op. The boundary is explicit.
+                reference.org_forward = module.forward
+                with torch.no_grad():
+                    native = module(x)
+                    repeated = module(x)
+                    if not torch.isfinite(native).all() or not torch.equal(native, repeated):
+                        raise ValueError('NATIVE_BASE_REPEATABILITY_NOT_VERIFIED')
+                    expected = reference(x)
+                    actual = candidate_forward(x, dense, a, b, m, None, strength=strength,
+                        alpha_over_rank=ratio, torch=torch, base_forward=module.forward)
+                    dense_candidate = candidate_forward(x, dense, a, b, m, None,
+                        strength=strength, alpha_over_rank=ratio, torch=torch)
+                    perturbed = candidate_forward(x, dense, a, b, m * .9, None,
+                        strength=strength, alpha_over_rank=ratio, torch=torch, base_forward=module.forward)
+                if not all(torch.isfinite(value).all() for value in [expected, actual, dense_candidate, perturbed]):
+                    raise ValueError('NONFINITE_HYBRID_OUTPUT')
+                if not torch.equal(x, x_before):
+                    raise AssertionError('INPUT_MUTATED')
+                exact = bool(torch.isfinite(expected).all() and torch.equal(actual, expected))
+                sensitivity = (actual.float() - perturbed.float()).abs().max().item()
+                if (strength == 0 and (not torch.equal(actual, native) or sensitivity != 0)):
+                    raise AssertionError('ZERO_STRENGTH_NOT_NATIVE_NOOP')
+                if strength > 0 and sensitivity == 0:
+                    raise AssertionError('MAGNITUDE_SENSITIVITY_NOT_EXERCISED')
+                rows.append({'seed': seed, 'input_shape': list(shape), 'strength': strength,
+                    'alpha_over_rank': ratio, 'exact_hybrid_oracle_equal': exact,
+                    'hybrid_oracle_max_abs_error': (actual.float() - expected.float()).abs().max().item(),
+                    'dense_candidate_max_abs_error': (actual.float() - dense_candidate.float()).abs().max().item(),
+                    'magnitude_perturbation_max_abs_error': sensitivity,
+                    'native_noop_equal': torch.equal(actual, native) if strength == 0 else None})
+    if not all(torch.equal(t, old) for t, old in zip([a, b, m, dense], immutable)):
+        raise AssertionError('WEIGHT_TENSORS_MUTATED')
+    native_after = {key: tensor_digest(value, torch) for key, value in module.state_dict().items()}
+    if native_before != native_after:
+        raise AssertionError('NATIVE_QUANTIZED_STATE_MUTATED')
+    if flags_before != {'full_precision_mm': module._full_precision_mm, 'quant_format': module.quant_format}:
+        raise AssertionError('NATIVE_QUANTIZATION_FLAGS_MUTATED')
+    return {'status': 'ISOLATED_HYBRID_EXACT_PASS' if all(r['exact_hybrid_oracle_equal'] for r in rows)
+                     else 'ISOLATED_HYBRID_MISMATCH',
+            'oracle_scope': 'PINNED_METHODS_WITH_DENSE_NORM_AND_NATIVE_BASE_FORWARD',
+            'authored_quantized_runtime': 'NOT_VERIFIED', 'alpha_hypothesis': ratio,
+            'alpha_provenance': 'EXPLICIT_RESEARCH_HYPOTHESIS_NOT_AUTHORED_CONFIRMATION',
+            'consumed_tensors': {stem + suffix: tensor_digest(t, torch) for suffix, t in
+                zip(['.lora_A.weight', '.lora_B.weight', '.magnitude'], [a, b, m])},
+            'native_state_sha256': native_before, 'native_flags': flags_before,
+            'all_inputs_and_weights_unchanged': True,
+            'production_compatibility': 'BLOCKED', 'cases': rows}
+
+
+def isolated_fp8_layers(base_path, header, torch, *, lora_state=None, ratio=None, texts=None):
     from safetensors import safe_open
     import comfy.ops
     import comfy.utils
@@ -121,6 +199,8 @@ def isolated_fp8_layers(base_path, header, torch):
         phase = 'LOAD'
         try:
             spec = header[name + '.weight']
+            if name + '.bias' in header:
+                raise ValueError('PROJECTION_BIAS_OUT_OF_PROBE_SCOPE')
             if spec['data_offsets'][1] - spec['data_offsets'][0] > 64 * 1024 * 1024:
                 raise ValueError('PROJECTION_EXCEEDS_READ_LIMIT')
             with safe_open(str(base_path), framework='pt', device='cpu') as handle:
@@ -155,6 +235,10 @@ def isolated_fp8_layers(base_path, header, torch):
             row.update(forward_status='PASS', output_shape=list(actual.shape),
                        dense_reference_max_abs_error=(actual.float() - expected.float()).abs().max().item(),
                        dense_reference_exact_equal=torch.equal(actual, expected))
+            if lora_state is not None:
+                phase = 'LORA_HYPOTHESIS'
+                row['lora_probe'] = fp8_lora_cases(module, dense, lora_state, name, ratio, texts, torch)
+                row['lora_application'] = 'ISOLATED_RESEARCH_FORWARD_ONLY'
         except Exception as exc:
             row.update(blocked_phase=phase, status='BLOCKED', error=type(exc).__name__ + ': ' + str(exc))
         else:
@@ -199,12 +283,26 @@ def main():
     parser.add_argument('--base', type=Path, help='Optional real base: hash + header/meta mapper, never full model load')
     parser.add_argument('--workflow', type=Path, help='Required with --base to bind current filenames')
     parser.add_argument('--probe-layers', action='store_true', help='Read and execute only two bounded base FP8 projections on CPU')
+    parser.add_argument('--probe-lora', action='store_true', help='Explicit isolated hybrid LoRA hypothesis; never full model integration')
+    parser.add_argument('--alpha-over-rank', type=float, help='Required explicit research hypothesis with --probe-lora')
+    parser.add_argument('--source-dir', type=Path, help='Hash-pinned upstream sources required for hybrid oracle')
     args = parser.parse_args()
     root, lora = args.comfy_root.resolve(), args.lora.resolve()
     if args.output.exists() or args.output.resolve() == lora:
         parser.error('Output must be a new file')
     if bool(args.base) != bool(args.workflow) or (args.probe_layers and not args.base):
         parser.error('--base and --workflow must be paired; --probe-layers needs both')
+    if args.probe_lora:
+        if not args.probe_layers or args.source_dir is None or args.alpha_over_rank is None:
+            parser.error('--probe-lora requires --probe-layers, --source-dir and explicit --alpha-over-rank')
+        if not math.isfinite(args.alpha_over_rank) or args.alpha_over_rank <= 0:
+            parser.error('--alpha-over-rank must be finite and positive')
+    elif args.alpha_over_rank is not None or args.source_dir is not None:
+        parser.error('Research alpha/source arguments require --probe-lora')
+    texts = None
+    if args.probe_lora:
+        from krea2_dora_numeric_probe import pinned_sources
+        texts = pinned_sources(args.source_dir)
     relatives = ['comfy/lora.py', 'comfy/lora_convert.py',
                  'comfy/weight_adapter/lora.py', 'comfy/weight_adapter/base.py']
     if args.base:
@@ -244,7 +342,8 @@ def main():
         if base_report['shape_matches'] != base_report['targets'] or base_report['quant_header_matches'] != base_report['targets']:
             raise ValueError('BASE_SHAPE_OR_QUANT_CONTRACT_MISMATCH')
         if args.probe_layers:
-            base_report['isolated_layers'] = isolated_fp8_layers(args.base, base_header, torch)
+            base_report['isolated_layers'] = isolated_fp8_layers(args.base, base_header, torch,
+                lora_state=state if args.probe_lora else None, ratio=args.alpha_over_rank, texts=texts)
         if base_hash != sha(args.base) or workflow_hash != sha(args.workflow):
             raise ValueError('BASE_OR_WORKFLOW_CHANGED')
     else:
@@ -270,7 +369,16 @@ def main():
                   probe_sha256=sha(Path(__file__)),
                   lora={'path': str(lora), 'sha256': weight_before, 'metadata': metadata},
                   loader_sources=before,
-                  key_map='DIAGNOSTIC_IDENTITY_FROM_FILE_STEMS_NOT_BASE_MODEL')
+                  key_map=('INSTALLED_MAPPER_ON_HEADER_ONLY_KREA2_SKELETON' if args.base
+                           else 'DIAGNOSTIC_IDENTITY_FROM_FILE_STEMS_NOT_BASE_MODEL'))
+    if args.probe_lora:
+        from krea2_dora_numeric_probe import pinned_sources, SOURCE_COMMIT, SOURCE_HASHES
+        if pinned_sources(args.source_dir) != texts:
+            raise ValueError('UPSTREAM_SOURCE_CHANGED')
+        result['lora_hypothesis'] = {'alpha_over_rank': args.alpha_over_rank,
+            'source_commit': SOURCE_COMMIT, 'source_hashes': SOURCE_HASHES,
+            'numeric_probe_sha256': sha(Path(__file__).with_name('krea2_dora_numeric_probe.py')),
+            'production_compatibility': 'BLOCKED'}
     if weight_before != sha(lora) or before != {r: sha(root / r) for r in relatives}:
         raise ValueError('Inputs changed during probe')
     result['inputs_unchanged'] = True
@@ -279,6 +387,9 @@ def main():
         json.dump(result, stream, indent=2)
         stream.write('\n')
     print(json.dumps({k: result[k] for k in ['status', 'patch_count', 'generation']}))
+    if args.probe_lora and any(row.get('lora_probe', {}).get('status') != 'ISOLATED_HYBRID_EXACT_PASS'
+                              for row in base_report['isolated_layers']):
+        raise SystemExit(2)
 
 
 if __name__ == '__main__':
