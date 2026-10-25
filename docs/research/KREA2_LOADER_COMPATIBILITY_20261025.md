@@ -92,6 +92,11 @@ and no global loader upgrade is proposed as an untested fix.
 
 ## Next bounded implementation and remaining gates
 
+Follow-up: [pinned-source numeric validation](KREA2_DORA_NUMERIC_20261025.md)
+identifies a 0.12.9 source candidate and compares extracted forward methods.
+FP32/FP64 agree within tolerance, but BF16 merging mismatches; operational
+compatibility remains blocked. Exact authored training provenance is still absent.
+
 1. Recover/pin the actual training implementation and effective alpha/strength,
    base-model revision, dtype and magnitude axis. Current metadata alone does
    not fully identify that execution environment.
