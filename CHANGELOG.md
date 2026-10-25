@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — Krea2 Pixel64 loader audit, 2026-10-25
+
+- Reproduce incomplete parsing with the installed CPU loader: 240 A/B tensors
+  consumed, 120 magnitude tensors unloaded, 120 patches without DoRA scale.
+- Add a read-only diagnostic and regression coverage preventing partial parser
+  results from being called full model compatibility. Record source/weight hashes.
+- Document shape and normalization differences that prevent a blind key rename;
+  no weights, installed loader, workflow defaults or review gates are changed.
+- Generation and image-quality comparison remain NOT_RUN / NOT_MEASURED.
+  See docs/research/KREA2_LOADER_COMPATIBILITY_20261025.md.
+
 ## Unreleased — single-reference motion research executor, 2026-10-24
 
 - Connect one existing nonpixel parent through the shared prompt compiler,

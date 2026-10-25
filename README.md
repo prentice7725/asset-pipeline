@@ -365,6 +365,10 @@ Krea 스타일 문구는 선택한 설명과 출처 URL을 기록할 수 있습�
 
 ## 픽셀 검증과 Static Master 승인
 
+Krea2 Pixel64는 실험 상태입니다. 설치된 로더에서 magnitude 키 120개 누락을
+CPU 실행으로 재현했습니다. [호환성 조사](docs/research/KREA2_LOADER_COMPATIBILITY_20261025.md)는
+파싱 검증이며, 실생성·미술 승인·가중치 변환은 수행하지 않았습니다.
+
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리
       → Pixel Gate → 해상도 검토 → Aseprite 내보내기 → 명시적 승인
