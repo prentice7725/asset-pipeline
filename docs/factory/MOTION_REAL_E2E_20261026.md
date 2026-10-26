@@ -1,5 +1,9 @@
 # One-reference motion research — real E2E evidence, 2026-10-26
 
+Follow-up: [the advisory motion review](MOTION_ADVISORY_REVIEW_20261026.md) records
+all-frame inspection, the loop seam, top-border contacts and pivot limits.
+No asset correction or human approval was performed by that review.
+
 Branch: `codex/motion-one-request-20261026`, base `1b984cb`.
 
 **REAL_E2E_PASS — single-reference research technical chain only.**
