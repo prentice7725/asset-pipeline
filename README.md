@@ -11,6 +11,9 @@ M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_202610
 실제 I2V E2E와 참조 역할의 품질 검증은 아직 완료하지 않았습니다.
 Windows 예산 예약에서 간헐적으로 발생한 확장 경로 표기 오류는
 [원인·수정·보안 검증 기록](docs/maintenance/FACTORY_ROOT_NAMESPACE_RACE_20261025.md)을 참고하세요.
+공통 JSON 기록은 호출별 독립 임시 파일을 사용합니다.
+[동시 기록·Windows 잠금 검증](docs/maintenance/MANIFEST_STAGING_20261026.md)에
+실패 시 증거 보존과 남은 제한을 기록했습니다.
 
 STYLE MENU v1 supports approved run-scoped Manual / Rescue Override for
 NONPIXEL_IMAGE. Primary models are evidence-informed fixture defaults; style and

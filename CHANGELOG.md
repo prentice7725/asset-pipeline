@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — independent JSON staging, 2026-10-26
+
+- Exclusively create a same-directory temporary file for each manifest write,
+  eliminating collisions through the previously shared `.json.tmp` path.
+- Serialize short publication calls within the process; distinct sources alone
+  still reproduced Windows error 5 under simultaneous replacement.
+- Preserve single-attempt atomic replacement, failed staging evidence and previous
+  target bytes on denial. No provider/file-publication retries or gate changes.
+- Add concurrent publication and real Windows share-delete lock regressions.
+  See docs/maintenance/MANIFEST_STAGING_20261026.md for evidence and limits.
+
 ## Unreleased — isolated native-FP8 LoRA hypothesis, 2026-10-25
 
 - Extend existing research diagnostics with explicit alpha/source guards and a
