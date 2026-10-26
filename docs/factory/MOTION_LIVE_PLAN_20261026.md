@@ -1,5 +1,10 @@
 # Motion generation preparation — 2026-10-26
 
+Follow-up: the user subsequently approved one request. The
+[real-generation evidence](MOTION_REAL_E2E_20261026.md) records its newly rebound
+plan, consumed budget, successful technical chain and remaining human review.
+This page retains the earlier no-generation preparation snapshot and hash.
+
 Branch: `codex/motion-live-plan-20261026`, base `3d974fa`.
 
 **PLAN_PREPARED / GENERATION_BLOCKED / HUMAN_REVIEW_REQUIRED**.

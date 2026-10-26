@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — one authorized real motion E2E, 2026-10-26
+
+- Run the existing single-reference research executor once after explicit user
+  approval: 512x512, 56 frames at 24fps, seed 7725. One reservation/upload/queue
+  submission, zero retries; server history exactly matches the submitted graph.
+- Preserve original MP4, decoded/raw/aligned frames, 4096x3584 sprite atlas,
+  timing/pivots and untouched review package; verify hashes and all atlas cells.
+- Restore temporary research configuration byte-for-byte after execution and
+  preserve source hashes. No runtime code or production activation changes.
+  Candidate remains REVIEW_REQUIRED; see docs/factory/MOTION_REAL_E2E_20261026.md.
+
 ## Unreleased — motion pre-generation evidence, 2026-10-26
 
 - Reuse existing preparation, inspection and execution-plan CLI/API with one real
