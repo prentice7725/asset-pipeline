@@ -2,16 +2,18 @@
 
 M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_20261023.md)를 참고하세요.
 기존 영상의 [오프라인 모션 리뷰 패키지](docs/factory/MOTION_PACKAGE.md)를 추가했습니다.
-공통 I2V 실생성은 여전히 BLOCKED_BACKEND_NOT_VERIFIED이며 기술적 패키징은
+기본 Factory I2V 실행은 여전히 BLOCKED_BACKEND_NOT_VERIFIED이며 기술적 패키징은
 애니메이션 품질·Golden·게임 투입 승인을 뜻하지 않습니다.
 [모션 사전검증·입력 보존](docs/factory/MOTION_PREFLIGHT.md)은 참조 역할·순서·해시와
 설치 상태를 확인하며, 미검증 입력 지원이나 생성 승인을 자동으로 확정하지 않습니다.
 참조 1장의 [연구용 단일 시도 실행기](docs/factory/MOTION_EXECUTOR.md)도 추가했습니다.
 기본 비활성이며 별도 1회 예산·모델 해시·입력 검증 없이는 실행되지 않습니다.
-실제 I2V E2E와 참조 역할의 품질 검증은 아직 완료하지 않았습니다.
+참조 1장의 연구 경로는 [실제 영상→프레임→스프라이트 E2E](docs/factory/MOTION_REAL_E2E_20261026.md)를
+1회 완료했습니다. 결과는 REVIEW_REQUIRED이며 참조 역할·루프·미술 품질 승인은 남아 있습니다.
 [2026-10-26 실생성 전 점검](docs/factory/MOTION_LIVE_PLAN_20261026.md)에서
 실제 참조 후보 1장, 필수 노드 15개, 모델 5개 파일 해시와 56프레임 계획을 확인했습니다.
-생성·업로드·예산 예약은 0건이며 연구 설정은 계속 비활성입니다.
+해당 사전 점검은 생성·업로드·예산 예약 0건입니다. 이후 승인된 1회 실생성 시험을
+완료하고 연구 설정을 비활성으로 복원했습니다.
 Windows 예산 예약에서 간헐적으로 발생한 확장 경로 표기 오류는
 [원인·수정·보안 검증 기록](docs/maintenance/FACTORY_ROOT_NAMESPACE_RACE_20261025.md)을 참고하세요.
 공통 JSON 기록은 호출별 독립 임시 파일을 사용합니다.
