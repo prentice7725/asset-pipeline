@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — advisory review of existing fox motion, 2026-10-26
+
+- Inspect all 56 preserved frames, loop boundary and top-border contacts; reuse
+  existing motion metric/cycle proxies without editing verified algorithms.
+- Record loop/headroom/anchor correction priorities and produce separate review
+  previews. Preserve 119 artifact hashes and untouched human review state.
+- No generation, asset correction, runtime/config change or approval. See
+  docs/factory/MOTION_ADVISORY_REVIEW_20261026.md for measurements and limitations.
+
 ## Unreleased — one authorized real motion E2E, 2026-10-26
 
 - Run the existing single-reference research executor once after explicit user
