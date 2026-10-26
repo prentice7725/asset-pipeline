@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — motion pre-generation evidence, 2026-10-26
+
+- Reuse existing preparation, inspection and execution-plan CLI/API with one real
+  existing nonpixel candidate; freeze a 512x512/56-frame/24fps/seed-7725 plan.
+- Recheck 15 live node schemas, 5 server-listed model names, selected graph inputs
+  and SHA-256 of 43.84 GB of local weights. Preserve source bytes and review state.
+- Documentation/evidence only: no runtime/config change, authorization, upload,
+  queue submission, generation or budget reservation. See
+  docs/factory/MOTION_LIVE_PLAN_20261026.md for hashes and remaining gates.
+
 ## Unreleased — independent JSON staging, 2026-10-26
 
 - Exclusively create a same-directory temporary file for each manifest write,
