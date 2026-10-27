@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — actual rabbit Godot/Phaser import, 2026-10-27
+
+- Reuse isolated native engine fixtures for the rabbit's 28-frame RGBA candidate.
+  Execute actual imports, three playback loops, 56 native rendered captures and
+  frame/pivot/readback checks; preserve all 241 source/candidate file hashes.
+- Measure a 1..2 screen-pixel boot-bottom/baseline gap on both backgrounds.
+  Keep anatomical foot contact and Godot's shortened first-cycle timing open.
+- Document evidence and rollback in docs/factory/RABBIT_ENGINE_IMPORT_20261027.md.
+  No production source/config change, generation or human/Golden approval.
+
 ## Unreleased — rabbit-specific offline loop and alpha recipe, 2026-10-27
 
 - Add optional v2 recipe white-distance input (explicit integer 0..60) while

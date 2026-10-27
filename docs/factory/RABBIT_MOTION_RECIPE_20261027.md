@@ -105,7 +105,9 @@ Replay receipts and source-hash inventory are retained in `replay-results.json`
 and `source-audit.json`. Full output is retained in `pytest-full.log`; the skipped
 local migration benchmark lacks local data and is not reported as PASS.
 
-Engine import and required human Aseprite review are **NOT_RUN / NOT_APPROVED**.
+At this candidate stage, engine import was NOT_RUN and human Aseprite review
+NOT_APPROVED. Subsequent [actual rabbit engine checks](RABBIT_ENGINE_IMPORT_20261027.md)
+verify native import/rendering and preserve the startup/contact review limits.
 The existing fox engine evidence does not approve the rabbit output. Foot
 contact, boot crossings, slight body motion and thin light edges remain review
 items. No Golden approval or game-ready delivery is claimed.
