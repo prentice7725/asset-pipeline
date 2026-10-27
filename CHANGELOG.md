@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — second-character source and motion blocker, 2026-10-27
+
+- Generate one user-requested white-rabbit reference through the existing six-tool
+  Asset Pipeline route; preserve technical QA, actual framing/pose discrepancies
+  and pending art review. No repair generation or provider fallback.
+- Reproduce STYLE-107 still-workflow binding conflict in the existing motion plan.
+  Preserve the style lock and stop before video upload/budget/queue; no second-character E2E PASS.
+- Record the explicit motion-style compiler integration gap without production
+  code/config changes. See docs/factory/MOTION_SECOND_CHARACTER_20261027.md.
+
 ## Unreleased — explicit offline motion review recipes, 2026-10-27
 
 - Add versioned recipe schema and plan/apply/inspect CLI for explicit contiguous
