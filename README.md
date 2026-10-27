@@ -426,6 +426,8 @@ GPU LoRA 적용·전체 모델·이미지 품질 검증과 운영 승격은 아�
 magnitude 120개가 누락됐으며, 학습 alpha·원본 베이스 해시가 확인되지 않아 호환성은 계속 차단합니다.
 [외부 로더 후보 격리 검증](docs/research/KREA2_LOADER_CANDIDATE_20261027.md)에서는
 120개 magnitude 보존을 확인했지만, 강도·dtype에 따른 기준 계산 불일치로 후보를 채택하지 않았습니다.
+[기존 이미지 후처리 비교](docs/research/PIXEL64_POSTPROCESS_AB_20261027.md)에서는
+외부 자동 격자 복원의 64px 탐지는 성공했으나 24색 Gate를 통과하지 못해 기존 Refiner 경로를 유지합니다.
 
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리
