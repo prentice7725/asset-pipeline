@@ -19,6 +19,9 @@ Change discipline:
   real execution evidence must be preserved, and link it from docs/factory/README.md, not README.md.
 - Keep README.md a usage guide; keep CHANGELOG entries to a few lines.
 - Live generation always needs a separately authorized budget in the current request.
+- Keep new run outputs, images, videos and zip evidence out of git (workspace/ is ignored; never
+  force-add). Commit only small JSON/Markdown summaries with hashes. tests/unit/test_repository_size_guard.py
+  rejects new tracked files over 1 MB and new tracked workspace paths.
 
 ## Baseline rules
 
