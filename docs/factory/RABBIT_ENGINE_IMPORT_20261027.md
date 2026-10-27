@@ -125,6 +125,11 @@ Remaining gates: Godot startup timing, anatomical support-foot/gameplay motion,
 readability/edge review and required human Aseprite approval. Both-character
 import success is evidence for these specific samples, not universal compatibility.
 
+Follow-up: the [startup diagnostic correction](GODOT_STARTUP_TIMING_20261027.md)
+identifies the harness start-phase issue and verifies a guarded local start method.
+The original timings above remain unchanged; production game startup still needs
+its own integration validation.
+
 Rollback: revert this documentation commit and stop using the isolated fixtures.
 Preserve source/candidate/evidence and spent generation authorizations. No system
 installation, production application or SOT migration requires reversal.

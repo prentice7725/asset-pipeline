@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — Godot diagnostic startup scheduling, 2026-10-27
+
+- Reproduce early animation wrap caused by pre-start work/current-frame delta
+  in the isolated harness. Preserve raw failing control evidence.
+- Add a 60Hz validation fixture that waits for stable process/wall intervals,
+  starts after animation processing and avoids readback while measuring playback.
+- Verify six guarded conditions in headless and actual OpenGL against a declared
+  ±22ms cycle tolerance, preserving source assets and production game runtime.
+- See docs/factory/GODOT_STARTUP_TIMING_20261027.md for measurements and limits.
+- Complete required install/CLI checks and 756 offline tests (one unavailable-data
+  skip); verify fail-closed native controls and 241 unchanged source/candidate hashes.
+
 ## Unreleased — actual rabbit Godot/Phaser import, 2026-10-27
 
 - Reuse isolated native engine fixtures for the rabbit's 28-frame RGBA candidate.
