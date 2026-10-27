@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — existing-image Pixel64 postprocessing A/B, 2026-10-27
+
+- Compare two archived raw images through existing Refiner orders and isolated
+  Pixel Art Fixer defaults; re-evaluate eight outputs with the unchanged Gate.
+- Record correct automatic 64px detection but 879/853-color external outputs
+  failing the 24-color Gate. Do not promote or add automatic postprocessing.
+- Preserve zero-change Safe Refiner results, historical CPU replay differences,
+  all 104 archive files and explicit review/adapter limitations. Zero generations.
+
 ## Unreleased — Pixel64 loader candidate isolation, 2026-10-27
 
 - Execute reviewed InvokeAI grouping/value conversion on the unchanged adapter:

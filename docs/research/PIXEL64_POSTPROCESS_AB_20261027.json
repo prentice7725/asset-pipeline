@@ -1,0 +1,680 @@
+{
+  "kind": "EXISTING_IMAGE_POSTPROCESS_AB_OBSERVATION",
+  "status": "COMPARISON_EXECUTED_EXTERNAL_DEFAULT_NOT_ADOPTED",
+  "branch": "codex/pixel64-postprocess-ab-20261027",
+  "base_commit": "25ea796",
+  "generation_requests": 0,
+  "model_payload_downloads": 0,
+  "provider_or_dependency_installs": 0,
+  "production_code_changed": false,
+  "source_integrity": {
+    "protected_files": 104,
+    "unchanged": true,
+    "generation_requests": 0,
+    "production_code_changed": false,
+    "approval": "NOT_GRANTED"
+  },
+  "preflight_correction": {
+    "initial_preflight": "STOPPED_BEFORE_PLAN_OR_IMAGE_PROCESSING",
+    "reason": "ARCHIVED_CRLF_BYTES_DIFFER_FROM_UPSTREAM_LF",
+    "archive_sha256": "74605aa0ac8d78df14992638ba2cdf1d9c139e3e199660e7e2d1408e31e39956",
+    "upstream_sha256": "aa3039218a62d1ddd75a382447a669db899582dee529153e877d13be57ba0a71",
+    "universal_newline_text_identical": true,
+    "action": "PIN_ARCHIVE_ORIGINAL_BYTES_WITHOUT_REWRITING"
+  },
+  "runtime": {
+    "python": "3.13.12",
+    "torch": "2.12.1+cu130",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "cv2": "5.0.0",
+    "torch_threads": 4,
+    "device": "cpu"
+  },
+  "baseline_adapter_compatibility": "INCOMPLETE_ADAPTER",
+  "fixer_revision": "ef376e57e1c272633ca2dbf5f29ec3fcf6596465",
+  "refiner_revision": "0b01ea37f1573ca26a8511337e7d9d77759ee2c7",
+  "refiner_archive_sha256": "74605aa0ac8d78df14992638ba2cdf1d9c139e3e199660e7e2d1408e31e39956",
+  "parameters": {
+    "colors": 24,
+    "target": [
+      64,
+      64
+    ],
+    "arms": [
+      "historical_baseline_safe_noop",
+      "creator_palette_first_replay",
+      "creator_collapse_first",
+      "fixer_auto_full_default"
+    ],
+    "retry": false,
+    "fallback": false
+  },
+  "rows": [
+    {
+      "case": "krea2_pixel64_smoke_20261003",
+      "arm": "historical_baseline_safe_noop",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\safe_noop\\refined.png",
+      "sha256": "f3f3f09204a0952793bd8b473066f21c66200dbf39a98851222028ff7cee5690",
+      "raw_sha256": "4b170a390139f4991939aac2237ebae43f5f17b9d8b89559fae17a163d9ba5d0",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 22,
+      "gate": "PASS",
+      "failure_reasons": {
+        "failure": [],
+        "fix": [],
+        "review": []
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 1540,
+        "connected_component_count": 2,
+        "largest_component_ratio": 0.8863636363636364,
+        "isolated_component_count": 0,
+        "isolated_pixel_count": 0,
+        "bounding_box": {
+          "x": 11,
+          "y": 2,
+          "width": 34,
+          "height": 60
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "changed_pixels": 0,
+        "historical_source_sha256": "432232f0a3b0597e8a2e1e0ba9834a76ba3786ddf2dcf4b93e3f2146326213fd"
+      },
+      "changed_pixels_vs_historical": 0,
+      "state": "REVIEW_REQUIRED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "5b12ce1b0737875886d84a90495b3d56d2764f6ccf4dff0b4b2f74a686c2524a",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\safe_noop\\refined.png.gate.json"
+    },
+    {
+      "case": "krea2_pixel64_smoke_20261003",
+      "arm": "creator_palette_first_replay",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\creator_palette_first_replay.png",
+      "sha256": "c60fad68b732297fa837b1f42dd667d07cb927d7b7cc1092ca3fdb9cdc09ecd1",
+      "raw_sha256": "4b170a390139f4991939aac2237ebae43f5f17b9d8b89559fae17a163d9ba5d0",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 22,
+      "gate": "PASS",
+      "failure_reasons": {
+        "failure": [],
+        "fix": [],
+        "review": []
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 1540,
+        "connected_component_count": 2,
+        "largest_component_ratio": 0.8863636363636364,
+        "isolated_component_count": 0,
+        "isolated_pixel_count": 0,
+        "bounding_box": {
+          "x": 11,
+          "y": 2,
+          "width": 34,
+          "height": 60
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "seconds": 0.4378569000400603,
+        "width": 64,
+        "height": 64,
+        "colors": 24,
+        "color_reduction_first": true,
+        "scale_to_original": false
+      },
+      "changed_pixels_vs_historical": 3444,
+      "state": "REVIEW_REQUIRED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "af0f406e7d42d73f7e627c5759e806aff63fa30952a0ca35218f59b4ee4be315",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\creator_palette_first_replay.png.gate.json",
+      "historical_replay_comparison": {
+        "exact_rgba_match": false,
+        "max_rgb_difference": 33,
+        "mean_absolute_rgb_difference": 0.6648763020833334,
+        "pixels_rgb_difference_above_1": 578,
+        "alpha_unchanged": true,
+        "cause": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "case": "krea2_pixel64_smoke_20261003",
+      "arm": "creator_collapse_first",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\creator_collapse_first.png",
+      "sha256": "30c0a4b1e69e63179f69af6d6ee9a29c4eb734d61f719163892ec2ac9590bce5",
+      "raw_sha256": "4b170a390139f4991939aac2237ebae43f5f17b9d8b89559fae17a163d9ba5d0",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 24,
+      "gate": "PASS",
+      "failure_reasons": {
+        "failure": [],
+        "fix": [],
+        "review": []
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 1540,
+        "connected_component_count": 2,
+        "largest_component_ratio": 0.8863636363636364,
+        "isolated_component_count": 0,
+        "isolated_pixel_count": 0,
+        "bounding_box": {
+          "x": 11,
+          "y": 2,
+          "width": 34,
+          "height": 60
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "seconds": 0.11543959996197373,
+        "width": 64,
+        "height": 64,
+        "colors": 24,
+        "color_reduction_first": false,
+        "scale_to_original": false
+      },
+      "changed_pixels_vs_historical": 3462,
+      "state": "REVIEW_REQUIRED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "590c49baa38402e5a06d8b9132bc2aed4eaf6016dcb9b240f22f80afc0b6a406",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\creator_collapse_first.png.gate.json"
+    },
+    {
+      "case": "krea2_pixel64_smoke_20261003",
+      "arm": "fixer_auto_full_default",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\fixer_auto_full_default.png",
+      "sha256": "07188fb4f4ad1a562efa8fe6beced9cf85d80ac7d29183ddcda534d017820d51",
+      "raw_sha256": "4b170a390139f4991939aac2237ebae43f5f17b9d8b89559fae17a163d9ba5d0",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 879,
+      "gate": "FAIL",
+      "failure_reasons": {
+        "failure": [
+          "unique colors exceed the configured budget (879 > 24)",
+          "high gradient suspicion from dense small RGB steps"
+        ],
+        "fix": [],
+        "review": []
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 3138,
+        "connected_component_count": 4,
+        "largest_component_ratio": 0.997131931166348,
+        "isolated_component_count": 2,
+        "isolated_pixel_count": 3,
+        "bounding_box": {
+          "x": 0,
+          "y": 0,
+          "width": 64,
+          "height": 64
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "seconds": 1.6324646000284702,
+        "seed": 7725,
+        "parameters": {
+          "mode": "full",
+          "low_memory": false,
+          "dark_stroke": false,
+          "palette_snap": false,
+          "two_stage": true,
+          "k_colors": 0,
+          "force_step": null
+        },
+        "detection": {
+          "cols": 64,
+          "rows": 64,
+          "step_x": 16.0,
+          "step_y": 16.0,
+          "consensus": "fast:ac+rl(S)",
+          "confidence": "high",
+          "detect_s": 0.305,
+          "recon_s": 1.163
+        }
+      },
+      "changed_pixels_vs_historical": 3954,
+      "state": "GATE_NOT_PASSED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "d0952bedaf3d3040d5dbe953264d1d350bf5c3b396defb5f025d73ae85914b1b",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_smoke_20261003\\fixer_auto_full_default.png.gate.json"
+    },
+    {
+      "case": "krea2_pixel64_redraw_20261003",
+      "arm": "historical_baseline_safe_noop",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\safe_noop\\refined.png",
+      "sha256": "22cd0ab24c309467b78cb0cb3a774d76fc4a9591305cd9d887e07d46dc8af792",
+      "raw_sha256": "5fc6c0d81bad64cbc5ef8ba1432751c1d553378d7a72f811be47269681f31469",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 22,
+      "gate": "PASS",
+      "failure_reasons": {
+        "failure": [],
+        "fix": [],
+        "review": []
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 1508,
+        "connected_component_count": 1,
+        "largest_component_ratio": 1.0,
+        "isolated_component_count": 0,
+        "isolated_pixel_count": 0,
+        "bounding_box": {
+          "x": 10,
+          "y": 2,
+          "width": 45,
+          "height": 60
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "changed_pixels": 0,
+        "historical_source_sha256": "fc4127752e7e1334c1750990a6729832cdbf2371a75696b35e27dd47765746e0"
+      },
+      "changed_pixels_vs_historical": 0,
+      "state": "REVIEW_REQUIRED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "e48b8fb02d7dbcfe354cb12c560d8be0dbd5a50240c6ca09805d98833b972b15",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\safe_noop\\refined.png.gate.json"
+    },
+    {
+      "case": "krea2_pixel64_redraw_20261003",
+      "arm": "creator_palette_first_replay",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\creator_palette_first_replay.png",
+      "sha256": "c2dcbee365ea183690a2b4862be8f5bdb2ad4fc1760e37590de25721740f8021",
+      "raw_sha256": "5fc6c0d81bad64cbc5ef8ba1432751c1d553378d7a72f811be47269681f31469",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 22,
+      "gate": "PASS",
+      "failure_reasons": {
+        "failure": [],
+        "fix": [],
+        "review": []
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 1508,
+        "connected_component_count": 1,
+        "largest_component_ratio": 1.0,
+        "isolated_component_count": 0,
+        "isolated_pixel_count": 0,
+        "bounding_box": {
+          "x": 10,
+          "y": 2,
+          "width": 45,
+          "height": 60
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "seconds": 0.3778753000078723,
+        "width": 64,
+        "height": 64,
+        "colors": 24,
+        "color_reduction_first": true,
+        "scale_to_original": false
+      },
+      "changed_pixels_vs_historical": 3712,
+      "state": "REVIEW_REQUIRED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "415b3b3e98453aaa670ada0489d16e331aee2dce1a758d53220034a83bce9e85",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\creator_palette_first_replay.png.gate.json",
+      "historical_replay_comparison": {
+        "exact_rgba_match": false,
+        "max_rgb_difference": 21,
+        "mean_absolute_rgb_difference": 0.6465657552083334,
+        "pixels_rgb_difference_above_1": 55,
+        "alpha_unchanged": true,
+        "cause": "NOT_ESTABLISHED"
+      }
+    },
+    {
+      "case": "krea2_pixel64_redraw_20261003",
+      "arm": "creator_collapse_first",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\creator_collapse_first.png",
+      "sha256": "e7d076c1807b6b22f2a1ec73f9983917fc06f96acb5d34a65a0edcaa4b6b9a2b",
+      "raw_sha256": "5fc6c0d81bad64cbc5ef8ba1432751c1d553378d7a72f811be47269681f31469",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 24,
+      "gate": "PASS",
+      "failure_reasons": {
+        "failure": [],
+        "fix": [],
+        "review": []
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 1508,
+        "connected_component_count": 1,
+        "largest_component_ratio": 1.0,
+        "isolated_component_count": 0,
+        "isolated_pixel_count": 0,
+        "bounding_box": {
+          "x": 10,
+          "y": 2,
+          "width": 45,
+          "height": 60
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "seconds": 0.11099419998936355,
+        "width": 64,
+        "height": 64,
+        "colors": 24,
+        "color_reduction_first": false,
+        "scale_to_original": false
+      },
+      "changed_pixels_vs_historical": 3516,
+      "state": "REVIEW_REQUIRED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "5a27dc4a9ec5b4b270302b78a1e4094acf30dba446b56a161aa1a4f9f011a3c6",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\creator_collapse_first.png.gate.json"
+    },
+    {
+      "case": "krea2_pixel64_redraw_20261003",
+      "arm": "fixer_auto_full_default",
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\fixer_auto_full_default.png",
+      "sha256": "1b266b7fb992d4192eb6465261d7be007accf719f7a4745143e8a858dd0b744d",
+      "raw_sha256": "5fc6c0d81bad64cbc5ef8ba1432751c1d553378d7a72f811be47269681f31469",
+      "size": [
+        64,
+        64
+      ],
+      "colors": 853,
+      "gate": "FAIL",
+      "failure_reasons": {
+        "failure": [
+          "unique colors exceed the configured budget (853 > 24)",
+          "high gradient suspicion from dense small RGB steps"
+        ],
+        "fix": [],
+        "review": [
+          "multiple tiny detached silhouette clusters need visual review"
+        ]
+      },
+      "silhouette": {
+        "measurable": true,
+        "method": "border_color_inference",
+        "foreground_pixels": 2800,
+        "connected_component_count": 30,
+        "largest_component_ratio": 0.9246428571428571,
+        "isolated_component_count": 16,
+        "isolated_pixel_count": 20,
+        "bounding_box": {
+          "x": 0,
+          "y": 0,
+          "width": 64,
+          "height": 64
+        }
+      },
+      "alpha": {
+        "policy": "binary",
+        "transparent_pixels": 0,
+        "opaque_pixels": 4096,
+        "semi_transparent_pixels": 0,
+        "unique_alpha_values": [
+          255
+        ]
+      },
+      "parameters": {
+        "seconds": 1.412224299972877,
+        "seed": 7725,
+        "parameters": {
+          "mode": "full",
+          "low_memory": false,
+          "dark_stroke": false,
+          "palette_snap": false,
+          "two_stage": true,
+          "k_colors": 0,
+          "force_step": null
+        },
+        "detection": {
+          "cols": 64,
+          "rows": 64,
+          "step_x": 16.0,
+          "step_y": 16.0,
+          "consensus": "fast:ac+rl(S)",
+          "confidence": "high",
+          "detect_s": 0.241,
+          "recon_s": 1.009
+        }
+      },
+      "changed_pixels_vs_historical": 3866,
+      "state": "GATE_NOT_PASSED",
+      "human_review": "NOT_GRANTED",
+      "manual_edit_count": "NOT_MEASURED",
+      "equipment_identity": "HUMAN_REVIEW_REQUIRED",
+      "qa_sha256": "1bf87b669b31e6d976d3e52d4c6c051cc0024f6e5484dd32e9e553687708d3d4",
+      "qa_path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\krea2_pixel64_redraw_20261003\\fixer_auto_full_default.png.gate.json"
+    }
+  ],
+  "source_records": [
+    {
+      "url": "https://api.github.com/repos/Retro-Diffusion/pixel-art-fixer/commits/main",
+      "path": "fixer-head.json",
+      "sha256": "486673806bdb3c4ac18ca7a93cc72b7ab8e28297fe72c1b3f15b629e32ac2017"
+    },
+    {
+      "url": "https://api.github.com/repos/Retro-Diffusion/pixel-art-fixer/git/trees/ef376e57e1c272633ca2dbf5f29ec3fcf6596465?recursive=1",
+      "path": "fixer-tree.json",
+      "sha256": "12684a282e5814af57e1b92cbd3d4b6b71cfe75f8abd50b26dc50ff6ce410411"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/LICENSE",
+      "path": "fixer/LICENSE",
+      "sha256": "e4c677e8b9d718020b20bd0fe323ae433022a97f1d946be85e882db81cf467c0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/README.md",
+      "path": "fixer/README.md",
+      "sha256": "8db1adea1a0bb014e722e6abd7c0ad9bcedc34bd5ac735c93aab7808444e0a75"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/__init__.py",
+      "path": "fixer/python/pixelfixer/__init__.py",
+      "sha256": "00f05d63e99b8a0c432b27619b8c0128a72a68ddce39841c7fcd918909dfb4f7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/api.py",
+      "path": "fixer/python/pixelfixer/api.py",
+      "sha256": "7a694f1430e956bae24532e3c8e2323b6a8f91a72d0f867f1cd10f8c54bca795"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/autocorr.py",
+      "path": "fixer/python/pixelfixer/autocorr.py",
+      "sha256": "f7a06098e4a5766d533cb3a218dbc43eeb9433c0a7a7e7d099a66cfb5ad16c26"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/channels.py",
+      "path": "fixer/python/pixelfixer/channels.py",
+      "sha256": "7e1b3ec61c0f3c11188253a0cab73426f8132620d7edd12eb0f26d243c7d54e2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/cli.py",
+      "path": "fixer/python/pixelfixer/cli.py",
+      "sha256": "7194ca75662457fbd3d56dedf3c312163ac348f2be44af9293a74e8fe5d85200"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/colorspace.py",
+      "path": "fixer/python/pixelfixer/colorspace.py",
+      "sha256": "8baa62ee07a4e82a5c4d0ae68f39b919a538639336b553f0aed011e1242d91f8"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/core.py",
+      "path": "fixer/python/pixelfixer/core.py",
+      "sha256": "853415024eee4206b378a9887eaa805bb3f7fb3c30c4518142f931d90d43b8a7"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/fusion.py",
+      "path": "fixer/python/pixelfixer/fusion.py",
+      "sha256": "9d69f5ec588229728ac358634aeb82de35092033010bad191d089136088b879b"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/quantize.py",
+      "path": "fixer/python/pixelfixer/quantize.py",
+      "sha256": "c3fc62bc0374b3e16f4bd9017a900d9a4e065e0b91a37a57d9e6304720b902aa"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/reconsearch.py",
+      "path": "fixer/python/pixelfixer/reconsearch.py",
+      "sha256": "e48b586b523ad4a415cdccc26456840a95ec9fe632c8380daaf25c0a98d4fd41"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/reconstruct.py",
+      "path": "fixer/python/pixelfixer/reconstruct.py",
+      "sha256": "205c495d17ba243c7612e35cf83f3ab9587abcde8c8e6c36b0169bdef201ddd5"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/runlengths.py",
+      "path": "fixer/python/pixelfixer/runlengths.py",
+      "sha256": "f1f44bfeb268c16d064111f1768e8fa7611ddff5898de74b39a15c4917ea21bb"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/selfsim.py",
+      "path": "fixer/python/pixelfixer/selfsim.py",
+      "sha256": "c53ef8dd12a3762cfcac00b2a4b955d104ae8626529597852511664e52a8471a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pixelfixer/varcontrast.py",
+      "path": "fixer/python/pixelfixer/varcontrast.py",
+      "sha256": "fd4e9f0c815786f83fef87751ea5fcab50d417ed77f9d734ea879088c79d3697"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/pyproject.toml",
+      "path": "fixer/python/pyproject.toml",
+      "sha256": "a15e92316c248e718bc5d331616bd1b774ce29a1b87100f187e018a4487f9225"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Retro-Diffusion/pixel-art-fixer/ef376e57e1c272633ca2dbf5f29ec3fcf6596465/python/requirements.txt",
+      "path": "fixer/python/requirements.txt",
+      "sha256": "eb7f68ce919a306ea0a131f2979e035f3b5288b44952adc096849c6e934fd8e3"
+    }
+  ],
+  "comparison_preview": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\comparison.png",
+    "sha256": "2d0cd9294e43598e9e078a652fec286e3e745cc4e66762d4991f3dc8e44b88cc"
+  },
+  "reproduction": {
+    "script": "C:\\workspace\\asset-pipeline\\workspace\\checkouts\\m3-motion-audit-20261023\\workspace\\pixel64-postprocess-ab-20261027\\compare.py",
+    "sha256": "fe2a465dac2ea9d7af641f1b11868dab9c93ff7609259c352c346187dd87e629",
+    "plan_sha256": "bdd53a84f55228f5a675f255f06c67461d642585e3956141b2219731a9ea60c3",
+    "result_sha256": "0a5de3fda07c0500a30c1cd06d1cd809ee955e200fa261dad15c2527cc1b8771"
+  },
+  "pipeline_source_sha256": {
+    "src/assetpipe/_ported/pixel_gate/analyzer.py": "4bf1e88c48979a166d5560ae0e6b2ca6646fafdb2bd21097686e52b3ca695ae5",
+    "src/assetpipe/_ported/pixel_gate/refiner.py": "40df8d4f574abe49832f1d2b33584bdfca79c96a9d2a16b602458fbbbb0c1525"
+  },
+  "human_aseprite_review": "NOT_GRANTED",
+  "golden_approval": "NOT_GRANTED",
+  "identity_preservation": "NOT_HUMAN_APPROVED",
+  "manual_edit_effort": "NOT_MEASURED",
+  "quality_improvement": "NOT_ESTABLISHED",
+  "pixel_grid_tools": "NOT_RUN",
+  "comfyui_pixelpipeline": "NOT_RUN"
+}
