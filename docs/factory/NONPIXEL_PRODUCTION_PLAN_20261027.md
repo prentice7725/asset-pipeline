@@ -27,7 +27,7 @@
 | 영상 처리·리뷰 | `motion/package.py`, `motion/recipe.py`, 기존 추출·알파·정렬 | 새 자산에 프레임 범위·알파 임계값을 무단 복사하지 않음. 루프·외형·접지 리뷰 필요 |
 | 실제 영상·다른 캐릭터 | [rabbit 생성 기록](MOTION_SOURCE_STYLE_20261027.md), 기존 fox 기록 | 이 샘플의 과거 생성 증거로 한정. 새 coordinator를 통한 실생성은 별도 검증 필요 |
 | 재처리·엔진 출력 | [Factory 통합 검증](MOTION_JOB_VALIDATION_20261027.md), `motion/exports.py` | 과거 fox/rabbit 20/28프레임 실제 임포트 근거가 있음. 실제 게임의 이동·접지·배경 대비는 미승인 |
-| 일반 API 경로 | `api.py`와 `pipelines/nonpixel_animation`은 생산 실행 unavailable, 일반 Factory 모션도 차단 | 동작하는 명시적 경로와 제품 경로의 차이를 해소하되 기본 운영 활성화를 암묵적으로 수행하지 않음 |
+| 일반 API 경로 | 후속 구현에서 `create`의 명시적 motion job 연결. Brief-only와 일반 Factory 모션은 계속 차단 | 새 진입점 실생성·운영 승인과 프롬프트 자동 모션을 구분함. 기본 운영 활성화를 암묵적으로 수행하지 않음 |
 | 참조 이미지 | 현 실행 job은 기존 NONPIXEL_IMAGE parent + IDENTITY_PRIMARY 1장 | 2·3장 역할별 실제 소비 미검증. 지원을 미리 광고하지 않음 |
 | 픽셀 | 기존 static/direct, [후처리 비교](../research/PIXEL64_POSTPROCESS_AB_20261027.md), LoRA 호환성 기록 | RESEARCH_ONLY 우선순위. 호환성·팔레트 연구·32px 승격은 넌픽셀 일정에서 제외 |
 
@@ -52,6 +52,11 @@
    소비된 근거와 정체성/포즈 유지 결과를 확보한다. 한 장 입력이 안정되기 전에 범위를 넓히지 않는다.
 
 ## 완료 판정
+
+2026-10-27 후속 구현: 명시적인 `create --type nonpixel-animation --motion-job`
+진입점이 기존 job 조정자에 연결되었다. 사용법은 [모션 작업 계약](MOTION_JOB.md)을 따른다.
+[검증 범위와 남은 작업](NONPIXEL_CREATE_VALIDATION_20261027.md)을 함께 확인한다.
+일반 프롬프트/Brief 자동 모션, 2/3장 참조, 새 coordinator 실생성과 운영 활성화는 별도 미완료 항목이다.
 
 정지 생성과 모션 후속 작업을 각각 끝내거나 이어갈 수 있고, 실패로 이미 끝난 정지 작업이
 손상되지 않으며, 원본·예산·변환·QA를 추적할 수 있어야 한다. 엔진에서 실제 소비한 증거와

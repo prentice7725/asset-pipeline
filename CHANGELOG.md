@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — explicit nonpixel motion through create, 2026-10-27
+
+- Connect `create --type nonpixel-animation --motion-job` and the core create API
+  to the existing Factory motion coordinator, pinned plan and original budget gates.
+- Reject mixed direct overrides, missing job/plan/output and replay generation
+  consent before dispatch; keep parent stills and terminal failure evidence intact.
+- Preserve prompt/brief-only blocking, default research settings, still/SFX paths,
+  six MCP arguments and all review/activation gates. No new live generation authorized.
+
 ## Unreleased — nonpixel production priority, 2026-10-27
 
 - Apply the user's decision to prioritize nonpixel still images and animation;

@@ -141,19 +141,25 @@ def factory_motion_job(case):
     return path
 
 
-def test_factory_motion_generation_delegates_single_budget_and_exports(case):
+@pytest.mark.parametrize('entrypoint', ['factory', 'create'])
+def test_factory_motion_generation_delegates_single_budget_and_exports(case, entrypoint):
     from assetpipe.factory.motion import plan_job,run_job,inspect_job
     job=factory_motion_job(case)
     root=case['root']
     plan=plan_job(job,root)
     assert plan['generation_plan']==case['plan']
     output=root/'workspace/factory_child'
-    receipt=run_job(job,plan['plan_sha256'],output,root,authorization=case['auth'],authorize_generation=True)
+    def execute(target):
+        if entrypoint == 'create':
+            from assetpipe.pipelines import create
+            return create(None,root,target,motion_job=job,motion_plan_sha256=plan['plan_sha256'],
+                          authorization=case['auth'],authorize_generation=True)
+        return run_job(job,plan['plan_sha256'],target,root,authorization=case['auth'],authorize_generation=True)
+    receipt=execute(output)
     assert inspect_job(output,fingerprint(receipt),root)['generation_requests']==1
     assert case['state']['uploads']==case['state']['queues']==1
     with pytest.raises(ValueError,match='MOTION_BUDGET_ALREADY_RESERVED'):
-        run_job(job,plan['plan_sha256'],root/'workspace/another_child',root,
-                authorization=case['auth'],authorize_generation=True)
+        execute(root/'workspace/another_child')
     assert case['state']['uploads']==case['state']['queues']==1
 
 

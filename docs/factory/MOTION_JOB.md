@@ -5,6 +5,49 @@ and native engine resource stages. It does not activate ordinary Factory
 IMAGE_TO_SPRITE dispatch, approve art or select a loop/background automatically.
 Static image and SFX commands remain independent and unchanged.
 
+## General nonpixel create entrypoint
+
+The same coordinator is available through the general Python/CLI create path:
+
+```powershell
+assetpipe factory motion-plan --job workspace/my-job.json
+assetpipe create --type nonpixel-animation --motion-job workspace/my-job.json `
+  --motion-plan-sha256 <returned-plan-sha256> --output workspace/my-new-motion-run
+```
+
+This is an explicit experimental continuation of one existing NONPIXEL_IMAGE
+parent, not prompt-only animation routing. The job pins the request, video or
+prepared generation input, source hashes, frame selection and alpha policy.
+`--output` must name a new directory under the configuration root's workspace.
+Use `--allowed-root` for each permitted external source root, including the
+configuration root when needed; the same root set must be used for planning
+and execution. Output remains restricted to the configuration root's workspace.
+
+The command prints the existing `factory_motion.json` receipt path. Inspect it
+with `factory motion-inspect --run ... --manifest-sha256 ...`; do not treat it
+as the still-image `run_manifest.json` format. Engine resources are written by
+the existing exporter; engine loading and human review remain separate stages.
+
+For `PREPARED_GENERATION` only, both `--authorization <file>` and
+`--authorize-generation` are necessary in addition to the existing executor's
+research/config/model/one-attempt gates. Replay rejects generation consent.
+The new entrypoint never prepares an authorization, enables research, generates
+a parent still, retries or switches Provider automatically. This implementation
+does not authorize a fresh live generation test.
+
+Direct prompt/brief/reference/action, seed, workflow/style/model/preset,
+project/asset overrides, SFX duration and `--allow-experimental` cannot be
+combined with a motion job. Use the pinned job rather than ambiguous overrides.
+Motion authorization/plan/root flags without `--motion-job` are rejected, so
+ordinary still/SFX create retains its existing behavior.
+
+Python callers use `create(None, root, output, motion_job=job_path,
+motion_plan_sha256=plan_sha, resolver=optional_root_resolver, ...)`.
+The explicit wrapper reuses `factory.motion.run_job`; no extraction, alpha,
+loop selection, packing, engine export, ledger or approval implementation is
+duplicated. Brief-only NONPIXEL_ANIMATION remains blocked. The six MCP tool
+argument contracts and ordinary Factory motion activation are unchanged.
+
 ## Input and support boundary
 
 [Job schema](../../schemas/factory_motion_job_v1.schema.json) and
@@ -128,3 +171,5 @@ into an approval. Aseprite/human review, Golden/SOT and operational activation
 remain separate gates.
 
 [Dated integration evidence and rollback](MOTION_JOB_VALIDATION_20261027.md).
+
+[General create entrypoint validation](NONPIXEL_CREATE_VALIDATION_20261027.md).

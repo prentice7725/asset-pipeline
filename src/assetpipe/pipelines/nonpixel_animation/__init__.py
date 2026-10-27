@@ -1,8 +1,12 @@
-"""v0.1 experimental contract: approved base -> motion -> extraction -> alignment -> QA -> sheet.
-
-No new reconstruction algorithm or production-ready claim is provided.
-"""
+"""Explicit nonpixel continuation through the existing Factory motion coordinator."""
 STATUS = 'SUPPORTED_EXPERIMENTAL'
 
-def run(*args, **kwargs):
-    raise ValueError('NONPIXEL_ANIMATION is SUPPORTED_EXPERIMENTAL; production execution is unavailable in v0.1')
+def run(*, job, plan_sha256, output, root, authorization=None,
+        authorize_generation=False, allowed_roots=None):
+    from ...providers.cli_runner import assert_not_nested
+    from ...factory.motion import run_job
+    assert_not_nested()
+    if not job or not plan_sha256 or output is None:
+        raise ValueError('NONPIXEL_ANIMATION requires an explicit job, pinned plan and new output')
+    return run_job(job, plan_sha256, output, root, authorization=authorization,
+                   authorize_generation=authorize_generation, allowed_roots=allowed_roots)

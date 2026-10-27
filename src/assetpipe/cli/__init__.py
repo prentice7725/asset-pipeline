@@ -114,7 +114,7 @@ def main(argv=None):
     run.add_argument('--prompt', default='')
     run.add_argument('--reference', type=Path)
     run.add_argument('--action')
-    run.add_argument('--asset-id', default='asset')
+    run.add_argument('--asset-id')
     run.add_argument('--project', help='Project folder ID; otherwise use brief project_id or default')
     run.add_argument('--workflow')
     run.add_argument('--style-id', help='Style Catalog/Project Style Pack ID (NONPIXEL_IMAGE)')
@@ -123,6 +123,11 @@ def main(argv=None):
     run.add_argument('--seed', type=int, help='ComfyUI only; CLI providers (codex_cli, grok_cli) record seed as unsupported')
     run.add_argument('--allow-experimental', action='store_true', help='Allow an EXPERIMENTAL workflow that was requested explicitly by --workflow')
     run.add_argument('--output', type=Path)
+    run.add_argument('--motion-job', type=Path, help='Explicit NONPIXEL_ANIMATION Factory job; no prompt-based video routing')
+    run.add_argument('--motion-plan-sha256', help='Expected hash from factory motion-plan')
+    run.add_argument('--allowed-root', action='append', type=Path, help='Explicit motion job source roots only')
+    run.add_argument('--authorization', type=Path, help='Existing single-attempt video authorization; motion job only')
+    run.add_argument('--authorize-generation', action='store_true', help='Consent for prepared video job only; replay rejects it')
     providers = commands.add_parser('providers', help='Diagnose generation providers without any paid request')
     providers.add_argument('--provider', choices=['comfyui', 'codex_cli', 'grok_cli'], action='append', help='Limit diagnosis to these providers (default: all)')
     providers.add_argument('--output', type=Path)
@@ -323,12 +328,26 @@ def main(argv=None):
             finally:
                 write(manifest_path, manifest)
             print(manifest_path)
+        elif args.command == 'create' and args.motion_job is not None:
+            if args.type != 'nonpixel-animation':
+                raise ValueError('--motion-job requires --type nonpixel-animation')
+            if (any(value is not None for value in [args.brief, args.reference, args.action,
+                    args.asset_id, args.project, args.workflow, args.style_id, args.model_profile,
+                    args.preset, args.seed, args.duration]) or args.prompt or args.allow_experimental):
+                raise ValueError('Motion inputs and settings must come from the pinned job; direct overrides are unsupported')
+            from ..paths import RootResolver
+            resolver = RootResolver(args.allowed_root or [args.root], base=args.root)
+            print(create(None, args.root, args.output, resolver=resolver,
+                motion_job=args.motion_job, motion_plan_sha256=args.motion_plan_sha256,
+                authorization=args.authorization, authorize_generation=args.authorize_generation))
         else:
+            if args.motion_plan_sha256 is not None or args.authorization is not None or args.authorize_generation or args.allowed_root:
+                raise ValueError('Motion options require --motion-job')
             if args.brief and (args.type or args.prompt or args.reference or args.action):
                 raise ValueError('Use a prepared brief or direct input flags separately')
             if not args.brief and not args.type:
                 raise ValueError('--type is required for direct input')
-            brief = load(args.brief) if args.brief else make(asset_id=args.asset_id, output_class=args.type.upper().replace('-', '_'), prompt=args.prompt, reference=args.reference, action=args.action)
+            brief = load(args.brief) if args.brief else make(asset_id=args.asset_id or 'asset', output_class=args.type.upper().replace('-', '_'), prompt=args.prompt, reference=args.reference, action=args.action)
             if args.workflow:
                 brief['workflow_preferences']['id'] = args.workflow
             if args.style_id:
