@@ -11,6 +11,44 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory')
     parser.add_argument('--root', type=Path, default=Path.cwd(), help='Repository/config root')
     commands = parser.add_subparsers(dest='command', required=True)
+    motion_package = commands.add_parser('motion-package', help='Package an existing nonpixel video for research review; no generation')
+    motion_package.add_argument('--request', required=True, type=Path)
+    motion_package.add_argument('--video', required=True, type=Path)
+    motion_package.add_argument('--video-sha256', required=True)
+    motion_package.add_argument('--output', required=True, type=Path)
+    motion_package.add_argument('--allowed-root', action='append', type=Path)
+    for name in ['motion-recipe-plan', 'motion-recipe-apply', 'motion-recipe-inspect']:
+        recipe = commands.add_parser(name, help='Explicit offline motion candidate recipe; no generation or approval')
+        recipe.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-recipe-inspect':
+            recipe.add_argument('--run', required=True, type=Path)
+            recipe.add_argument('--manifest-sha256', required=True)
+        else:
+            recipe.add_argument('--recipe', required=True, type=Path)
+        if name == 'motion-recipe-apply':
+            recipe.add_argument('--plan-sha256', required=True)
+            recipe.add_argument('--output', required=True, type=Path)
+    for name in ['motion-preflight', 'motion-prepare', 'motion-inspect']:
+        motion = commands.add_parser(name, help='Read-only video gates or frozen research inputs; never generates')
+        motion.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-inspect':
+            motion.add_argument('--run', required=True, type=Path)
+        else:
+            motion.add_argument('--request', required=True, type=Path)
+        if name == 'motion-preflight':
+            motion.add_argument('--inspect-installation', action='store_true')
+        if name == 'motion-prepare':
+            motion.add_argument('--output', required=True, type=Path)
+    for name in ['motion-execution-plan', 'motion-execute']:
+        execution = commands.add_parser(name, help='Explicit one-reference research probe plan or one authorized generation attempt')
+        execution.add_argument('--run', required=True, type=Path)
+        execution.add_argument('--seed', required=True, type=int)
+        execution.add_argument('--width', required=True, type=int)
+        execution.add_argument('--height', required=True, type=int)
+        execution.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-execute':
+            execution.add_argument('--authorization', required=True, type=Path)
+            execution.add_argument('--authorize-generation', required=True, action='store_true')
     audio_review = commands.add_parser('sfx-review',help='Record explicit listening observations; no generation or game approval')
     audio_review.add_argument('--run',required=True,type=Path)
     audio_review.add_argument('--review',required=True,type=Path)
@@ -32,7 +70,7 @@ def main(argv=None):
     style_review.add_argument('--observed-features', required=True, type=Path, help='JSON object mapping every feature code to true/false observed in the image')
     style_review.add_argument('--reviewed-by', required=True)
     style_review.add_argument('--reason', required=True)
-    factory = commands.add_parser('factory', help='Read-only plans or explicitly authorized one-attempt still/audio execution')
+    factory = commands.add_parser('factory', help='Factory plans, still/audio execution and explicit staged motion jobs')
     factory_commands = factory.add_subparsers(dest='factory_command', required=True)
     for name in ['plan', 'dry-run', 'inspect']:
         presentation = factory_commands.add_parser(name, help='Validate inputs and print a read-only factory plan')
@@ -43,6 +81,22 @@ def main(argv=None):
     execution.add_argument('--seed', required=True, type=int)
     execution.add_argument('--authorize-generation', required=True, action='store_true')
     execution.add_argument('--allowed-root', action='append', type=Path)
+    for name in ['motion-plan', 'motion-run', 'motion-inspect', 'motion-prepare']:
+        stage = factory_commands.add_parser(name, help='Explicit motion stages; no default activation or automatic retry')
+        stage.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-prepare':
+            stage.add_argument('--request', required=True, type=Path)
+            stage.add_argument('--output', required=True, type=Path)
+        elif name == 'motion-inspect':
+            stage.add_argument('--run', required=True, type=Path)
+            stage.add_argument('--manifest-sha256', required=True)
+        else:
+            stage.add_argument('--job', required=True, type=Path)
+        if name == 'motion-run':
+            stage.add_argument('--plan-sha256', required=True)
+            stage.add_argument('--output', required=True, type=Path)
+            stage.add_argument('--authorization', type=Path)
+            stage.add_argument('--authorize-generation', action='store_true')
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -60,7 +114,7 @@ def main(argv=None):
     run.add_argument('--prompt', default='')
     run.add_argument('--reference', type=Path)
     run.add_argument('--action')
-    run.add_argument('--asset-id', default='asset')
+    run.add_argument('--asset-id')
     run.add_argument('--project', help='Project folder ID; otherwise use brief project_id or default')
     run.add_argument('--workflow')
     run.add_argument('--style-id', help='Style Catalog/Project Style Pack ID (NONPIXEL_IMAGE)')
@@ -69,6 +123,11 @@ def main(argv=None):
     run.add_argument('--seed', type=int, help='ComfyUI only; CLI providers (codex_cli, grok_cli) record seed as unsupported')
     run.add_argument('--allow-experimental', action='store_true', help='Allow an EXPERIMENTAL workflow that was requested explicitly by --workflow')
     run.add_argument('--output', type=Path)
+    run.add_argument('--motion-job', type=Path, help='Explicit NONPIXEL_ANIMATION Factory job; no prompt-based video routing')
+    run.add_argument('--motion-plan-sha256', help='Expected hash from factory motion-plan')
+    run.add_argument('--allowed-root', action='append', type=Path, help='Explicit motion job source roots only')
+    run.add_argument('--authorization', type=Path, help='Existing single-attempt video authorization; motion job only')
+    run.add_argument('--authorize-generation', action='store_true', help='Consent for prepared video job only; replay rejects it')
     providers = commands.add_parser('providers', help='Diagnose generation providers without any paid request')
     providers.add_argument('--provider', choices=['comfyui', 'codex_cli', 'grok_cli'], action='append', help='Limit diagnosis to these providers (default: all)')
     providers.add_argument('--output', type=Path)
@@ -104,7 +163,46 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command == 'sfx-review':
+        if args.command in {'motion-recipe-plan', 'motion-recipe-apply', 'motion-recipe-inspect'}:
+            from ..motion.recipe import plan_recipe, apply_recipe, inspect_recipe
+            from ..factory.provenance import fingerprint
+            if args.command == 'motion-recipe-plan':
+                result = plan_recipe(args.recipe, args.root, allowed_roots=args.allowed_root)
+            elif args.command == 'motion-recipe-apply':
+                path = apply_recipe(args.recipe, args.plan_sha256, args.output, args.root,
+                                    allowed_roots=args.allowed_root)
+                result = {'manifest_path': str(path), 'manifest_sha256': fingerprint(path),
+                          'review_state': 'REVIEW_REQUIRED', 'game_ready': False}
+            else:
+                result = inspect_recipe(args.run, args.root, expected_sha256=args.manifest_sha256,
+                                        allowed_roots=args.allowed_root)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command in {'motion-execution-plan', 'motion-execute'}:
+            from ..providers.video.executor import execution_plan, execute_prepared
+            options = dict(seed=args.seed, width=args.width, height=args.height, allowed_roots=args.allowed_root)
+            if args.command == 'motion-execution-plan':
+                result = execution_plan(args.run, args.root, **options)
+            else:
+                result = {'execution_receipt_path': str(execute_prepared(
+                    args.run, args.authorization, args.root,
+                    authorize_generation=args.authorize_generation, **options))}
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command in {'motion-preflight', 'motion-prepare', 'motion-inspect'}:
+            from ..providers.video import preflight_file, prepare_file, inspect_prepared
+            if args.command == 'motion-preflight':
+                result = preflight_file(args.request, args.root, allowed_roots=args.allowed_root,
+                                        inspect_installation=args.inspect_installation)
+            elif args.command == 'motion-prepare':
+                result = {'prepared_path': str(prepare_file(args.request, args.output, args.root,
+                                                           allowed_roots=args.allowed_root))}
+            else:
+                result = inspect_prepared(args.run, args.root, allowed_roots=args.allowed_root)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'motion-package':
+            from ..motion.package import package_video
+            print(package_video(args.request, args.video, args.video_sha256, args.output,
+                                args.root, allowed_roots=args.allowed_root))
+        elif args.command == 'sfx-review':
             from ..paths import RootResolver
             from ..audio.sfx import record_review
             resolver = RootResolver([args.root],base=args.root)
@@ -113,7 +211,25 @@ def main(argv=None):
             print(record_review(run,review,listened=args.listened,resolver=resolver))
         elif args.command == 'factory':
             from ..api import factory_plan, factory_execute
-            if args.factory_command == 'execute':
+            if args.factory_command.startswith('motion-'):
+                from ..factory.motion import plan_job, run_job, inspect_job
+                from ..factory.provenance import fingerprint
+                if args.factory_command == 'motion-plan':
+                    result = plan_job(args.job, args.root, allowed_roots=args.allowed_root)
+                elif args.factory_command == 'motion-inspect':
+                    result = inspect_job(args.run, args.manifest_sha256, args.root, allowed_roots=args.allowed_root)
+                else:
+                    if args.factory_command == 'motion-prepare':
+                        from ..providers.video import prepare_file
+                        path = prepare_file(args.request, args.output, args.root, allowed_roots=args.allowed_root)
+                    else:
+                        path = run_job(args.job, args.plan_sha256, args.output, args.root,
+                            authorization=args.authorization, authorize_generation=args.authorize_generation,
+                            allowed_roots=args.allowed_root)
+                    result = {'manifest_path': str(path), 'manifest_sha256': fingerprint(path),
+                              'review_state': 'REVIEW_REQUIRED', 'game_ready': False}
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+            elif args.factory_command == 'execute':
                 print(factory_execute(args.request, args.root, authorize_generation=args.authorize_generation,
                                       seed=args.seed, allowed_roots=args.allowed_root))
             else:
@@ -212,12 +328,26 @@ def main(argv=None):
             finally:
                 write(manifest_path, manifest)
             print(manifest_path)
+        elif args.command == 'create' and args.motion_job is not None:
+            if args.type != 'nonpixel-animation':
+                raise ValueError('--motion-job requires --type nonpixel-animation')
+            if (any(value is not None for value in [args.brief, args.reference, args.action,
+                    args.asset_id, args.project, args.workflow, args.style_id, args.model_profile,
+                    args.preset, args.seed, args.duration]) or args.prompt or args.allow_experimental):
+                raise ValueError('Motion inputs and settings must come from the pinned job; direct overrides are unsupported')
+            from ..paths import RootResolver
+            resolver = RootResolver(args.allowed_root or [args.root], base=args.root)
+            print(create(None, args.root, args.output, resolver=resolver,
+                motion_job=args.motion_job, motion_plan_sha256=args.motion_plan_sha256,
+                authorization=args.authorization, authorize_generation=args.authorize_generation))
         else:
+            if args.motion_plan_sha256 is not None or args.authorization is not None or args.authorize_generation or args.allowed_root:
+                raise ValueError('Motion options require --motion-job')
             if args.brief and (args.type or args.prompt or args.reference or args.action):
                 raise ValueError('Use a prepared brief or direct input flags separately')
             if not args.brief and not args.type:
                 raise ValueError('--type is required for direct input')
-            brief = load(args.brief) if args.brief else make(asset_id=args.asset_id, output_class=args.type.upper().replace('-', '_'), prompt=args.prompt, reference=args.reference, action=args.action)
+            brief = load(args.brief) if args.brief else make(asset_id=args.asset_id or 'asset', output_class=args.type.upper().replace('-', '_'), prompt=args.prompt, reference=args.reference, action=args.action)
             if args.workflow:
                 brief['workflow_preferences']['id'] = args.workflow
             if args.style_id:

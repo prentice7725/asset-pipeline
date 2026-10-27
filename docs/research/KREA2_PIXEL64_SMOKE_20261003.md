@@ -39,6 +39,11 @@ Actual Aseprite 1.3.18.6 build/export passed; layer `Pixel`, tag `static`, one 1
 
 ## Adapter compatibility warning
 
+2026-10-25 follow-up: the installed converter/parser was executed on CPU and
+reproduced 120 unloaded magnitude keys. See the
+[current compatibility audit](KREA2_LOADER_COMPATIBILITY_20261025.md) for scope,
+hashes and why a blind rename is insufficient. The 2026-10-03 runs remain historical.
+
 The installed ComfyUI loader applied 120 model patches but reported 120 unloaded `.magnitude` keys. Actual safetensors header contains 240 LoRA A/B tensors and 120 magnitude tensors. Installed loader recognizes `.dora_scale` and does not consume the file's `.magnitude` keys. Complete authored-adapter compatibility is therefore unverified; quality impact is unmeasured. No loader patch, weight conversion or ComfyUI upgrade was performed.
 
 ## Evidence location and repository validation

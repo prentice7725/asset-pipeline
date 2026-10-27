@@ -60,9 +60,19 @@ def revalidate_static_candidate(brief, candidate, root, output):
         write(path, manifest)
     return path
 
-def create(brief, root, output=None, seed=None, *, resolver=None, clip=None, expected_workflow=None):
+def create(brief, root, output=None, seed=None, *, resolver=None, clip=None, expected_workflow=None,
+           motion_job=None, motion_plan_sha256=None, authorization=None, authorize_generation=False):
     # 생성 CLI 안에서 다시 시작된 assetpipe 실행(재귀·무한 호출)은 어떤 작업도 하기 전에 거부한다.
     assert_not_nested()
+    if motion_job is not None:
+        if brief is not None or seed is not None or clip is not None or expected_workflow is not None:
+            raise ValueError('Explicit motion job cannot be combined with brief, seed, clip or workflow overrides')
+        return nonpixel_animation.run(job=motion_job, plan_sha256=motion_plan_sha256,
+            output=output, root=root, authorization=authorization,
+            authorize_generation=authorize_generation,
+            allowed_roots=resolver.roots if resolver is not None else None)
+    if motion_plan_sha256 is not None or authorization is not None or authorize_generation:
+        raise ValueError('Motion authorization and plan require an explicit motion job')
     validate(brief)
     if resolver is not None:
         from ..paths import validate_references

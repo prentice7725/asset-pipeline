@@ -1,6 +1,13 @@
 # M3 factory planning index
 
-**Status:** M3.0 offline contracts and M3.1 offline SFX receipts are implemented. Explicit single-attempt still/audio dispatch is connected; motion dispatch, real milestone acceptance and runtime activation remain unimplemented/unverified.
+**Current priority (2026-10-27):** build the nonpixel still/animation pipeline;
+pixel paths remain a research workstream. See the
+[current production plan](NONPIXEL_PRODUCTION_PLAN_20261027.md).
+Explicit still/audio dispatch and opt-in Factory motion jobs are implemented.
+Existing-video replay and native engine imports have dated evidence; generic
+Factory motion dispatch, new-coordinator real generation, human quality acceptance
+and production activation remain blocked/unverified. See
+[motion integration evidence](MOTION_JOB_VALIDATION_20261027.md).
 
 Implementation references: [M3.0 contract](M30_OFFLINE_CONTRACT.md), [M3.1 SFX](M31_SFX_OFFLINE.md).
 
@@ -26,6 +33,10 @@ Execution boundary: [explicit still/audio dispatch](FACTORY_EXECUTION.md).
 | Paid generation and deployment | Not authorized by design document; distinct gates |
 | Approvals | All machine-generated output stays REVIEW_REQUIRED until actual review |
 | Existing six MCP tools | Preserve compatibility; do not expand in planning PR |
+
+The D PIXEL64 row is the historical factory design. The 2026-10-27 priority
+decision defers its production work to research and makes it independent of
+nonpixel delivery; it does not remove code or activate/deactivate a registry.
 
 No runtime files, registry entries, workflow graphs, operational status, SOT documents, or approved masters are changed by this planning package.
 

@@ -61,7 +61,7 @@ def test_complete_mapping_and_counts():
     assert result["research_state"] == "INVENTORY_ONLY"
     assert result["counts"]["workflows"] == 11
     assert result["counts"]["model_variants"] == 10
-    assert result["counts"]["model_profiles"] == 8
+    assert result["counts"]["model_profiles"] == 9  # Includes the explicit MiniMax research compiler profile.
     assert result["counts"]["styles"] == 33
     assert result["counts"]["runtime_recipes"] == 91
     assert result["counts"]["recipe_states"] == {"TESTED": 2, "UNTESTED": 89}

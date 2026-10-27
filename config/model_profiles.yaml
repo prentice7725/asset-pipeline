@@ -1,5 +1,10 @@
 schema_version: 1
 profiles:
+  minimax-h3-reference-research:
+    prompt_adapter: natural_language
+    reference_style_mode: source_semantics_v1
+    defaults: {}
+    notes: Explicit offline research mapping for the existing MiniMax H3 workflow. Not model-quality or reference-role verification; never automatic production selection.
   anima-base:
     prompt_adapter: anima
     positive_prefix: []

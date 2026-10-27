@@ -1,5 +1,66 @@
 # Asset Pipeline
 
+현재 개발 우선순위는 **넌픽셀 정지 이미지·애니메이션 생산 경로**입니다.
+픽셀 경로는 연구과제로 보존하며 넌픽셀 완성의 선행 조건으로 두지 않습니다.
+[현재 구현 순서와 수용 기준](docs/factory/NONPIXEL_PRODUCTION_PLAN_20261027.md)을 참고하세요.
+
+기존 정지 이미지의 명시적 모션 후속 작업은
+`assetpipe create --type nonpixel-animation --motion-job ... --motion-plan-sha256 ... --output ...`으로
+실행할 수 있습니다. [작업 파일·예산·리뷰 경계](docs/factory/MOTION_JOB.md)를 먼저 확인하세요.
+프롬프트만으로 영상을 자동 생성하거나 완성품을 승인하는 명령은 아닙니다.
+
+[Factory 모션 작업 흐름](docs/factory/MOTION_JOB.md)은 명시적 작업 파일로 기존 영상 재처리,
+승인된 단일 영상 실행 위임, 레시피와 Godot·Phaser 리소스 출력을 연결합니다.
+[여우·토끼 재현 검증](docs/factory/MOTION_JOB_VALIDATION_20261027.md)은 새 생성 없이 기존 RGBA 결과와
+동일함을 확인했습니다. 일반 Factory 모션 차단·기본 비활성·사람 승인 경계는 유지합니다.
+
+M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_20261023.md)를 참고하세요.
+기존 영상의 [오프라인 모션 리뷰 패키지](docs/factory/MOTION_PACKAGE.md)를 추가했습니다.
+기본 Factory I2V 실행은 여전히 BLOCKED_BACKEND_NOT_VERIFIED이며 기술적 패키징은
+애니메이션 품질·Golden·게임 투입 승인을 뜻하지 않습니다.
+[모션 사전검증·입력 보존](docs/factory/MOTION_PREFLIGHT.md)은 참조 역할·순서·해시와
+설치 상태를 확인하며, 미검증 입력 지원이나 생성 승인을 자동으로 확정하지 않습니다.
+참조 1장의 [연구용 단일 시도 실행기](docs/factory/MOTION_EXECUTOR.md)도 추가했습니다.
+기본 비활성이며 별도 1회 예산·모델 해시·입력 검증 없이는 실행되지 않습니다.
+참조 1장의 연구 경로는 [실제 영상→프레임→스프라이트 E2E](docs/factory/MOTION_REAL_E2E_20261026.md)를
+1회 완료했습니다. 결과는 REVIEW_REQUIRED이며 참조 역할·루프·미술 품질 승인은 남아 있습니다.
+[동작 검토](docs/factory/MOTION_ADVISORY_REVIEW_20261026.md)에서 루프 경계와
+머리 여백·피벗 검토 항목을 기록했습니다. 자산 수정·사람 승인은 수행하지 않았습니다.
+후속 [13~32번 루프 후보](docs/factory/MOTION_LOOP_CANDIDATE_20261027.md)는
+20프레임을 무손실 재패킹한 별도 결과입니다. 원본은 보존하며 후보도 REVIEW_REQUIRED입니다.
+[투명화 비교](docs/factory/MOTION_ALPHA_CANDIDATE_20261027.md)에서는 학습 마스크의
+흰 털 손실을 확인했습니다. 테두리 연결 방식도 밝은 테두리·그림자 정리가 필요해 미승인입니다.
+후속 [국소 알파 정리](docs/factory/MOTION_ALPHA_CLEANUP_20261027.md)에서 사용자가 요청한
+다리 사이 흰 영역과 발밑 그림자를 제거했습니다. 나머지 경계·사람 리뷰는 계속 필요합니다.
+[Godot·Phaser 실제 임포트 검증](docs/factory/MOTION_ENGINE_IMPORT_20261027.md)에서
+20프레임·24fps 설정, 정상상태 반복 재생, 피벗 매핑과 실제 렌더 화면을 확인했습니다.
+초기 타이밍·발 접지·얇은 외곽선·사람 승인은 별도 검토 대상입니다.
+[명시적 모션 리뷰 레시피](docs/factory/MOTION_REVIEW_RECIPE.md)로 프레임 구간과
+알파 수정 조건을 해시에 묶어 재실행할 수 있습니다. 계획→적용→무결성 점검을 제공하며
+사람 리뷰·Golden 승인을 자동으로 통과시키지 않습니다.
+[두 번째 캐릭터 검증](docs/factory/MOTION_SECOND_CHARACTER_20261027.md)에서는 토끼 참조를
+1회 생성한 뒤 발견한 스타일 바인딩 충돌은 [참조 스타일 의미 연결](docs/factory/MOTION_SOURCE_STYLE_20261027.md)로
+보완했습니다. 원본 정지 워크플로·스타일 계약을 재검증하며 영상 품질 승인은 별도로 남깁니다.
+토끼도 승인된 영상 1회로 56프레임·스프라이트 패키지까지 완료했습니다.
+후속 [토끼용 루프·투명화 후보](docs/factory/RABBIT_MOTION_RECIPE_20261027.md)는
+14~41번 28프레임을 선택하고 낮은 흰 배경 허용 오차를 명시한 v2 레시피로 처리했습니다.
+얼굴·흰 가방 손실을 일으킨 기존 기준은 채택하지 않았으며 사람 리뷰는 남아 있습니다.
+[토끼의 Godot·Phaser 실제 임포트](docs/factory/RABBIT_ENGINE_IMPORT_20261027.md)도 확인했습니다.
+28프레임·순서·3회 반복·실제 렌더와 부츠 하단 기준선 간격 1~2px를 확인했으며,
+Godot 초기 반복에서 측정 편차가 있었으며 해부학적 발 접지·사람 리뷰는 미승인입니다.
+후속 [Godot 시작 시점 진단 보정](docs/factory/GODOT_STARTUP_TIMING_20261027.md)에서는
+로딩 델타가 첫 업데이트에 섞이는 검증 도구의 문제를 확인했습니다. 처리 시점과 준비 상태를
+분리한 6조건은 첫 반복부터 60Hz 허용 범위 안에 들었으며, 실제 게임의 로딩 정책은 별도 검증 대상입니다.
+[2026-10-26 실생성 전 점검](docs/factory/MOTION_LIVE_PLAN_20261026.md)에서
+실제 참조 후보 1장, 필수 노드 15개, 모델 5개 파일 해시와 56프레임 계획을 확인했습니다.
+해당 사전 점검은 생성·업로드·예산 예약 0건입니다. 이후 승인된 1회 실생성 시험을
+완료하고 연구 설정을 비활성으로 복원했습니다.
+Windows 예산 예약에서 간헐적으로 발생한 확장 경로 표기 오류는
+[원인·수정·보안 검증 기록](docs/maintenance/FACTORY_ROOT_NAMESPACE_RACE_20261025.md)을 참고하세요.
+공통 JSON 기록은 호출별 독립 임시 파일을 사용합니다.
+[동시 기록·Windows 잠금 검증](docs/maintenance/MANIFEST_STAGING_20261026.md)에
+실패 시 증거 보존과 남은 제한을 기록했습니다.
+
 STYLE MENU v1 supports approved run-scoped Manual / Rescue Override for
 NONPIXEL_IMAGE. Primary models are evidence-informed fixture defaults; style and
 canon remain locked. `assetpipe rescue-plan` prepares candidates without generation.
@@ -354,6 +415,28 @@ Krea 스타일 문구는 선택한 설명과 출처 URL을 기록할 수 있습�
 지원하지 않는 레퍼런스·negative prompt·이미지 속 글자 요구는 조용히 버리지 않고 차단합니다. 선택 근거와 대체 후보는 `route_decision.json`에 기록합니다.
 
 ## 픽셀 검증과 Static Master 승인
+
+Krea2 Pixel64는 실험 상태입니다. 설치된 로더에서 magnitude 키 120개 누락을
+CPU 실행으로 재현했습니다. [호환성 조사](docs/research/KREA2_LOADER_COMPATIBILITY_20261025.md)는
+파싱 검증이며, 실생성·미술 승인·가중치 변환은 수행하지 않았습니다.
+이어 진행한 [소스 기반 수치 비교](docs/research/KREA2_DORA_NUMERIC_20261025.md)에서
+FP32·FP64 후보는 허용 오차 내 일치했지만 BF16 병합은 불일치하여 운영 연결을 차단했습니다.
+[연산 순서 보존 후보](docs/research/KREA2_DORA_ORDERED_20261025.md)는 합성 CPU 960건에서
+정확히 일치했습니다. 실제 가중치·FP8 베이스 모델 호환성과 운영 연결은 여전히 미검증입니다.
+[실제 베이스 계약 검사](docs/research/KREA2_BASE_CONTRACT_20261025.md)에서 LoRA 대상 120개의
+키·shape를 확인하고 FP8 투영 2개를 격리 실행했습니다. 전체 모델·LoRA 적용은 아직 미검증입니다.
+[실제 텐서 격리 적용](docs/research/KREA2_FP8_LORA_ISOLATION_20261025.md)은 명시한 alpha 가정과
+통제한 오라클 기준 24건이 일치했습니다. 기본 로더와 전체 모델의 운영 호환성은 여전히 BLOCKED입니다.
+후속 [GPU 베이스 검사](docs/research/KREA2_GPU_BASE_20261027.md)에서 두 투영층의 CUDA 입력 8건을
+실행했고 기존 CPU 가설 24건도 동일하게 재현했습니다. `.magnitude` 120개 누락은 그대로여서
+GPU LoRA 적용·전체 모델·이미지 품질 검증과 운영 승격은 아직 수행하지 않았습니다.
+[배포·export 출처 조사](docs/research/KREA2_PIXEL64_PROVENANCE_20261027.md)는 로컬 파일이
+제작자의 HF·Civitai 배포본과 동일함을 확인했습니다. 해시 고정 공식 파서의 격리 실행에서도
+magnitude 120개가 누락됐으며, 학습 alpha·원본 베이스 해시가 확인되지 않아 호환성은 계속 차단합니다.
+[외부 로더 후보 격리 검증](docs/research/KREA2_LOADER_CANDIDATE_20261027.md)에서는
+120개 magnitude 보존을 확인했지만, 강도·dtype에 따른 기준 계산 불일치로 후보를 채택하지 않았습니다.
+[기존 이미지 후처리 비교](docs/research/PIXEL64_POSTPROCESS_AB_20261027.md)에서는
+외부 자동 격자 복원의 64px 탐지는 성공했으나 24색 Gate를 통과하지 못해 기존 Refiner 경로를 유지합니다.
 
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리

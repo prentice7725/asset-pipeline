@@ -1,6 +1,8 @@
 """Synthetic adapter fixtures: no model call, paid request or review approval."""
 import hashlib
 import json
+import os
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 
@@ -145,7 +147,25 @@ def test_concurrent_jobs_cannot_share_authorization(box):
         except ValueError as exc: return str(exc)
     with ThreadPoolExecutor(max_workers=2) as pool: results = list(pool.map(lambda _: invoke(), range(2)))
     assert len(calls) == 1
-    assert sum('ALREADY_RESERVED' in str(result) for result in results) == 1
+    assert sum('ALREADY_RESERVED' in str(result) for result in results) == 1, results
+
+
+@pytest.mark.skipif(os.name != 'nt', reason='Inject Windows resolved namespace alias')
+@pytest.mark.parametrize('target', ['factory_budget', 'b' * 32])
+def test_concurrent_budget_accepts_resolved_windows_alias(box, monkeypatch, target):
+    original = Path.resolve
+    injections = []
+
+    def prefixed(path, strict=False):
+        resolved = original(path, strict=strict)
+        if not strict and resolved.name == target and not str(resolved).startswith('\\\\?\\'):
+            injections.append(str(resolved))
+            return Path('\\\\?\\' + str(resolved))
+        return resolved
+
+    monkeypatch.setattr(Path, 'resolve', prefixed)
+    test_concurrent_jobs_cannot_share_authorization(box)
+    assert injections  # Simulate the observed OS result, not a timing-dependent hope.
 
 
 @pytest.mark.parametrize('gate', ['route','compiler','source_drift'])
