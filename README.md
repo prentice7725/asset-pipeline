@@ -1,5 +1,9 @@
 # Asset Pipeline
 
+현재 개발 우선순위는 **넌픽셀 정지 이미지·애니메이션 생산 경로**입니다.
+픽셀 경로는 연구과제로 보존하며 넌픽셀 완성의 선행 조건으로 두지 않습니다.
+[현재 구현 순서와 수용 기준](docs/factory/NONPIXEL_PRODUCTION_PLAN_20261027.md)을 참고하세요.
+
 [Factory 모션 작업 흐름](docs/factory/MOTION_JOB.md)은 명시적 작업 파일로 기존 영상 재처리,
 승인된 단일 영상 실행 위임, 레시피와 Godot·Phaser 리소스 출력을 연결합니다.
 [여우·토끼 재현 검증](docs/factory/MOTION_JOB_VALIDATION_20261027.md)은 새 생성 없이 기존 RGBA 결과와

@@ -1,5 +1,10 @@
 # M3 Factory Workplan — four lines with optional sprite production
 
+> 2026-10-27 사용자 우선순위 변경: **넌픽셀 정지 이미지·애니메이션 우선,
+> 픽셀 경로는 연구과제**. 현재 개발 순서와 검증 경계는
+> [넌픽셀 생산 계획](NONPIXEL_PRODUCTION_PLAN_20261027.md)을 따른다.
+> 아래 날짜·baseline·미구현 표는 2026-10-11의 역사적 계획이며 현재 상태 판정이 아니다.
+
 **Plan state:** READY_FOR_REVIEW / NOT_EXECUTED
 **Date:** 2026-10-11 (Asia/Tokyo)
 **Baseline:** main abd7fe246b36be3d79a8ea1ed9d7a022339f16d0
