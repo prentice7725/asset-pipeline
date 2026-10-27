@@ -1,5 +1,9 @@
 # Fox walk loop candidate — 2026-10-27
 
+Follow-up: [separate alpha experiments](MOTION_ALPHA_CANDIDATE_20261027.md) preserve
+this opaque candidate. Learned-mask white-feature loss and border-mask edge/shadow
+limitations block alpha approval; the original loop candidate is unchanged.
+
 Branch: `codex/motion-loop-candidate-20261027`, base `87129b0`.
 **LOSSLESS_DERIVED_CANDIDATE / REVIEW_REQUIRED**. No new generation or human approval.
 
