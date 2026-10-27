@@ -130,6 +130,80 @@ def execute(case, **kwargs):
                             authorize_generation=True, **kwargs)
 
 
+def factory_motion_job(case):
+    from assetpipe.manifests import write
+    path=case['root']/'job.json'
+    write(path,{'schema_version':1,'kind':'FACTORY_MOTION_JOB',
+        'request_ref':str(case['request']),'request_sha256':fingerprint(case['request']),
+        'input':{'kind':'PREPARED_GENERATION','run_ref':str(case['run']),'seed':7,'width':64,'height':64},
+        'recipe':{'schema_version':1,'selection':{'start_frame':1,'end_frame':5},
+                  'alpha':{'method':'PRESERVE'}}})
+    return path
+
+
+def test_factory_motion_generation_delegates_single_budget_and_exports(case):
+    from assetpipe.factory.motion import plan_job,run_job,inspect_job
+    job=factory_motion_job(case)
+    root=case['root']
+    plan=plan_job(job,root)
+    assert plan['generation_plan']==case['plan']
+    output=root/'workspace/factory_child'
+    receipt=run_job(job,plan['plan_sha256'],output,root,authorization=case['auth'],authorize_generation=True)
+    assert inspect_job(output,fingerprint(receipt),root)['generation_requests']==1
+    assert case['state']['uploads']==case['state']['queues']==1
+    with pytest.raises(ValueError,match='MOTION_BUDGET_ALREADY_RESERVED'):
+        run_job(job,plan['plan_sha256'],root/'workspace/another_child',root,
+                authorization=case['auth'],authorize_generation=True)
+    assert case['state']['uploads']==case['state']['queues']==1
+
+
+def test_factory_motion_no_consent_never_dispatches(case):
+    from assetpipe.factory.motion import plan_job,run_job
+    job=factory_motion_job(case)
+    root=case['root']
+    plan=plan_job(job,root)
+    with pytest.raises(ValueError,match='FACTORY_MOTION_GENERATION_NOT_AUTHORIZED'):
+        run_job(job,plan['plan_sha256'],root/'workspace/no_consent',root)
+    assert not (root/'workspace/no_consent').exists()
+    assert case['state']['uploads']==case['state']['queues']==0
+
+
+def test_factory_motion_disabled_research_cannot_be_enabled_by_job(case):
+    from assetpipe.factory.motion import plan_job,run_job
+    root=case['root']
+    settings=root/'config/pipeline.yaml'
+    config=yaml.safe_load(settings.read_text())
+    config['video_research']['enabled']=False
+    settings.write_text(yaml.safe_dump(config))
+    case['run']=prepare_file(case['request'],'workspace/disabled_prepared',root).parent
+    job=factory_motion_job(case)
+    plan=plan_job(job,root)
+    auth=case['authorization']
+    auth['execution_plan_sha256']=plan['generation_plan']['execution_plan_sha256']
+    case['auth'].write_text(json.dumps(auth))
+    with pytest.raises(ValueError,match='MOTION_RESEARCH_DISABLED'):
+        run_job(job,plan['plan_sha256'],root/'workspace/blocked',root,
+                authorization=case['auth'],authorize_generation=True)
+    assert case['state']['uploads']==case['state']['queues']==0
+    assert not (root/'workspace/factory_budget').exists()
+
+
+def test_factory_motion_rejects_prepared_input_for_another_request(case):
+    from assetpipe.factory.motion import plan_job
+    root=case['root']
+    request=json.loads(case['request'].read_text())
+    request['asset_id']='different_child'
+    path=root/'another_request.json'
+    path.write_text(json.dumps(request))
+    job=factory_motion_job(case)
+    value=json.loads(job.read_text())
+    value.update(request_ref=str(path),request_sha256=fingerprint(path))
+    job.write_text(json.dumps(value))
+    with pytest.raises(ValueError,match='FACTORY_MOTION_PREPARED_REQUEST_MISMATCH'):
+        plan_job(job,root)
+    assert case['state']['uploads']==case['state']['queues']==0
+
+
 def test_full_synthetic_probe_connects_to_real_video_packaging(case):
     before = {p: fingerprint(p) for p in [case['parent'], case['image'], case['request']]}
     plan = case['plan']
