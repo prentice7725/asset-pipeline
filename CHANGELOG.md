@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — real Godot / Phaser import checks, 2026-10-27
+
+- Import the unchanged 20-frame RGBA candidate into isolated Godot 4.7.2 and
+  Phaser 4.2.1 projects; exercise actual native animation/resource/origin APIs.
+- Capture real Godot OpenGL and Chromium WebGL renders, verify frame order,
+  steady loops and visible imported pixels. Preserve startup-timing limitations.
+- Documentation/evidence only; no production/runtime/asset/approval changes.
+  See docs/factory/MOTION_ENGINE_IMPORT_20261027.md for methods and remaining gates.
+
 ## Unreleased — requested leg-gap and ground cleanup, 2026-10-27
 
 - Make a separate alpha-only candidate removing pale lower-body matte and ground

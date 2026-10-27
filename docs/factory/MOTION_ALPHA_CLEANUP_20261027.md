@@ -1,5 +1,10 @@
 # Requested lower-body alpha cleanup — 2026-10-27
 
+Follow-up: [actual Godot / Phaser import checks](MOTION_ENGINE_IMPORT_20261027.md)
+exercise this unchanged candidate's native resources, playback, pivot mapping
+and rendered appearance. Human art review and anatomical foot-slide assessment
+remain open.
+
 Branch: `codex/motion-alpha-cleanup-20261027`, base `acfac95`.
 The user explicitly requested removal of the white area between the legs and the
 ground shadow visible in the [border-mask comparison](MOTION_ALPHA_CANDIDATE_20261027.md).
