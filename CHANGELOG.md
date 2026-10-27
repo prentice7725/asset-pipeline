@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — Pixel64 loader candidate isolation, 2026-10-27
+
+- Execute reviewed InvokeAI grouping/value conversion on the unchanged adapter:
+  retain all 120 magnitudes without installing a provider or inferring alpha.
+- Compare extracted weight/parameter methods with the pinned ai-toolkit forward:
+  54 synthetic CPU cases, 24 within tolerance and 30 different. Record full-strength
+  FP32 agreement separately from fractional-strength and BF16 differences.
+- Keep candidate adoption blocked; add static-only RunComfy A/B merge inspection.
+  Production code, installed loaders, defaults, generation and reviews unchanged.
+
 ## Unreleased — Pixel64 distribution/export provenance, 2026-10-27
 
 - Confirm local LoRA full-file hash/size against publisher HF revision and Civitai
