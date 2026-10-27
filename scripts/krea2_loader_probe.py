@@ -1,4 +1,4 @@
-"""CPU-only installed ComfyUI adapter parser probe; never generates or rewrites weights.
+"""Installed ComfyUI parser and bounded projection probes; never generate or rewrite weights.
 
 Run with the installed ComfyUI Python, not the assetpipe environment. A diagnostic
 identity key map isolates file-format parsing; it does not verify base-model mapping.
@@ -111,7 +111,7 @@ def base_mapping(header, torch):
 
 
 def tensor_digest(tensor, torch):
-    raw = tensor.detach().contiguous().reshape(-1).view(torch.uint8).numpy().tobytes()
+    raw = tensor.detach().cpu().contiguous().reshape(-1).view(torch.uint8).numpy().tobytes()
     metadata = json.dumps({'dtype': str(tensor.dtype), 'shape': list(tensor.shape)}, sort_keys=True).encode()
     return hashlib.sha256(metadata + b'\n' + raw).hexdigest()
 
@@ -187,14 +187,56 @@ def fp8_lora_cases(module, dense, state, name, ratio, texts, torch):
             'production_compatibility': 'BLOCKED', 'cases': rows}
 
 
-def isolated_fp8_layers(base_path, header, torch, *, lora_state=None, ratio=None, texts=None):
+def assess_probe_device(torch, device):
+    if device == 'cpu':
+        return {'status': 'AVAILABLE', 'device': 'cpu'}
+    if device != 'cuda':
+        raise ValueError('PROBE_DEVICE_UNSUPPORTED')
+    if not torch.cuda.is_available():
+        return {'status': 'BLOCKED', 'device': 'cuda', 'reason': 'CUDA_UNAVAILABLE'}
+    free, total = torch.cuda.mem_get_info(0)
+    result = {'status': 'AVAILABLE', 'device': 'cuda:0', 'free_bytes': free, 'total_bytes': total,
+              'minimum_free_bytes': 1024**3, 'name': torch.cuda.get_device_name(0),
+              'capability': list(torch.cuda.get_device_capability(0)),
+              'scope': 'SEPARATE_PROCESS_BOUNDED_BASE_PROJECTIONS_ONLY'}
+    if free < result['minimum_free_bytes']:
+        result.update(status='BLOCKED', reason='CUDA_FREE_MEMORY_BELOW_PROBE_FLOOR')
+    return result
+
+
+def cuda_forward_cases(module, dense, torch):
+    rows = []
+    for seed in [7, 7725]:
+        for shape in [(2, dense.shape[1]), (1, 3, dense.shape[1])]:
+            x = (torch.randn(*shape, generator=torch.Generator().manual_seed(seed),
+                             dtype=torch.bfloat16) * .1).to('cuda:0')
+            before = tensor_digest(x, torch)
+            with torch.no_grad():
+                actual, repeated = module(x), module(x)
+                expected = torch.nn.functional.linear(x, dense)
+            torch.cuda.synchronize(0)
+            if (actual.device != x.device or actual.dtype != torch.bfloat16
+                    or actual.shape != (*shape[:-1], dense.shape[0])
+                    or not torch.isfinite(actual).all() or not torch.equal(actual, repeated)):
+                raise ValueError('CUDA_NATIVE_OUTPUT_CONTRACT_OR_REPEATABILITY_FAILED')
+            if before != tensor_digest(x, torch):
+                raise ValueError('CUDA_PROBE_INPUT_MUTATED')
+            rows.append({'seed': seed, 'input_shape': list(shape), 'device': str(actual.device),
+                'native_repeatable': True, 'input_unchanged': True,
+                'dense_reference_max_abs_error': (actual.float()-expected.float()).abs().max().item(),
+                'dense_reference_exact_equal': torch.equal(actual, expected),
+                'input_sha256': before, 'output_sha256': tensor_digest(actual, torch)})
+    return rows
+
+
+def isolated_fp8_layers(base_path, header, torch, *, lora_state=None, ratio=None, texts=None, device='cpu'):
     from safetensors import safe_open
     import comfy.ops
     import comfy.utils
     quant = json.loads(header['__metadata__']['_quantization_metadata'])['layers']
     rows = []
     for name in ['blocks.0.attn.wk', 'blocks.0.attn.gate']:
-        row = {'layer': name, 'scope': 'ACTUAL_BASE_PROJECTION_CPU_ONLY',
+        row = {'layer': name, 'scope': 'ACTUAL_BASE_PROJECTION_CPU_ONLY' if device == 'cpu' else 'ACTUAL_BASE_PROJECTION_CUDA_ONLY',
                'lora_application': 'NOT_RUN', 'generation': 'NOT_RUN'}
         phase = 'LOAD'
         try:
@@ -214,8 +256,10 @@ def isolated_fp8_layers(base_path, header, torch, *, lora_state=None, ratio=None
                 '_quantization_metadata': json.dumps({'layers': {name: quant[name]}})})
             local = {k.removeprefix(name + '.'): v for k, v in state.items()}
             ops = comfy.ops.mixed_precision_ops(compute_dtype=torch.bfloat16)
-            module = ops.Linear(spec['shape'][1], spec['shape'][0], bias=False, device='cpu')
+            module = ops.Linear(spec['shape'][1], spec['shape'][0], bias=False, device=device)
             module.load_state_dict(local, strict=True)
+            native_before = {key: tensor_digest(value, torch) for key, value in module.state_dict().items()}
+            flags_before = {'full_precision_mm': module._full_precision_mm, 'quant_format': module.quant_format}
             row.update(load_status='PASS', weight_type=type(module.weight).__name__,
                        full_precision_mm=module._full_precision_mm)
             phase = 'DEQUANTIZE'
@@ -226,6 +270,7 @@ def isolated_fp8_layers(base_path, header, torch, *, lora_state=None, ratio=None
                 raise ValueError('NONFINITE_DEQUANTIZED_WEIGHT')
             x = torch.randn(2, spec['shape'][1], generator=torch.Generator().manual_seed(7725),
                             dtype=torch.bfloat16) * .1
+            x = x.to(device)
             phase = 'FORWARD'
             with torch.no_grad():
                 expected = torch.nn.functional.linear(x, dense)
@@ -233,16 +278,25 @@ def isolated_fp8_layers(base_path, header, torch, *, lora_state=None, ratio=None
             if not torch.isfinite(actual).all():
                 raise ValueError('NONFINITE_NATIVE_FORWARD')
             row.update(forward_status='PASS', output_shape=list(actual.shape),
+                       actual_device=str(actual.device),
                        dense_reference_max_abs_error=(actual.float() - expected.float()).abs().max().item(),
                        dense_reference_exact_equal=torch.equal(actual, expected))
+            if device != 'cpu':
+                row['cuda_cases'] = cuda_forward_cases(module, dense, torch)
+                row['cuda_peak_allocated_bytes'] = torch.cuda.max_memory_allocated(0)
             if lora_state is not None:
                 phase = 'LORA_HYPOTHESIS'
                 row['lora_probe'] = fp8_lora_cases(module, dense, lora_state, name, ratio, texts, torch)
                 row['lora_application'] = 'ISOLATED_RESEARCH_FORWARD_ONLY'
+            if native_before != {key: tensor_digest(value, torch) for key, value in module.state_dict().items()}:
+                raise ValueError('NATIVE_BASE_STATE_MUTATED')
+            if flags_before != {'full_precision_mm': module._full_precision_mm, 'quant_format': module.quant_format}:
+                raise ValueError('NATIVE_BASE_FLAGS_MUTATED')
+            row['native_state_unchanged'] = True
         except Exception as exc:
             row.update(blocked_phase=phase, status='BLOCKED', error=type(exc).__name__ + ': ' + str(exc))
         else:
-            row['status'] = 'BASE_LAYER_CPU_EXECUTED_NOT_LORA_COMPATIBILITY'
+            row['status'] = 'BASE_LAYER_CPU_EXECUTED_NOT_LORA_COMPATIBILITY' if device == 'cpu' else 'BASE_LAYER_CUDA_EXECUTED_NOT_LORA_COMPATIBILITY'
         rows.append(row)
     return rows
 
@@ -282,7 +336,9 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--base', type=Path, help='Optional real base: hash + header/meta mapper, never full model load')
     parser.add_argument('--workflow', type=Path, help='Required with --base to bind current filenames')
-    parser.add_argument('--probe-layers', action='store_true', help='Read and execute only two bounded base FP8 projections on CPU')
+    parser.add_argument('--probe-layers', action='store_true', help='Read and execute only two bounded base FP8 projections (default CPU)')
+    parser.add_argument('--probe-device', choices=['cpu', 'cuda'], default='cpu',
+                        help='Explicit isolated base-projection device; CUDA does not support the CPU-only LoRA hypothesis')
     parser.add_argument('--probe-lora', action='store_true', help='Explicit isolated hybrid LoRA hypothesis; never full model integration')
     parser.add_argument('--alpha-over-rank', type=float, help='Required explicit research hypothesis with --probe-lora')
     parser.add_argument('--source-dir', type=Path, help='Hash-pinned upstream sources required for hybrid oracle')
@@ -292,6 +348,8 @@ def main():
         parser.error('Output must be a new file')
     if bool(args.base) != bool(args.workflow) or (args.probe_layers and not args.base):
         parser.error('--base and --workflow must be paired; --probe-layers needs both')
+    if args.probe_device != 'cpu' and (not args.probe_layers or args.probe_lora):
+        parser.error('CUDA requires --probe-layers and cannot run the CPU-only --probe-lora hypothesis')
     if args.probe_lora:
         if not args.probe_layers or args.source_dir is None or args.alpha_over_rank is None:
             parser.error('--probe-lora requires --probe-layers, --source-dir and explicit --alpha-over-rank')
@@ -311,10 +369,18 @@ def main():
     before = {relative: sha(root / relative) for relative in relatives}
     weight_before = sha(lora)
     # ComfyUI consumes argv at import time. Do not leak this script's arguments.
-    sys.argv = [sys.argv[0], '--cpu']
+    sys.argv = [sys.argv[0], '--cpu'] if args.probe_device == 'cpu' else [sys.argv[0], '--cuda-device', '0']
     sys.dont_write_bytecode = True
     sys.path.insert(0, str(root))
     import torch
+    device_report = assess_probe_device(torch, args.probe_device)
+    if device_report['status'] != 'AVAILABLE':
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        with args.output.open('x', encoding='utf-8') as stream:
+            json.dump({'status': 'BLOCKED', 'device_preflight': device_report,
+                'generation': 'NOT_RUN', 'weight_application': 'NOT_RUN',
+                'production_compatibility': 'BLOCKED'}, stream, indent=2)
+        raise SystemExit(2)
     from safetensors import safe_open
     from safetensors.torch import load_file
     loader = importlib.import_module('comfy.lora')
@@ -343,7 +409,8 @@ def main():
             raise ValueError('BASE_SHAPE_OR_QUANT_CONTRACT_MISMATCH')
         if args.probe_layers:
             base_report['isolated_layers'] = isolated_fp8_layers(args.base, base_header, torch,
-                lora_state=state if args.probe_lora else None, ratio=args.alpha_over_rank, texts=texts)
+                lora_state=state if args.probe_lora else None, ratio=args.alpha_over_rank, texts=texts,
+                device='cpu' if args.probe_device == 'cpu' else 'cuda:0')
         if base_hash != sha(args.base) or workflow_hash != sha(args.workflow):
             raise ValueError('BASE_OR_WORKFLOW_CHANGED')
     else:
@@ -365,7 +432,8 @@ def main():
     if base_report is not None:
         result['base_contract'] = base_report
     result.update(collected_at=datetime.now(timezone.utc).isoformat(),
-                  python=sys.version, torch_version=torch.__version__, device='cpu',
+                  python=sys.version, torch_version=torch.__version__, device=args.probe_device,
+                  device_preflight=device_report,
                   probe_sha256=sha(Path(__file__)),
                   lora={'path': str(lora), 'sha256': weight_before, 'metadata': metadata},
                   loader_sources=before,
@@ -389,6 +457,8 @@ def main():
     print(json.dumps({k: result[k] for k in ['status', 'patch_count', 'generation']}))
     if args.probe_lora and any(row.get('lora_probe', {}).get('status') != 'ISOLATED_HYBRID_EXACT_PASS'
                               for row in base_report['isolated_layers']):
+        raise SystemExit(2)
+    if args.probe_device == 'cuda' and any(row.get('status') == 'BLOCKED' for row in base_report['isolated_layers']):
         raise SystemExit(2)
 
 
