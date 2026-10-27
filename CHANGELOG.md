@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — rabbit-specific offline loop and alpha recipe, 2026-10-27
+
+- Add optional v2 recipe white-distance input (explicit integer 0..60) while
+  preserving fixed v1 behavior and reusing the verified connected-border utility.
+  Keep source RGB, alpha monotonicity, provenance and all review gates.
+- Reject the rabbit's destructive distance-60 mask. Select source frames 14..41
+  and explicit distance 32 after comparison; preserve original frames and failed
+  analysis. No generation, inferred cleanup regions or automatic approval.
+- See docs/factory/RABBIT_MOTION_RECIPE_20261027.md for evidence and rollback.
+- Validate with 756 offline tests passed, one unavailable-data skip, actual
+  rabbit v2 and fox v1 CLI replays, 122 source hashes and exact APNG roundtrip.
+
 ## Unreleased — source style semantics for motion research, 2026-10-27
 
 - Revalidate styled references against their original still workflow and exact

@@ -1,4 +1,4 @@
-# Explicit motion review recipe v1
+# Explicit motion review recipes v1 and v2
 
 This offline CLI path turns a completed NONPIXEL motion package into a separate
 candidate using explicit frame selection and alpha instructions. It captures the
@@ -14,16 +14,32 @@ The example's source path/hash are placeholders and must be replaced. Its frame
 range, white-background declaration and lower-body rectangles belong to the fox
 example; do not silently copy them to another character.
 
+The optional [v2 schema](../../schemas/motion_review_recipe.v2.schema.json) keeps
+the same explicit workflow and changes only the white-distance input: set
+`schema_version:2` and an integer `alpha.tolerance` from 0 through 60.
+There is no inferred/default tolerance or automatic trial selection. Version 1
+still requires exactly 60 and retains its original algorithm/output behavior.
+Version 2 reuses the verified four-connected span-fill with a narrower explicit
+white-distance mask; 60 still calls the original utility. RGB and existing alpha
+preservation, source/code hashes and all pending review gates remain unchanged.
+It is not a general segmentation model or a guarantee that white foreground is
+safe: border-connected foreground inside the declared distance can still vanish.
+See [rabbit validation](RABBIT_MOTION_RECIPE_20261027.md) for an actual v1 failure,
+explicit parameter comparison and reviewed v2 candidate.
+
 Required fields:
 
 | Field | Meaning |
 | --- | --- |
-| `schema_version`, `kind` | `1`, `MOTION_REVIEW_RECIPE` |
+| `schema_version`, `kind` | `1` (v1) or `2` (v2), `MOTION_REVIEW_RECIPE` |
 | `source_manifest`, `source_sha256` | Exact completed offline NONPIXEL package and its SHA-256 |
 | `selection.start_frame/end_frame` | Explicit contiguous 1-based inclusive source range; no deduplication or resampling |
 | `alpha.method` | `PRESERVE` existing alpha, or explicit `EDGE_CONNECTED_WHITE` |
 | White-method declaration | Exactly `background_rgb:[255,255,255]`, `tolerance:60`; no background inference or other profile |
 | Optional `alpha.cleanup` | Explicit half-open pixel rectangles and inclusive RGB minimum; clear alpha only for matching visible pixels inside those rectangles |
+
+In the table, version 2 substitutes only the explicitly bounded 0..60 tolerance.
+Input recipe versioning is independent of the unchanged plan/receipt format.
 
 `PRESERVE` describes the initial alpha operation. If optional cleanup is supplied,
 that explicit local edit still applies. White masking uses the existing connected
