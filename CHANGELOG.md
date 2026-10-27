@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased — source style semantics for motion research, 2026-10-27
+
+- Revalidate styled references against their original still workflow and exact
+  historical compilation before deriving natural-language video instructions.
+  Preserve style contracts, subject/camera context and source provenance.
+- Reject source drift, unsupported capabilities and overrides. Bind shared
+  compiler code to the existing one-request research plan. Keep production
+  dispatch, six MCP contracts and human/Golden gates unchanged.
+- Complete the already authorized rabbit video once: 56 frames at 24fps,
+  original/graph/history retained, five package output hashes verified and
+  research configuration restored. Rabbit loop/alpha/engine/art review remains pending.
+- Validate with 750 offline tests passed, one unavailable migration-data skip,
+  and the required editable install/CLI checks.
+- See docs/factory/MOTION_SOURCE_STYLE_20261027.md for execution evidence,
+  limitations and rollback.
+
 ## Unreleased — second-character source and motion blocker, 2026-10-27
 
 - Generate one user-requested white-rabbit reference through the existing six-tool
