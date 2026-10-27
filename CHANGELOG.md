@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — explicit motion alpha comparisons, 2026-10-27
+
+- Reuse existing local U2NetP and edge-connected white-mask primitives on separate
+  copies of the 20-frame loop. Retain masks, RGBA atlases and true-alpha previews.
+- Reject the learned mask for white-feature alpha loss; keep the border mask as
+  NEEDS_CLEANUP for bright fringe and residual shadow. No quality PASS or fallback.
+- Verify RGB/source/timing preservation and decoded APNG frames; leave runtime,
+  configuration and human approval unchanged. See docs/factory/MOTION_ALPHA_CANDIDATE_20261027.md.
+
 ## Unreleased — derived fox loop candidate, 2026-10-27
 
 - Extract original frames 13..32 as a separate 20-frame/24fps candidate; preserve
