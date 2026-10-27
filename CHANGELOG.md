@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased — explicit Factory motion jobs, 2026-10-27
+
+- Add additive Factory motion prepare/plan/run/inspect commands, binding request,
+  video/prepared inputs and explicit v1/v2 recipes. Reuse the existing package,
+  recipe, root/hash and single-attempt generation gates; no default activation.
+- Export native Godot SpriteFrames and Phaser atlas/animation resources with
+  exact sprite bytes, original frame lineage and pivot placement metadata.
+- Replay existing fox/rabbit videos through the installed CLI with exact 20/28
+  RGBA results, then consume both native exports in actual engines. Zero new
+  generation requests; all candidates remain REVIEW_REQUIRED.
+- See docs/factory/MOTION_JOB.md and MOTION_JOB_VALIDATION_20261027.md for scope,
+  checks, remaining blocks and rollback.
+- Validate required install/CLI checks and 772 offline tests passed with one
+  unavailable-data skip; preserve 725 existing source/candidate/evidence files.
+
 ## Unreleased — Godot diagnostic startup scheduling, 2026-10-27
 
 - Reproduce early animation wrap caused by pre-start work/current-frame delta

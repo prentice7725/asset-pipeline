@@ -70,7 +70,7 @@ def main(argv=None):
     style_review.add_argument('--observed-features', required=True, type=Path, help='JSON object mapping every feature code to true/false observed in the image')
     style_review.add_argument('--reviewed-by', required=True)
     style_review.add_argument('--reason', required=True)
-    factory = commands.add_parser('factory', help='Read-only plans or explicitly authorized one-attempt still/audio execution')
+    factory = commands.add_parser('factory', help='Factory plans, still/audio execution and explicit staged motion jobs')
     factory_commands = factory.add_subparsers(dest='factory_command', required=True)
     for name in ['plan', 'dry-run', 'inspect']:
         presentation = factory_commands.add_parser(name, help='Validate inputs and print a read-only factory plan')
@@ -81,6 +81,22 @@ def main(argv=None):
     execution.add_argument('--seed', required=True, type=int)
     execution.add_argument('--authorize-generation', required=True, action='store_true')
     execution.add_argument('--allowed-root', action='append', type=Path)
+    for name in ['motion-plan', 'motion-run', 'motion-inspect', 'motion-prepare']:
+        stage = factory_commands.add_parser(name, help='Explicit motion stages; no default activation or automatic retry')
+        stage.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-prepare':
+            stage.add_argument('--request', required=True, type=Path)
+            stage.add_argument('--output', required=True, type=Path)
+        elif name == 'motion-inspect':
+            stage.add_argument('--run', required=True, type=Path)
+            stage.add_argument('--manifest-sha256', required=True)
+        else:
+            stage.add_argument('--job', required=True, type=Path)
+        if name == 'motion-run':
+            stage.add_argument('--plan-sha256', required=True)
+            stage.add_argument('--output', required=True, type=Path)
+            stage.add_argument('--authorization', type=Path)
+            stage.add_argument('--authorize-generation', action='store_true')
     route_parser = commands.add_parser('route')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -190,7 +206,25 @@ def main(argv=None):
             print(record_review(run,review,listened=args.listened,resolver=resolver))
         elif args.command == 'factory':
             from ..api import factory_plan, factory_execute
-            if args.factory_command == 'execute':
+            if args.factory_command.startswith('motion-'):
+                from ..factory.motion import plan_job, run_job, inspect_job
+                from ..factory.provenance import fingerprint
+                if args.factory_command == 'motion-plan':
+                    result = plan_job(args.job, args.root, allowed_roots=args.allowed_root)
+                elif args.factory_command == 'motion-inspect':
+                    result = inspect_job(args.run, args.manifest_sha256, args.root, allowed_roots=args.allowed_root)
+                else:
+                    if args.factory_command == 'motion-prepare':
+                        from ..providers.video import prepare_file
+                        path = prepare_file(args.request, args.output, args.root, allowed_roots=args.allowed_root)
+                    else:
+                        path = run_job(args.job, args.plan_sha256, args.output, args.root,
+                            authorization=args.authorization, authorize_generation=args.authorize_generation,
+                            allowed_roots=args.allowed_root)
+                    result = {'manifest_path': str(path), 'manifest_sha256': fingerprint(path),
+                              'review_state': 'REVIEW_REQUIRED', 'game_ready': False}
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+            elif args.factory_command == 'execute':
                 print(factory_execute(args.request, args.root, authorize_generation=args.authorize_generation,
                                       seed=args.seed, allowed_roots=args.allowed_root))
             else:

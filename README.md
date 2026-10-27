@@ -1,5 +1,10 @@
 # Asset Pipeline
 
+[Factory 모션 작업 흐름](docs/factory/MOTION_JOB.md)은 명시적 작업 파일로 기존 영상 재처리,
+승인된 단일 영상 실행 위임, 레시피와 Godot·Phaser 리소스 출력을 연결합니다.
+[여우·토끼 재현 검증](docs/factory/MOTION_JOB_VALIDATION_20261027.md)은 새 생성 없이 기존 RGBA 결과와
+동일함을 확인했습니다. 일반 Factory 모션 차단·기본 비활성·사람 승인 경계는 유지합니다.
+
 M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_20261023.md)를 참고하세요.
 기존 영상의 [오프라인 모션 리뷰 패키지](docs/factory/MOTION_PACKAGE.md)를 추가했습니다.
 기본 Factory I2V 실행은 여전히 BLOCKED_BACKEND_NOT_VERIFIED이며 기술적 패키징은

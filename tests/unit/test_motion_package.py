@@ -2,12 +2,19 @@
 import json
 import shutil
 import subprocess
+from pathlib import Path
 
 import pytest
 from PIL import Image, ImageDraw
 
 from assetpipe.factory.provenance import fingerprint
 from assetpipe.motion.package import package_video
+
+
+def test_published_factory_motion_schema_matches_validator():
+    from assetpipe.factory.motion import SCHEMA
+    root=Path(__file__).resolve().parents[2]
+    assert json.loads((root/'schemas/factory_motion_job_v1.schema.json').read_text())==SCHEMA
 
 
 @pytest.fixture
@@ -43,6 +50,141 @@ def case(tmp_path):
 def run(case):
     root, request, video, output, _ = case
     return package_video(request, video, fingerprint(video), output, root)
+
+
+def factory_job(case):
+    from assetpipe.brief import make
+    from assetpipe.manifests import write
+    root,request,video,_,data=case
+    image=root/'input/00.png'
+    brief=make(asset_id='parent',output_class='NONPIXEL_IMAGE',prompt='synthetic fixture')
+    brief['project_id']='test'
+    parent=root/'parent.json'
+    write(parent,{'asset_id':'parent','project_id':'test','output_class':'NONPIXEL_IMAGE',
+                  'asset_brief':brief,'outputs':[str(image)]})
+    data['factory_line']='NONPIXEL'
+    data['image']={'style_source':'SYNTHETIC_TEST_ONLY'}
+    data['source']={'kind':'EXISTING_RUN','manifest_ref':str(parent),'manifest_sha256':fingerprint(parent),
+                    'images':[{'path':str(image),'sha256':fingerprint(image),'role':'IDENTITY_PRIMARY'}]}
+    write(request,data)
+    history=root/'historical.json'
+    write(history,{'seed':7,'status':'HISTORICAL_TEST_ONLY','models':[{'path':'Z:/retired-model.safetensors'}]})
+    value={'schema_version':1,'kind':'FACTORY_MOTION_JOB','request_ref':str(request),
+        'request_sha256':fingerprint(request),
+        'input':{'kind':'EXISTING_VIDEO','path':str(video),'sha256':fingerprint(video),
+                 'generation_record':{'path':str(history),'sha256':fingerprint(history)}},
+        'recipe':{'schema_version':2,'selection':{'start_frame':2,'end_frame':5},
+                  'alpha':{'method':'EDGE_CONNECTED_WHITE','background_rgb':[255,255,255],'tolerance':32}}}
+    job=root/'job.json'
+    write(job,value)
+    return job,value
+
+
+def test_factory_motion_replay_real_codec_recipe_export_and_inspect(case,monkeypatch):
+    from assetpipe.factory.motion import plan_job,run_job,inspect_job
+    root,request,video,output,_=case
+    job,value=factory_job(case)
+    def no_provider(*args,**kwargs): raise AssertionError('Offline replay must never call a provider')
+    monkeypatch.setattr('assetpipe.providers.video.executor.execute_prepared',no_provider)
+    before={p:fingerprint(p) for p in [request,video,root/'parent.json',root/'historical.json']}
+    plan=plan_job(job,root)
+    assert plan['dispatches']==plan['budget_reservations']==0
+    receipt=run_job(job,plan['plan_sha256'],output,root)
+    result=inspect_job(output,fingerprint(receipt),root)
+    assert result['status']=='FACTORY_MOTION_INTEGRITY_PASS_REVIEW_REQUIRED'
+    assert result['generation_requests']==0 and result['game_ready'] is False
+    atlas=json.loads((output/'candidate/atlas.json').read_text())
+    assert [r['original_source_frame_index'] for r in atlas['frames']]==[2,3,4,5]
+    native=json.loads((output/'exports/phaser-animation.json').read_text())
+    assert native['frameRate']==6 and len(native['frames'])==4
+    placement=json.loads((output/'exports/placement.json').read_text())
+    assert placement['godot']['offset']==[-32,-62]
+    assert placement['phaser']['origin']==[.5,62/64]
+    assert (output/'historical-generation.json').read_bytes()==(root/'historical.json').read_bytes()
+    assert before=={p:fingerprint(p) for p in before}
+    assert not (root/'workspace/factory_budget').exists()
+    with pytest.raises(FileExistsError): run_job(job,plan['plan_sha256'],output,root)
+
+
+@pytest.mark.parametrize('failure',['stale_plan','generation_flag','outside_workspace','changed_video','bad_alpha'])
+def test_factory_motion_replay_gates_before_output(case,failure):
+    from jsonschema import ValidationError
+    from assetpipe.factory.motion import plan_job,run_job
+    from assetpipe.manifests import write
+    root,_,video,output,_=case
+    job,value=factory_job(case)
+    plan=plan_job(job,root)
+    options={}
+    digest=plan['plan_sha256']
+    if failure=='stale_plan': digest='0'*64
+    elif failure=='generation_flag': options['authorize_generation']=True
+    elif failure=='outside_workspace': output=root/'src/no_artifacts'
+    elif failure=='changed_video': video.write_bytes(b'changed')
+    else:
+        value['recipe']['alpha']['tolerance']=61
+        write(job,value)
+    errors={'stale_plan':'FACTORY_MOTION_PLAN_CHANGED',
+            'generation_flag':'FACTORY_MOTION_REPLAY_DISALLOWS_GENERATION',
+            'outside_workspace':'FACTORY_MOTION_OUTPUT_INVALID',
+            'changed_video':'FACTORY_MOTION_VIDEO_CHANGED'}
+    expected=ValidationError if failure=='bad_alpha' else ValueError
+    with pytest.raises(expected,match=errors.get(failure)):
+        run_job(job,digest,output,root,**options)
+    assert not output.exists()
+    assert not (root/'workspace/factory_budget').exists()
+
+
+@pytest.mark.parametrize('tamper',['export','extra','review'])
+def test_factory_motion_inspect_detects_modified_inventory(case,tamper):
+    from assetpipe.factory.motion import plan_job,run_job,inspect_job
+    root,_,_,output,_=case
+    job,_=factory_job(case)
+    plan=plan_job(job,root)
+    receipt=run_job(job,plan['plan_sha256'],output,root)
+    sha=fingerprint(receipt)
+    target={'export':'exports/placement.json','extra':'extra.txt','review':'candidate/review.json'}[tamper]
+    (output/target).write_text('{}')
+    with pytest.raises(ValueError,match='FACTORY_MOTION_OUTPUT_CHANGED'):
+        inspect_job(output,sha,root)
+
+
+def test_factory_motion_failure_is_terminal_and_retains_source(case,monkeypatch):
+    from assetpipe.factory.motion import plan_job,run_job,inspect_job
+    root,_,video,output,_=case
+    job,_=factory_job(case)
+    plan=plan_job(job,root)
+    before=fingerprint(video)
+    def fail(*args,**kwargs): raise ValueError('SYNTHETIC_DECODE_FAILURE')
+    monkeypatch.setattr('assetpipe.motion.package.package_video',fail)
+    with pytest.raises(ValueError,match='SYNTHETIC_DECODE_FAILURE'):
+        run_job(job,plan['plan_sha256'],output,root)
+    receipt=output/'factory_motion.json'
+    assert json.loads(receipt.read_text())['status']=='FAILED'
+    assert not (output/'candidate').exists() and fingerprint(video)==before
+    with pytest.raises(ValueError,match='FACTORY_MOTION_RUN_BLOCKED'):
+        inspect_job(output,fingerprint(receipt),root)
+
+
+def test_factory_motion_inspect_rejects_foreign_output_before_read(case,monkeypatch):
+    import assetpipe.factory.motion as coordinator
+    from assetpipe.manifests import write
+    root,_,_,output,_=case
+    job,_=factory_job(case)
+    plan=coordinator.plan_job(job,root)
+    receipt=coordinator.run_job(job,plan['plan_sha256'],output,root)
+    foreign=root.parent/'foreign-output.txt'
+    foreign.write_text('not authorized for this data root')
+    record=json.loads(receipt.read_text())
+    record['outputs'][0]={'path':str(foreign),'sha256':fingerprint(foreign)}
+    receipt.write_text(json.dumps(record),encoding='utf-8')
+    expected=fingerprint(receipt)
+    original=coordinator.fingerprint
+    def bounded(path):
+        assert path!=foreign,'Unauthorized file was read before root validation'
+        return original(path)
+    monkeypatch.setattr(coordinator,'fingerprint',bounded)
+    with pytest.raises(ValueError,match='outside configured roots'):
+        coordinator.inspect_job(output,expected,root)
 
 
 def test_real_video_to_review_atlas_preserves_timing_and_sources(case):
