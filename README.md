@@ -421,6 +421,9 @@ FP32·FP64 후보는 허용 오차 내 일치했지만 BF16 병합은 불일치�
 후속 [GPU 베이스 검사](docs/research/KREA2_GPU_BASE_20261027.md)에서 두 투영층의 CUDA 입력 8건을
 실행했고 기존 CPU 가설 24건도 동일하게 재현했습니다. `.magnitude` 120개 누락은 그대로여서
 GPU LoRA 적용·전체 모델·이미지 품질 검증과 운영 승격은 아직 수행하지 않았습니다.
+[배포·export 출처 조사](docs/research/KREA2_PIXEL64_PROVENANCE_20261027.md)는 로컬 파일이
+제작자의 HF·Civitai 배포본과 동일함을 확인했습니다. 해시 고정 공식 파서의 격리 실행에서도
+magnitude 120개가 누락됐으며, 학습 alpha·원본 베이스 해시가 확인되지 않아 호환성은 계속 차단합니다.
 
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리

@@ -123,3 +123,7 @@ Changed files: the existing loader probe and its unit tests, this report,
 README/CHANGELOG and a follow-up link in the earlier isolation report.
 Rollback by reverting this optional probe extension. Installed ComfyUI, original
 weights, workflows, production providers and Golden/SOT require no reversal.
+
+Follow-up: [distribution and export provenance](KREA2_PIXEL64_PROVENANCE_20261027.md)
+confirms exact publisher-file identity and replays a pinned official parser while
+keeping authored-alpha/base and full-model limitations open.
