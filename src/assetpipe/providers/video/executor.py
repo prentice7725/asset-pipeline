@@ -15,7 +15,7 @@ from ...manifests import now, write
 from ...paths import RootResolver
 from ...providers.cli_runner import assert_not_nested
 from ...registry import load_registry
-from ...prompts import compile_prompt
+from .prompt import compile_reference_prompt
 from ..._ported.comfy_bridge.client import ComfyClient
 from ..._ported.comfy_bridge.runner import patch_workflow
 from ..._ported.comfy_bridge.workflow_loader import load_workflow
@@ -42,6 +42,11 @@ def _compiler_sources(root):
                 pending.append(path)
             elif path.suffix.lower() in {'.yaml', '.yml', '.json'}:
                 files[str(path)] = fingerprint(path)
+    # A consent digest also binds the shared semantic compiler implementation.
+    package = Path(__file__).resolve().parents[2]
+    for directory in ('prompts', 'styles', 'art_direction'):
+        for path in (package / directory).rglob('*.py'):
+            files[str(path)] = fingerprint(path)
     return [{'path': path, 'sha256': sha} for path, sha in sorted(files.items())]
 
 
@@ -99,12 +104,10 @@ def execution_plan(run, root, *, seed, width, height, allowed_roots=None):
     brief = copy.deepcopy(source['source_brief'])
     compiler_sources = _compiler_sources(root)
     # The existing compiler still enforces project/style locks; never strip them.
-    compiled = compile_prompt(brief, workflow, root)
+    compiled = compile_reference_prompt(brief, workflow, root,
+                                        resolver(source['parent']['manifest_path']), motion['action'])
     if _compiler_sources(root) != compiler_sources:
         raise ValueError('MOTION_COMPILER_SOURCE_CHANGED')
-    compiled['positive'] += '\nRequested motion (explicit): ' + motion['action']
-    compiled['positive'] += '\nPreserve the referenced identity, clothing, equipment and silhouette.'
-    compiled['motion_action'] = motion['action']
     graph = patch_workflow(graph_source, prompt=compiled['positive'], negative_prompt=compiled['negative'],
                            seed=seed, input_image='__ASSETPIPE_REFERENCE_0__',
                            filename_prefix='assetpipe_motion/__AUTHORIZATION_ID__',
@@ -116,6 +119,7 @@ def execution_plan(run, root, *, seed, width, height, allowed_roots=None):
               'project_id': source['project_id'], 'asset_id': source['asset_id'],
               'workflow_id': workflow_id, 'workflow_sha256': graph_source.sha256,
               'executor_sha256': fingerprint(Path(__file__)),
+              'motion_prompt_compiler_sha256': fingerprint(Path(__file__).with_name('prompt.py')),
               'compiler_sources': compiler_sources,
               'source_plan': source, 'references': references,
               'compiled_prompt': compiled, 'graph_template': graph,
