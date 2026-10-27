@@ -46,8 +46,13 @@ def capabilities(root):
         'active_workflows': {k: {'output_class': v['output_class'], 'capabilities': v['capabilities'], 'tags': v['tags']} for k, v in registry.items() if v['status'] == 'ACTIVE'},
         'providers': ['comfyui', 'aseprite', 'codex_cli', 'grok_cli'], 'provider_readiness': readiness, 'external_cli_workflows': external, 'animation_actions': {'PIXEL_ANIMATION': ['walk'], 'NONPIXEL_ANIMATION': []},
         'optional_recovery': {'pixel_art_fixer': 'OPTIONAL_RECOVERY_NOT_AUTO_DISPATCHED'},
+        'nonpixel_motion': {'status': 'SUPPORTED_EXPERIMENTAL', 'entrypoint': 'create --type nonpixel-animation --motion-job',
+            'requires': ['pinned Factory motion job', 'plan SHA256', 'new output directory'],
+            'reference_count': 1, 'source': 'existing NONPIXEL_IMAGE parent', 'automatic_generation': False,
+            'generation_requires': ['prepared generation job', 'existing authorization', 'explicit consent', 'existing video executor gates'],
+            'review_state': 'REVIEW_REQUIRED', 'game_ready': False},
         'environment_readiness': {'comfyui': comfy, 'aseprite': aseprite, 'ffmpeg': {'ready': bool(shutil.which('ffmpeg'))}},
-        'limitations': ['codex_cli/grok_cli are EXPERIMENTAL, NONPIXEL_IMAGE only; request them by workflow id with allow_experimental. Seed, exact resolution, transparency and native negative prompts are unsupported; no automatic fallback between providers', 'NONPIXEL_ANIMATION is contract-only', 'Eight reviewed blue-tunic/white-background walk phases only', 'Existing reviewed motion required; idle and attack are unsupported']}
+        'limitations': ['codex_cli/grok_cli are EXPERIMENTAL, NONPIXEL_IMAGE only; request them by workflow id with allow_experimental. Seed, exact resolution, transparency and native negative prompts are unsupported; no automatic fallback between providers', 'NONPIXEL_ANIMATION requires an explicit pinned motion job; prompt/brief-only video execution remains unavailable', 'Eight reviewed blue-tunic/white-background walk phases only', 'Existing reviewed motion required; idle and attack are unsupported']}
 
 def build_brief(*, request_text, output_class, asset_id='asset', source_documents=(), reference_image=None, action=None, prepared_brief=None, workflow_id=None):
     if prepared_brief is not None:
@@ -79,7 +84,7 @@ def route_brief(brief, root, resolver=None):
     if brief['source']['type'] == 'DOCUMENTS' and not brief['identity']['canonical_traits']:
         missing.append('Source-backed canonical traits must be extracted into a prepared brief before generation')
     if brief['output_class'] == 'NONPIXEL_ANIMATION':
-        missing.append('NONPIXEL_ANIMATION production execution is unavailable in v0.1')
+        missing.append('NONPIXEL_ANIMATION requires create --type nonpixel-animation --motion-job with a pinned plan; brief-only execution is unavailable')
     if brief['output_class'] == 'PIXEL_ANIMATION':
         try:
             animation_preflight(brief, resolver)

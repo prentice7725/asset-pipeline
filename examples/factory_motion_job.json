@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "FACTORY_MOTION_JOB",
+  "request_ref": "../workspace/source/request.json",
+  "request_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "input": {
+    "kind": "EXISTING_VIDEO",
+    "path": "../workspace/source/original.mp4",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "recipe": {
+    "schema_version": 1,
+    "selection": {"start_frame": 1, "end_frame": 5},
+    "alpha": {"method": "PRESERVE"}
+  }
+}

@@ -1,9 +1,45 @@
 """Configured filesystem boundary shared by adapters and provenance consumers."""
 import json
+import ntpath
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 ROOTS_ENV = 'ASSETPIPE_ALLOWED_ROOTS'
+
+
+def _reserved_windows_name(name):
+    if hasattr(ntpath, 'isreserved'):
+        return ntpath.isreserved(name)
+    return PureWindowsPath(name).is_reserved()  # Python 3.11/3.12 compatibility.
+
+
+def _namespace_key(path):
+    """Compare safe DOS/UNC aliases only after filesystem resolution.
+
+    Windows realpath can retain its extended prefix during directory creation.
+    Do not reinterpret device namespaces or names whose Win32 meaning differs.
+    """
+    if not isinstance(path, PureWindowsPath):
+        return path
+    text = str(path)
+    if text[:8].upper() == '\\\\?\\UNC\\':
+        plain = '\\\\' + text[8:]
+    elif (text.startswith('\\\\?\\') and len(text) >= 7 and text[4].isascii()
+          and text[4].isalpha() and text[5:7] == ':\\'):
+        plain = text[4:]
+    else:
+        return path
+    key = type(path)(plain)
+    if not key.is_absolute():
+        return path
+    parts = key.parts[1:]
+    if key.drive.startswith('\\\\'):
+        parts += tuple(key.drive[2:].split('\\'))
+    if any(part in {'.', '..'} or part.endswith(('.', ' '))
+           or _reserved_windows_name(part)
+           or any(c in '<>:"/\\|?*' or ord(c) < 32 for c in part) for part in parts):
+        return path
+    return key
 
 
 class RootResolver:
@@ -17,9 +53,20 @@ class RootResolver:
         if not isinstance(value, (str, Path)) or not str(value) or '\x00' in str(value):
             raise ValueError('Invalid filesystem reference')
         path = (self.base / value).resolve(strict=strict)
-        if not any(path.is_relative_to(root) for root in self.roots):
-            raise ValueError('Path is outside configured roots')
-        return path
+        if any(path.is_relative_to(root) for root in self.roots):
+            return path
+        key = _namespace_key(path)
+        for root in self.roots:
+            root_key = _namespace_key(root)
+            if key.is_relative_to(root_key):
+                if root != root_key:
+                    # Preserve an explicitly configured extended namespace so
+                    # downstream identity/alias guards keep the same spelling.
+                    text = str(key)
+                    return type(key)('\\\\?\\UNC\\' + text[2:] if text.startswith('\\\\')
+                                     else '\\\\?\\' + text)
+                return key
+        raise ValueError('Path is outside configured roots')
 
     def environment(self):
         return json.dumps({'roots': [str(p) for p in self.roots], 'base': str(self.base)})
