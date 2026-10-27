@@ -1,79 +1,34 @@
 # Asset Pipeline
 
-현재 개발 우선순위는 **넌픽셀 정지 이미지·애니메이션 생산 경로**입니다.
-픽셀 경로는 연구과제로 보존하며 넌픽셀 완성의 선행 조건으로 두지 않습니다.
-[현재 구현 순서와 수용 기준](docs/factory/NONPIXEL_PRODUCTION_PLAN_20261027.md)을 참고하세요.
-
-기존 정지 이미지의 명시적 모션 후속 작업은
-`assetpipe create --type nonpixel-animation --motion-job ... --motion-plan-sha256 ... --output ...`으로
-실행할 수 있습니다. [작업 파일·예산·리뷰 경계](docs/factory/MOTION_JOB.md)를 먼저 확인하세요.
-프롬프트만으로 영상을 자동 생성하거나 완성품을 승인하는 명령은 아닙니다.
-
-[Factory 모션 작업 흐름](docs/factory/MOTION_JOB.md)은 명시적 작업 파일로 기존 영상 재처리,
-승인된 단일 영상 실행 위임, 레시피와 Godot·Phaser 리소스 출력을 연결합니다.
-[여우·토끼 재현 검증](docs/factory/MOTION_JOB_VALIDATION_20261027.md)은 새 생성 없이 기존 RGBA 결과와
-동일함을 확인했습니다. 일반 Factory 모션 차단·기본 비활성·사람 승인 경계는 유지합니다.
-
-M3 현재 상태는 [2026-10-23 코드 재감사](docs/factory/M3_REAUDIT_20261023.md)를 참고하세요.
-기존 영상의 [오프라인 모션 리뷰 패키지](docs/factory/MOTION_PACKAGE.md)를 추가했습니다.
-기본 Factory I2V 실행은 여전히 BLOCKED_BACKEND_NOT_VERIFIED이며 기술적 패키징은
-애니메이션 품질·Golden·게임 투입 승인을 뜻하지 않습니다.
-[모션 사전검증·입력 보존](docs/factory/MOTION_PREFLIGHT.md)은 참조 역할·순서·해시와
-설치 상태를 확인하며, 미검증 입력 지원이나 생성 승인을 자동으로 확정하지 않습니다.
-참조 1장의 [연구용 단일 시도 실행기](docs/factory/MOTION_EXECUTOR.md)도 추가했습니다.
-기본 비활성이며 별도 1회 예산·모델 해시·입력 검증 없이는 실행되지 않습니다.
-참조 1장의 연구 경로는 [실제 영상→프레임→스프라이트 E2E](docs/factory/MOTION_REAL_E2E_20261026.md)를
-1회 완료했습니다. 결과는 REVIEW_REQUIRED이며 참조 역할·루프·미술 품질 승인은 남아 있습니다.
-[동작 검토](docs/factory/MOTION_ADVISORY_REVIEW_20261026.md)에서 루프 경계와
-머리 여백·피벗 검토 항목을 기록했습니다. 자산 수정·사람 승인은 수행하지 않았습니다.
-후속 [13~32번 루프 후보](docs/factory/MOTION_LOOP_CANDIDATE_20261027.md)는
-20프레임을 무손실 재패킹한 별도 결과입니다. 원본은 보존하며 후보도 REVIEW_REQUIRED입니다.
-[투명화 비교](docs/factory/MOTION_ALPHA_CANDIDATE_20261027.md)에서는 학습 마스크의
-흰 털 손실을 확인했습니다. 테두리 연결 방식도 밝은 테두리·그림자 정리가 필요해 미승인입니다.
-후속 [국소 알파 정리](docs/factory/MOTION_ALPHA_CLEANUP_20261027.md)에서 사용자가 요청한
-다리 사이 흰 영역과 발밑 그림자를 제거했습니다. 나머지 경계·사람 리뷰는 계속 필요합니다.
-[Godot·Phaser 실제 임포트 검증](docs/factory/MOTION_ENGINE_IMPORT_20261027.md)에서
-20프레임·24fps 설정, 정상상태 반복 재생, 피벗 매핑과 실제 렌더 화면을 확인했습니다.
-초기 타이밍·발 접지·얇은 외곽선·사람 승인은 별도 검토 대상입니다.
-[명시적 모션 리뷰 레시피](docs/factory/MOTION_REVIEW_RECIPE.md)로 프레임 구간과
-알파 수정 조건을 해시에 묶어 재실행할 수 있습니다. 계획→적용→무결성 점검을 제공하며
-사람 리뷰·Golden 승인을 자동으로 통과시키지 않습니다.
-[두 번째 캐릭터 검증](docs/factory/MOTION_SECOND_CHARACTER_20261027.md)에서는 토끼 참조를
-1회 생성한 뒤 발견한 스타일 바인딩 충돌은 [참조 스타일 의미 연결](docs/factory/MOTION_SOURCE_STYLE_20261027.md)로
-보완했습니다. 원본 정지 워크플로·스타일 계약을 재검증하며 영상 품질 승인은 별도로 남깁니다.
-토끼도 승인된 영상 1회로 56프레임·스프라이트 패키지까지 완료했습니다.
-후속 [토끼용 루프·투명화 후보](docs/factory/RABBIT_MOTION_RECIPE_20261027.md)는
-14~41번 28프레임을 선택하고 낮은 흰 배경 허용 오차를 명시한 v2 레시피로 처리했습니다.
-얼굴·흰 가방 손실을 일으킨 기존 기준은 채택하지 않았으며 사람 리뷰는 남아 있습니다.
-[토끼의 Godot·Phaser 실제 임포트](docs/factory/RABBIT_ENGINE_IMPORT_20261027.md)도 확인했습니다.
-28프레임·순서·3회 반복·실제 렌더와 부츠 하단 기준선 간격 1~2px를 확인했으며,
-Godot 초기 반복에서 측정 편차가 있었으며 해부학적 발 접지·사람 리뷰는 미승인입니다.
-후속 [Godot 시작 시점 진단 보정](docs/factory/GODOT_STARTUP_TIMING_20261027.md)에서는
-로딩 델타가 첫 업데이트에 섞이는 검증 도구의 문제를 확인했습니다. 처리 시점과 준비 상태를
-분리한 6조건은 첫 반복부터 60Hz 허용 범위 안에 들었으며, 실제 게임의 로딩 정책은 별도 검증 대상입니다.
-[2026-10-26 실생성 전 점검](docs/factory/MOTION_LIVE_PLAN_20261026.md)에서
-실제 참조 후보 1장, 필수 노드 15개, 모델 5개 파일 해시와 56프레임 계획을 확인했습니다.
-해당 사전 점검은 생성·업로드·예산 예약 0건입니다. 이후 승인된 1회 실생성 시험을
-완료하고 연구 설정을 비활성으로 복원했습니다.
-Windows 예산 예약에서 간헐적으로 발생한 확장 경로 표기 오류는
-[원인·수정·보안 검증 기록](docs/maintenance/FACTORY_ROOT_NAMESPACE_RACE_20261025.md)을 참고하세요.
-공통 JSON 기록은 호출별 독립 임시 파일을 사용합니다.
-[동시 기록·Windows 잠금 검증](docs/maintenance/MANIFEST_STAGING_20261026.md)에
-실패 시 증거 보존과 남은 제한을 기록했습니다.
-
-STYLE MENU v1 supports approved run-scoped Manual / Rescue Override for
-NONPIXEL_IMAGE. Primary models are evidence-informed fixture defaults; style and
-canon remain locked. `assetpipe rescue-plan` prepares candidates without generation.
-Overrides require scoped approval and a durable one-request budget before dispatch;
-no automatic fallback or winner promotion. See
-[Manual / Rescue Override](docs/style_menu/MANUAL_RESCUE_OVERRIDE.md) for schema,
-executor availability, evidence, routing priority and SOT follow-up requirements.
-
 한국어 | [日本語](README.ja.md)
 
-프롬프트, 레퍼런스 이미지, 프로젝트 기획문서를 바탕으로 게임용 이미지와 효과음 후보를 만드는 Python CLI 도구입니다. ComfyUI 생성, 후처리·검증, Aseprite 내보내기를 연결합니다.
+프롬프트, 레퍼런스 이미지, 프로젝트 기획문서를 바탕으로 게임용 이미지·애니메이션·효과음 **후보**를 만드는
+Python CLI 도구입니다. ComfyUI 등 생성 provider, 후처리·검증, Aseprite·Godot·Phaser 내보내기를 연결합니다.
 
-**생성 결과는 자동 승인하지 않습니다.** 픽셀 캐릭터는 검증을 통과한 후보만 검토 후 Static Master로 승인하며, SFX도 기본 검증 후 직접 들어봐야 합니다. 실패한 단계는 중단하고 기록을 보존합니다.
+**생성 결과는 자동 승인하지 않습니다.** 모든 출력은 사람이 검토하기 전까지 `REVIEW_REQUIRED`이며,
+실패한 단계는 중단하고 기록을 보존합니다.
+
+## 현재 개발 초점
+
+**넌픽셀 정지 이미지 → 애니메이션 생산 경로**를 하나로 완성하는 것이 현재 목표입니다
+([구현 순서와 수용 기준](docs/factory/NONPIXEL_PRODUCTION_PLAN_20261027.md)).
+픽셀 경로와 Krea2/Pixel64 연구는 보존하되 동결 상태입니다. 기여 범위는 [AGENTS.md](AGENTS.md)를 따릅니다.
+날짜별 검증·실험 기록은 [Factory 문서 색인](docs/factory/README.md)에 모았습니다.
+
+## 지원 기능과 현재 상태
+
+| 출력 유형 | 동작 | 상태 |
+| --- | --- | --- |
+| `NONPIXEL_IMAGE` | Provider 생성(ComfyUI, 실험: Codex CLI·Grok CLI) → 기본 QA → 리뷰 | 사용 가능, 시각 검토 필요 |
+| `NONPIXEL_ANIMATION` | 기존 정지 이미지 + 명시적 모션 작업 → 영상 → 프레임·알파·루프 → 아틀라스·Godot/Phaser 출력 | 실험적. 명시적 작업 파일로만 실행, 프롬프트 자동 모션 미지원 |
+| `SFX` | Stable Audio 3 Medium 생성, FLAC·WAV 저장, 오디오 QA | 사용 가능, 청취 검토 필요 |
+| `PIXEL_STATIC` | 픽셀 후보 → 분석 → 알파 처리 → Pixel Gate → 해상도 검토 → Aseprite → 명시적 승인 | 보존(연구 동결) |
+| `PIXEL_ANIMATION` | 승인된 Static Master + 검토된 모션으로 8프레임 걷기 | 보존(연구 동결), 단일 검증 프로필만 지원 |
+
+테스트 수는 환경마다 다르므로 README에 고정하지 않습니다. 설치 후 `python -m pytest`로 직접 확인하세요.
+검증 근거: [초기 검증](docs/bootstrap_status.json), [프롬프트 검증](docs/prompt_spec_verification.json),
+[SFX 검증](docs/sfx_verification.json), [플러그인 상태](docs/plugin/STATUS.json).
+외부 프로그램, 모델 가중치와 로컬 벤치마크 자료는 저장소에 포함하지 않습니다.
 
 ## STYLE MENU v1 — 운영용 비픽셀 화풍 선택
 
@@ -82,6 +37,11 @@ executor availability, evidence, routing priority and SOT follow-up requirements
 게임 SOT의 `art_style` → STYLE-101~124 → 모델별 recipe/compiler/workflow로 연결합니다. family는 탐색용이고 24종은 독립 선택 단위입니다. 216장 실증 기준 Krea2 Turbo20 / Anima Base rebuilt3 / unresolved1이며, STYLE-117은 용도별 정책이 필요합니다. 생산 결함은 별도 경고이고 생성 자산은 human review 전 REVIEW_REQUIRED입니다. 메뉴 조회는 새 generation 승인이 아닙니다.
 
 옛 CAND 및 STYLE-001~012 메뉴/연구 문서는 history 용도로 보존합니다. 운영 기본 선택에는 사용하지 않습니다.
+
+Manual / Rescue Override: 승인된 실행 범위 안에서만 NONPIXEL_IMAGE 모델을 수동 지정하거나
+구제 후보를 쓸 수 있습니다. 화풍과 캐논은 잠긴 상태로 유지되며, `assetpipe rescue-plan`은 생성 없이 후보만 준비합니다.
+적용 전에 범위 승인과 1회 요청 예산이 필요하고 자동 fallback이나 우승 후보 자동 승격은 없습니다.
+자세한 내용은 [Manual / Rescue Override](docs/style_menu/MANUAL_RESCUE_OVERRIDE.md)를 참고하세요.
 
 ## 프로젝트별 애셋 레퍼런스를 설계할 때
 
@@ -98,21 +58,6 @@ assetpipe knowledge --models-root "C:/path/to/ComfyUI/models" --hash-models --di
 ```
 
 이 기능은 생성·모델 다운로드·모델 교체·Golden 승인 작업을 수행하지 않습니다. 로컬 모델 경로 스캔도 사용자가 `--models-root`를 명시했을 때만 진행되며, 모형이 설치되었거나 SHA256을 계산했다고 해서 모델이 좋은 그림을 그린다고 평가하지 않습니다. 검증된 모델별 미술적 추천/순위는 아직 없습니다.
-
-## 지원 기능과 현재 상태
-
-| 출력 유형 | 동작 |
-| --- | --- |
-| `PIXEL_STATIC` | 픽셀 후보 생성 → 분석 → 안전한 알파 처리 → Pixel Gate → 해상도 검토 → Aseprite 내보내기 → 명시적 승인 |
-| `PIXEL_ANIMATION` | 승인된 Static Master와 기존 검토된 모션을 사용한 8프레임 걷기 제작, 팔레트·Pixel Gate 검증, Aseprite 내보내기 |
-| `NONPIXEL_IMAGE` | ComfyUI 이미지 생성과 기본 QA. 최종 시각 검토 필요. Codex CLI·Grok CLI는 명시 선택하는 실험 provider ([M1](#nonpixel-이미지-provider-comfyui-codex-cli-grok-cli)) |
-| `NONPIXEL_ANIMATION` | 실험적 계약만 제공. 실제 생산 실행은 미지원 |
-| `SFX` | Stable Audio 3 Medium 효과음 생성, 원본 FLAC·PCM WAV 저장, 기본 오디오 QA. 청취 검토 필수 |
-
-현재 로컬 환경에서 **테스트 82개**가 통과했습니다. 초기 마이그레이션에서는 실제 Aseprite 왕복 검증과 기존 애니메이션 8프레임 RGBA 완전 일치를 확인했습니다. 이후 Krea2 생성과 SFX의 실제 CLI·MCP 생성도 검증했습니다.
-
-검증 근거: [초기 검증](docs/bootstrap_status.json), [프롬프트 검증](docs/prompt_spec_verification.json), [SFX 검증](docs/sfx_verification.json), [플러그인 상태](docs/plugin/STATUS.json).
-외부 프로그램, 모델 가중치와 로컬 벤치마크 자료는 저장소에 포함하지 않습니다.
 
 ## 설치
 
@@ -414,7 +359,33 @@ Krea 스타일 문구는 선택한 설명과 출처 URL을 기록할 수 있습�
 
 지원하지 않는 레퍼런스·negative prompt·이미지 속 글자 요구는 조용히 버리지 않고 차단합니다. 선택 근거와 대체 후보는 `route_decision.json`에 기록합니다.
 
+## 넌픽셀 애니메이션 (명시적 모션 작업)
+
+기존 NONPIXEL_IMAGE 결과 하나를 부모로 지정한 작업 파일(job)로 실행합니다. 작업 파일은 요청, 영상 또는
+생성 입력, 원본 해시, 프레임 구간, 알파 정책을 고정합니다.
+
+```powershell
+assetpipe factory motion-plan --job workspace/my-job.json
+assetpipe create --type nonpixel-animation --motion-job workspace/my-job.json `
+  --motion-plan-sha256 <반환된-plan-sha256> --output workspace/my-new-motion-run
+```
+
+```text
+부모 정지 이미지 → (I2V 생성 또는 기존 영상) → 원본 영상 보존 → 프레임 추출
+  → 알파·정렬 → 명시적 루프 선택(레시피) → 아틀라스 → Godot SpriteFrames / Phaser atlas
+```
+
+- `--output`은 설정 루트의 `workspace` 아래 새 디렉터리여야 합니다.
+- 실생성은 별도로 승인된 1회 예산이 있을 때만 수행하며 재시도·provider fallback은 없습니다.
+- 프롬프트·Brief만으로 영상을 자동 생성하지 않습니다. 참조 이미지는 현재 1장(`IDENTITY_PRIMARY`)만 검증되었습니다.
+- 결과는 `REVIEW_REQUIRED`, `game_ready=false`로 남습니다.
+
+작업 파일 형식과 예산·리뷰 경계는 [모션 작업 계약](docs/factory/MOTION_JOB.md),
+레시피는 [모션 리뷰 레시피](docs/factory/MOTION_REVIEW_RECIPE.md)를 참고하세요.
+
 ## 픽셀 검증과 Static Master 승인
+
+> 픽셀 경로는 현재 연구 동결 상태입니다. 기존 기능은 그대로 동작하지만 새 개발은 하지 않습니다.
 
 Krea2 Pixel64는 실험 상태입니다. 설치된 로더에서 magnitude 키 120개 누락을
 CPU 실행으로 재현했습니다. [호환성 조사](docs/research/KREA2_LOADER_COMPATIBILITY_20261025.md)는
@@ -500,23 +471,27 @@ config/ schemas/ examples/ tests/ docs/
 ```
 
 [마이그레이션 목록](docs/migration_inventory.json)은 원본 해시와 변경 내용을 기록합니다. bootstrap 스크립트는 기존 저장소와 로컬 벤치마크가 필요한 마이그레이션 도구이며 일반 설치 단계가 아닙니다.
-GUI·웹 UI·클라우드 배포·DB·범용 애니메이션 복원은 현재 범위에 포함하지 않습니다.
-# M2 Style Intelligence
+GUI·웹 UI·클라우드 배포·DB는 현재 범위에 포함하지 않습니다.
+
+## 부가 기능
+
+### 스타일 인텔리전스 (M2)
 
 공통 스타일 후보와 모델별 레시피는 `config/styles/`에서 관리합니다.
 프로젝트 Visual SOT → 승인된 프로젝트 Style Pack → 공통 Catalog → 모델 기본값 순으로
 선택하며, `style_id`는 선택적 Brief 필드입니다. 사람의 승인과 실생성 근거가 없는
 조합은 자동 기본값이 되지 않습니다. 명시한 workflow/model은 기능 검증 후 우선합니다.
 Codex와 Claude Code는 동일한 플러그인 스킬을 사용합니다.
-
 [설정·비교 생성·승인 계약](docs/m2/STYLE_INTELLIGENCE.md)을 참고하세요.
 
-## M2.6 offline recipe research
+### 오프라인 레시피 연구 (M2.6)
 
-See [prompt mining method](docs/style/PROMPT_MINING_METHOD.md) and [M2.5 validation handoff](docs/style/RECIPE_VALIDATION.md). `assetpipe mining` validates saved public metadata or compiles candidates without generation. Candidate recipes do not become production defaults.
-# Advisory visual hierarchy
+`assetpipe mining`은 저장된 공개 메타데이터를 검증하거나 생성 없이 후보 레시피를 컴파일합니다.
+후보 레시피는 운영 기본값이 되지 않습니다.
+[프롬프트 마이닝 방법](docs/style/PROMPT_MINING_METHOD.md), [M2.5 검증 인계](docs/style/RECIPE_VALIDATION.md)를 참고하세요.
 
-Existing technically passing static candidates can receive reproducible review
-previews with `assetpipe visual-review --run <run-directory>`. Optional prepared
-NONPIXEL_IMAGE briefs can declare focal intent. These features never approve an
-asset; see [scope, conflict handling and usage](docs/style/VISUAL_HIERARCHY.md).
+### 시각 위계 리뷰 미리보기
+
+기술 QA를 통과한 기존 정지 후보에 `assetpipe visual-review --run <실행 디렉터리>`로
+재현 가능한 리뷰 미리보기를 만들 수 있습니다. NONPIXEL_IMAGE Brief에 초점 의도를 선언할 수 있으며,
+자산을 승인하지는 않습니다. [범위·충돌 처리·사용법](docs/style/VISUAL_HIERARCHY.md)을 참고하세요.
