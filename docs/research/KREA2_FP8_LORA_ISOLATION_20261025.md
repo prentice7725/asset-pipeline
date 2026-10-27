@@ -140,3 +140,7 @@ fallback, new model/node installation or quality approval is added.
 Only research diagnostics/tests and documentation change. Revert this commit to
 roll back the optional probe/callback; installed code, original weights and
 workflow/configuration require no rollback.
+
+Follow-up: [bounded CUDA base execution and CPU regression](KREA2_GPU_BASE_20261027.md)
+checks the same two projections on the actual GPU while preserving this report's
+historical failures and incomplete-adapter/alpha/full-runtime limitations.

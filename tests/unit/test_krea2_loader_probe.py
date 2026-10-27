@@ -86,6 +86,8 @@ def test_header_reader_rejects_offsets_outside_actual_payload(tmp_path):
 
 
 @pytest.mark.parametrize('flags', [
+    ['--probe-device', 'cuda'],
+    ['--probe-device', 'cuda', '--probe-layers', '--probe-lora', '--source-dir', 'SOURCE', '--alpha-over-rank', '1'],
     ['--probe-lora', '--probe-layers', '--source-dir', 'SOURCE'],
     ['--probe-lora', '--probe-layers', '--alpha-over-rank', '1'],
     ['--probe-lora', '--source-dir', 'SOURCE', '--alpha-over-rank', '1'],
@@ -107,3 +109,23 @@ def test_lora_probe_never_infers_hypothesis_or_reads_weights_before_guard(tmp_pa
         probe.main()
     assert exc.value.code == 2
     assert not output.exists()
+
+
+def test_cpu_default_does_not_query_cuda():
+    assert probe.assess_probe_device(SimpleNamespace(),'cpu')=={'status':'AVAILABLE','device':'cpu'}
+
+
+def test_cuda_unavailable_does_not_fallback_or_query_memory():
+    cuda=SimpleNamespace(is_available=lambda:False)
+    result=probe.assess_probe_device(SimpleNamespace(cuda=cuda),'cuda')
+    assert result['status']=='BLOCKED' and result['reason']=='CUDA_UNAVAILABLE'
+
+
+@pytest.mark.parametrize('free,available',[(512*1024**2,False),(1536*1024**2,True)])
+def test_cuda_memory_floor_is_explicit_and_fail_closed(free,available):
+    cuda=SimpleNamespace(is_available=lambda:True,mem_get_info=lambda index:(free,8*1024**3),
+        get_device_name=lambda index:'SYNTHETIC_GPU',get_device_capability=lambda index:(12,0))
+    result=probe.assess_probe_device(SimpleNamespace(cuda=cuda),'cuda')
+    assert result['device']=='cuda:0'
+    assert (result['status']=='AVAILABLE')==available
+    assert result['minimum_free_bytes']==1024**3

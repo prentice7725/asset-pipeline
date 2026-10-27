@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — bounded Pixel64 CUDA base compatibility probe, 2026-10-27
+
+- Add explicit CUDA base-projection mode to the existing loader diagnostic;
+  keep CPU default and reject GPU use of the CPU-only LoRA hypothesis.
+- Execute eight native CUDA input cases across two real FP8 projections with
+  unchanged state/flags; reproduce all 24 prior CPU hybrid case records exactly.
+- Preserve INCOMPLETE_ADAPTER: 120 magnitude keys remain unloaded. No image
+  generation, GPU LoRA/full-model approval, checkpoint or production activation.
+- See docs/research/KREA2_GPU_BASE_20261027.md for evidence, limits and rollback.
+- Complete required install/CLI and 778 offline tests with one unavailable-data
+  skip; GPU base checks do not promote the incomplete LoRA or certify image quality.
+
 ## Unreleased — explicit Factory motion jobs, 2026-10-27
 
 - Add additive Factory motion prepare/plan/run/inspect commands, binding request,
