@@ -1,0 +1,92 @@
+{
+  "kind": "NONPIXEL_CREATE_ENTRYPOINT_VALIDATION",
+  "branch": "codex/nonpixel-create-motion-20261027",
+  "base_commit": "953c61a",
+  "status": "OFFLINE_AND_EXISTING_VIDEO_REPLAY_PASS_REVIEW_REQUIRED",
+  "new_generation_requests": 0,
+  "new_live_generation": "NOT_RUN",
+  "new_engine_execution": "NOT_RUN",
+  "quality_improvement": "NOT_CLAIMED",
+  "python": "3.11.9",
+  "results": {
+    "fox": {
+      "inspect": {
+        "status": "FACTORY_MOTION_INTEGRITY_PASS_REVIEW_REQUIRED",
+        "manifest_sha256": "afcf3eb3dc18949bee9c7954818125728d71df3d8163632cff13c2167de55493",
+        "plan_sha256": "82e26305343bebd3ce04401318a34a34adf9549cbec948177dc292c03aaf8f5f",
+        "generation_requests": 0,
+        "review_state": "REVIEW_REQUIRED",
+        "game_ready": false
+      },
+      "exact_rgba_frames": 20,
+      "pivot_and_order_unchanged": true,
+      "source_job_sha256": "4b39e92ccf014168c37fb455f95a1789bb01a3e08122da00ba633146ac82b94c",
+      "receipt_sha256": "afcf3eb3dc18949bee9c7954818125728d71df3d8163632cff13c2167de55493",
+      "native_sprite_sha256": "c463819877db5cca5ba31dfdf29df54828ee3213a974b8602b2ffe933e06a38f"
+    },
+    "rabbit": {
+      "inspect": {
+        "status": "FACTORY_MOTION_INTEGRITY_PASS_REVIEW_REQUIRED",
+        "manifest_sha256": "0e9125d2627eada101368e239921a6de74755e765dd58a13d67a0c51187798c4",
+        "plan_sha256": "e690a06c1a3432c8539dc3cc8074bb2ec7256d5efce9f7dd439776aba40025c1",
+        "generation_requests": 0,
+        "review_state": "REVIEW_REQUIRED",
+        "game_ready": false
+      },
+      "exact_rgba_frames": 28,
+      "pivot_and_order_unchanged": true,
+      "source_job_sha256": "269a6254022a342f3324e38e994e161f70a101c7e297c2876a6cda2ec1f0c0c9",
+      "receipt_sha256": "0e9125d2627eada101368e239921a6de74755e765dd58a13d67a0c51187798c4",
+      "native_sprite_sha256": "55ac5b9550597a1a66762044298976a0f125a86dcb09747fe508b8b6658a24d5"
+    }
+  },
+  "source_integrity": {
+    "protected_files": 725,
+    "unchanged": true,
+    "generation_requests": 0,
+    "review": "REVIEW_REQUIRED",
+    "harness_initial_failure": "WRONG_PROTECTED_HASHES_ENVELOPE_ACCESS_AFTER_BOTH_REPLAYS",
+    "verification": "EXPLICIT_PROTECTED_HASHES_FIELD_CHECKED_WITHOUT_RERUNNING_MEDIA"
+  },
+  "tests": {
+    "passed": 789,
+    "skipped": 1,
+    "seconds": 530.83,
+    "log_sha256": "e0a95cc79db607c73c8a70675f64cc397a8d6e2160c2691809fc68186b0d995d",
+    "execution": "ORDINARY_ESCALATED_WINDOWS_JUNCTION_SUPPORT",
+    "initial_sandbox_full_run": "INTERRUPTED_WITH_ENVIRONMENT_FAILURES",
+    "first_complete_run": {
+      "passed": 788,
+      "failed": 1,
+      "skipped": 1,
+      "seconds": 605.27,
+      "failure": "UNCHANGED_STYLE_LAB_MANIFEST_REPLACE_WINERROR_5",
+      "log_sha256": "d5fcdc31b2a2baf697c720a992085190fd3f91d04e8c405417af34c5bc75aa49"
+    },
+    "style_and_manifest_isolation": "18_PASSED_WITHOUT_CODE_CHANGE_CAUSE_NOT_ESTABLISHED",
+    "focused_initial": "42_PASS_38_PATH_LIMIT_FIXTURE_ERRORS",
+    "focused_executor_short_root": "43_PASSED",
+    "canonical_collection_ordinary_execution": "13_PASSED"
+  },
+  "source_sha256": {
+    "src/assetpipe/api.py": "80504e6792755bf7aff70f213bd4e284439d9909911ae538b28a93b260266d54",
+    "src/assetpipe/cli/__init__.py": "4e1be08cbc5d035a0b8ff82b9f6c60d6b3d5dcae5154d2e3fd96c9a53529e2e8",
+    "src/assetpipe/pipelines/__init__.py": "c0ea23a0c75f0bb2f818a973dc0fe98ee6f2984906ae8a5f0ae37d1e4df783ba",
+    "src/assetpipe/pipelines/nonpixel_animation/__init__.py": "97d710bbcf3af96ec983c433f7c61d67cdd1c4bd0a455d1fb859d39d957031f1",
+    "tests/unit/test_motion_package.py": "21edce24aebd9ff09884f88601572aff2a8ac3b9c3f352507a43f93606d132f8",
+    "tests/unit/test_motion_executor.py": "66f48029106cbc369e2c23a0e68ac52031dbffcc0ee77af8ad3a5b31c6d67139"
+  },
+  "logs": {
+    "nonpixel-entry-install.log": "79d1f7e8dec7b2da1365ffea64294cc870c7002e6f1bbb35dc8e31b8e261625a",
+    "nonpixel-entry-focused-01.log": "9dc0bbbce1eb8d082f24c1026a7d8588f0f4a21c285f76cb92695a347b58898d",
+    "nonpixel-entry-executor-02.log": "b36b11caffdaa8528eacea96510f4ae0daa6ef31c4aa42ffd9e216003cd122f8"
+  },
+  "help_sha256": {
+    "help.log": "8e65a0a4310ec4dec35f0bf22f8e76fcaa707223afd8c4093d1047bb491253fa",
+    "create-help.log": "d82a56105cbf5768a80de8b8087b964495405f1abe72fef75b4c7a1896232963"
+  },
+  "review_state": "REVIEW_REQUIRED",
+  "game_ready": false,
+  "golden_sot_approval": "NOT_GRANTED",
+  "production_activation": "NOT_RUN"
+}

@@ -80,6 +80,71 @@ def factory_job(case):
     return job,value
 
 
+def test_nonpixel_create_cli_runs_existing_job_and_preserves_parent(case, monkeypatch, capsys):
+    from assetpipe.cli import main
+    from assetpipe.factory.motion import plan_job, inspect_job
+    root, _, video, output, _ = case
+    job, _ = factory_job(case)
+    parent = root / 'parent.json'
+    before = {p: fingerprint(p) for p in [parent, video, root/'input/00.png']}
+    def forbidden(*args, **kwargs):
+        raise AssertionError('Offline continuation must not generate a still or video')
+    monkeypatch.setattr('assetpipe.pipelines.nonpixel_image.run', forbidden)
+    monkeypatch.setattr('assetpipe.providers.video.executor.execute_prepared', forbidden)
+    plan = plan_job(job, root)
+    assert main(['--root', str(root), 'create', '--type', 'nonpixel-animation',
+                 '--motion-job', str(job), '--motion-plan-sha256', plan['plan_sha256'],
+                 '--output', str(output)]) == 0
+    capsys.readouterr()
+    receipt = output/'factory_motion.json'
+    assert inspect_job(output, fingerprint(receipt), root)['generation_requests'] == 0
+    assert (output/'exports/godot/walk.tres').exists() or (output/'exports/walk.tres').exists()
+    assert before == {p: fingerprint(p) for p in before}
+
+
+@pytest.mark.parametrize('failure', ['stale_plan', 'generation_flag', 'decode_failure'])
+def test_nonpixel_create_failure_preserves_still_and_stops(case, monkeypatch, failure):
+    from assetpipe.pipelines import create
+    from assetpipe.factory.motion import plan_job
+    root, _, video, output, _ = case
+    job, _ = factory_job(case)
+    plan = plan_job(job, root)
+    parent = root/'parent.json'
+    before = {p: fingerprint(p) for p in [parent, video, root/'input/00.png']}
+    def fail(*args, **kwargs):
+        raise ValueError('DECODE_FAILED_FOR_TEST')
+    if failure == 'decode_failure':
+        monkeypatch.setattr('assetpipe.motion.package.package_video', fail)
+    expected = {'stale_plan': 'FACTORY_MOTION_PLAN_CHANGED',
+                'generation_flag': 'FACTORY_MOTION_REPLAY_DISALLOWS_GENERATION',
+                'decode_failure': 'DECODE_FAILED_FOR_TEST'}[failure]
+    with pytest.raises(ValueError, match=expected):
+        create(None, root, output, motion_job=job,
+               motion_plan_sha256='0'*64 if failure == 'stale_plan' else plan['plan_sha256'],
+               authorize_generation=failure == 'generation_flag')
+    assert before == {p: fingerprint(p) for p in before}
+    assert not (output/'exports').exists()
+    if failure == 'decode_failure':
+        assert json.loads((output/'factory_motion.json').read_text())['status'] == 'FAILED'
+    else:
+        assert not output.exists()
+
+
+@pytest.mark.parametrize('options', [
+    ['--type', 'nonpixel-image', '--motion-job', 'missing.json'],
+    ['--type', 'nonpixel-animation', '--motion-job', 'missing.json', '--prompt', 'override'],
+    ['--type', 'nonpixel-animation', '--motion-job', 'missing.json', '--seed', '0'],
+    ['--type', 'nonpixel-animation', '--motion-job', 'missing.json', '--asset-id', 'override'],
+    ['--type', 'nonpixel-image', '--authorize-generation'],
+    ['--type', 'nonpixel-animation', '--motion-job', 'missing.json'],
+])
+def test_nonpixel_create_rejects_ambiguous_or_incomplete_inputs_before_output(tmp_path, options):
+    from assetpipe.cli import main
+    output = tmp_path/'workspace/child'
+    assert main(['--root', str(tmp_path), 'create', '--output', str(output), *options]) == 1
+    assert not output.exists()
+
+
 def test_factory_motion_replay_real_codec_recipe_export_and_inspect(case,monkeypatch):
     from assetpipe.factory.motion import plan_job,run_job,inspect_job
     root,request,video,output,_=case
