@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — Pixel64 distribution/export provenance, 2026-10-27
+
+- Confirm local LoRA full-file hash/size against publisher HF revision and Civitai
+  version. Preserve bounded missing-training/config evidence and sample workflow
+  widget/download-hint disagreement without installing models or adopting defaults.
+- Execute pinned official parser functions with ten byte-identical dependencies:
+  120 A/B patches and 120 unloaded magnitude keys; no installed-loader patch.
+- Record evidence in docs/research/KREA2_PIXEL64_PROVENANCE_20261027.md/json.
+  Production code/config, generation, approval and compatibility state stay unchanged.
+
 ## Unreleased — bounded Pixel64 CUDA base compatibility probe, 2026-10-27
 
 - Add explicit CUDA base-projection mode to the existing loader diagnostic;

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "RESEARCH_PROVENANCE_OBSERVATION",
+  "observed_at": "2026-10-27T12:25:10.306365+00:00",
+  "artifact": {
+    "filename": "k2-pixel64.safetensors",
+    "sha256": "53f1033700a866eaf6f56026cc352e26cd7d0563d4b32957dbbd3765b60d47bf",
+    "size_bytes": 74406744
+  },
+  "huggingface": {
+    "repo_id": "e-n-v-y/Krea-2-Pixel-Art",
+    "revision": "2fa8d14a24a62f5f3679326f782548c97039d9c2",
+    "identity": "LOCAL_FULL_FILE_HASH_AND_SIZE_MATCH_PUBLISHED_LFS",
+    "model_info_response_sha256": "2b1a4c67871844419abaabbdbd03271e34a29c3459d0a5b8d73684eb70c5a24c",
+    "model_card_sha256": "53242f1b561d6a0d3128a11be70dbb354676a9cae83d10b9451f88e627d14b58",
+    "declared_base_model": "krea/Krea-2-Raw",
+    "nonimage_files": [
+      ".gitattributes",
+      "README.md",
+      "k2-pixel128.safetensors",
+      "k2-pixel32.safetensors",
+      "k2-pixel64.safetensors"
+    ]
+  },
+  "civitai": {
+    "model_id": 2942217,
+    "version_id": 3331476,
+    "file_id": 3217724,
+    "identity": "FULL_FILE_SHA256_MATCH",
+    "training_details": null,
+    "response_sha256": "dcaf8d1a1c15dad932553caf7c3f5135adbace012b916fc82e626be657e30158"
+  },
+  "published_sample_metadata": {
+    "file": "images/ComfyUI_00150.png",
+    "sha256": "257625e158f139c747bd2afe3780968cdaafb10023e0281ed53c2e197c29a6a8",
+    "workflow_only_not_execution_history": true,
+    "base_selected": "d/krea2_DasiwaKrea2TurboRaw_mirroredskiesV1Turbo_full_int8.safetensors",
+    "base_download_hint": "krea2_turbo_fp8_scaled.safetensors",
+    "pixel_lora_selected": {
+      "lora_name": "krea2/k2-pixel64.safetensors",
+      "strength_model": 1
+    },
+    "pixel_lora_mode": 0,
+    "pixel_lora_download_hint": "krea2_warmpastel.safetensors",
+    "other_lora_mode": 4,
+    "refiner_widgets": [
+      64,
+      64,
+      16,
+      true,
+      true
+    ],
+    "advertised_core_version": "0.25.0",
+    "runtime_attestation": "NOT_AVAILABLE"
+  },
+  "official_parser": {
+    "revision": "426f5eea52a7ece1dd599fff4cb6cd1f352ddd24",
+    "sha256": "0934b66bda0f3a56475cb3a57b866948c4d92196dfca2cc8e001fbe96a3adbbc",
+    "scope": "PINNED_UPSTREAM_PARSER_FUNCTIONS_WITH_BYTE_IDENTICAL_ADAPTER_REGISTRY_CLASSES_AND_CONVERTER",
+    "patch_count": 120,
+    "unloaded_magnitude_keys": 120,
+    "byte_identical_dependency_files": 10,
+    "full_upstream_install": "NOT_RUN",
+    "model_weight_application": "NOT_RUN"
+  },
+  "creator_refiner": {
+    "revision": "0b01ea37f1573ca26a8511337e7d9d77759ee2c7",
+    "nodes_sha256": "aa3039218a62d1ddd75a382447a669db899582dee529153e877d13be57ba0a71",
+    "entrypoint_sha256": "983a69c749cc977dd2dcd16267c282c99c13694f5f3ec91a7f2ce6be68392acc",
+    "registered_classes": [
+      "Krea2PixelArtRefiner",
+      "MiniMaxH3PixelArtAutorefiner",
+      "MiniMaxH3PixelArtRefiner",
+      "PerceptualPaletteReduce",
+      "PixelArtAnimationPoseCompositor",
+      "PixelGridCollapse"
+    ],
+    "role": "IMAGE_POSTPROCESSING_NOT_LORA_COMPATIBILITY_LOADER"
+  },
+  "authored_alpha_over_rank": null,
+  "authored_base_hash": null,
+  "exact_training_checkout": null,
+  "status": "DISTRIBUTION_IDENTITY_CONFIRMED_COMPATIBILITY_STILL_BLOCKED",
+  "generation_requests": 0,
+  "model_payload_downloads": 0,
+  "installed_files_changed": false,
+  "production_code_changed": false,
+  "production_compatibility": "BLOCKED",
+  "human_approval": "NOT_GRANTED"
+}
