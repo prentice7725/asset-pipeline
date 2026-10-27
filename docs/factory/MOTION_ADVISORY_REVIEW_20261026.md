@@ -1,5 +1,9 @@
 # Fox motion advisory review — 2026-10-26
 
+Follow-up: [a separate 13..32-frame candidate](MOTION_LOOP_CANDIDATE_20261027.md)
+was losslessly repacked on 2026-10-27. This page retains the earlier review
+snapshot; headroom, pivot, alpha and human approval remain unresolved.
+
 Branch: `codex/motion-advisory-review-20261026`, base `1594087`.
 Scope: review the existing [one-request research result](MOTION_REAL_E2E_20261026.md).
 **ADVISORY_FIXES_REQUIRED / HUMAN_REVIEW_REQUIRED**. Zero generations and no asset

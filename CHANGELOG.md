@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — derived fox loop candidate, 2026-10-27
+
+- Extract original frames 13..32 as a separate 20-frame/24fps candidate; preserve
+  full source lineage and reuse FFV1 plus existing offline motion packaging.
+- Verify every raw/aligned pixel, atlas cell, timing and pivot against source;
+  record endpoint RGB change without treating it as animation approval.
+- Keep original artifacts and human review unchanged; no generation or runtime
+  changes. See docs/factory/MOTION_LOOP_CANDIDATE_20261027.md.
+
 ## Unreleased — advisory review of existing fox motion, 2026-10-26
 
 - Inspect all 56 preserved frames, loop boundary and top-border contacts; reuse
