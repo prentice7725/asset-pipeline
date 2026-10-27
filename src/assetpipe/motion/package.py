@@ -63,6 +63,30 @@ def _probe(video):
             'size': [width, height]}
 
 
+def pack_review_atlas(records, size, fps, output):
+    """Shared bounded packing; caller validates roots, provenance and review gates."""
+    width, height = size
+    count = len(records)
+    if not 1 <= count <= 240 or not all(type(v) is int and 0 < v <= 2048 for v in size):
+        raise ValueError('MOTION_ATLAS_LIMIT: invalid frames or dimensions')
+    columns = min(count, max(1, 4096 // width))
+    atlas_height = math.ceil(count / columns) * height
+    if columns * width * atlas_height > 32_000_000:
+        raise ValueError('MOTION_ATLAS_LIMIT: max 32 million pixels')
+    atlas = Image.new('RGBA', (columns * width, atlas_height))
+    frames = []
+    for index, record in enumerate(records):
+        with Image.open(record['path']) as image:
+            if image.size != (width, height):
+                raise ValueError('MOTION_FRAME_SIZE_CHANGED')
+            x, y = index % columns * width, index // columns * height
+            atlas.paste(image.convert('RGBA'), (x, y))
+        frames.append({**record, 'index': index, 'timestamp_seconds': index / fps,
+                       'duration_ms': 1000 / fps, 'rect': [x, y, width, height]})
+    atlas.save(Path(output) / 'sprites.png')
+    return frames
+
+
 def package_video(request_path, video, expected_sha256, output, root, *, allowed_roots=None):
     """Package a separately supplied video as research; source consumption is UNKNOWN.
 
@@ -123,32 +147,20 @@ def package_video(request_path, video, expected_sha256, output, root, *, allowed
         if len(rows) != count:
             raise ValueError('MOTION_FRAME_COUNT_MISMATCH: sampled timeline incomplete')
         width, height = probe['size']
-        columns = min(count, max(1, 4096 // width))
-        atlas_height = math.ceil(count / columns) * height
-        if columns * width * atlas_height > 32_000_000:
-            raise ValueError('MOTION_ATLAS_LIMIT: max 32 million pixels')
-        atlas = Image.new('RGBA', (columns * width, atlas_height))
         frames = []
         for index, row in enumerate(rows):
             path = output_resolver(row['aligned_path'])
             raw = output_resolver(row['raw_path'])
             if not all(item.is_relative_to(output / 'extraction') for item in [path, raw]):
                 raise ValueError('MOTION_FRAME_PATH_INVALID')
-            with Image.open(path) as image:
-                if image.size != (width, height):
-                    raise ValueError('MOTION_FRAME_SIZE_CHANGED')
-                rgba = image.convert('RGBA')
-                x, y = index % columns * width, index // columns * height
-                atlas.paste(rgba, (x, y))
-            frames.append({'index': index, 'source_frame_index': row['source_frame_index'],
-                           'timestamp_seconds': index / fps, 'duration_ms': 1000 / fps,
-                           'rect': [x, y, width, height], 'pivot': [width / 2, height - 2],
+            frames.append({'source_frame_index': row['source_frame_index'],
+                           'pivot': [width / 2, height - 2],
                            'alignment_offset': row['alignment_offset'],
                            'alignment_status': row['alignment_status'],
                            'raw_path': str(raw), 'raw_sha256': fingerprint(raw),
                            'path': str(path), 'sha256': fingerprint(path)})
         # Held/repeated frames stay in chronological order; candidate filtering is advisory.
-        atlas.save(output / 'sprites.png')
+        frames = pack_review_atlas(frames, [width, height], fps, output)
         write(output / 'atlas.json', {'fps': probe['fps'], 'frames': frames,
                                      'pivot_policy': 'CANVAS_BOTTOM_CENTER_REVIEW_REQUIRED',
                                      'loop_quality': 'NOT_EVALUATED', 'alpha_quality': 'REVIEW_REQUIRED'})

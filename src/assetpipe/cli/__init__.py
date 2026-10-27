@@ -17,6 +17,17 @@ def main(argv=None):
     motion_package.add_argument('--video-sha256', required=True)
     motion_package.add_argument('--output', required=True, type=Path)
     motion_package.add_argument('--allowed-root', action='append', type=Path)
+    for name in ['motion-recipe-plan', 'motion-recipe-apply', 'motion-recipe-inspect']:
+        recipe = commands.add_parser(name, help='Explicit offline motion candidate recipe; no generation or approval')
+        recipe.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'motion-recipe-inspect':
+            recipe.add_argument('--run', required=True, type=Path)
+            recipe.add_argument('--manifest-sha256', required=True)
+        else:
+            recipe.add_argument('--recipe', required=True, type=Path)
+        if name == 'motion-recipe-apply':
+            recipe.add_argument('--plan-sha256', required=True)
+            recipe.add_argument('--output', required=True, type=Path)
     for name in ['motion-preflight', 'motion-prepare', 'motion-inspect']:
         motion = commands.add_parser(name, help='Read-only video gates or frozen research inputs; never generates')
         motion.add_argument('--allowed-root', action='append', type=Path)
@@ -131,7 +142,21 @@ def main(argv=None):
     ingest.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
-        if args.command in {'motion-execution-plan', 'motion-execute'}:
+        if args.command in {'motion-recipe-plan', 'motion-recipe-apply', 'motion-recipe-inspect'}:
+            from ..motion.recipe import plan_recipe, apply_recipe, inspect_recipe
+            from ..factory.provenance import fingerprint
+            if args.command == 'motion-recipe-plan':
+                result = plan_recipe(args.recipe, args.root, allowed_roots=args.allowed_root)
+            elif args.command == 'motion-recipe-apply':
+                path = apply_recipe(args.recipe, args.plan_sha256, args.output, args.root,
+                                    allowed_roots=args.allowed_root)
+                result = {'manifest_path': str(path), 'manifest_sha256': fingerprint(path),
+                          'review_state': 'REVIEW_REQUIRED', 'game_ready': False}
+            else:
+                result = inspect_recipe(args.run, args.root, expected_sha256=args.manifest_sha256,
+                                        allowed_roots=args.allowed_root)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command in {'motion-execution-plan', 'motion-execute'}:
             from ..providers.video.executor import execution_plan, execute_prepared
             options = dict(seed=args.seed, width=args.width, height=args.height, allowed_roots=args.allowed_root)
             if args.command == 'motion-execution-plan':

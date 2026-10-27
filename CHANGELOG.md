@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — explicit offline motion review recipes, 2026-10-27
+
+- Add versioned recipe schema and plan/apply/inspect CLI for explicit contiguous
+  frame selection, preserved or declared white alpha and local cleanup regions.
+- Bind source/code/parameters to a plan hash; preserve intermediates, source
+  lineage, failure receipts and separate pending review stages. No generation,
+  retry, inferred selection, approval API or production/MCP changes.
+- Share existing bounded atlas packing with the video package; retain verified
+  algorithms. Replay the real fox asset through installed CLI with all 20 RGBA
+  frames matching manual cleanup. See docs/factory/MOTION_REVIEW_RECIPE.md.
+
 ## Unreleased — real Godot / Phaser import checks, 2026-10-27
 
 - Import the unchanged 20-frame RGBA candidate into isolated Godot 4.7.2 and
