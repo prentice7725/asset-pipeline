@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "kind": "MOTION_REVIEW_RECIPE",
+  "source_manifest": "../workspace/source_motion_package/run_manifest.json",
+  "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "selection": {"start_frame": 13, "end_frame": 32},
+  "alpha": {
+    "method": "EDGE_CONNECTED_WHITE",
+    "background_rgb": [255, 255, 255],
+    "tolerance": 60,
+    "cleanup": {
+      "regions": [[245, 350, 420, 512], [0, 480, 512, 512]],
+      "rgb_min": [170, 145, 110]
+    }
+  }
+}
