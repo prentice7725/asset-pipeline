@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — requested leg-gap and ground cleanup, 2026-10-27
+
+- Make a separate alpha-only candidate removing pale lower-body matte and ground
+  remnants in explicit regions; preserve RGB, dark boot cores, timing and pivots.
+- Verify all 20 atlas/APNG frames, unchanged source hashes and untouched review
+  state. No generation or runtime changes; see docs/factory/MOTION_ALPHA_CLEANUP_20261027.md.
+
 ## Unreleased — explicit motion alpha comparisons, 2026-10-27
 
 - Reuse existing local U2NetP and edge-connected white-mask primitives on separate

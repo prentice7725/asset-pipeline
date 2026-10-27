@@ -1,5 +1,9 @@
 # Fox motion alpha experiments — 2026-10-27
 
+Follow-up: the user requested leg-gap/ground-remnant removal. A
+[separate local alpha cleanup](MOTION_ALPHA_CLEANUP_20261027.md) addresses those
+regions while preserving this experiment and the remaining review requirements.
+
 Branch: `codex/motion-alpha-candidate-20261027`, base `9888e49`.
 Input: the [20-frame loop candidate](MOTION_LOOP_CANDIDATE_20261027.md), original
 frames 13..32, 512×512 at 24fps. **ALPHA_CLEANUP_REQUIRED / REVIEW_REQUIRED**.
