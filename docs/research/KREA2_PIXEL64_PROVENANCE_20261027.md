@@ -117,3 +117,8 @@ Pixel64 remains experimental; 32px, Golden/SOT and runtime activation stay close
 Rollback: revert these documentation/observation changes. Keep the source and
 diagnostic evidence. There is no installed code, checkpoint, config or active
 pipeline change to reverse.
+
+Follow-up: [isolated external loader candidate check](KREA2_LOADER_CANDIDATE_20261027.md)
+retains all 120 magnitudes in the reviewed grouping/value path, but rejects
+cross-strength/dtype equivalence with the pinned forward reference. It does not
+resolve authored settings or approve a production loader.

@@ -424,6 +424,8 @@ GPU LoRA 적용·전체 모델·이미지 품질 검증과 운영 승격은 아�
 [배포·export 출처 조사](docs/research/KREA2_PIXEL64_PROVENANCE_20261027.md)는 로컬 파일이
 제작자의 HF·Civitai 배포본과 동일함을 확인했습니다. 해시 고정 공식 파서의 격리 실행에서도
 magnitude 120개가 누락됐으며, 학습 alpha·원본 베이스 해시가 확인되지 않아 호환성은 계속 차단합니다.
+[외부 로더 후보 격리 검증](docs/research/KREA2_LOADER_CANDIDATE_20261027.md)에서는
+120개 magnitude 보존을 확인했지만, 강도·dtype에 따른 기준 계산 불일치로 후보를 채택하지 않았습니다.
 
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리
