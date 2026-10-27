@@ -15,7 +15,7 @@ from ..brief import obj
 from ..factory.provenance import Sources, fingerprint
 from ..manifests import now, write
 from ..paths import RootResolver
-from ..pixel.direct.ported import white_border_matte
+from ..pixel.direct.ported import white_border_matte, edge_connected
 from .package import pack_review_atlas
 
 HASH = {'type': 'string', 'pattern': '^[a-f0-9]{64}$'}
@@ -39,6 +39,11 @@ SCHEMA = obj({
 }, ['schema_version', 'kind', 'source_manifest', 'source_sha256', 'selection', 'alpha'])
 SCHEMA.update({'$schema': 'https://json-schema.org/draft/2020-12/schema',
                '$id': 'urn:assetpipe:motion-review-recipe:1'})
+SCHEMA_V2 = copy.deepcopy(SCHEMA)
+SCHEMA_V2['$id'] = 'urn:assetpipe:motion-review-recipe:2'
+SCHEMA_V2['properties']['schema_version']['const'] = 2
+SCHEMA_V2['properties']['alpha']['oneOf'][1]['properties']['tolerance'] = {
+    'type': 'integer', 'minimum': 0, 'maximum': 60}
 REVIEW_CHECKS = ['loop_selection', 'alpha_edges', 'identity_equipment_silhouette',
                  'pivot_and_foot_contact', 'engine_import', 'game_readability', 'aseprite_review']
 
@@ -59,7 +64,8 @@ def plan_recipe(recipe_path, root, *, allowed_roots=None):
     root, resolver = _policy(root, allowed_roots)
     sources = Sources(resolver)
     recipe_path, sha, recipe = sources.document(recipe_path)
-    errors = list(Draft202012Validator(SCHEMA).iter_errors(recipe))
+    schema = SCHEMA_V2 if recipe.get('schema_version') == 2 else SCHEMA
+    errors = list(Draft202012Validator(schema).iter_errors(recipe))
     if errors:
         raise ValueError('MOTION_RECIPE_INVALID: ' + '; '.join(e.message for e in errors))
     manifest_path, manifest_sha, manifest = sources.document(
@@ -172,7 +178,20 @@ def apply_recipe(recipe_path, plan_sha256, output, root, *, allowed_roots=None):
             with Image.open(preserved) as source:
                 rgba = source.convert('RGBA')
             if alpha['method'] == 'EDGE_CONNECTED_WHITE':
-                matte, alpha_report = white_border_matte(rgba)
+                if alpha['tolerance'] == 60:
+                    matte, alpha_report = white_border_matte(rgba)
+                else:
+                    # v2 explicitly narrows the mask input to the verified span-fill.
+                    # No inferred background, global color key or altered RGB.
+                    rgb = np.asarray(rgba)[:, :, :3].astype(np.int32)
+                    background = edge_connected(np.sum((rgb - 255) ** 2, axis=2) <= alpha['tolerance'] ** 2)
+                    matte = rgba.copy()
+                    matte.putalpha(Image.fromarray(np.where(background, 0, 255).astype(np.uint8)))
+                    alpha_report = {'method': 'EXPLICIT_V2_EDGE_CONNECTED_WHITE',
+                        'background_rgb': [255, 255, 255],
+                        'background_tolerance_rgb_distance': alpha['tolerance'],
+                        'transparent_pixels': int(background.sum()),
+                        'foreground_pixels': int((~background).sum())}
                 # Never reintroduce already transparent source pixels.
                 rgba.putalpha(Image.fromarray(np.minimum(np.asarray(rgba)[:, :, 3],
                                                         np.asarray(matte)[:, :, 3])))

@@ -52,6 +52,46 @@ def apply(case):
     return plan,manifest
 
 
+def test_v2_explicit_tolerance_preserves_border_connected_cream_and_existing_alpha(case):
+    root,path,recipe,package,out=case
+    atlas_path=package/'atlas.json'
+    atlas=json.loads(atlas_path.read_text())
+    for row in atlas['frames']:
+        frame=Path(row['path'])
+        with Image.open(frame) as image:
+            rgba=image.convert('RGBA')
+        ImageDraw.Draw(rgba).rectangle((0,31,25,34),fill=(250,245,220,255))
+        rgba.save(frame)
+        row['sha256']=row['raw_sha256']=fingerprint(frame)
+    write(atlas_path,atlas)
+    manifest=package/'run_manifest.json'
+    source=json.loads(manifest.read_text())
+    for row in source['outputs']:
+        row['sha256']=fingerprint(Path(row['path']))
+    write(manifest,source)
+    recipe.update(schema_version=2,source_sha256=fingerprint(manifest))
+    recipe['alpha']['tolerance']=32
+    write(path,recipe)
+    _,receipt=apply(case)
+    with Image.open(out/'final/0000.png') as final:
+        assert final.getpixel((10,32))==(250,245,220,255)
+        assert final.getpixel((0,0))[3]==0
+        assert final.getpixel((30,20))==(255,255,255,255)
+        assert final.getpixel((40,40))==(0,0,255,128)
+    assert inspect_recipe(out,root,expected_sha256=fingerprint(receipt))['status']=='ARTIFACT_INTEGRITY_PASS_REVIEW_REQUIRED'
+
+
+@pytest.mark.parametrize('version,tolerance',[(1,32),(2,-1),(2,61),(2,True),(3,32)])
+def test_tolerance_version_and_bounds_fail_before_output(case,version,tolerance):
+    root,path,recipe,_,out=case
+    recipe['schema_version']=version
+    recipe['alpha']['tolerance']=tolerance
+    write(path,recipe)
+    with pytest.raises(ValueError,match='MOTION_RECIPE_INVALID'):
+        plan_recipe(path,root)
+    assert not out.exists()
+
+
 def test_explicit_recipe_preserves_enclosed_white_and_records_pending_review(case):
     root,path,recipe,source,out=case
     before={str(p):fingerprint(p) for p in source.iterdir()}

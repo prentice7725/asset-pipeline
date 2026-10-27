@@ -1,0 +1,163 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 2
+    },
+    "kind": {
+      "const": "MOTION_REVIEW_RECIPE"
+    },
+    "source_manifest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "start_frame": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 240
+        },
+        "end_frame": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 240
+        }
+      },
+      "required": [
+        "start_frame",
+        "end_frame"
+      ],
+      "additionalProperties": false
+    },
+    "alpha": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "PRESERVE"
+            },
+            "cleanup": {
+              "type": "object",
+              "properties": {
+                "regions": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 16,
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2048
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  }
+                },
+                "rgb_min": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "regions",
+                "rgb_min"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "method"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "EDGE_CONNECTED_WHITE"
+            },
+            "background_rgb": {
+              "const": [
+                255,
+                255,
+                255
+              ]
+            },
+            "tolerance": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60
+            },
+            "cleanup": {
+              "type": "object",
+              "properties": {
+                "regions": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 16,
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2048
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  }
+                },
+                "rgb_min": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "regions",
+                "rgb_min"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "method",
+            "background_rgb",
+            "tolerance"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "source_manifest",
+    "source_sha256",
+    "selection",
+    "alpha"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:assetpipe:motion-review-recipe:2"
+}
