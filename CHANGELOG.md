@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — nonpixel production priority, 2026-10-27
+
+- Apply the user's decision to prioritize nonpixel still images and animation;
+  defer pixel production work to research without deleting existing paths.
+- Reconcile the Factory index with implemented explicit motion jobs and dated
+  replay/engine evidence. Record remaining entrypoint, quality, game integration
+  and separately authorized generation gates. No runtime/default changes.
+
 ## Unreleased — existing-image Pixel64 postprocessing A/B, 2026-10-27
 
 - Compare two archived raw images through existing Refiner orders and isolated
