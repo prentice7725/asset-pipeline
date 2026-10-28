@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "kind": "FACTORY_IDENTITY_VARIANT_JOB",
+  "project_id": "game_a",
+  "asset_id": "fox_surprised",
+  "base": {
+    "manifest_ref": "../workspace/game_a/runs/fox/base/run_manifest.json",
+    "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "image": {
+      "path": "../workspace/game_a/runs/fox/base/010_generation/00001.png",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "selected_by": "<name>",
+    "reason": "<why this base keeps the character best>"
+  },
+  "variation": {
+    "kind": "EXPRESSION",
+    "target": "surprised, eyes wide"
+  },
+  "provider": {
+    "workflow_id": "grok_imagine"
+  }
+}

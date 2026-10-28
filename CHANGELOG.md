@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — same-character expression/pose variants, 2026-10-28
+
+- Add `factory variant-plan/variant-run`: one selected NONPIXEL_IMAGE base, explicit reference-edit
+  provider, fixed preserve lists, one authorized attempt in the shared Factory budget. Fake-CLI tests only;
+  no real generation. Grok is the only registered edit path; Codex and AGY remain follow-up steps.
+
 ## Unreleased — explicit nonpixel motion through create, 2026-10-27
 
 - Connect `create --type nonpixel-animation --motion-job` and the core create API
