@@ -1,5 +1,8 @@
 # STYLE MENU v1
 
+> 2026-10-28: 원본 216장·run records 등 `evidence/` 폴더(227개 파일)는 저장소 용량 정리를 위해 git 이력에서 제거하고 외부에 보관합니다.
+> 경로·크기·SHA256은 [external_evidence_manifest.json](external_evidence_manifest.json)과 [evidence_archive.json](evidence_archive.json)에 남아 있습니다.
+
 24 independent operational selection units. Families are navigation only. All generated assets remain REVIEW_REQUIRED; routing authorization is distinct from Golden/Aseprite approval. No automatic fallback. STYLE-101..124 reuse benchmark contract IDs and avoid existing STYLE-001..009 collisions.
 
 | Style | art_style | Family | Primary | Runner-up |

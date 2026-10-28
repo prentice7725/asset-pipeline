@@ -16,7 +16,7 @@ included in Git.
 To reproduce on the same configured host:
 
 1. Copy these four scripts to `workspace/mcp_runtime`.
-2. Run `git archive 12c21092baacfc4c939ebe5eaa1473e063c69551 --format=zip --output=workspace/mcp_runtime/source.zip` from the repository root.
+2. Run `git archive ebef49503057d7af0bc0dce3026a55edfc1d3a29 --format=zip --output=workspace/mcp_runtime/source.zip` from the repository root.
 3. Run `.venv/Scripts/python workspace/mcp_runtime/deploy.py`.
 4. Back up the user's `.codex/config.toml` securely, then register:
    `codex mcp add asset_pipeline -- C:/workspace/asset-pipeline/.venv/Scripts/python.exe C:/workspace/asset-pipeline/workspace/mcp_runtime/launch.py`.

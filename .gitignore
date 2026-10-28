@@ -6,3 +6,4 @@ workspace/
 route_decision.json
 *.pyc
 config/mcp_adapter.local.yaml
+research/style_catalog/style_menu_v1/evidence/

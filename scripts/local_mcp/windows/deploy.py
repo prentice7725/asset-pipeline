@@ -3,7 +3,7 @@ import zipfile
 import yaml
 
 home = Path(__file__).resolve().parent
-revision = '12c21092baacfc4c939ebe5eaa1473e063c69551'
+revision = 'ebef49503057d7af0bc0dce3026a55edfc1d3a29'
 runtime = home / revision
 runtime.mkdir(exist_ok=True)
 with zipfile.ZipFile(home / 'source.zip') as archive:
