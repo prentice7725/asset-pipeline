@@ -1,5 +1,30 @@
 # Asset Pipeline contributor instructions
 
+## Current focus (read first)
+
+The active workstream is the M3 Factory NONPIXEL production path, decided by the user on
+2026-10-27. Read docs/factory/NONPIXEL_PRODUCTION_PLAN_20261027.md and docs/factory/MOTION_JOB.md.
+The goal is one general path: NONPIXEL still → explicit motion job → frames/alpha/loop →
+atlas and native Godot/Phaser export → human review. Work on that path's implementation order only.
+
+Frozen until the user explicitly reopens them in a new request:
+- Krea2 / Pixel64 / LoRA / DoRA / FP8 loader research, pixel postprocessing A/B, 32px research.
+- Per-sample polishing of existing fox/rabbit candidates (extra alpha, loop, timing reports).
+- New providers, new styles, new MCP tools or schema changes.
+Do not start frozen work because a document lists it as "remaining"; ask the user instead.
+
+Change discipline:
+- One topic per branch/PR. Do not bundle research commits into a feature PR.
+- Prefer code plus tests over new dated reports. Add a dated validation document only when
+  real execution evidence must be preserved, and link it from docs/factory/README.md, not README.md.
+- Keep README.md a usage guide; keep CHANGELOG entries to a few lines.
+- Live generation always needs a separately authorized budget in the current request.
+- Keep new run outputs, images, videos and zip evidence out of git (workspace/ is ignored; never
+  force-add). Commit only small JSON/Markdown summaries with hashes. tests/unit/test_repository_size_guard.py
+  rejects new tracked files over 1 MB and new tracked workspace paths.
+
+## Baseline rules
+
 Read docs/bootstrap_directive.md and docs/migration_inventory.json before pipeline changes.
 The legacy pixel-pipeline is read-only migration source; do not rename, delete, or refactor it.
 Keep Python CLI primary, workflows in config/workflows, and all run artifacts outside source modules.
@@ -9,8 +34,14 @@ Preserve intermediates, source hashes, generation parameters, QA reports, and ex
 Generated images/animations remain candidates until required Aseprite review.
 Safe operations must not redesign identity, clothing, equipment, or silhouette semantics.
 The verified direct profile requires explicit blue-tunic/white-background compatibility; never infer it.
-Run `.venv/Scripts/python -m pip install -e ".[dev,motion]"`, `.venv/Scripts/python -m pytest`, and `assetpipe --help`.
-Stop at ASSET_PIPELINE_V0_1_BOOTSTRAP_PASS. New features require a separate user request.
+Run `.venv/Scripts/python -m pip install -e ".[dev,motion,mcp]"`, `.venv/Scripts/python -m pytest`, and `assetpipe --help`.
+(`mcp` is required because pytest collects integrations/mcp/tests.)
+The v0.1 bootstrap stopped at ASSET_PIPELINE_V0_1_BOOTSTRAP_PASS. New features require a separate user request.
+
+## Historical milestone scopes
+
+The sections below record earlier authorizations. Their rules still apply to the code they
+introduced; their "stop" points describe those milestones, not the current focus above.
 
 The user-authorized Plugin M0 milestone permits a local thin MCP adapter under
 integrations/mcp and instructions/reference packaging under plugin. Read

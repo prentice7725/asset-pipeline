@@ -8,17 +8,25 @@ from ..pipelines import create
 from ..manifests import write, now
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory')
+    # 권장 진입점과 저수준 모션 도구를 도움말에서 구분한다. 기존 명령은 호환을 위해 모두 유지한다.
+    parser = argparse.ArgumentParser(
+        prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=('Recommended entry points:\n'
+                '  create            still image / SFX, or nonpixel animation with --motion-job\n'
+                '  factory           plans, still/audio execution and staged motion jobs (motion-plan, motion-run)\n'
+                'Low-level motion tools (motion-*) are stages used by factory motion jobs;\n'
+                'prefer "factory motion-*" or "create --motion-job" for new work.'))
     parser.add_argument('--root', type=Path, default=Path.cwd(), help='Repository/config root')
     commands = parser.add_subparsers(dest='command', required=True)
-    motion_package = commands.add_parser('motion-package', help='Package an existing nonpixel video for research review; no generation')
+    motion_package = commands.add_parser('motion-package', help='[low-level] Package an existing nonpixel video for research review; no generation')
     motion_package.add_argument('--request', required=True, type=Path)
     motion_package.add_argument('--video', required=True, type=Path)
     motion_package.add_argument('--video-sha256', required=True)
     motion_package.add_argument('--output', required=True, type=Path)
     motion_package.add_argument('--allowed-root', action='append', type=Path)
     for name in ['motion-recipe-plan', 'motion-recipe-apply', 'motion-recipe-inspect']:
-        recipe = commands.add_parser(name, help='Explicit offline motion candidate recipe; no generation or approval')
+        recipe = commands.add_parser(name, help='[low-level] Explicit offline motion candidate recipe; no generation or approval')
         recipe.add_argument('--allowed-root', action='append', type=Path)
         if name == 'motion-recipe-inspect':
             recipe.add_argument('--run', required=True, type=Path)
@@ -29,7 +37,7 @@ def main(argv=None):
             recipe.add_argument('--plan-sha256', required=True)
             recipe.add_argument('--output', required=True, type=Path)
     for name in ['motion-preflight', 'motion-prepare', 'motion-inspect']:
-        motion = commands.add_parser(name, help='Read-only video gates or frozen research inputs; never generates')
+        motion = commands.add_parser(name, help='[low-level] Read-only video gates or frozen research inputs; never generates')
         motion.add_argument('--allowed-root', action='append', type=Path)
         if name == 'motion-inspect':
             motion.add_argument('--run', required=True, type=Path)
@@ -40,7 +48,7 @@ def main(argv=None):
         if name == 'motion-prepare':
             motion.add_argument('--output', required=True, type=Path)
     for name in ['motion-execution-plan', 'motion-execute']:
-        execution = commands.add_parser(name, help='Explicit one-reference research probe plan or one authorized generation attempt')
+        execution = commands.add_parser(name, help='[low-level] Explicit one-reference research probe plan or one authorized generation attempt')
         execution.add_argument('--run', required=True, type=Path)
         execution.add_argument('--seed', required=True, type=int)
         execution.add_argument('--width', required=True, type=int)
@@ -97,7 +105,7 @@ def main(argv=None):
             stage.add_argument('--output', required=True, type=Path)
             stage.add_argument('--authorization', type=Path)
             stage.add_argument('--authorize-generation', action='store_true')
-    route_parser = commands.add_parser('route')
+    route_parser = commands.add_parser('route', help='Resolve a brief to a workflow without generating')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
     rescue = commands.add_parser('rescue-plan', help='Propose at most three subject rescue candidates; never generates')
@@ -107,7 +115,7 @@ def main(argv=None):
     prompt_parser = commands.add_parser('compile-prompt', help='Compile canonical PromptSpec for the selected workflow without generating')
     prompt_parser.add_argument('--brief', required=True, type=Path)
     prompt_parser.add_argument('--output', required=True, type=Path)
-    run = commands.add_parser('create')
+    run = commands.add_parser('create', help='Create one candidate (image/SFX), or a nonpixel animation from an explicit --motion-job')
     run.add_argument('--brief', type=Path)
     run.add_argument('--type', choices=['pixel-static', 'pixel-animation', 'nonpixel-image', 'nonpixel-animation', 'sfx'])
     run.add_argument('--duration', type=float, help='SFX duration in seconds (1–30; default 5)')
