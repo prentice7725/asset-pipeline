@@ -2,9 +2,16 @@
 
 [한국어](README.md) | 日本語
 
-プロンプト、参照画像、プロジェクトの企画書をもとに、ゲーム用の画像や効果音の候補を作成するPython CLIツールです。ComfyUIによる生成、後処理・検証、Asepriteへの書き出しを連携します。
+プロンプト、参照画像、プロジェクトの企画書をもとに、ゲーム用の画像・アニメーション・効果音の**候補**を作成するPython CLIツールです。ComfyUIなどの生成provider、後処理・検証、Aseprite・Godot・Phaserへの書き出しを連携します。
 
 **生成結果は自動承認しません。** ピクセルキャラクターは検証を通過した候補のみをレビューしたうえでStatic Masterとして承認し、SFXも基本検証の後に人が実際に聴いて確認する必要があります。失敗した段階では処理を中断し、記録を保存します。
+
+## 現在の開発の重点
+
+**ノンピクセルの静止画 → アニメーション生産経路**を一つにまとめて完成させることが現在の目標です
+（[実装順序と受け入れ基準](docs/factory/NONPIXEL_PRODUCTION_PLAN_20261027.md)）。
+ピクセル経路とKrea2/Pixel64の研究は保存していますが、凍結中です。貢献範囲は[AGENTS.md](AGENTS.md)に従います。
+日付ごとの検証・実験記録は[Factoryドキュメント索引](docs/factory/README.md)にまとめています。
 
 ## 特徴
 
@@ -16,15 +23,15 @@
 
 ## 対応機能と現在の状況
 
-| 出力種別 | 動作 |
-|---|---|
-| `PIXEL_STATIC` | ピクセル候補の生成 → 分析 → 安全なアルファ処理 → Pixel Gate → 解像度レビュー → Aseprite書き出し → 明示的な承認 |
-| `PIXEL_ANIMATION` | 承認済みのStatic Masterとレビュー済みの既存モーションを用いた8フレームの歩行アニメーション制作、パレット・Pixel Gate検証、Aseprite書き出し |
-| `NONPIXEL_IMAGE` | ComfyUIによる画像生成と基本QA。最終的な目視レビューが必要 |
-| `NONPIXEL_ANIMATION` | 実験的な契約のみ提供。実際の生産実行は未対応 |
-| `SFX` | Stable Audio 3 Mediumによる効果音生成、元のFLAC・PCM WAVを保存、基本的なオーディオQA。試聴レビュー必須 |
+| 出力種別 | 動作 | 状態 |
+|---|---|---|
+| `NONPIXEL_IMAGE` | provider生成（ComfyUI、実験的：Codex CLI・Grok CLI）→ 基本QA → レビュー | 利用可能。目視レビューが必要 |
+| `NONPIXEL_ANIMATION` | 既存の静止画 + 明示的なモーションジョブ → 動画 → フレーム・アルファ・ループ → アトラス・Godot/Phaser書き出し | 実験的。明示的なジョブファイルでのみ実行し、プロンプトからの自動モーションは未対応 |
+| `SFX` | Stable Audio 3 Mediumによる生成、FLAC・WAVの保存、オーディオQA | 利用可能。試聴レビューが必要 |
+| `PIXEL_STATIC` | ピクセル候補 → 分析 → アルファ処理 → Pixel Gate → 解像度レビュー → Aseprite → 明示的な承認 | 保存（研究凍結） |
+| `PIXEL_ANIMATION` | 承認済みのStatic Master + レビュー済みのモーションによる8フレーム歩行 | 保存（研究凍結）。検証済みの単一プロファイルのみ対応 |
 
-現在、ローカル環境で**82件のテスト**が通過しています。初期移行では、実際のAseprite往復検証と、既存アニメーション8フレームのRGBA完全一致を確認しました。その後、Krea2による生成とSFXの実際のCLI・MCP経由の生成も検証しました。
+テスト件数は環境によって異なるため、READMEには固定しません。インストール後に`python -m pytest`で確認してください。
 
 検証の根拠：[初期検証](docs/bootstrap_status.json)、[プロンプト検証](docs/prompt_spec_verification.json)、[SFX検証](docs/sfx_verification.json)、[プラグインの状況](docs/plugin/STATUS.json)
 外部プログラム、モデルの重み、ローカルのベンチマーク資料はリポジトリに含めていません。
@@ -150,7 +157,33 @@ Kreaのスタイル指定には、選択した説明と出典URLを記録でき�
 
 対応していない参照画像・negative prompt・画像内の文字の要求は、黙って捨てずにブロックします。選択の根拠と代替候補は`route_decision.json`に記録します。
 
+## ノンピクセルアニメーション（明示的なモーションジョブ）
+
+既存のNONPIXEL_IMAGEの結果一つを親として指定したジョブファイルで実行します。ジョブファイルは、リクエスト、動画または
+生成入力、元データのハッシュ、フレーム範囲、アルファ方針を固定します。
+
+```powershell
+assetpipe factory motion-plan --job workspace/my-job.json
+assetpipe create --type nonpixel-animation --motion-job workspace/my-job.json `
+  --motion-plan-sha256 <返されたplan-sha256> --output workspace/my-new-motion-run
+```
+
+```text
+親の静止画 → （I2V生成または既存の動画）→ 元の動画を保存 → フレーム抽出
+  → アルファ・整列 → 明示的なループ選択（レシピ）→ アトラス → Godot SpriteFrames / Phaser atlas
+```
+
+- `--output`は設定ルートの`workspace`配下の新しいディレクトリである必要があります。
+- 実際の生成は、別途承認された1回分の予算がある場合にのみ行い、リトライやproviderのフォールバックはありません。
+- プロンプトやBriefだけで動画を自動生成することはありません。参照画像は現在1枚（`IDENTITY_PRIMARY`）のみ検証済みです。
+- 結果は`REVIEW_REQUIRED`、`game_ready=false`のままとなります。
+
+ジョブファイルの形式と予算・レビューの境界は[モーションジョブ契約](docs/factory/MOTION_JOB.md)、
+レシピは[モーションレビューレシピ](docs/factory/MOTION_REVIEW_RECIPE.md)を参照してください。
+
 ## ピクセル検証とStatic Masterの承認
+
+> ピクセル経路は現在、研究凍結中です。既存の機能はそのまま動作しますが、新たな開発は行いません。
 
 ```text
 Brief → ルーター → 生成候補 → 分析 → 安全なアルファ処理
@@ -214,4 +247,4 @@ config/ schemas/ examples/ tests/ docs/
 ```
 
 [移行一覧](docs/migration_inventory.json)には、元のハッシュと変更内容を記録しています。bootstrapスクリプトは既存のリポジトリとローカルのベンチマークを必要とする移行ツールであり、通常のインストール手順ではありません。
-GUI・Web UI・クラウドへのデプロイ・DB・汎用的なアニメーション復元は、現在の範囲に含めていません。
+GUI・Web UI・クラウドへのデプロイ・DBは、現在の範囲に含めていません。
