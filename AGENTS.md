@@ -13,6 +13,12 @@ Frozen until the user explicitly reopens them in a new request:
 - New providers, new styles, new MCP tools or schema changes.
 Do not start frozen work because a document lists it as "remaining"; ask the user instead.
 
+Reopened by the user on 2026-10-28 (identity variants only): read docs/factory/IDENTITY_VARIANT.md.
+A selected T2I base image is edited once by an explicit reference-edit provider to change expression
+or pose. This permits the variant job contract, Codex CLI reference input and an Antigravity (AGY)
+Nano Banana adapter following docs/m1/ANTIGRAVITY_NANO_BANANA_PROVIDER_DESIGN_20261014.md. Keep fixed
+preserve lists, one attempt, no retry/fallback, HUMAN_REQUIRED identity review and the six MCP tools.
+
 Change discipline:
 - One topic per branch/PR. Do not bundle research commits into a feature PR.
 - Prefer code plus tests over new dated reports. Add a dated validation document only when

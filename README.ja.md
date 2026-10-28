@@ -181,6 +181,22 @@ assetpipe create --type nonpixel-animation --motion-job workspace/my-job.json `
 ジョブファイルの形式と予算・レビューの境界は[モーションジョブ契約](docs/factory/MOTION_JOB.md)、
 レシピは[モーションレビューレシピ](docs/factory/MOTION_REVIEW_RECIPE.md)を参照してください。
 
+## 同一人物のバリエーション（表情・ポーズ）
+
+T2Iで作ったベース画像から人が1枚を選び、その画像を参照としてproviderの画像編集を1回だけ実行し、
+表情またはポーズだけを変更します。同じ人物を保った静止画を作るための経路で、結果はモーションジョブの親としても使えます。
+
+```powershell
+assetpipe factory variant-plan --job workspace/jobs/fox_surprised.json --allowed-root . --allowed-root <providerの出力フォルダ>
+assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha256 <plan_sha256> `
+  --authorization workspace/jobs/fox_surprised-auth.json --authorize-generation --allowed-root . --allowed-root <providerの出力フォルダ>
+```
+
+- 現在、参照編集が登録されているproviderはGrok CLI（`grok_imagine`、実験的）のみです。Codex CLIとAGYのNano Bananaは後続の段階です。
+- 保持項目（顔・髪型・衣装・装備・画風など）は変更の種類ごとに固定され、人物が保たれたかどうかは人が判断します。
+
+ジョブファイルの形式、承認ファイル、制限事項は[同一人物のバリエーション](docs/factory/IDENTITY_VARIANT.md)を参照してください（韓国語）。
+
 ## ピクセル検証とStatic Masterの承認
 
 > ピクセル経路は現在、研究凍結中です。既存の機能はそのまま動作しますが、新たな開発は行いません。

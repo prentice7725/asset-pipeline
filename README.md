@@ -383,6 +383,22 @@ assetpipe create --type nonpixel-animation --motion-job workspace/my-job.json `
 작업 파일 형식과 예산·리뷰 경계는 [모션 작업 계약](docs/factory/MOTION_JOB.md),
 레시피는 [모션 리뷰 레시피](docs/factory/MOTION_REVIEW_RECIPE.md)를 참고하세요.
 
+## 동일 인물 변형 (표정·포즈)
+
+T2I로 만든 베이스 1장을 사람이 고른 뒤, 그 이미지를 참조로 provider의 이미지 편집을 1회 실행해
+표정이나 포즈만 바꿉니다. 같은 인물을 유지한 정지 이미지를 만들기 위한 경로이며, 결과는 모션 작업의 부모로도 쓸 수 있습니다.
+
+```powershell
+assetpipe factory variant-plan --job workspace/jobs/fox_surprised.json --allowed-root . --allowed-root <provider 출력 폴더>
+assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha256 <plan_sha256> `
+  --authorization workspace/jobs/fox_surprised-auth.json --authorize-generation --allowed-root . --allowed-root <provider 출력 폴더>
+```
+
+- 현재 참조 편집이 등록된 provider는 Grok CLI(`grok_imagine`, 실험적)뿐입니다. Codex CLI와 AGY 나노바나나는 후속 단계입니다.
+- 유지 항목(얼굴·헤어·의상·장비·화풍 등)은 변형 종류별로 고정되며, 인물이 유지됐는지는 사람이 판단합니다.
+
+작업 파일 형식, 승인 파일, 제한 사항은 [동일 인물 변형 작업](docs/factory/IDENTITY_VARIANT.md)을 참고하세요.
+
 ## 픽셀 검증과 Static Master 승인
 
 > 픽셀 경로는 현재 연구 동결 상태입니다. 기존 기능은 그대로 동작하지만 새 개발은 하지 않습니다.

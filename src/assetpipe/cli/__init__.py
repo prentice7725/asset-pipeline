@@ -105,6 +105,14 @@ def main(argv=None):
             stage.add_argument('--output', required=True, type=Path)
             stage.add_argument('--authorization', type=Path)
             stage.add_argument('--authorize-generation', action='store_true')
+    for name in ['variant-plan', 'variant-run']:
+        variant = factory_commands.add_parser(name, help='Same-character expression/pose edit from one selected base image; one authorized attempt')
+        variant.add_argument('--job', required=True, type=Path)
+        variant.add_argument('--allowed-root', action='append', type=Path)
+        if name == 'variant-run':
+            variant.add_argument('--plan-sha256', required=True)
+            variant.add_argument('--authorization', required=True, type=Path)
+            variant.add_argument('--authorize-generation', required=True, action='store_true')
     route_parser = commands.add_parser('route', help='Resolve a brief to a workflow without generating')
     route_parser.add_argument('--brief', type=Path, required=True)
     route_parser.add_argument('--output', type=Path, default=Path('route_decision.json'))
@@ -236,6 +244,17 @@ def main(argv=None):
                             allowed_roots=args.allowed_root)
                     result = {'manifest_path': str(path), 'manifest_sha256': fingerprint(path),
                               'review_state': 'REVIEW_REQUIRED', 'game_ready': False}
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+            elif args.factory_command.startswith('variant-'):
+                from ..factory.variant import plan_variant, run_variant
+                from ..factory.provenance import fingerprint
+                if args.factory_command == 'variant-plan':
+                    result = plan_variant(args.job, args.root, allowed_roots=args.allowed_root)
+                else:
+                    path = run_variant(args.job, args.plan_sha256, args.authorization, args.root,
+                                       authorize_generation=args.authorize_generation, allowed_roots=args.allowed_root)
+                    result = {'receipt_path': str(path), 'receipt_sha256': fingerprint(path),
+                              'identity_review': 'HUMAN_REQUIRED', 'review_state': 'REVIEW_REQUIRED', 'game_ready': False}
                 print(json.dumps(result, indent=2, ensure_ascii=False))
             elif args.factory_command == 'execute':
                 print(factory_execute(args.request, args.root, authorize_generation=args.authorize_generation,
