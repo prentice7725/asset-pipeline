@@ -1,7 +1,7 @@
 {
   "version": 1,
   "purpose": "User-selected style menu representatives; not asset approval",
-  "storage": "local ignored workspace; not portable with git",
+  "storage": "Originals in local ignored workspace and public GitHub release assets; not tracked in git",
   "representatives": [
     {
       "style_id": "STYLE-101",
@@ -10,7 +10,8 @@
       "sha256": "deded967277b4b89cc477324444aae66a2e6e50b6de1d2912cc31eabba0d39f7",
       "source_reference": "https://assets.thetacursed.com/krea/2/2296994da9bc.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-101.png"
     },
     {
       "style_id": "STYLE-102",
@@ -19,7 +20,8 @@
       "sha256": "863044c559e989dd0e55f34be1f7ec2af4fb1d980e63a6d9d18c216550161cf7",
       "source_reference": "https://assets.thetacursed.com/krea/1/2dfd01bda89f.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-102.png"
     },
     {
       "style_id": "STYLE-103",
@@ -28,7 +30,8 @@
       "sha256": "55c6c818e15bcfcca35235e65ff48d3f695253564cc42b194b72b3eab797f45f",
       "source_reference": "https://assets.thetacursed.com/krea/1/fbd56820d95e.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-103.png"
     },
     {
       "style_id": "STYLE-104",
@@ -37,7 +40,8 @@
       "sha256": "ba5b97114c613ff78d9d8aad0b249cb0fa6652240971d0ca13f74288db6efe92",
       "source_reference": "https://assets.thetacursed.com/krea/1/03efebcc9262.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-104.png"
     },
     {
       "style_id": "STYLE-105",
@@ -46,7 +50,8 @@
       "sha256": "7b03b178373e733ac7fdf16be035f89f0b349fa5ebd4dc24acc6f263c46a3271",
       "source_reference": "https://assets.thetacursed.com/krea/2/97e333d71519.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-105.png"
     },
     {
       "style_id": "STYLE-106",
@@ -55,7 +60,8 @@
       "sha256": "22170447e3506807fcc8490d733f696ab7e54f5cfa9c2924a9a5f1392164ec9e",
       "source_reference": "https://assets.thetacursed.com/krea/1/db8c68866056.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-106.png"
     },
     {
       "style_id": "STYLE-107",
@@ -64,7 +70,8 @@
       "sha256": "5887e711f948dbdb88fd4cb4ded2e305f6b3dce184af5269a0b5ecbd25d82f8c",
       "source_reference": "https://assets.thetacursed.com/krea/2/2bcaf2310be4.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-107.png"
     },
     {
       "style_id": "STYLE-108",
@@ -73,7 +80,8 @@
       "sha256": "7f91e2e9fb63f930fa953c37fe04537f17f0129b77c9185b398535aa7ee980f4",
       "source_reference": "https://assets.thetacursed.com/krea/2/0125469b3037.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-108.png"
     },
     {
       "style_id": "STYLE-109",
@@ -82,7 +90,8 @@
       "sha256": "5c93bc2b96cae75ae2051fab4d83bedc062bf22aad234df84f967aeb2fce6ca3",
       "source_reference": "https://assets.thetacursed.com/krea/2/76b16196fa43.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-109.png"
     },
     {
       "style_id": "STYLE-110",
@@ -91,7 +100,8 @@
       "sha256": "aea79f19031b10c5b249eec107c3154d6ab9f35cbcce68a0223ccb12cc6894b4",
       "source_reference": "https://assets.thetacursed.com/krea/1/b0c422916b0d.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-110.png"
     },
     {
       "style_id": "STYLE-111",
@@ -100,7 +110,8 @@
       "sha256": "92b042f1e34f9960f31ac5be5b3a74018a3c038e3ed3d00f75e7d751d43678fa",
       "source_reference": "https://assets.thetacursed.com/krea/1/05cc22b89e34.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-111.png"
     },
     {
       "style_id": "STYLE-112",
@@ -109,7 +120,8 @@
       "sha256": "5a1cc3f2f22a015b4fb9758c77d02c5622e43f4f3d8df3fdb05b35d8db2126e9",
       "source_reference": "https://assets.thetacursed.com/krea/2/853235279ae7.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-112.png"
     },
     {
       "style_id": "STYLE-113",
@@ -118,7 +130,8 @@
       "sha256": "e06c1397c11e91d548a4655c5a3e38331bf08b50a56c2d811b6b854a54a6b00d",
       "source_reference": "https://assets.thetacursed.com/krea/1/af0b541cf454.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-113.png"
     },
     {
       "style_id": "STYLE-114",
@@ -127,7 +140,8 @@
       "sha256": "32347dbd7ed3fc028e7c76f4e380960b416b316912076ed2fd542681dab7e85e",
       "source_reference": "https://assets.thetacursed.com/krea/1/cd08de37ef98.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-114.png"
     },
     {
       "style_id": "STYLE-115",
@@ -136,7 +150,8 @@
       "sha256": "0b6172843fe9ed7965632834139e0b72ea3ca0b17f56d20430e632579e375980",
       "source_reference": "https://assets.thetacursed.com/krea/1/f85870d45ffe.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-115.png"
     },
     {
       "style_id": "STYLE-116",
@@ -145,7 +160,8 @@
       "sha256": "2719ef00f9982966a1ff80d28397a3e189406a59eb88c1ad143db99028bb0d6a",
       "source_reference": "https://assets.thetacursed.com/krea/1/960625243657.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-116.png"
     },
     {
       "style_id": "STYLE-117",
@@ -154,7 +170,8 @@
       "sha256": "90cc73717beeda7fd8eca767d62089d5704877047dedb3ed51d04633de746363",
       "source_reference": "https://assets.thetacursed.com/krea/2/64964c86fc9d.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-117.png"
     },
     {
       "style_id": "STYLE-118",
@@ -163,7 +180,8 @@
       "sha256": "0f82610217a84532236efc1b7569fad4160bc7435905813d732eeb86c25eda0d",
       "source_reference": "https://assets.thetacursed.com/krea/2/77f621a958d9.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-118.png"
     },
     {
       "style_id": "STYLE-119",
@@ -172,7 +190,8 @@
       "sha256": "e25d8a0f639b1810b1c32135e9a8c7e01dbd859deed3c6c1b2eb73f4eb065850",
       "source_reference": "https://assets.thetacursed.com/krea/1/c6b9ccfa8cca.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-119.png"
     },
     {
       "style_id": "STYLE-120",
@@ -181,7 +200,8 @@
       "sha256": "2828699059144695f04e576fe9412f9f49059bb370adf1f3d20253b38a225a3e",
       "source_reference": "https://assets.thetacursed.com/krea/1/dc53ab5f5a17.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-120.png"
     },
     {
       "style_id": "STYLE-121",
@@ -190,7 +210,8 @@
       "sha256": "b71a782815b589959448970a8748d0b2b980787331fcd8990ebcc703aa7a6ba1",
       "source_reference": "https://assets.thetacursed.com/krea/1/00f0d9768d93.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-121.png"
     },
     {
       "style_id": "STYLE-122",
@@ -199,7 +220,8 @@
       "sha256": "4a5f465225161a5d37717bbdc13e1d4a46c376b3503ba1ffaa5683d933aae91a",
       "source_reference": "https://assets.thetacursed.com/krea/1/aef97ec94d3f.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-122.png"
     },
     {
       "style_id": "STYLE-123",
@@ -208,7 +230,8 @@
       "sha256": "8ec8c889e00231004d9a8991a8280a4b4df147ad9123de1e36ed1597c9fa4d95",
       "source_reference": "https://assets.thetacursed.com/krea/2/699838cf2d6c.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-123.png"
     },
     {
       "style_id": "STYLE-124",
@@ -217,7 +240,8 @@
       "sha256": "b86d036632466c40f155c614566277dd8493a6b3b6926d3e0cae3eda88a45bf5",
       "source_reference": "https://assets.thetacursed.com/krea/1/d56af712ee40.webp",
       "selection": "USER_SELECTED_MENU_REPRESENTATIVE",
-      "asset_review": "REVIEW_REQUIRED"
+      "asset_review": "REVIEW_REQUIRED",
+      "release_url": "https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-124.png"
     }
   ]
 }
