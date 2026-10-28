@@ -1,5 +1,7 @@
 # STYLE MENU v1
 
+> **2026-10-29 대표 이미지 적용:** 아래 대표 이미지는 사용자가 선택한 새 후보입니다. 파일은 로컬 `workspace/`에 보관하므로 다른 체크아웃에는 자동으로 포함되지 않습니다. [선택 목록과 SHA-256](selected_representatives.json) · [검수 기록](../../../workspace/style_menu_preflight/REFERENCE_REVIEW.md) · [이미지 모아보기](../../../workspace/style_menu_preflight/STYLE_MENU_REVIEW.html). 기존 exemplar 설정, 실패 이미지와 실험 기록은 과거 증거로 유지합니다. 메뉴 선택은 게임 에셋 또는 Aseprite 승인이 아닙니다.
+
 > 2026-10-28: 원본 216장·run records 등 `evidence/` 폴더(227개 파일)는 저장소 용량 정리를 위해 git 이력에서 제거하고 외부에 보관합니다.
 > 경로·크기·SHA256은 [external_evidence_manifest.json](external_evidence_manifest.json)과 [evidence_archive.json](evidence_archive.json)에 남아 있습니다.
 
@@ -36,7 +38,7 @@ Set `art_style: retro_sci_fi_anime` in a NONPIXEL_IMAGE Brief or project visual_
 
 Anima workflows remain EXPERIMENTAL in the registry. Selecting this user-authorized menu explicitly opts into its configured binding; no registry/recipe quality approvals are fabricated. Known defects become route warnings, not style holds.
 
-Portable image paths in JSON are repository-relative. This Markdown uses document-relative previews. Evidence snapshots are historical byte-preserved records; old host paths inside them are not live links. All 216 originals are bundled with a portable hash inventory.
+Historical preview paths and evidence metadata describe the original benchmark. Newly selected representatives live in the ignored local workspace; their paths and hashes are recorded in selected_representatives.json. The historical evidence archive is external and is not bundled in this checkout.
 
 ## STYLE-101 90s nocturnal cel anime
 
@@ -44,7 +46,9 @@ Cel figure and complete painted night-city atmosphere
 
 Known limitations: None recorded in this small cohort; not guaranteed
 
-![best](previews/STYLE-101_best.png)
+![STYLE-101 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style101_reference_04/c116652a4b044542a7f0371890e068a5/010_generation/001_style101_reference_04_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-101_best.png) (historical)
 
 ![failure](previews/STYLE-101_failure.png)
 
@@ -54,7 +58,9 @@ Indigo/magenta painted twilight; gothic architecture remains weak
 
 Known limitations: None recorded in this small cohort; not guaranteed
 
-![best](previews/STYLE-102_best.png)
+![STYLE-102 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style102_reference_02/8807c86c61704b0b95be74b71f8f79f6/010_generation/001_style102_reference_02_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-102_best.png) (historical)
 
 ![failure](previews/STYLE-102_failure.png)
 
@@ -64,7 +70,9 @@ Richer cosmic retro anime scenery, cel shadows and neon analog mood
 
 Known limitations: WRONG_IMAGE_SIDE
 
-![best](previews/STYLE-103_best.png)
+![STYLE-103 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style103_reference_04/d5abae569c714b5fb28eb46bbac7f387/010_generation/001_style103_reference_04_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-103_best.png) (historical)
 
 ![failure](previews/STYLE-103_failure.png)
 
@@ -74,7 +82,9 @@ Strong outlined flat manga treatment and saturated color field
 
 Known limitations: None recorded in this small cohort; not guaranteed
 
-![best](previews/STYLE-104_best.png)
+![STYLE-104 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style104_reference_06/e0049abd61674244b1e0ff9f23c97044/010_generation/001_style104_reference_06_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-104_best.png) (historical)
 
 ![failure](previews/STYLE-104_failure.png)
 
@@ -84,7 +94,9 @@ Pastel/neon pop motifs, halftone and cute cartoon rendering
 
 Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
-![best](previews/STYLE-105_best.png)
+![STYLE-105 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style105_reference_01/5639a2369ee246f5a6bc5473e93c3fe5/010_generation/001_style105_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-105_best.png) (historical)
 
 ![failure](previews/STYLE-105_failure.png)
 
@@ -94,7 +106,9 @@ Rounded cartoon/sticker language closest to rubber-hose; classic pie-eye specifi
 
 Known limitations: VIEW_DRIFT, REAR_VIEW, ANATOMICAL_SIDE_NOT_VALIDATED
 
-![best](previews/STYLE-106_best.png)
+![STYLE-106 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style106_reference_01/26036429d4a24061bd64ea2b8648b255/010_generation/001_style106_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-106_best.png) (historical)
 
 ![failure](previews/STYLE-106_failure.png)
 
@@ -104,7 +118,9 @@ Angular geometric western-cartoon form; outlined action-cartoon specificity part
 
 Known limitations: FACE_READABILITY_FAILED, EQUIPMENT_CROPPED, BACKGROUND_STREAK_ARTIFACT
 
-![best](previews/STYLE-107_best.png)
+![STYLE-107 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style107_reference_01/d6041cd5e6f9429f9b6e88111cf4a1dd/010_generation/001_style107_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-107_best.png) (historical)
 
 ![failure](previews/STYLE-107_failure.png)
 
@@ -114,7 +130,9 @@ Strong cross-hatched graphic ink scene and architecture
 
 Known limitations: EXTRA_BACKGROUND_FIGURES
 
-![best](previews/STYLE-108_best.png)
+![STYLE-108 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style108_reference_01/3eaf808a62e1435a935fe7245dbe04a1/010_generation/001_style108_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-108_best.png) (historical)
 
 ![failure](previews/STYLE-108_failure.png)
 
@@ -124,7 +142,9 @@ Strongest consistent coat screentone and manga ink contrast
 
 Known limitations: WRONG_IMAGE_SIDE, FACE_DETAIL_PARTIAL
 
-![best](previews/STYLE-109_best.png)
+![STYLE-109 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style109_reference_02/c060f84390054086a1d4f42cf64dd432/010_generation/001_style109_reference_02_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-109_best.png) (historical)
 
 ![failure](previews/STYLE-109_failure.png)
 
@@ -134,7 +154,9 @@ Opaque matte gouache brushwork shared by figure and background
 
 Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
-![best](previews/STYLE-110_best.png)
+![STYLE-110 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style110_reference_01/bf04731efa5a4783ba865771ae8c6362/010_generation/001_style110_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-110_best.png) (historical)
 
 ![failure](previews/STYLE-110_failure.png)
 
@@ -144,7 +166,9 @@ Translucent watercolor washes, delicate ink and warm paper
 
 Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
-![best](previews/STYLE-111_best.png)
+![STYLE-111 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style111_reference_01/2ced5c9238b14bfbb8a5e6150ad5639f/010_generation/001_style111_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-111_best.png) (historical)
 
 ![failure](previews/STYLE-111_failure.png)
 
@@ -154,7 +178,9 @@ Folk gouache forest and warm magical glow
 
 Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
-![best](previews/STYLE-112_best.png)
+![STYLE-112 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style112_reference_01/0ac2c6a917984be6bc1408e87e9274f8/010_generation/001_style112_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-112_best.png) (historical)
 
 ![failure](previews/STYLE-112_failure.png)
 
@@ -164,7 +190,9 @@ Dense engraving hatching and ink portrait marks; realistic face proportions need
 
 Known limitations: None recorded in this small cohort; not guaranteed
 
-![best](previews/STYLE-113_best.png)
+![STYLE-113 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style113_reference_01/f5b94ca2ae4147d0972631c261da4b0f/010_generation/001_style113_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-113_best.png) (historical)
 
 ![failure](previews/STYLE-113_failure.png)
 
@@ -174,7 +202,9 @@ Heavy impasto ridges on coat and background, muted painterly light
 
 Known limitations: None recorded in this small cohort; not guaranteed
 
-![best](previews/STYLE-114_best.png)
+![STYLE-114 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style114_reference_01/6536b2d8b0f3448baa245b4c25677be8/010_generation/001_style114_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-114_best.png) (historical)
 
 ![failure](previews/STYLE-114_failure.png)
 
@@ -184,7 +214,9 @@ Printed duotone ink, grain and offset registration clearest
 
 Known limitations: EQUIPMENT_GEOMETRY_AMBIGUOUS
 
-![best](previews/STYLE-115_best.png)
+![STYLE-115 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style115_reference_02/55f7c8d7926a4867a39246dcd3ae4518/010_generation/001_style115_reference_02_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-115_best.png) (historical)
 
 ![failure](previews/STYLE-115_failure.png)
 
@@ -194,7 +226,9 @@ Photocopy black/blue ink and distressed printed silhouette
 
 Known limitations: EXTRA_CHARACTER
 
-![best](previews/STYLE-116_best.png)
+![STYLE-116 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style116_reference_02/ede76943e5154e5397eeeb71f5bb1dd4/010_generation/001_style116_reference_02_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-116_best.png) (historical)
 
 ![failure](previews/STYLE-116_failure.png)
 
@@ -204,7 +238,9 @@ Krea best saturated minimal vector palette; Turbo readable geometric faces. Usag
 
 Known limitations: FACE_READABILITY_FAILED
 
-![best](previews/STYLE-117_best.png)
+![STYLE-117 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style117_reference_01/1937f7b1ee314f3584f1ae7d200521c6/010_generation/001_style117_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-117_best.png) (historical)
 
 ![failure](previews/STYLE-117_failure.png)
 
@@ -214,7 +250,9 @@ Strongest layered cut-paper offset silhouette and texture
 
 Known limitations: FACE_READABILITY_FAILED, BACKGROUND_FIGURE_AMBIGUOUS
 
-![best](previews/STYLE-118_best.png)
+![STYLE-118 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style118_reference_02/c4159631f6674eca84c496a4d293d0f1/010_generation/001_style118_reference_02_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-118_best.png) (historical)
 
 ![failure](previews/STYLE-118_failure.png)
 
@@ -224,7 +262,9 @@ Hard graphic neon chiaroscuro and ink/halftone stronger than softer Krea paint; 
 
 Known limitations: WRONG_IMAGE_SIDE
 
-![best](previews/STYLE-119_best.png)
+![STYLE-119 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style119_reference_01/46ab6d29c3af4cda8a68694a5c2d6630/010_generation/001_style119_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-119_best.png) (historical)
 
 ![failure](previews/STYLE-119_failure.png)
 
@@ -234,7 +274,9 @@ Dark ink/wash fantasy atmosphere and background strongest
 
 Known limitations: FACE_READABILITY_FAILED, HAIR_IDENTITY_DRIFT
 
-![best](previews/STYLE-120_best.png)
+![STYLE-120 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style120_reference_01/c866580192ad4c9bb46357cdf0247261/010_generation/001_style120_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-120_best.png) (historical)
 
 ![failure](previews/STYLE-120_failure.png)
 
@@ -244,7 +286,9 @@ Soft dreamy hills/cloud atmosphere consistent; surreal specificity weak
 
 Known limitations: None recorded in this small cohort; not guaranteed
 
-![best](previews/STYLE-121_best.png)
+![STYLE-121 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style121_reference_02/d5ee9ba84bf54b4aa4bc8302041e97c2/010_generation/001_style121_reference_02_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-121_best.png) (historical)
 
 ![failure](previews/STYLE-121_failure.png)
 
@@ -254,7 +298,9 @@ Soft retro airbrush halo much clearer than hard rays/cel alternatives
 
 Known limitations: FACE_READABILITY_FAILED
 
-![best](previews/STYLE-122_best.png)
+![STYLE-122 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style122_reference_01/3ff40e3e494841a79121c2afe0b3ee19/010_generation/001_style122_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-122_best.png) (historical)
 
 ![failure](previews/STYLE-122_failure.png)
 
@@ -264,7 +310,9 @@ Tactile rounded clay toy volume and matte surfaces across all seeds
 
 Known limitations: None recorded in this small cohort; not guaranteed
 
-![best](previews/STYLE-123_best.png)
+![STYLE-123 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style123_reference_01/185a2ab734ef487bb06c6cc3b0ff85b7/010_generation/001_style123_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-123_best.png) (historical)
 
 ![failure](previews/STYLE-123_failure.png)
 
@@ -274,7 +322,9 @@ Cubical voxel blocks clearly distinguish from triangular low-poly alternatives
 
 Known limitations: CAMERA_VIEW_DRIFT
 
-![best](previews/STYLE-124_best.png)
+![STYLE-124 사용자 선택 대표 이미지](../../../workspace/plugin_runs/style_menu_reference/runs/style124_reference_01/3730a5b77b6d44e2ab6281ab4b098c9f/010_generation/001_style124_reference_01_00001_.png)
+
+[이전 실험 대표 이미지](previews/STYLE-124_best.png) (historical)
 
 ![failure](previews/STYLE-124_failure.png)
 
