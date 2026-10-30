@@ -84,7 +84,7 @@ def _route_bound(brief, registry, root, menu_decision=None):
         unavailable = [cap for cap in required if not (item['capabilities'].get('negative_prompt')
                        if cap == 'native_subject_negative' else satisfied(item['capabilities'], cap))
                        and not (instruction_review and cap in {'negative_prompt', 'native_subject_negative'})
-                       and not (delivery and not delivery_error and cap == 'transparent_output')]
+                       and not (delivery and not delivery_error and cap in {'transparent_output', 'exact_resolution'})]
         missing_by_workflow[key] = unavailable
         resolution = brief['constraints']['resolution']
         multiple = item.get('delivery_resolution_multiple')

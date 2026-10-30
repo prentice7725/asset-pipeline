@@ -66,6 +66,15 @@ evidence, not generation E2E or art approval. ComfyUI readiness is a separate ga
 The [2026-10-29 source/alpha validation](../factory/PORTRAIT_SOURCE_ALPHA_VALIDATION_20261029.md)
 adds real generation and offline replay evidence, including remaining quality failures.
 
+## Project portrait reference edit
+
+For the explicitly authorized portrait reference-edit contract, see
+[identity variants](../factory/IDENTITY_VARIANT.md). It retains STYLE-104 and the
+Krea2 base path, but binds an explicit Grok reference input to local RGBA delivery.
+The reference is copied byte-for-byte; a verified uniform light neutral backdrop
+may be measured for compositing. Ordinary T2I retains the white-background rule.
+No native Grok alpha/exact-resolution capability or style approval is implied.
+
 ## Environment STYLE-111 route
 
 For the Day 01 backwall, the prepared Brief sets `project_id: isekai_examiner` and

@@ -263,7 +263,7 @@ def test_matting_failure_preserves_segmentation_without_silent_fallback(tmp_path
     monkeypatch.setattr(delivery, 'preflight', lambda value: tmp_path/'pinned-model.onnx')
     monkeypatch.setattr(delivery, '_source_background',
                         lambda image, mask: (mask, Image.new('1', image.size, 0),
-                                             {'verified_white_fraction': 1.0}))
+                                             {'verified_white_fraction': 1.0,'verified_background_fraction':1.0}))
     monkeypatch.setattr(delivery.importlib.metadata, 'version', lambda name: 'test-version')
     source = tmp_path/'source.png'
     Image.new('RGB',(32,32),'white').save(source)
@@ -379,16 +379,17 @@ def test_source_background_gap_misclassified_as_foreground_is_removed_without_er
     assert Image.open(tmp_path/'delivery/masked_original.png').convert('RGB').tobytes() == image.tobytes()
 
 
-def test_translucent_portrait_edge_composites_without_white_backdrop_contamination(tmp_path, monkeypatch):
+@pytest.mark.parametrize('background,edge_rgb', [((255,255,255),(140,165,190)), ((240,242,241),(132,158,183))])
+def test_translucent_portrait_edge_composites_without_white_backdrop_contamination(tmp_path, monkeypatch,background,edge_rgb):
     pytest.importorskip('scipy')
     import sys
     from types import ModuleType
     from PIL import Image, ImageDraw, ImageOps
     import assetpipe.portrait_delivery as delivery
-    image=Image.new('RGB',(32,32),'white')
+    image=Image.new('RGB',(32,32),background)
     ImageDraw.Draw(image).rectangle((10,8,23,31),fill=(25,75,125))
     # The known 50%-alpha edge of that color composited onto white.
-    ImageDraw.Draw(image).line((9,8,9,31),fill=(140,165,190))
+    ImageDraw.Draw(image).line((9,8,9,31),fill=edge_rgb)
     alpha=Image.new('L',image.size,0)
     ImageDraw.Draw(alpha).rectangle((10,8,23,31),fill=255)
     ImageDraw.Draw(alpha).line((9,8,9,31),fill=128)
@@ -402,17 +403,21 @@ def test_translucent_portrait_edge_composites_without_white_backdrop_contaminati
     monkeypatch.setattr(delivery,'preflight',lambda value: tmp_path/'pinned.onnx')
     monkeypatch.setattr(delivery.importlib.metadata,'version',lambda name:'test')
     source=tmp_path/'source.png'; image.save(source)
-    output,record=delivery.process(source,[32,32],{'operation':'LOCAL_MASK_UNIFORM_CONTAIN'},tmp_path/'delivery')
+    policy={'operation':'LOCAL_MASK_UNIFORM_CONTAIN'}
+    if background!=(255,255,255):
+        policy.update(reference_input='EXACT_RGBA',source_background_policy='UNIFORM_NEUTRAL')
+    output,record=delivery.process(source,[32,32],policy,tmp_path/'delivery')
     actual=Image.open(output)
     # Composite over black: expected source color * alpha, within 8-bit rounding.
     composite=Image.alpha_composite(Image.new('RGBA',image.size,'black'),actual)
     assert all(abs(c-e)<=1 for c,e in zip(composite.getpixel((9,16))[:3],(13,38,63)))
     assert actual.getpixel((15,16)) == (25,75,125,255)
     assert actual.getchannel('A').tobytes() == alpha.tobytes()
-    assert actual.getpixel((0,0)) == (255,255,255,0)
+    assert actual.getpixel((0,0)) == (*background,0)
 
 
-def test_nonwhite_backdrop_stops_before_white_edge_recovery(tmp_path,monkeypatch):
+@pytest.mark.parametrize('neutral_pattern',[False,True])
+def test_nonwhite_backdrop_stops_before_white_edge_recovery(tmp_path,monkeypatch,neutral_pattern):
     pytest.importorskip('scipy')
     import sys
     import json
@@ -420,6 +425,9 @@ def test_nonwhite_backdrop_stops_before_white_edge_recovery(tmp_path,monkeypatch
     from PIL import Image,ImageDraw,ImageOps
     import assetpipe.portrait_delivery as delivery
     image=Image.new('RGB',(32,32),(220,210,200))
+    if neutral_pattern:
+        image=Image.new('RGB',(32,32),(225,225,225))
+        ImageDraw.Draw(image).rectangle((16,0,31,31),fill=(250,250,250))
     ImageDraw.Draw(image).rectangle((10,8,23,31),fill='black')
     mask=Image.new('L',image.size,0)
     ImageDraw.Draw(mask).rectangle((10,8,23,31),fill=255)
@@ -433,8 +441,66 @@ def test_nonwhite_backdrop_stops_before_white_edge_recovery(tmp_path,monkeypatch
     monkeypatch.setattr(delivery.importlib.metadata,'version',lambda name:'test')
     source=tmp_path/'source.png'; image.save(source)
     out=tmp_path/'delivery'
-    with pytest.raises(ValueError,match='not verified uniform white'):
-        delivery.process(source,[32,32],{'operation':'LOCAL_MASK_UNIFORM_CONTAIN'},out)
+    policy={'operation':'LOCAL_MASK_UNIFORM_CONTAIN'}
+    if neutral_pattern:
+        policy.update(reference_input='EXACT_RGBA',source_background_policy='UNIFORM_NEUTRAL')
+    with pytest.raises(ValueError,match='not verified uniform'):
+        delivery.process(source,[32,32],policy,out)
     audit=json.loads((out/'alpha_processing.json').read_text())
     assert audit['status']=='FAILED' and audit['fallback']=='NONE'
     assert (out/'segmentation_mask.png').is_file() and not (out/'portrait.png').exists()
+
+
+def reference_portrait():
+    b=portrait()
+    b['source']={'type':'REFERENCE_IMAGE','paths':['selected.png'],'references':[]}
+    b['workflow_preferences']={'id':'grok_imagine','allow_experimental':True}
+    return b
+
+
+def test_explicit_project_reference_edit_retains_style_and_uses_local_delivery(monkeypatch):
+    import assetpipe.portrait_delivery as delivery
+    from assetpipe.router import route
+    monkeypatch.setattr(delivery,'preflight',lambda value: None)
+    b=reference_portrait(); original=copy.deepcopy(b)
+    decision=route(b,load_registry(ROOT),ROOT)
+    assert decision['selected_workflow']=='grok_imagine'
+    assert decision['style_selection']['style_id']=='STYLE-104'
+    assert decision['delivery_handling']['native_transparency_supported'] is False
+    assert decision['delivery_handling']['resolution']==[1212,1300]
+    assert decision['fallback_candidates']==[]
+    compiled=compile_prompt(b,load_registry(ROOT)['grok_imagine'],ROOT)
+    contract=compiled['delivery_profile']['project_reference_edit']
+    assert contract['base_workflow_id']=='krea2_base' and len(contract['sot_sha256'])==64
+    assert compiled['delivery_profile']['reference_input']=='EXACT_RGBA'
+    assert 'Preserve the reference framing and canvas exactly' in compiled['positive']
+    assert 'visible white headroom' not in compiled['positive']
+    assert 'Match the supplied reference rendering style exactly' in compiled['positive']
+    assert b==original and b['project_contract_required'] is True
+
+
+def test_expression_target_replaces_parent_neutral_expression_without_unlocking_body_pose():
+    from assetpipe.factory.variant import variant_brief
+    b=portrait(); b['prompt_spec']['pose']='neutral expression'
+    job={'asset_id':'surprised','project_id':'isekai_examiner',
+         'provider':{'workflow_id':'grok_imagine'},'variation':{'kind':'EXPRESSION','target':'surprised'}}
+    child,_=variant_brief(b,job,'selected.png')
+    assert 'neutral expression' not in child['prompt_spec']['pose']
+    assert 'Keep the body pose exactly as in the reference' in child['prompt_spec']['pose']
+    assert child['identity']==b['identity']
+
+
+@pytest.mark.parametrize('change',[{'resolution':[1024,1024]},{'transparency':False}])
+def test_project_edit_rejects_changed_final_contract(change):
+    from assetpipe.router import route
+    b=reference_portrait(); b['constraints'].update(change)
+    with pytest.raises(ValueError,match='PROJECT_REFERENCE_EDIT_INPUT_CONFLICT'):
+        route(b,load_registry(ROOT),ROOT)
+
+
+def test_project_edit_does_not_unlock_t2i_or_other_editors():
+    from assetpipe.router import route
+    for b in [portrait(),reference_portrait()]:
+        b['workflow_preferences']={'id':'grok_imagine' if b['source']['type']!='REFERENCE_IMAGE' else 'codex_imagegen','allow_experimental':True}
+        with pytest.raises(ValueError,match='conflicts with style menu binding'):
+            route(b,load_registry(ROOT),ROOT)

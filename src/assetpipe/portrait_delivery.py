@@ -20,8 +20,8 @@ SOURCE_WHITE_TOLERANCE = 10
 SOURCE_WHITE_MINIMUM_FRACTION = 0.99
 
 
-def _source_background(image, mask):
-    """Propagate existing confident background through near-white source only.
+def _source_background(image, mask, background_rgb=(255,255,255)):
+    """Propagate confident background through the verified source backdrop color.
 
     Never seed from the temporary padding or from canvas edges alone: a white
     collar can touch the bottom edge. Enclosed white details have no seed.
@@ -29,46 +29,48 @@ def _source_background(image, mask):
     import numpy as np
     from scipy.ndimage import binary_propagation
     rgb, values = np.asarray(image), np.asarray(mask)
-    white = rgb.min(axis=2) >= 255 - SOURCE_WHITE_TOLERANCE
+    white = np.max(np.abs(rgb.astype(np.int16) - np.asarray(background_rgb)), axis=2) <= SOURCE_WHITE_TOLERANCE
     confident = values < MATTING_PARAMETERS['background_threshold']
     seeds = white & confident
     background = binary_propagation(seeds, mask=white)
     refined = values.copy()
     refined[background] = 0
     return Image.fromarray(refined), Image.fromarray(background), {
-        'operation': 'SOURCE_WHITE_CONNECTED_TO_CONFIDENT_BACKGROUND',
-        'white_tolerance': SOURCE_WHITE_TOLERANCE, 'connectivity': 4,
+        'operation': 'SOURCE_BACKGROUND_CONNECTED_TO_CONFIDENT_BACKGROUND',
+        'background_tolerance': SOURCE_WHITE_TOLERANCE, 'connectivity': 4,
         'seed_mask_below': MATTING_PARAMETERS['background_threshold'],
         'padding_or_edge_seeds': False, 'seed_pixels': int(seeds.sum()),
-        'verified_white_fraction': float(white[confident].mean()) if confident.any() else 0.0,
-        'minimum_white_fraction': SOURCE_WHITE_MINIMUM_FRACTION,
+        'verified_white_fraction': float((rgb.min(axis=2)[confident] >= 245).mean()) if confident.any() else 0.0,
+        'verified_background_fraction': float(white[confident].mean()) if confident.any() else 0.0,
+        'background_rgb': list(background_rgb),
+        'minimum_background_fraction': SOURCE_WHITE_MINIMUM_FRACTION,
         'background_pixels': int(background.sum()),
         'changed_mask_pixels': int((refined != values).sum())}
 
 
-def _unmatte_white_edges(image, alpha):
-    """Recover straight-alpha RGB from C = alpha*F + (1-alpha)*white.
+def _unmatte_source_edges(image, alpha, background_rgb=(255,255,255)):
+    """Recover straight-alpha RGB from C = alpha*F + (1-alpha)*background.
 
     Opaque pixels and the alpha channel are preserved exactly. This is valid
-    only after the caller verifies the explicit white source-backdrop contract.
+    only after the caller verifies the explicit uniform source-backdrop contract.
     """
     import numpy as np
     rgb = np.asarray(image).copy()
     values = np.asarray(alpha)
     edge = (values > 0) & (values < 255)
     a = values[edge, None].astype(np.float64) / 255
-    recovered = np.clip(np.rint((rgb[edge].astype(np.float64) - (1 - a) * 255) / a), 0, 255).astype(np.uint8)
+    recovered = np.clip(np.rint((rgb[edge].astype(np.float64) - (1 - a) * np.asarray(background_rgb)) / a), 0, 255).astype(np.uint8)
     changed = int(np.any(rgb[edge] != recovered, axis=1).sum())
     rgb[edge] = recovered
     result = Image.fromarray(rgb).convert('RGBA')
     result.putalpha(alpha)
-    return result, {'operation': 'STRAIGHT_ALPHA_WHITE_UNMATTE', 'background_rgb': [255,255,255],
+    return result, {'operation': 'STRAIGHT_ALPHA_SOURCE_UNMATTE', 'background_rgb': list(background_rgb),
                     'translucent_pixels': int(edge.sum()), 'changed_rgb_pixels': changed,
                     'opaque_rgb': 'PRESERVED_EXACTLY', 'alpha': 'PRESERVED_EXACTLY'}
 
 
 def profile(brief, root, workflow_id):
-    sot, _ = project_sot(brief, root)
+    sot, sot_path = project_sot(brief, root)
     value = sot.get('delivery_profile')
     if not value:
         return None
@@ -81,6 +83,9 @@ def profile(brief, root, workflow_id):
         raise ValueError('Unsupported portrait delivery policy')
     if not brief['constraints']['resolution'] or brief['constraints']['transparency'] is not True:
         raise ValueError('Portrait delivery requires explicit dimensions and transparent output')
+    if sot.get('_reference_edit'):
+        value['project_reference_edit'] = {**sot['_reference_edit'],
+            'sot_path': str(sot_path.resolve()), 'sot_sha256': hashlib.sha256(sot_path.read_bytes()).hexdigest()}
     return value
 
 
@@ -119,12 +124,24 @@ def process(source, resolution, value, directory):
     extrema = mask.getextrema()
     if extrema[0] == extrema[1]:
         raise ValueError('Portrait alpha mask has no foreground/background separation')
-    refined_mask, source_background, refinement = _source_background(image, mask)
+    background_rgb = (255,255,255)
+    if value.get('reference_input') == 'EXACT_RGBA' and value.get('source_background_policy') == 'UNIFORM_NEUTRAL':
+        import numpy as np
+        samples = np.asarray(image)[np.asarray(mask) < MATTING_PARAMETERS['background_threshold']]
+        if not len(samples):
+            raise ValueError('Portrait source has no confident background samples')
+        background_rgb = tuple(int(v) for v in np.rint(np.median(samples,axis=0)))
+        if min(background_rgb) < 220 or max(background_rgb)-min(background_rgb) > 10:
+            raise ValueError('Portrait reference source backdrop is not light neutral')
+        refined_mask, source_background, refinement = _source_background(image, mask, background_rgb)
+    else:
+        refined_mask, source_background, refinement = _source_background(image, mask)
     refined_mask.save(directory / 'matting_input_mask.png')
     source_background.save(directory / 'source_background_mask.png')
     audit = {'operation': 'REMBG_CLOSED_FORM_MATTING', 'status': 'RUNNING',
              'parameters': dict(MATTING_PARAMETERS), 'fallback': 'NONE',
-             'rgb_policy': 'PRESERVE_OPAQUE_RGB_UNMATTE_WHITE_EDGES',
+             'rgb_policy': 'PRESERVE_OPAQUE_RGB_UNMATTE_WHITE_EDGES' if background_rgb == (255,255,255)
+                           else 'PRESERVE_OPAQUE_RGB_UNMATTE_NEUTRAL_EDGES',
              'source_background_refinement': refinement,
              'segmentation_context': {'fraction': MASK_CONTEXT_FRACTION, 'border_pixels': border,
                                       'fill': 'WHITE', 'input_size': list(mask_input.size),
@@ -136,8 +153,9 @@ def process(source, resolution, value, directory):
              'human_review': 'REVIEW_REQUIRED', 'approval_effect': 'NONE'}
     write(directory / 'alpha_processing.json', audit)
     try:
-        if refinement['verified_white_fraction'] < SOURCE_WHITE_MINIMUM_FRACTION:
-            raise ValueError('Portrait source backdrop is not verified uniform white; edge unmatting is blocked')
+        if refinement['verified_background_fraction'] < SOURCE_WHITE_MINIMUM_FRACTION:
+            kind = 'white' if background_rgb == (255,255,255) else 'neutral'
+            raise ValueError(f'Portrait source backdrop is not verified uniform {kind}; edge unmatting is blocked')
         # Call directly: rembg.remove(alpha_matting=True) silently falls back to
         # naive compositing on ValueError, which must not hide a failed gate.
         estimate = alpha_matting_cutout(image, refined_mask, **MATTING_PARAMETERS)
@@ -159,7 +177,7 @@ def process(source, resolution, value, directory):
         source_rgba = image.convert('RGBA')
         source_rgba.putalpha(alpha)
         source_rgba.save(directory / 'masked_source_rgb.png')
-        rgba, audit['edge_rgb'] = _unmatte_white_edges(image, alpha)
+        rgba, audit['edge_rgb'] = _unmatte_source_edges(image, alpha, background_rgb)
     except Exception as exc:
         audit.update(status='FAILED', error=str(exc))
         write(directory / 'alpha_processing.json', audit)

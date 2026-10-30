@@ -25,4 +25,30 @@ def project_sot(brief, root):
         value = {**value, **scope}
     if value.get('style_id') and not value.get('source'):
         raise ValueError('Visual SOT requires the project source location')
-    return copy.deepcopy(value), path
+    value = copy.deepcopy(value)
+    edit = value.get('reference_edit_contract')
+    if edit is not None:
+        fields = {'workflow_id', 'model_profile', 'reference_input', 'source_background',
+                  'resolution', 'human_review_required'}
+        if (not isinstance(edit, dict) or set(edit) != fields
+                or edit['workflow_id'] != 'grok_imagine' or edit['model_profile'] != 'grok-imagine'
+                or edit['reference_input'] != 'EXACT_RGBA' or edit['source_background'] != 'UNIFORM_NEUTRAL'
+                or edit['resolution'] != [1212, 1300] or edit['human_review_required'] is not True):
+            raise ValueError('PROJECT_REFERENCE_EDIT_CONTRACT_INVALID')
+        if (brief.get('project_contract_required') is True
+                and brief['asset_type'] == 'character_portrait'
+                and brief['source']['type'] == 'REFERENCE_IMAGE'
+                and brief['workflow_preferences'].get('id') == edit['workflow_id']):
+            if (len(brief['source']['paths']) != 1 or brief['source'].get('references')
+                    or brief['constraints']['resolution'] != edit['resolution']
+                    or brief['constraints']['transparency'] is not True
+                    or not value.get('source') or not value.get('delivery_profile')
+                    or value['delivery_profile'].get('operation') != 'LOCAL_MASK_UNIFORM_CONTAIN'):
+                raise ValueError('PROJECT_REFERENCE_EDIT_INPUT_CONFLICT')
+            value['_reference_edit'] = {**edit, 'style_id': value.get('style_id'),
+                                        'base_workflow_id': value.get('workflow_id')}
+            value.update(workflow_id=edit['workflow_id'], model_profile=edit['model_profile'])
+            value['delivery_profile'].update(workflow_id=edit['workflow_id'], reference_input='EXACT_RGBA',
+                                             source_background_policy=edit['source_background'])
+            value['exclusion_policy']['workflow_id'] = edit['workflow_id']
+    return value, path

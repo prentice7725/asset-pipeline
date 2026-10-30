@@ -175,7 +175,13 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         # Keep that technical source stage separate from the final scene contract.
         spec = copy.deepcopy(spec)
         spec['environment'] = SOURCE_BACKGROUND
-        spec['composition'] = ' '.join(filter(None, [requested_composition, SOURCE_FRAMING]))
+        if delivery.get('reference_input') == 'EXACT_RGBA':
+            spec['composition'] = 'Preserve the reference framing and canvas exactly; no zoom, recrop or body-pose change.'
+            spec.setdefault('constraints', []).append(
+                'Consume the supplied RGBA reference unchanged. The solid white source backdrop is temporary; '
+                'local delivery restores final alpha. Preserve reference rendering style, identity and clothing.')
+        else:
+            spec['composition'] = ' '.join(filter(None, [requested_composition, SOURCE_FRAMING]))
     profiles = yaml.safe_load((Path(root) / 'config/model_profiles.yaml').read_text(encoding='utf-8'))
     profile_id = workflow.get('model_profile')
     if profile_id not in profiles['profiles']:
@@ -287,7 +293,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         result['portrait_source'] = {'background': 'SOLID_WHITE',
                                      'requested_environment': requested_environment,
                                      'requested_composition': requested_composition,
-                                     'framing': SOURCE_FRAMING,
+                                     'framing': spec['composition'],
                                      'final_transparency': brief['constraints']['transparency']}
     if spatial['mappings']:
         result['spatial_relationships'] = spatial['mappings']

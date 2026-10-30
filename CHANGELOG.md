@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — project portrait reference edits, 2026-10-30
+
+- Add explicit isekai portrait/Grok reference-edit binding, exact RGBA input and
+  pinned SOT contract with local alpha/size delivery and verified neutral backdrop.
+  Preserve T2I bindings, one-attempt execution and human identity/art review.
+
 ## Unreleased — portrait source/alpha handoff, 2026-10-29
 
 - Separate opaque portrait source backdrops from final transparent delivery; add
