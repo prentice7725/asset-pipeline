@@ -18,3 +18,10 @@ stated intent when clear; ask if choosing it would change the requested asset.
 등록된 ACTIVE workflow는 `audio_stable_audio_3_medium`이다.
 기본 오디오 QA를 통과해도 청취 검토가 필수이며 자동 승인하지 않는다.
 원본 FLAC과 PCM WAV를 프로젝트별 실행 폴더에 보존한다.
+
+# BGM 출력 확장
+
+`BGM`은 YuE2 기반 게임 배경음악 후보다. `bgm.duration_seconds`는 10–300초(기본 60),
+기본은 연주곡(`instrumental: true`, 빈 `lyrics`)이고 루프(`loop: true`)다.
+`audio_yue2_bgm`은 EXPERIMENTAL이라 `workflow_id`와 experimental 허용을 명시해야 한다.
+보컬 유무·분위기·루프 이음매는 청취 검토 항목이며 자동 승인하지 않는다.

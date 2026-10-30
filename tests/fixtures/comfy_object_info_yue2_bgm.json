@@ -1,0 +1,342 @@
+{
+ "captured": "2026-10-30",
+ "comfyui_version": "0.42.4",
+ "nodes": {
+  "CheckpointLoaderSimple": {
+   "deprecated": false,
+   "inputs": {
+    "ckpt_name": {
+     "options": [
+      "yue2_3b_int8_convrot.safetensors"
+     ],
+     "section": "required"
+    }
+   },
+   "output": [
+    "MODEL",
+    "CLIP",
+    "VAE"
+   ]
+  },
+  "ConditioningZeroOut": {
+   "deprecated": false,
+   "inputs": {
+    "conditioning": {
+     "section": "required",
+     "type": "CONDITIONING"
+    }
+   },
+   "output": [
+    "CONDITIONING"
+   ]
+  },
+  "EmptyYuE2LatentAudio": {
+   "deprecated": false,
+   "inputs": {
+    "batch_size": {
+     "max": 4096,
+     "min": 1,
+     "section": "required",
+     "type": "INT"
+    },
+    "seconds": {
+     "max": 1000.0,
+     "min": 0.04,
+     "section": "required",
+     "type": "FLOAT"
+    }
+   },
+   "output": [
+    "LATENT"
+   ]
+  },
+  "KSampler": {
+   "deprecated": false,
+   "inputs": {
+    "cfg": {
+     "max": 100.0,
+     "min": 0.0,
+     "section": "required",
+     "type": "FLOAT"
+    },
+    "denoise": {
+     "max": 1.0,
+     "min": 0.0,
+     "section": "required",
+     "type": "FLOAT"
+    },
+    "latent_image": {
+     "section": "required",
+     "type": "LATENT"
+    },
+    "model": {
+     "section": "required",
+     "type": "MODEL"
+    },
+    "negative": {
+     "section": "required",
+     "type": "CONDITIONING"
+    },
+    "positive": {
+     "section": "required",
+     "type": "CONDITIONING"
+    },
+    "sampler_name": {
+     "options": [
+      "cfgpp_ud10_ab",
+      "ddim",
+      "ddpm",
+      "deis",
+      "dpm_2",
+      "dpm_2_ancestral",
+      "dpm_adaptive",
+      "dpm_fast",
+      "dpmpp_2m",
+      "dpmpp_2m_cfg_pp",
+      "dpmpp_2m_sde",
+      "dpmpp_2m_sde_gpu",
+      "dpmpp_2m_sde_heun",
+      "dpmpp_2m_sde_heun_gpu",
+      "dpmpp_2s_ancestral",
+      "dpmpp_2s_ancestral_cfg_pp",
+      "dpmpp_3m_sde",
+      "dpmpp_3m_sde_gpu",
+      "dpmpp_sde",
+      "dpmpp_sde_gpu",
+      "er_sde",
+      "euler",
+      "euler_ancestral",
+      "euler_ancestral_cfg_pp",
+      "euler_cfg_pp",
+      "exp_heun_2_x0",
+      "exp_heun_2_x0_sde",
+      "gradient_estimation",
+      "gradient_estimation_cfg_pp",
+      "heun",
+      "heunpp2",
+      "ipndm",
+      "ipndm_v",
+      "lcm",
+      "lms",
+      "res_multistep",
+      "res_multistep_ancestral",
+      "res_multistep_ancestral_cfg_pp",
+      "res_multistep_cfg_pp",
+      "sa_solver",
+      "sa_solver_pece",
+      "seeds_2",
+      "seeds_3",
+      "uni_pc",
+      "uni_pc_bh2"
+     ],
+     "section": "required"
+    },
+    "scheduler": {
+     "options": [
+      "beta",
+      "ddim_uniform",
+      "exponential",
+      "karras",
+      "kl_optimal",
+      "linear_quadratic",
+      "normal",
+      "sgm_uniform",
+      "simple"
+     ],
+     "section": "required"
+    },
+    "seed": {
+     "max": 18446744073709551615,
+     "min": 0,
+     "section": "required",
+     "type": "INT"
+    },
+    "steps": {
+     "max": 10000,
+     "min": 1,
+     "section": "required",
+     "type": "INT"
+    }
+   },
+   "output": [
+    "LATENT"
+   ]
+  },
+  "SaveAudio": {
+   "deprecated": true,
+   "inputs": {
+    "audio": {
+     "section": "required",
+     "type": "AUDIO"
+    },
+    "filename_prefix": {
+     "section": "required",
+     "type": "STRING"
+    }
+   },
+   "output": [
+    "AUDIO"
+   ]
+  },
+  "VAEDecodeAudio": {
+   "deprecated": false,
+   "inputs": {
+    "samples": {
+     "section": "required",
+     "type": "LATENT"
+    },
+    "vae": {
+     "section": "required",
+     "type": "VAE"
+    }
+   },
+   "output": [
+    "AUDIO"
+   ]
+  },
+  "YuE2GenerateABC": {
+   "deprecated": false,
+   "inputs": {
+    "clip": {
+     "section": "required",
+     "type": "CLIP"
+    },
+    "lyrics": {
+     "section": "required",
+     "type": "STRING"
+    },
+    "max_abc_tokens": {
+     "max": 20000,
+     "min": 1,
+     "section": "required",
+     "type": "INT"
+    },
+    "mode": {
+     "options": [
+      "full",
+      "melody"
+     ],
+     "section": "required"
+    },
+    "penalty_window": {
+     "max": 20000,
+     "min": 1,
+     "section": "required",
+     "type": "INT"
+    },
+    "repetition_penalty": {
+     "max": 10.0,
+     "min": 0.01,
+     "section": "required",
+     "type": "FLOAT"
+    },
+    "seed": {
+     "max": 18446744073709551615,
+     "min": 0,
+     "section": "required",
+     "type": "INT"
+    },
+    "style": {
+     "section": "required",
+     "type": "STRING"
+    },
+    "temperature": {
+     "max": 5.0,
+     "min": 0.0,
+     "section": "required",
+     "type": "FLOAT"
+    },
+    "top_k": {
+     "max": 32768,
+     "min": 1,
+     "section": "required",
+     "type": "INT"
+    },
+    "top_p": {
+     "max": 1.0,
+     "min": 0.01,
+     "section": "required",
+     "type": "FLOAT"
+    }
+   },
+   "output": [
+    "STRING"
+   ]
+  },
+  "YuE2GenerateMusic": {
+   "deprecated": false,
+   "inputs": {
+    "abc": {
+     "section": "required",
+     "type": "STRING"
+    },
+    "cfg_scale": {
+     "max": 100.0,
+     "min": 0.0,
+     "section": "optional",
+     "type": "FLOAT"
+    },
+    "clip": {
+     "section": "required",
+     "type": "CLIP"
+    },
+    "lyrics": {
+     "section": "required",
+     "type": "STRING"
+    },
+    "max_duration": {
+     "max": 900.0,
+     "min": 0.04,
+     "section": "required",
+     "type": "FLOAT"
+    },
+    "mode": {
+     "options": [
+      "full",
+      "melody"
+     ],
+     "section": "required"
+    },
+    "repetition_penalty": {
+     "max": 10.0,
+     "min": 0.01,
+     "section": "required",
+     "type": "FLOAT"
+    },
+    "seed": {
+     "max": 18446744073709551615,
+     "min": 0,
+     "section": "required",
+     "type": "INT"
+    },
+    "style": {
+     "section": "required",
+     "type": "STRING"
+    },
+    "temperature": {
+     "max": 5.0,
+     "min": 0.0,
+     "section": "required",
+     "type": "FLOAT"
+    },
+    "top_k": {
+     "max": 32768,
+     "min": 1,
+     "section": "required",
+     "type": "INT"
+    },
+    "top_p": {
+     "max": 1.0,
+     "min": 0.01,
+     "section": "required",
+     "type": "FLOAT"
+    }
+   },
+   "output": [
+    "CONDITIONING",
+    "FLOAT"
+   ]
+  }
+ },
+ "source": "GET http://127.0.0.1:8188/object_info/<Node> (read-only; no prompt queued)"
+}

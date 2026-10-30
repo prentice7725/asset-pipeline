@@ -22,6 +22,7 @@ Python CLI 도구입니다. ComfyUI 등 생성 provider, 후처리·검증, Asep
 | `NONPIXEL_IMAGE` | Provider 생성(ComfyUI, 실험: Codex CLI·Grok CLI) → 기본 QA → 리뷰 | 사용 가능, 시각 검토 필요 |
 | `NONPIXEL_ANIMATION` | 기존 정지 이미지 + 명시적 모션 작업 → 영상 → 프레임·알파·루프 → 아틀라스·Godot/Phaser 출력 | 실험적. 명시적 작업 파일로만 실행, 프롬프트 자동 모션 미지원 |
 | `SFX` | Stable Audio 3 Medium 생성, FLAC·WAV 저장, 오디오 QA | 사용 가능, 청취 검토 필요 |
+| `BGM` | YuE2 생성, 루프 이음매·라우드니스 QA ([BGM 안내](docs/BGM.md)) | 오프라인 계약만, 실제 생성 미실행 |
 | `PIXEL_STATIC` | 픽셀 후보 → 분석 → 알파 처리 → Pixel Gate → 해상도 검토 → Aseprite → 명시적 승인 | 보존(연구 동결) |
 | `PIXEL_ANIMATION` | 승인된 Static Master + 검토된 모션으로 8프레임 걷기 | 보존(연구 동결), 단일 검증 프로필만 지원 |
 

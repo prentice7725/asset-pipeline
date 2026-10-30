@@ -46,9 +46,9 @@ def _route_bound(brief, registry, root, menu_decision=None):
     reusable_motion = bool(brief.get('production', {}).get('motion_reference'))
     required = []
     if not reusable_motion:
-        required.append('text_to_audio' if brief['output_class'] == 'SFX' else 'character_reference' if brief['source']['type'] == 'REFERENCE_IMAGE' else 'text_to_image')
-    if brief['output_class'] == 'SFX' and brief['source']['type'] == 'REFERENCE_IMAGE':
-        raise ValueError('SFX workflow supports text only')
+        required.append('text_to_audio' if brief['output_class'] == 'SFX' else 'text_to_music' if brief['output_class'] == 'BGM' else 'character_reference' if brief['source']['type'] == 'REFERENCE_IMAGE' else 'text_to_image')
+    if brief['output_class'] in {'SFX', 'BGM'} and brief['source']['type'] == 'REFERENCE_IMAGE':
+        raise ValueError(f"{brief['output_class']} workflow supports text only")
     if brief['constraints']['transparency'] is True and brief['output_class'] == 'NONPIXEL_IMAGE':
         required.append('transparent_output')
     spec = brief.get('prompt_spec', {})
@@ -58,7 +58,7 @@ def _route_bound(brief, registry, root, menu_decision=None):
         subject_spec = from_brief(brief)
     if spec.get('textInImage'):
         required.append('text_rendering')
-    if (brief.get('negative_prompt') or brief['forbidden_elements'] or spec.get('negative')) and brief['output_class'] in {'NONPIXEL_IMAGE', 'PIXEL_STATIC', 'SFX'}:
+    if (brief.get('negative_prompt') or brief['forbidden_elements'] or spec.get('negative')) and brief['output_class'] in {'NONPIXEL_IMAGE', 'PIXEL_STATIC', 'SFX', 'BGM'}:
         required.append('negative_prompt')
     if spec.get('subject_integrity', {}).get('forbidden_substitutions'):
         required.append('native_subject_negative')

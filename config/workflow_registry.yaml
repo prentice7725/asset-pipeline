@@ -504,6 +504,29 @@ workflows:
     validation:
       status: REAL_GENERATION_AND_AUDIO_QA_PASS
       evidence: docs/sfx_verification.json
+  audio_yue2_bgm:
+    output_class: BGM
+    engine: comfyui
+    workflow_file: config/workflows/audio_yue2_bgm.json
+    workflow_name: audio_yue2_bgm
+    status: EXPERIMENTAL
+    priority: 100
+    tags:
+    - bgm
+    - audio
+    - music
+    models:
+      checkpoints:
+      - yue2_3b_int8_convrot.safetensors
+      loras: []
+    capabilities:
+      text_to_music: true
+      lyrics: true
+      negative_prompt: false
+      audio_reference: false
+    validation:
+      status: OFFLINE_CONTRACT_PASS_GENERATION_NOT_RUN
+      evidence: tests/fixtures/comfy_object_info_yue2_bgm.json
   codex_imagegen:
     model_profile: codex-imagegen
     output_class: NONPIXEL_IMAGE

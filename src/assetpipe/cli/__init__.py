@@ -13,7 +13,7 @@ def main(argv=None):
         prog='assetpipe', description='Workflow-driven game asset production; review gates are mandatory',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=('Recommended entry points:\n'
-                '  create            still image / SFX, or nonpixel animation with --motion-job\n'
+                '  create            still image / SFX / BGM, or nonpixel animation with --motion-job\n'
                 '  factory           plans, still/audio execution and staged motion jobs (motion-plan, motion-run)\n'
                 'Low-level motion tools (motion-*) are stages used by factory motion jobs;\n'
                 'prefer "factory motion-*" or "create --motion-job" for new work.'))
@@ -61,6 +61,10 @@ def main(argv=None):
     audio_review.add_argument('--run',required=True,type=Path)
     audio_review.add_argument('--review',required=True,type=Path)
     audio_review.add_argument('--listened',required=True,action='store_true')
+    music_review = commands.add_parser('bgm-review',help='Record explicit BGM listening observations; no generation or game approval')
+    music_review.add_argument('--run',required=True,type=Path)
+    music_review.add_argument('--review',required=True,type=Path)
+    music_review.add_argument('--listened',required=True,action='store_true')
     knowledge = commands.add_parser('knowledge', help='Offline model/style/evidence lookup; never generates or approves')
     knowledge.add_argument('--model-id', help='Known model variant key')
     knowledge.add_argument('--style-id', help='Known style key')
@@ -123,10 +127,14 @@ def main(argv=None):
     prompt_parser = commands.add_parser('compile-prompt', help='Compile canonical PromptSpec for the selected workflow without generating')
     prompt_parser.add_argument('--brief', required=True, type=Path)
     prompt_parser.add_argument('--output', required=True, type=Path)
-    run = commands.add_parser('create', help='Create one candidate (image/SFX), or a nonpixel animation from an explicit --motion-job')
+    run = commands.add_parser('create', help='Create one candidate (image/SFX/BGM), or a nonpixel animation from an explicit --motion-job')
     run.add_argument('--brief', type=Path)
-    run.add_argument('--type', choices=['pixel-static', 'pixel-animation', 'nonpixel-image', 'nonpixel-animation', 'sfx'])
-    run.add_argument('--duration', type=float, help='SFX duration in seconds (1–30; default 5)')
+    run.add_argument('--type', choices=['pixel-static', 'pixel-animation', 'nonpixel-image', 'nonpixel-animation', 'sfx', 'bgm'])
+    run.add_argument('--duration', type=float, help='SFX duration in seconds (1–30; default 5) or BGM maximum duration (10–300; default 60)')
+    run.add_argument('--lyrics', help='BGM only: sung lyrics; omitted means instrumental (default)')
+    run.add_argument('--tempo-bpm', type=int, help='BGM only: tempo hint (40–240)')
+    run.add_argument('--mood', help='BGM only: intended mood hint')
+    run.add_argument('--no-loop', action='store_true', help='BGM only: one-shot cue; skips loop seam QA (looping is the default)')
     run.add_argument('--prompt', default='')
     run.add_argument('--reference', type=Path)
     run.add_argument('--action')
@@ -218,9 +226,10 @@ def main(argv=None):
             from ..motion.package import package_video
             print(package_video(args.request, args.video, args.video_sha256, args.output,
                                 args.root, allowed_roots=args.allowed_root))
-        elif args.command == 'sfx-review':
+        elif args.command in {'sfx-review', 'bgm-review'}:
             from ..paths import RootResolver
-            from ..audio.sfx import record_review
+            from importlib import import_module
+            record_review = import_module('..audio.' + args.command.split('-')[0], __package__).record_review
             resolver = RootResolver([args.root],base=args.root)
             run = resolver(args.run)
             review = json.loads(resolver(args.review).read_text(encoding='utf-8'))
@@ -360,7 +369,8 @@ def main(argv=None):
                 raise ValueError('--motion-job requires --type nonpixel-animation')
             if (any(value is not None for value in [args.brief, args.reference, args.action,
                     args.asset_id, args.project, args.workflow, args.style_id, args.model_profile,
-                    args.preset, args.seed, args.duration]) or args.prompt or args.allow_experimental):
+                    args.preset, args.seed, args.duration, args.lyrics, args.tempo_bpm, args.mood]) or args.prompt
+                    or args.allow_experimental or args.no_loop):
                 raise ValueError('Motion inputs and settings must come from the pinned job; direct overrides are unsupported')
             from ..paths import RootResolver
             resolver = RootResolver(args.allowed_root or [args.root], base=args.root)
@@ -383,10 +393,22 @@ def main(argv=None):
                 brief['workflow_preferences']['model_profile'] = args.model_profile
             if args.project:
                 brief['project_id'] = args.project
+            music = {k: v for k, v in {'lyrics': args.lyrics, 'tempo_bpm': args.tempo_bpm, 'mood': args.mood}.items() if v is not None}
+            if music or args.no_loop:
+                if brief['output_class'] != 'BGM':
+                    raise ValueError('--lyrics, --tempo-bpm, --mood and --no-loop are only supported for BGM')
+                if 'lyrics' in music:
+                    music['instrumental'] = False
+                if args.no_loop:
+                    music['loop'] = False
+                brief['bgm'] = {**brief.get('bgm', {'duration_seconds': 60}), **music}
             if args.duration is not None:
-                if brief['output_class'] != 'SFX':
-                    raise ValueError('--duration is only supported for SFX')
-                brief['audio'] = {'duration_seconds': args.duration}
+                if brief['output_class'] == 'BGM':
+                    brief['bgm'] = {**brief.get('bgm', {}), 'duration_seconds': args.duration}
+                elif brief['output_class'] == 'SFX':
+                    brief['audio'] = {'duration_seconds': args.duration}
+                else:
+                    raise ValueError('--duration is only supported for SFX and BGM')
             if args.preset:
                 brief['workflow_preferences']['preset'] = args.preset
             if args.allow_experimental:

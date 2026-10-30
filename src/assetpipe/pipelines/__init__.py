@@ -125,6 +125,9 @@ def create(brief, root, output=None, seed=None, *, resolver=None, clip=None, exp
                 run(brief, workflow, config, directory, manifest, chosen_seed)
             else:
                 run(brief, workflow, config, directory, manifest, chosen_seed, clip=clip)
+        elif kind == 'BGM':
+            from .bgm import run
+            run(brief, workflow, config, directory, manifest, chosen_seed)
         elif kind == 'PIXEL_ANIMATION':
             pixel_animation.run(brief, config, directory, manifest)
         elif kind == 'PIXEL_STATIC':
@@ -160,7 +163,7 @@ def create(brief, root, output=None, seed=None, *, resolver=None, clip=None, exp
         if generation.exists():
             generated = json.loads(generation.read_text(encoding='utf-8'))
             manifest['generation'].update({'seed': generated['seed'], 'prompt': generated['prompt'], 'negative_prompt': generated['negative_prompt'], 'comfy_prompt_id': generated['prompt_id'], 'resolution': [generated['generation_parameters'].get('width'), generated['generation_parameters'].get('height')], 'parameters': generated['generation_parameters']})
-            if brief['output_class'] == 'SFX':
+            if brief['output_class'] in {'SFX', 'BGM'}:
                 manifest['generation'].pop('resolution', None)
                 manifest['generation']['duration_seconds'] = generated['generation_parameters']['duration_seconds']
         manifest['timestamps']['finished'] = now()

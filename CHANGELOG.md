@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — BGM output class offline contract, 2026-10-30
+
+- Add `BGM` (`create --type bgm`, `bgm-review`) on an EXPERIMENTAL ComfyUI YuE2 workflow
+  validated against captured `object_info`: instrumental/loop defaults, duration/clipping/loudness
+  QA, whole-file loop point and seam check, explicit listening review. Zero generations run.
+
 ## Unreleased — Factory CLI provider provenance, 2026-10-30
 
 - Fix `factory execute` marking successful Codex/Grok candidates FAILED after generation:
