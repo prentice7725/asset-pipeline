@@ -9,7 +9,7 @@ Factory motion dispatch, new-coordinator real generation, human quality acceptan
 and production activation remain blocked/unverified. See
 [motion integration evidence](MOTION_JOB_VALIDATION_20261027.md).
 
-**Same-character variants (2026-10-28):** [expression/pose edit from one selected base](IDENTITY_VARIANT.md). [Project portrait reference-edit validation, 2026-10-30](PROJECT_REFERENCE_EDIT_VALIDATION_20261030.md) records actual experimental Grok edits and the explicit local RGBA delivery boundary; identity/art approval remains separate.
+**Same-character variants:** [expression/pose edit from one selected base](IDENTITY_VARIANT.md) supports explicit Grok and Codex reference-input adapters. [Project portrait reference-edit validation, 2026-10-30](PROJECT_REFERENCE_EDIT_VALIDATION_20261030.md) records actual experimental Grok edits, local RGBA delivery and user acceptance of identity preservation. Codex real-generation validation and final art/Golden/Aseprite approval remain separate.
 
 [Portrait source/alpha validation, 2026-10-29](PORTRAIT_SOURCE_ALPHA_VALIDATION_20261029.md): separate opaque source generation from transparent delivery, reuse alpha matting while preserving source RGB, and retain explicit human review.
 Its 2026-10-30 follow-up records source-connected white-gap removal, opaque color preservation with translucent-edge unmatting, explicit headroom trials and the remaining human review boundary.

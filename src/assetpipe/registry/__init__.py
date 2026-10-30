@@ -11,7 +11,8 @@ AUTH_MODES = {'codex_cli': {'cli_login'}, 'grok_cli': {'cli_login', 'env_api_key
 # 격리·승인 정책을 약화시키는 인자는 registry에서 지정할 수 없다.
 FORBIDDEN_CLI_ARGS = {'--always-approve', '--dangerously-bypass-approvals-and-sandbox', '--dangerously-bypass-hook-trust', '--yolo',
     '--full-auto', '-c', '--config', '--profile', '-C', '--cd', '--cwd', '--add-dir', '--worktree', '-w', '-s', '--sandbox',
-    '--tools', '--prompt-file', '--prompt-json', '-p', '--single', '--output-format', '-o', '--output-last-message'}
+    '--tools', '--prompt-file', '--prompt-json', '-p', '--single', '--output-format', '-o', '--output-last-message',
+    '--image', '-i'}
 FORBIDDEN_CLI_VALUES = {'danger-full-access', 'bypassPermissions'}
 ENV_NAME_PATTERN = r'^[A-Z][A-Z0-9_]{0,63}$'
 
@@ -26,7 +27,8 @@ def _validate_cli_args(key, args):
         raise ValueError(f'backend.cli_args must be a list of strings: {key}')
     for arg in args:
         name, _, value = arg.partition('=')
-        if name in FORBIDDEN_CLI_ARGS or arg in FORBIDDEN_CLI_VALUES or value in FORBIDDEN_CLI_VALUES:
+        if (name in FORBIDDEN_CLI_ARGS or (arg.startswith('-i') and not arg.startswith('--'))
+                or arg in FORBIDDEN_CLI_VALUES or value in FORBIDDEN_CLI_VALUES):
             raise ValueError(f'backend.cli_args contains a forbidden isolation/approval option ({arg}): {key}')
 
 def _normalize_cli_entry(key, item, root, registry_version):
@@ -48,6 +50,8 @@ def _normalize_cli_entry(key, item, root, registry_version):
     for field in ('tool', 'edit_tool'):
         if field in backend and backend[field] not in CLI_TOOLS[engine]:
             raise ValueError(f'Unsupported backend.{field} for {engine}: {key}')
+    if engine == 'grok_cli' and backend.get('edit_tool') != 'image_edit':
+        raise ValueError(f'Grok reference edit tool must be image_edit: {key}')
     model = backend.setdefault('model', None)
     if model is not None and not isinstance(model, str):
         raise ValueError(f'backend.model must be a string or null: {key}')

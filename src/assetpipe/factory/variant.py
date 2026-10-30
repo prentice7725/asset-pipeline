@@ -141,6 +141,7 @@ def plan_variant(job_path, root, *, allowed_roots=None):
                       'preserve': PRESERVE[job['variation']['kind']]},
         'removed_parent_fields': removed, 'brief': brief,
         'workflow': {'id': decision['selected_workflow'], 'hash': workflow['hash'],
+                     'edit_tool': workflow['backend']['edit_tool'],
                      'engine': workflow.get('engine'), 'status': workflow['status'],
                      'validation': copy.deepcopy(workflow.get('validation', {}))},
         'source_documents': planned['source_documents'],
@@ -228,7 +229,8 @@ def run_variant(job_path, plan_sha256, authorization, root, *, authorize_generat
             if (compiled.get('project_reference_edit') != plan['project_reference_edit']
                     or provider.get('reference', {}).get('contract') != 'EXACT_RGBA_UNCHANGED'):
                 raise ValueError('IDENTITY_VARIANT_PROJECT_CONTRACT_CHANGED')
-        if provider.get('reference', {}).get('sha256') != plan['base_image']['sha256'] or provider.get('tool') != 'image_edit':
+        if (provider.get('reference', {}).get('sha256') != plan['base_image']['sha256']
+                or provider.get('tool') != plan['workflow']['edit_tool']):
             raise ValueError('IDENTITY_VARIANT_REFERENCE_NOT_SENT: provider record lacks the base image input')
         artifacts = []
         for output in manifest['outputs']:

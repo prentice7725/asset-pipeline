@@ -36,6 +36,10 @@
 | Grok | `--permission-mode dontAsk --allow image_gen` 조합으로 도구 호출이 승인됨 | 도구가 거부돼 `OUTPUT_MISSING`/`REFUSED`. registry의 `backend.cli_args`로 조정(격리를 약화하는 인자는 로더가 거부) |
 | Grok | 출력 JSON에서 이번 invocation의 단일 session ID와 해당 session 경로를 보고하거나 private workdir에 결과를 저장 | correlation/containment 불충족 시 `OUTPUT_UNCORRELATED` 또는 `OUTPUT_MISSING` |
 | Grok | `image_edit` 경로(레퍼런스 이미지 복사본의 절대경로 전달) | 초기 M1 E2E 범위에는 없었음. [2026-10-30 프로젝트 참조 편집 검증](../factory/PROJECT_REFERENCE_EDIT_VALIDATION_20261030.md)은 실제 실험적 편집 근거이며, 일반 M1 승격·미술 승인과 구분함 |
+| Codex 참조 편집 | `codex exec --image`로 첨부한 참조를 내장 `image_gen`이 편집 입력으로 사용 | 실제 편집·정체성 보존은 미검증. 오프라인 연결만 제공하며 사람 리뷰 필요 |
+
+Codex 참조 입력 후속 구현은 [동일 인물 변형 작업](../factory/IDENTITY_VARIANT.md)을 따른다.
+로컬 `codex-cli 0.164.0`의 `exec --help`에서 `--image` 옵션을 확인했으며 생성은 실행하지 않았다.
 
 ## 4. 설계 결정
 

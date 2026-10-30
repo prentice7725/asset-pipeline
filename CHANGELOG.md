@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — reference-input integration, 2026-10-30
+
+- Attach exact Codex CLI references with `--image`; pin each provider's edit tool.
+  Reject injected image arguments and Grok generation tools used as reference editors.
+
 ## Unreleased — project portrait reference edits, 2026-10-30
 
 - Add explicit isekai portrait/Grok reference-edit binding, exact RGBA input and

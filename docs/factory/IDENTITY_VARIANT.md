@@ -61,18 +61,24 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
 - 예산은 Factory 실행기와 같은 `workspace/factory_budget/<authorization_id>`에 원자적으로 예약한다.
   실패해도 예약을 해제하지 않으므로 같은 승인 ID로는 다시 실행할 수 없다. 재시도·provider 전환도 없다.
 - 결과는 예약 폴더의 `variant.json` 영수증, `job-input.json`, `run/run_manifest.json`이다.
-- provider 기록에서 베이스 이미지 해시와 `image_edit` 도구 사용을 확인한다(`reference_input: COPIED_TO_PROVIDER_INPUT`).
+- provider 기록에서 베이스 이미지 해시와 계획에 고정한 편집 도구 사용을 확인한다(Grok `image_edit`, Codex `image_gen`; `reference_input: COPIED_TO_PROVIDER_INPUT`).
   이것은 이미지를 provider 입력으로 보냈다는 뜻이다. **모델이 인물을 유지했다는 뜻은 아니다.**
   `identity_review: HUMAN_REQUIRED`, `review_state: REVIEW_REQUIRED`, `game_ready: false`로 남는다.
 
-## Provider 상태 (2026-10-28)
+## Provider 상태
 
 | Provider | 상태 |
 | --- | --- |
-| `grok_imagine` (Grok CLI) | 참조 편집 경로가 등록돼 있다. EXPERIMENTAL이며 실생성 근거는 아직 없다 |
-| `codex_imagegen` (Codex CLI) | `character_reference`가 없어 계획 단계에서 차단된다. 참조 지원은 다음 단계 |
+| `grok_imagine` (Grok CLI) | EXPERIMENTAL·명시 선택 전용. 이세계 초상화 계약의 실제 편집·로컬 RGBA 전달과 사용자 인물 보존 수용 근거가 있다. 일반 Provider 승격·최종 미술 승인은 별도다 |
+| `codex_imagegen` (Codex CLI) | 참조 복사본 1장을 `codex exec --image`로 첨부하고 `image_gen` 편집을 지시한다. EXPERIMENTAL·명시 선택 전용이며 가짜 CLI 검증만 수행한다. 실제 편집·동일 인물 유지 검증은 남아 있다 |
 | AGY 나노바나나 | 미등록. [P0 조사](../m1/ANTIGRAVITY_P0_INSPECTION_20261014.md)의 재시도 상한·출력 대응 문제를 먼저 해결해야 한다 |
 | ComfyUI 워크플로 | 현재 등록된 것은 참조 편집 기능이 없어 차단된다 |
+
+Codex는 실행 전 `exec --help`에 `--image`가 있는지 확인하며, 없으면 생성 전에
+`REFERENCE_UNSUPPORTED`로 차단한다. `image_edit`라는 별도 Codex 도구를 가정하지 않는다.
+참조 입력 지원과 실제 인물 유지·편집 성공은 별개이며 `validation.real_generation: NOT_RUN`을 유지한다.
+CLI 입력 옵션은 [공식 문서](https://learn.chatgpt.com/docs/cli/reference)를 따른다.
+새 편집 기능은 워크플로 해시와 변형 계획에 반영되므로 기존 계획·승인 파일을 재사용하지 않는다.
 
 ## 알려진 제한
 
@@ -81,7 +87,7 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
 - **Visual SOT가 화풍·모델을 잠근 프로젝트:** 명시적인 프로젝트 참조 편집 계약이 없으면 BLOCKED된다. SOT 잠금은 우회하지 않는다.
 - **정확한 해상도·투명 배경:** 이를 요구하는 부모 Brief는 provider 기능이 없으면 계획 단계에서 차단된다.
 - **외부 업로드:** 실행 시 베이스 이미지가 provider 서비스(xAI 등)로 전송된다.
-- 테스트는 가짜 CLI만 사용한다. 실생성과 인물 유지 판정을 대신하지 않는다.
+- 단위 테스트는 가짜 CLI를 사용한다. 별도 Grok 실생성·사용자 수용 근거는 아래 검증 기록에 한정하며, 다른 Provider의 실제 편집·인물 유지 판정을 대신하지 않는다.
 
 ## 이세계 전생 심사국 초상화 참조 편집 계약 (2026-10-30)
 

@@ -518,6 +518,7 @@ workflows:
     - cli_provider
     backend:
       tool: image_gen
+      edit_tool: image_gen
       model: null
       timeout_seconds: 600
       max_outputs: 1
@@ -527,8 +528,8 @@ workflows:
       cli_args: []
     capabilities:
       text_to_image: true
-      image_to_image: false
-      character_reference: false
+      image_to_image: true
+      character_reference: true
       transparent_output: false
       motion_conditioning: false
       image_to_video: false
