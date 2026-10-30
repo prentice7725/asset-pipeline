@@ -15,7 +15,7 @@ from ..brief import obj, validate as validate_brief
 from ..manifests import now, write
 from ..paths import RootResolver
 from .planner import plan as plan_request
-from .provenance import Sources, fingerprint
+from .provenance import Sources, fingerprint, validate_run_manifest
 
 HASH = {'type': 'string', 'pattern': '^[a-f0-9]{64}$'}
 TEXT = {'type': 'string', 'minLength': 1, 'maxLength': 300}
@@ -216,8 +216,7 @@ def run_variant(job_path, plan_sha256, authorization, root, *, authorize_generat
         if manifest_path != run / 'run_manifest.json':
             raise ValueError('IDENTITY_VARIANT_RESULT_INVALID: unexpected manifest')
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
-        # CLI provider 기록의 source_path는 provider가 처음 저장한 위치(출처)이며 여기서 읽지 않는다.
-        # 실제로 쓰는 출력 파일만 아래에서 실행 폴더 안에 있는지 확인한다.
+        validate_run_manifest(manifest, outputs)
         if (manifest.get('game_ready') is not False or manifest.get('status') != 'CANDIDATE_READY_REVIEW_REQUIRED'
                 or any(manifest.get(key) != plan['brief'][key] for key in ['asset_id', 'project_id', 'output_class'])
                 or not manifest.get('outputs')):
