@@ -1,0 +1,148 @@
+{
+  "workflow_version": "0.1.0",
+  "api_prompt": {
+    "15": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "yue2_3b_int8_convrot.safetensors"
+      }
+    },
+    "25": {
+      "class_type": "YuE2GenerateMusic",
+      "inputs": {
+        "clip": [
+          "15",
+          1
+        ],
+        "style": "Instrumental game background music, no vocals.",
+        "lyrics": "",
+        "abc": "",
+        "seed": 20261030,
+        "mode": "full",
+        "max_duration": 60.0,
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "top_k": 100,
+        "repetition_penalty": 1.2
+      }
+    },
+    "18": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "25",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "EmptyYuE2LatentAudio",
+      "inputs": {
+        "seconds": [
+          "25",
+          1
+        ],
+        "batch_size": 1
+      }
+    },
+    "8": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "15",
+          0
+        ],
+        "positive": [
+          "25",
+          0
+        ],
+        "negative": [
+          "18",
+          0
+        ],
+        "latent_image": [
+          "5",
+          0
+        ],
+        "seed": 20261030,
+        "steps": 32,
+        "cfg": 1.0,
+        "sampler_name": "dpm_2",
+        "scheduler": "sgm_uniform",
+        "denoise": 1.0
+      }
+    },
+    "9": {
+      "class_type": "VAEDecodeAudio",
+      "inputs": {
+        "samples": [
+          "8",
+          0
+        ],
+        "vae": [
+          "15",
+          2
+        ]
+      }
+    },
+    "57": {
+      "class_type": "SaveAudio",
+      "inputs": {
+        "audio": [
+          "9",
+          0
+        ],
+        "filename_prefix": "audio/assetpipe_bgm"
+      }
+    }
+  },
+  "bindings": {
+    "prompt": {
+      "node": "25",
+      "input": "style",
+      "required": true
+    },
+    "seed": {
+      "node": "25",
+      "input": "seed",
+      "required": true
+    },
+    "sampler_seed": {
+      "node": "8",
+      "input": "seed",
+      "required": true
+    },
+    "lyrics": {
+      "node": "25",
+      "input": "lyrics",
+      "required": true
+    },
+    "duration_seconds": {
+      "node": "25",
+      "input": "max_duration",
+      "required": true
+    },
+    "filename_prefix": {
+      "node": "57",
+      "input": "filename_prefix"
+    }
+  },
+  "output_nodes": [
+    "57"
+  ],
+  "models": {
+    "checkpoints": [
+      "yue2_3b_int8_convrot.safetensors"
+    ],
+    "loras": []
+  },
+  "defaults": {
+    "duration_seconds": 60
+  },
+  "source": {
+    "template": "audio_yue2_text2music",
+    "templates_version": "0.11.94",
+    "template_sha256": "6df2eb4b7337816ae2d342fad40abf7554aeafa61451ccdd471c01ff3ce6dbc7",
+    "adaptation": "Subgraph flattened; generation nodes and sampler settings retained; ABC planning off (empty abc, YuE2GenerateABC not dispatched); style=prompt, lyrics empty for instrumental; one seed bound to music and sampler; lossless SaveAudio FLAC output like the SFX path"
+  }
+}

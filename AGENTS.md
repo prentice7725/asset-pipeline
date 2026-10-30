@@ -19,6 +19,10 @@ or pose. This permits the variant job contract, Codex CLI reference input and an
 Nano Banana adapter following docs/m1/ANTIGRAVITY_NANO_BANANA_PROVIDER_DESIGN_20261014.md. Keep fixed
 preserve lists, one attempt, no retry/fallback, HUMAN_REQUIRED identity review and the six MCP tools.
 
+Reopened by the user on 2026-10-30 (BGM only): BGM output class via ComfyUI YuE2, offline contract first.
+Read docs/BGM.md. Instrumental by default, vocals and loop seams are listening review items; MiniMax Music
+and other paid cloud nodes are not used. Real generation needs a separate request.
+
 Change discipline:
 - One topic per branch/PR. Do not bundle research commits into a feature PR.
 - Prefer code plus tests over new dated reports. Add a dated validation document only when

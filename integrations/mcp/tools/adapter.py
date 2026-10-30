@@ -81,9 +81,12 @@ class Adapter:
         if project_id is not None:
             brief['project_id'] = project_id
         if duration_seconds is not None:
-            if brief['output_class'] != 'SFX':
-                raise ValueError('duration_seconds is only supported for SFX')
-            brief['audio'] = {'duration_seconds': duration_seconds}
+            if brief['output_class'] == 'BGM':
+                brief['bgm'] = {**brief.get('bgm', {}), 'duration_seconds': duration_seconds}
+            elif brief['output_class'] == 'SFX':
+                brief['audio'] = {'duration_seconds': duration_seconds}
+            else:
+                raise ValueError('duration_seconds is only supported for SFX and BGM')
         return {'status': 'BRIEF_READY', 'brief': self.secure_brief(brief), 'review_items': brief['unspecified_elements']}
 
     def route(self, brief):

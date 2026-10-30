@@ -28,6 +28,7 @@
 | `NONPIXEL_IMAGE` | provider生成（ComfyUI、実験的：Codex CLI・Grok CLI）→ 基本QA → レビュー | 利用可能。目視レビューが必要 |
 | `NONPIXEL_ANIMATION` | 既存の静止画 + 明示的なモーションジョブ → 動画 → フレーム・アルファ・ループ → アトラス・Godot/Phaser書き出し | 実験的。明示的なジョブファイルでのみ実行し、プロンプトからの自動モーションは未対応 |
 | `SFX` | Stable Audio 3 Mediumによる生成、FLAC・WAVの保存、オーディオQA | 利用可能。試聴レビューが必要 |
+| `BGM` | YuE2による生成、ループ継ぎ目・ラウドネスQA（[BGM案内](docs/BGM.md)、韓国語） | オフライン契約のみ。実生成は未実行 |
 | `PIXEL_STATIC` | ピクセル候補 → 分析 → アルファ処理 → Pixel Gate → 解像度レビュー → Aseprite → 明示的な承認 | 保存（研究凍結） |
 | `PIXEL_ANIMATION` | 承認済みのStatic Master + レビュー済みのモーションによる8フレーム歩行 | 保存（研究凍結）。検証済みの単一プロファイルのみ対応 |
 

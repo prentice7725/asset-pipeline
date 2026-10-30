@@ -6,7 +6,7 @@ from ..prompts import SCHEMA as PROMPT_SPEC_SCHEMA
 from ..art_direction import SCHEMA as ART_DIRECTION_SCHEMA
 from ..styles.overrides import DOMAINS, OVERRIDE_FIELDS
 
-OUTPUT_CLASSES = ['PIXEL_STATIC', 'PIXEL_ANIMATION', 'NONPIXEL_IMAGE', 'NONPIXEL_ANIMATION', 'SFX']
+OUTPUT_CLASSES = ['PIXEL_STATIC', 'PIXEL_ANIMATION', 'NONPIXEL_IMAGE', 'NONPIXEL_ANIMATION', 'SFX', 'BGM']
 STRINGS = {'type': 'array', 'items': {'type': 'string'}}
 def obj(properties, required=()):
     return {'type': 'object', 'properties': properties, 'required': list(required), 'additionalProperties': False}
@@ -41,6 +41,9 @@ SCHEMA = obj({
     'source_notes': {'type': 'array', 'items': obj({'classification': {'enum': ['EXPLICIT', 'DERIVED', 'UNSPECIFIED']}, 'text': {'type': 'string'}, 'source': {'type': 'string'}}, ['classification', 'text', 'source'])},
     'prompt': {'type': 'string'}, 'negative_prompt': {'type': 'string'}, 'prompt_spec': PROMPT_SPEC_SCHEMA,
     'audio': obj({'duration_seconds': {'type': 'number', 'minimum': 1, 'maximum': 30}}, ['duration_seconds']),
+    'bgm': obj({'duration_seconds': {'type': 'number', 'minimum': 10, 'maximum': 300}, 'instrumental': {'type': 'boolean'},
+                'lyrics': {'type': 'string'}, 'tempo_bpm': {'type': 'integer', 'minimum': 40, 'maximum': 240},
+                'mood': {'type': 'string', 'minLength': 1}, 'loop': {'type': 'boolean'}}, ['duration_seconds']),
     'production': obj({'static_master': {'type': 'string'}, 'approval_record': {'type': 'string'}, 'motion_reference': {'type': 'string'}, 'source_frames': {'type': 'string'}, 'selection': {'type': 'string'}, 'direct_profile': {'type': 'string'}}),
 }, ['asset_id', 'asset_type', 'output_class', 'purpose', 'source', 'identity', 'constraints', 'animation', 'workflow_preferences', 'forbidden_elements', 'unspecified_elements', 'source_notes'])
 SCHEMA['$schema'] = 'https://json-schema.org/draft/2020-12/schema'
@@ -56,6 +59,17 @@ def validate(brief):
             raise ValueError('Override requires NONPIXEL_IMAGE and an explicit art_style')
         if (brief.get('model_override') or brief.get('workflow_override') or brief.get('executor_override')) and not brief.get('override_mode'):
             raise ValueError('Explicit override requires override_mode and user approval')
+    if 'bgm' in brief and brief['output_class'] != 'BGM':
+        raise ValueError('bgm settings are only supported for BGM')
+    if brief['output_class'] == 'BGM':
+        if 'audio' in brief:
+            raise ValueError('BGM uses bgm settings, not the SFX audio contract')
+        music = brief.get('bgm', {})
+        # Instrumental is the default; vocals require explicit lyrics and remain a listening review item.
+        if music.get('instrumental', True) and music.get('lyrics', '').strip():
+            raise ValueError('Instrumental BGM requires empty lyrics; set instrumental false for vocals')
+        if not music.get('instrumental', True) and not music.get('lyrics', '').strip():
+            raise ValueError('Vocal BGM requires explicit lyrics')
     if 'art_direction' in brief and brief['output_class'] != 'NONPIXEL_IMAGE':
         raise ValueError('Art direction supports NONPIXEL_IMAGE only')
     if brief.get('prompt_spec', {}).get('subject_integrity') or brief.get('prompt_spec', {}).get('art_direction'):

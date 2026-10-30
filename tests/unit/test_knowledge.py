@@ -19,6 +19,7 @@ REQUIRED_FILES = (
     "config/workflows/anima_mushroom_courier_production.json",
     "config/workflows/anima_tomohi_api.json",
     "config/workflows/audio_stable_audio_3_medium.json",
+    "config/workflows/audio_yue2_bgm.json",
     "config/workflows/baseline_anima_api.json",
     "config/workflows/anima_base_rebuilt_api.json",
     "config/workflows/anima_turbo_api.json",
@@ -59,8 +60,8 @@ def mutate(root, name, callback):
 def test_complete_mapping_and_counts():
     result = build_snapshot(ROOT)
     assert result["research_state"] == "INVENTORY_ONLY"
-    assert result["counts"]["workflows"] == 11
-    assert result["counts"]["model_variants"] == 10
+    assert result["counts"]["workflows"] == 12
+    assert result["counts"]["model_variants"] == 11
     assert result["counts"]["model_profiles"] == 9  # Includes the explicit MiniMax research compiler profile.
     assert result["counts"]["styles"] == 33
     assert result["counts"]["runtime_recipes"] == 91

@@ -124,7 +124,8 @@
         "PIXEL_ANIMATION",
         "NONPIXEL_IMAGE",
         "NONPIXEL_ANIMATION",
-        "SFX"
+        "SFX",
+        "BGM"
       ]
     },
     "purpose": {
@@ -587,6 +588,38 @@
           "type": "number",
           "minimum": 1,
           "maximum": 30
+        }
+      },
+      "required": [
+        "duration_seconds"
+      ],
+      "additionalProperties": false
+    },
+    "bgm": {
+      "type": "object",
+      "properties": {
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 300
+        },
+        "instrumental": {
+          "type": "boolean"
+        },
+        "lyrics": {
+          "type": "string"
+        },
+        "tempo_bpm": {
+          "type": "integer",
+          "minimum": 40,
+          "maximum": 240
+        },
+        "mood": {
+          "type": "string",
+          "minLength": 1
+        },
+        "loop": {
+          "type": "boolean"
         }
       },
       "required": [
