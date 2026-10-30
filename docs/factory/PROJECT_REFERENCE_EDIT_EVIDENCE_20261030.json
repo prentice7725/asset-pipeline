@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-30",
+  "scope": "Explicit isekai portrait/Grok reference edit and local RGBA delivery",
+  "authorization": {
+    "path": "workspace/isekai-human-identity-20261030/project-reference-contract-consent.json",
+    "sha256": "895486b149df7f9ac9fbd9d07689870561aef8533f9c3bf86218b659f8ddf9b1"
+  },
+  "selected_base": {
+    "path": "workspace/isekai-human-identity-20261030/identity-base-selection.json",
+    "sha256": "77d54c98cec8bb4f46c3dbcf727ee81ebeebea918643996f6f6bc629f74ec0ef"
+  },
+  "tests": {
+    "passed": 821,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "reported_seconds": 419.99,
+    "skip_reason": "Local migration benchmark data unavailable",
+    "evidence": [
+      {
+        "path": "workspace/isekai-human-identity-20261030/project-edit-final-pytest.xml",
+        "sha256": "2004e0e3414c0dac5bc83e0a300d63ce4c1d83efc8ca898fcfe3db188e1ee72b"
+      },
+      {
+        "path": "workspace/isekai-human-identity-20261030/project-edit-final-pytest.log",
+        "sha256": "c46ac9115e3ae28088540516713f4d8768450274b4d27c34d77284352a22cf8d"
+      }
+    ],
+    "earlier_interrupted_log": {
+      "path": "workspace/isekai-human-identity-20261030/project-edit-before-prompt-correction.log",
+      "sha256": "ba0e1041f3abecf479bf501dd8104b769d0bfb6c6f308fbac812050ebb1c4de8"
+    }
+  },
+  "execution_audit": {
+    "path": "workspace/isekai-human-identity-20261030/project-edit-live-audit.json",
+    "sha256": "0642001569ecf76604e88ca3f9bd273e3fffe869661c546cdbb7f583a6d835a7"
+  },
+  "runs": [
+    {
+      "authorization_id": "b23e1777fd4a4257b5589bba01627f6e",
+      "status": "FAILED",
+      "actual_image_edit_calls": 1,
+      "selected_rgba_hash_verified": true,
+      "receipt": {
+        "path": "workspace/project-reference-edit-worktree/workspace/factory_budget/b23e1777fd4a4257b5589bba01627f6e/variant.json",
+        "sha256": "8ed4601b87a620d02eeba25d3ba096815acd0f9045642037ac4b7f5824f83c1a"
+      },
+      "manifest": {
+        "path": "workspace/project-reference-edit-worktree/workspace/factory_budget/b23e1777fd4a4257b5589bba01627f6e/run/run_manifest.json",
+        "sha256": "f54d88f55faf9fafaf61150fbf280b8e5b3e22d10c2011ebea28a1d723031be9"
+      },
+      "delivery_audit": {
+        "path": "workspace/project-reference-edit-worktree/workspace/factory_budget/b23e1777fd4a4257b5589bba01627f6e/run/020_delivery/0/alpha_processing.json",
+        "sha256": "056eeb5ccbd1a9244f44e7fcce1ac64d007f78cf40108570e85910c0dc79ef54"
+      },
+      "actual_history_sha256": "3b66ad4a226bddd4c6bc7f3763f03ea20b1268747263f088a5fc06162cad942d"
+    },
+    {
+      "authorization_id": "48adc226d31e4f5ea933c39bd9e3fa77",
+      "status": "CANDIDATE_READY_REVIEW_REQUIRED",
+      "actual_image_edit_calls": 1,
+      "selected_rgba_hash_verified": true,
+      "receipt": {
+        "path": "workspace/project-reference-edit-worktree/workspace/factory_budget/48adc226d31e4f5ea933c39bd9e3fa77/variant.json",
+        "sha256": "7ced4469eb296dddd41c7e8b5a6fcf164e2783f21a436bc0e08a1bb620ec14ea"
+      },
+      "manifest": {
+        "path": "workspace/project-reference-edit-worktree/workspace/factory_budget/48adc226d31e4f5ea933c39bd9e3fa77/run/run_manifest.json",
+        "sha256": "d1a418dd6597c48da99904e50cf625fa33f6ebc0521096892ce7257f24753412"
+      },
+      "delivery_audit": {
+        "path": "workspace/project-reference-edit-worktree/workspace/factory_budget/48adc226d31e4f5ea933c39bd9e3fa77/run/020_delivery/0/alpha_processing.json",
+        "sha256": "8570d9dea2eed3ae0ff55cfef73e558bdb1b07f3f574f9979f66f1d9b70e185b"
+      },
+      "actual_history_sha256": "88f3d5f8af8ddc685a43906243f502f1d2f462e79843b7cb057a3eb9356ef369",
+      "output": {
+        "path": "workspace/project-reference-edit-worktree/workspace/factory_budget/48adc226d31e4f5ea933c39bd9e3fa77/run/020_delivery/0/portrait.png",
+        "sha256": "79ccf570b995d1402f21e0626bf4065c206e1e273d7413378fc9e453ce4fb3cc"
+      }
+    }
+  ],
+  "contract": {
+    "existing_editor": "grok_imagine",
+    "T2I": "krea2_base unchanged",
+    "style": "STYLE-104 unchanged",
+    "reference_input": "EXACT_RGBA",
+    "final_resolution": [
+      1212,
+      1300
+    ],
+    "final_mode": "RGBA",
+    "neutral_source_gate": {
+      "minimum_median_channel": 220,
+      "maximum_median_chroma": 10,
+      "channel_tolerance": 10,
+      "minimum_coverage": 0.99
+    },
+    "opaque_rgb": "EXACT_BEFORE_UNIFORM_RESIZE",
+    "alpha_during_rgb_recovery": "EXACT",
+    "fallback": "NONE",
+    "requests_per_authorization": 1,
+    "crop": false,
+    "six_mcp_schemas": "UNCHANGED",
+    "public_variant_job_schema": "UNCHANGED"
+  },
+  "human_review": {
+    "schema_version": 1,
+    "state": "ACCEPTED_BY_USER",
+    "identity_review": "ACCEPTED_BY_USER",
+    "scope": "EXPRESSION_VARIANT_IDENTITY_PRESERVATION_ONLY",
+    "reviewed_by": "user",
+    "date": "2026-10-30",
+    "user_answer": "동일 인물 변형으로 수용",
+    "reviewed_items": [
+      "face shape",
+      "hairstyle",
+      "school uniform",
+      "rendering style",
+      "body pose",
+      "framing"
+    ],
+    "allowed_change": "facial expression to surprised",
+    "base": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\cafbb34ff7924de3a31afef888ed90d6\\run\\020_delivery\\0\\portrait.png",
+      "sha256": "4f20aa36e0785472925252664c27aa4c76febf52f27f4aff36b3a0e5569c40df"
+    },
+    "variant": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\project-reference-edit-worktree\\workspace\\factory_budget\\48adc226d31e4f5ea933c39bd9e3fa77\\run\\020_delivery\\0\\portrait.png",
+      "sha256": "79ccf570b995d1402f21e0626bf4065c206e1e273d7413378fc9e453ce4fb3cc"
+    },
+    "comparison": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\isekai-human-identity-20261030\\project-expression-comparison.png",
+      "sha256": "1fa651a8661e93baf112e52397a1f90b2907dda61b16c7ce4f90694217bf0638"
+    },
+    "run_manifest": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\project-reference-edit-worktree\\workspace\\factory_budget\\48adc226d31e4f5ea933c39bd9e3fa77\\run\\run_manifest.json",
+      "sha256": "d1a418dd6597c48da99904e50cf625fa33f6ebc0521096892ce7257f24753412"
+    },
+    "variant_receipt": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\project-reference-edit-worktree\\workspace\\factory_budget\\48adc226d31e4f5ea933c39bd9e3fa77\\variant.json",
+      "sha256": "7ced4469eb296dddd41c7e8b5a6fcf164e2783f21a436bc0e08a1bb620ec14ea"
+    },
+    "art_approval": "NOT_GRANTED",
+    "golden_approval": "NOT_GRANTED",
+    "aseprite_approval": "NOT_GRANTED",
+    "game_ready": false,
+    "immutable_run_receipts_changed": false
+  },
+  "human_review_evidence": {
+    "path": "workspace/isekai-human-identity-20261030/project-expression-human-review.json",
+    "sha256": "35e9767d4e50e852782c24c815614fed3e112f0f1caa7b61988f108a23c18346"
+  },
+  "game_ready": false,
+  "production_activation": false,
+  "live_mcp_replacement": false,
+  "tested_entrypoint": "current development Python CLI",
+  "comparison": {
+    "path": "workspace/isekai-human-identity-20261030/project-expression-comparison.png",
+    "sha256": "1fa651a8661e93baf112e52397a1f90b2907dda61b16c7ce4f90694217bf0638"
+  },
+  "source": {
+    "base_commit": "591f2d2",
+    "branch": "codex/project-reference-edit-20261030",
+    "patch": {
+      "path": "workspace/isekai-human-identity-20261030/project-reference-edit-source.patch",
+      "sha256": "13bed040892e17bcb025cded6b6b773d7f9a2c7ced539ec4dec6f54005438904"
+    },
+    "new_test": {
+      "path": "workspace/project-reference-edit-worktree/tests/unit/test_project_reference_edit.py",
+      "sha256": "85dbc33aa6e6dd6645f17638f546c57cd1bbfeecc1e193fcec21a9a54f1ea76c"
+    },
+    "sot": {
+      "path": "workspace/project-reference-edit-worktree/config/styles/projects/isekai_examiner/visual_sot.yaml",
+      "sha256": "90cd5f69c279514fdeaca8307844a78d294805ffd770214dcbf56ac02a1aa02a"
+    }
+  }
+}

@@ -60,6 +60,23 @@ asset_class_contracts:
             description: Project environment adaptation; recipe is untested and not
               art approval.
   character_portrait:
+    # User authorized 2026-10-30: explicit existing Grok and Codex reference edits.
+    # T2I remains bound to Krea2; this is not human art/style approval.
+    reference_edit_contracts:
+      grok_imagine:
+        workflow_id: grok_imagine
+        model_profile: grok-imagine
+        reference_input: EXACT_RGBA
+        source_background: UNIFORM_NEUTRAL
+        resolution: [1212, 1300]
+        human_review_required: true
+      codex_imagegen:
+        workflow_id: codex_imagegen
+        model_profile: codex-imagegen
+        reference_input: EXACT_RGBA
+        source_background: UNIFORM_NEUTRAL
+        resolution: [1212, 1300]
+        human_review_required: true
     delivery_profile:
       workflow_id: krea2_base
       operation: LOCAL_MASK_UNIFORM_CONTAIN
@@ -103,6 +120,30 @@ asset_class_contracts:
           human review requirements.
     recipes:
       STYLE-104:
+        codex_imagegen:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: 141f12de1e90ef52b3dc3f6a7d820cab25f47a898e7077e6c7ad93ea5463c168
+          model_profile: codex-imagegen
+          positive:
+          - Match the supplied reference rendering style exactly; do not restyle or redesign the character.
+          negative: []
+          required_capabilities: [image_to_image, character_reference]
+          sources:
+          - url: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
+            description: Same project portrait style; explicit Codex reference-edit extension authorized 2026-10-30, not art approval.
+        grok_imagine:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: 141f12de1e90ef52b3dc3f6a7d820cab25f47a898e7077e6c7ad93ea5463c168
+          model_profile: grok-imagine
+          positive:
+          - Match the supplied reference rendering style exactly; do not restyle or redesign the character.
+          negative: []
+          required_capabilities: [image_to_image, character_reference]
+          sources:
+          - url: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
+            description: Same project portrait style; explicit reference-edit contract authorized 2026-10-30, not art approval.
         krea2_base:
           version: 1.0.0
           status: UNTESTED

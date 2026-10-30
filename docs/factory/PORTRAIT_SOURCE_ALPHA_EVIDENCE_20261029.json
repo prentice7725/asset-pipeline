@@ -1,0 +1,170 @@
+{
+  "date": "2026-10-29",
+  "final_test_date": "2026-10-30",
+  "scope": "Existing portrait source-background and local-alpha handoff",
+  "verification_budget": "USER_STANDING_NO_FIXED_COUNT_CAP",
+  "operational_activation": false,
+  "tests": {
+    "passed": 808,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "skip_reason": "Local migration benchmark data unavailable",
+    "evidence": [
+      {
+        "path": "workspace/isekai-human-identity-20261029/background-source-probe/pytest-context-final.xml",
+        "sha256": "22464b23ecb26ff390a9ead47a4910c6c133e8d2a298814eb75b6dfd137c6928"
+      },
+      {
+        "path": "workspace/isekai-human-identity-20261029/background-source-probe/pytest-context-final.log",
+        "sha256": "7f98264cbca6a5743c931b33b79336337bcd6153ed08db24f4d0f4f43a9c19c7"
+      }
+    ]
+  },
+  "interrupted_test_attempt": {
+    "result": "NO_PASS_CLAIM",
+    "evidence": {
+      "path": "workspace/isekai-human-identity-20261029/background-source-probe/pytest-context.log",
+      "sha256": "0df7cb4bbad24a2e51aaac603136b04ca9c26327ae13d655e8895819e9b5782d"
+    },
+    "note": "Terminated after no visible progress; diagnostic rerun captured slow actual Aseprite subprocess wait."
+  },
+  "generation_jobs": [
+    {
+      "authorization_id": "55bef7d7a9a7469faa9e309ce5e841c4",
+      "stage": "BEFORE_CONTEXT_CHANGE",
+      "sampler_and_decoder_cached": true,
+      "fresh_sampler_execution": false,
+      "manifest": {
+        "path": "workspace/factory_budget/55bef7d7a9a7469faa9e309ce5e841c4/run/run_manifest.json",
+        "sha256": "4a98fb66299c6c738e2729c41933aafe35b14589bd54e9426170f0e638806d1e"
+      },
+      "history": {
+        "path": "workspace/isekai-human-identity-20261029/integrated-source-alpha-validation/comfy-history.json",
+        "sha256": "a147b5952ca9a8c5e46c6f24da272916922fd540df1af31715cd498ecdcc25ce"
+      },
+      "raw_source": {
+        "path": "workspace/factory_budget/55bef7d7a9a7469faa9e309ce5e841c4/run/010_generation/001_iex_portrait_d01_001_school_neutral_sourcealpha_v001_00001_.png",
+        "sha256": "7d9772ab1dae95d3f1a914d410d451fd30cc94838714e8d886d5ac9bb98133a2"
+      },
+      "final": {
+        "path": "workspace/factory_budget/55bef7d7a9a7469faa9e309ce5e841c4/run/020_delivery/0/portrait.png",
+        "sha256": "b828774f1a0d2b8e53f4bd75e341cc937a3bd2b23255a367b90965d9ff5c85fd"
+      }
+    },
+    {
+      "authorization_id": "2d9d6e0255e34ffba2ff655c8c3a3ecd",
+      "stage": "BEFORE_CONTEXT_CHANGE",
+      "sampler_and_decoder_cached": false,
+      "fresh_sampler_execution": true,
+      "manifest": {
+        "path": "workspace/factory_budget/2d9d6e0255e34ffba2ff655c8c3a3ecd/run/run_manifest.json",
+        "sha256": "66f2b9483e5d63a338883cbf4492d1216e08c7b89f2361ce6f21f33400f16ee0"
+      },
+      "history": {
+        "path": "workspace/isekai-human-identity-20261029/integrated-source-alpha-validation-fresh/comfy-history.json",
+        "sha256": "63017423453ce0b65f701128184bbf6c917ccd1c501b41d561b66b30cc7a6233"
+      },
+      "raw_source": {
+        "path": "workspace/factory_budget/2d9d6e0255e34ffba2ff655c8c3a3ecd/run/010_generation/001_iex_portrait_d01_001_school_neutral_sourcealpha_fresh_v001_00001_.png",
+        "sha256": "b3d37f785c4fe1151ee456e36ead19e1758527dc8222ad4027ba6fc88636c00f"
+      },
+      "final": {
+        "path": "workspace/factory_budget/2d9d6e0255e34ffba2ff655c8c3a3ecd/run/020_delivery/0/portrait.png",
+        "sha256": "6514b68426960db5006d72e47cf163276397e6aefd9bff55f089fae33fdd3b90"
+      }
+    }
+  ],
+  "final_context_offline_replay": {
+    "generation_requests": 0,
+    "source_rgb_unchanged": true,
+    "cases": [
+      {
+        "case": "plain",
+        "authorization_id": "b44d7212fa5c49a5a9d5a5c80071c3d6",
+        "source_sha256": "72506710505ae92d723bd2906739910808d61de5f337d7f14d3cc7ed71f2c49b",
+        "output": "C:\\workspace\\asset-pipeline\\workspace\\isekai-human-identity-20261029\\background-source-probe\\integrated-context-plain\\portrait.png",
+        "output_sha256": "879f15f917e60cf4af7bf1c62ffe7e68a10eb18d61e8605461ab7a31caf78449",
+        "source_rgb_unchanged": true,
+        "dimensions": [
+          1212,
+          1300
+        ],
+        "mode": "RGBA",
+        "visual_quality": "NOT_ACCEPTED",
+        "human_review": "REVIEW_REQUIRED"
+      },
+      {
+        "case": "fresh",
+        "authorization_id": "2d9d6e0255e34ffba2ff655c8c3a3ecd",
+        "source_sha256": "b3d37f785c4fe1151ee456e36ead19e1758527dc8222ad4027ba6fc88636c00f",
+        "output": "C:\\workspace\\asset-pipeline\\workspace\\isekai-human-identity-20261029\\background-source-probe\\integrated-context-fresh\\portrait.png",
+        "output_sha256": "36c23202b00e1e21f622878081d840f4a61df743297f8c2416d699dfb468ceaa",
+        "source_rgb_unchanged": true,
+        "dimensions": [
+          1212,
+          1300
+        ],
+        "mode": "RGBA",
+        "visual_quality": "NOT_ACCEPTED",
+        "human_review": "REVIEW_REQUIRED"
+      },
+      {
+        "case": "pattern",
+        "authorization_id": "453f364e183a4f178a4e012a6ea49239",
+        "source_sha256": "cf45a3039eacd504e9fca04a550f8f81a4f85a4b0bab132c2c6d64c35fce4f3d",
+        "output": "C:\\workspace\\asset-pipeline\\workspace\\isekai-human-identity-20261029\\background-source-probe\\integrated-context-pattern\\portrait.png",
+        "output_sha256": "c1767d9390f3e321d31ef35868624a54c354f033099eb05cd70985a4d76f2141",
+        "source_rgb_unchanged": true,
+        "dimensions": [
+          1212,
+          1300
+        ],
+        "mode": "RGBA",
+        "visual_quality": "NOT_ACCEPTED",
+        "human_review": "REVIEW_REQUIRED"
+      }
+    ],
+    "evidence": {
+      "path": "workspace/isekai-human-identity-20261029/background-source-probe/integrated-context-replay.json",
+      "sha256": "7baec4007b71ba10c7a2c30e3430d6d5eacdb3d975203aaa6348efc80db8657d"
+    }
+  },
+  "segmentation_context": {
+    "fraction": 0.1,
+    "fill": "WHITE",
+    "applies_to": "SEGMENTATION_INPUT_ONLY",
+    "source_crop": false,
+    "model_change": false
+  },
+  "visual_result": "CLEAN_ALPHA_NOT_PASSED",
+  "human_identity_base_selected": false,
+  "identity_edit_generation_requests": 0,
+  "human_review": "REVIEW_REQUIRED",
+  "game_ready": false,
+  "remaining": [
+    "White hair-edge islands and fringe",
+    "Source hair touches top frame boundary",
+    "Old patterned-source contamination",
+    "Human casting/style/identity selection absent"
+  ],
+  "review_preview": {
+    "path": "workspace/isekai-human-identity-20261029/background-source-probe/context-review-comparison.png",
+    "sha256": "f0d5a2dfb82e0d106fe447210577ad6baaf42236ab051eaa45e446851baf4c39"
+  },
+  "rollback": "Revert this isolated compiler/portrait/tests/docs change; retain original sources and spent ledgers",
+  "code": [
+    {
+      "path": "workspace/portrait-source-background-worktree/src/assetpipe/portrait_delivery.py",
+      "sha256": "c4941242a845e52958acd14ee82ebbdd683944e6316b9ac7bb27e8bcaa8d1441"
+    },
+    {
+      "path": "workspace/portrait-source-background-worktree/src/assetpipe/prompts/__init__.py",
+      "sha256": "eb574e30d30c02a84226feb2eaaed73fc8dad89d5a9926661d10f8d911558c77"
+    },
+    {
+      "path": "workspace/portrait-source-background-worktree/tests/unit/test_project_portrait.py",
+      "sha256": "c74026a321d83b4943af742cc72ea12cf5e97af0a5247e90ef179bb65e2e9ebf"
+    }
+  ]
+}

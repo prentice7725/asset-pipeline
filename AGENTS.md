@@ -24,7 +24,13 @@ Change discipline:
 - Prefer code plus tests over new dated reports. Add a dated validation document only when
   real execution evidence must be preserved, and link it from docs/factory/README.md, not README.md.
 - Keep README.md a usage guide; keep CHANGELOG entries to a few lines.
-- Live generation always needs a separately authorized budget in the current request.
+- Production/operational generation needs a separately authorized budget in the current request.
+- User decision (2026-10-29): verification of the authorized pipeline has no fixed generation
+  budget/count cap. Do not request approval again solely for additional verification trials.
+  Keep each run explicit, individually reserved and logged; never reuse a spent authorization
+  or hide retries/fallback. Failed gates still block downstream execution: diagnose/correct
+  the failure before a distinct, justified validation run. This does not reopen frozen work
+  or authorize production use, human art approval, deployment or live MCP replacement.
 - Keep new run outputs, images, videos and zip evidence out of git (workspace/ is ignored; never
   force-add). Commit only small JSON/Markdown summaries with hashes. tests/unit/test_repository_size_guard.py
   rejects new tracked files over 1 MB and new tracked workspace paths.

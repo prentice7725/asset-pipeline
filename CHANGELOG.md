@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — project identity edits and alpha delivery, 2026-10-30
+
+- Add explicit Grok/Codex project reference edits with exact RGBA input, pinned SOT,
+  fixed preserve lists, one-attempt execution and local portrait alpha delivery.
+- Preserve opaque RGB and verify neutral source backdrops; reject injected image
+  arguments and mismatched edit tools. Record real edits and per-output user identity
+  acceptance while keeping final art/Golden/Aseprite approval separate.
+
 ## Unreleased — same-character expression/pose variants, 2026-10-28
 
 - Add `factory variant-plan/variant-run`: one selected NONPIXEL_IMAGE base, explicit reference-edit

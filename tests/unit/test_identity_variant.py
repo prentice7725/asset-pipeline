@@ -138,6 +138,7 @@ def test_variant_output_can_be_a_motion_parent(lab):
 
 
 def test_unsupported_provider_changed_base_and_invalid_sources_block_before_dispatch(lab):
+    lab.edit_registry('codex_imagegen', lambda e: e['capabilities'].update(character_reference=False))
     with pytest.raises(ValueError, match='ROUTE_BLOCKED.*character_reference'):
         plan_variant(lab.job(provider={'workflow_id': 'codex_imagegen'}), lab.root, allowed_roots=lab.roots)
     with pytest.raises(ValueError, match='ASSET_ID'):
@@ -150,6 +151,57 @@ def test_unsupported_provider_changed_base_and_invalid_sources_block_before_disp
     with pytest.raises(ValueError, match='BASE_INVALID'):
         plan_variant(lab.job(), lab.root, allowed_roots=lab.roots)
     assert lab.calls(lab.grok_dir) == []
+
+
+@pytest.mark.parametrize('kind', ['EXPRESSION', 'POSE'])
+def test_codex_variant_uses_registered_edit_tool_and_keeps_human_review(lab, kind):
+    lab.codex(session_id='variant_thread')
+    baseline_calls = len(lab.calls(lab.codex_dir))
+    base_sha = digest(lab.base_image)
+    job = lab.job(provider={'workflow_id': 'codex_imagegen'}, variation={'kind': kind, 'target': 'surprised' if kind == 'EXPRESSION' else 'running'})
+    plan = plan_variant(job, lab.root, allowed_roots=lab.roots)
+    assert plan['workflow']['edit_tool'] == 'image_gen' and plan['dispatches'] == 0
+    assert len(lab.calls(lab.codex_dir)) == baseline_calls
+    receipt_path = run_variant(job, plan['plan_sha256'], lab.authorization(plan), lab.root,
+                               authorize_generation=True, allowed_roots=lab.roots)
+    receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+    assert receipt['status'] == 'CANDIDATE_REVIEW_REQUIRED'
+    assert receipt['identity_review'] == 'HUMAN_REQUIRED' and receipt['game_ready'] is False
+    assert receipt['reference_input'] == 'COPIED_TO_PROVIDER_INPUT'
+    assert len(lab.calls(lab.codex_dir)) == baseline_calls + 1
+    assert lab.calls(lab.codex_dir)[-1]['reference_sha256'] == base_sha
+    assert digest(lab.base_image) == base_sha
+    with pytest.raises(ValueError, match='ALREADY_RESERVED'):
+        run_variant(job, plan['plan_sha256'], lab.authorization(plan), lab.root,
+                    authorize_generation=True, allowed_roots=lab.roots)
+    assert len(lab.calls(lab.codex_dir)) == baseline_calls + 1
+
+
+@pytest.mark.parametrize('field', ['tool', 'reference'])
+def test_codex_variant_rejects_missing_reference_or_wrong_tool_and_spends_budget(lab, monkeypatch, field):
+    lab.codex(session_id='variant_thread')
+    import assetpipe.pipelines as pipelines
+    original_create = pipelines.create
+
+    def changed_record(*args, **kwargs):
+        path = Path(original_create(*args, **kwargs))
+        manifest = json.loads(path.read_text(encoding='utf-8'))
+        manifest['generation']['provider'].pop(field)
+        save(path, manifest)
+        return path
+
+    monkeypatch.setattr(pipelines, 'create', changed_record)
+    baseline_calls = len(lab.calls(lab.codex_dir))
+    job = lab.job(provider={'workflow_id': 'codex_imagegen'})
+    plan = plan_variant(job, lab.root, allowed_roots=lab.roots)
+    auth = lab.authorization(plan)
+    with pytest.raises(ValueError, match='REFERENCE_NOT_SENT'):
+        run_variant(job, plan['plan_sha256'], auth, lab.root, authorize_generation=True, allowed_roots=lab.roots)
+    receipt = json.loads((lab.root / 'workspace/factory_budget' / ('a' * 32) / 'variant.json').read_text(encoding='utf-8'))
+    assert receipt['status'] == 'FAILED' and receipt['game_ready'] is False
+    with pytest.raises(ValueError, match='ALREADY_RESERVED'):
+        run_variant(job, plan['plan_sha256'], auth, lab.root, authorize_generation=True, allowed_roots=lab.roots)
+    assert len(lab.calls(lab.codex_dir)) == baseline_calls + 1
 
 
 def test_cli_provider_base_needs_its_output_location_explicitly_allowed(lab):

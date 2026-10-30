@@ -192,7 +192,7 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
   --authorization workspace/jobs/fox_surprised-auth.json --authorize-generation --allowed-root . --allowed-root <providerの出力フォルダ>
 ```
 
-- 現在、参照編集が登録されているproviderはGrok CLI（`grok_imagine`、実験的）のみです。Codex CLIとAGYのNano Bananaは後続の段階です。
+- 参照編集はGrok CLI（`grok_imagine`）とCodex CLI（`codex_imagegen`）に登録されています。どちらも実験的で、プロジェクト肖像画の実編集・RGBA出力の記録があります。同一人物性は各出力について人が確認します。AGYのNano Bananaは後続の段階です。
 - 保持項目（顔・髪型・衣装・装備・画風など）は変更の種類ごとに固定され、人物が保たれたかどうかは人が判断します。
 
 ジョブファイルの形式、承認ファイル、制限事項は[同一人物のバリエーション](docs/factory/IDENTITY_VARIANT.md)を参照してください（韓国語）。
