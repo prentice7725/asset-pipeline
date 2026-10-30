@@ -69,10 +69,14 @@ is `CANDIDATE_REVIEW_REQUIRED`; the manifest is
 
 ## Review, checks and evidence
 
-The comparison shows the source and Codex output; human identity-preservation
-review is requested for this exact output. The earlier Grok acceptance does not
-approve the Codex image. Final art, Golden/Aseprite and operational activation
-remain separate, including when identity preservation is accepted.
+The user accepted this exact Codex output on 2026-10-30: "Codex 변형도 동일 인물로 수용".
+The separate human-review record pins the base, output, comparison, manifest and
+receipt hashes and accepts preservation of face shape, hair, school uniform,
+rendering style, body pose and framing while changing only the expression.
+This is the Codex result's own review, separate from the earlier Grok acceptance.
+Immutable run receipts retain their original HUMAN_REQUIRED execution state;
+final art, Golden/Aseprite and operational activation remain separate, with
+`game_ready=false`.
 
 The final full regression, consent, source/code hashes, rollout hash, manifest,
 receipt, raw/final hashes and current human-review state are recorded in the

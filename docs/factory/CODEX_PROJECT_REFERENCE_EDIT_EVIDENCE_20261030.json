@@ -105,11 +105,52 @@
   },
   "post_live_offline_correction": "Removed redundant shared body-pose ban; EXPRESSION still locks body pose in coordinator/preserve list. Actual expression generated before removal with the same intended preservation. POSE checked offline only; no extra generation.",
   "human_review": {
-    "identity_review": "HUMAN_REQUIRED",
-    "state": "PENDING_USER_RESPONSE",
-    "art_approval": "NOT_GRANTED"
+    "schema_version": 1,
+    "state": "ACCEPTED_BY_USER",
+    "identity_review": "ACCEPTED_BY_USER",
+    "scope": "EXPRESSION_VARIANT_IDENTITY_PRESERVATION_ONLY",
+    "reviewed_by": "user",
+    "date": "2026-10-30",
+    "user_answer": "Codex 변형도 동일 인물로 수용",
+    "reviewed_items": [
+      "face shape",
+      "hairstyle",
+      "school uniform",
+      "rendering style",
+      "body pose",
+      "framing"
+    ],
+    "allowed_change": "facial expression to surprised",
+    "base": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\cafbb34ff7924de3a31afef888ed90d6\\run\\020_delivery\\0\\portrait.png",
+      "sha256": "4f20aa36e0785472925252664c27aa4c76febf52f27f4aff36b3a0e5569c40df"
+    },
+    "variant": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\9eccb362c3cc40ba82b8b7d43480220b\\run\\020_delivery\\0\\portrait.png",
+      "sha256": "11e51d16bb81b8ce8ac475244911cfde263a861a8c43fbddadb3c7389c8e4347"
+    },
+    "comparison": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\comparison.png",
+      "sha256": "56dd72b7d83c5c9ed1cbec6577ff3cc2807fc1ce9600ed88aaef09c88ed0d9b0"
+    },
+    "run_manifest": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\9eccb362c3cc40ba82b8b7d43480220b\\run\\run_manifest.json",
+      "sha256": "853a85b7e8e3c1f87066c701092ddc6db2b4821e7d011707f4bcfc817e541f29"
+    },
+    "variant_receipt": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\9eccb362c3cc40ba82b8b7d43480220b\\variant.json",
+      "sha256": "4f2f6bcecee165ff19402c63e5dc67671e5a00c661b31c225b3640dd4249860a"
+    },
+    "art_approval": "NOT_GRANTED",
+    "golden_approval": "NOT_GRANTED",
+    "aseprite_approval": "NOT_GRANTED",
+    "game_ready": false,
+    "immutable_run_receipts_changed": false
   },
-  "human_review_evidence": null,
+  "human_review_evidence": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\human-review.json",
+    "sha256": "4cc57bd1f5464b890b247fa7eea37e026e007d7a016d286845e4c8faa6cb16a4"
+  },
   "game_ready": false,
   "live_mcp_replacement": false,
   "production_activation": false,
