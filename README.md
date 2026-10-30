@@ -241,7 +241,8 @@ assetpipe create --type nonpixel-image --project game-a --asset-id fox `
 ```
 
 레퍼런스 이미지 편집은 Grok의 `image_edit` 또는 Codex의 `image_gen` 참조 입력을 명시해 사용합니다.
-Codex는 복사본 1장을 `--image`로 첨부합니다. 두 경로 모두 실험적이며 참조 편집 실생성·동일 인물 유지 검증은 남아 있습니다.
+Codex는 복사본 1장을 `--image`로 첨부합니다. 두 경로 모두 실험적입니다. 프로젝트 초상화 참조 편집은 실생성으로 검증했지만,
+인물이 유지됐는지는 결과마다 사람이 확인합니다([동일 인물 변형 작업](docs/factory/IDENTITY_VARIANT.md)).
 
 ```powershell
 assetpipe create --type nonpixel-image --asset-id fox --reference ref.png `
