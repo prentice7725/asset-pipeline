@@ -11,6 +11,9 @@ and production activation remain blocked/unverified. See
 
 **Same-character variants (2026-10-28):** [expression/pose edit from one selected base](IDENTITY_VARIANT.md) — offline contract and fake-CLI tests only; no real generation yet.
 
+[Portrait source/alpha validation, 2026-10-29](PORTRAIT_SOURCE_ALPHA_VALIDATION_20261029.md): separate opaque source generation from transparent delivery, reuse alpha matting while preserving source RGB, and retain explicit human review.
+Its 2026-10-30 follow-up records source-connected white-gap removal, opaque color preservation with translucent-edge unmatting, explicit headroom trials and the remaining human review boundary.
+
 Implementation references: [M3.0 contract](M30_OFFLINE_CONTRACT.md), [M3.1 SFX](M31_SFX_OFFLINE.md).
 
 Execution boundary: [explicit still/audio dispatch](FACTORY_EXECUTION.md).

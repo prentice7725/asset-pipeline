@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — portrait source/alpha handoff, 2026-10-29
+
+- Separate opaque portrait source backdrops from final transparent delivery; add
+  existing rembg alpha matting with fixed segmentation context, verified white-background
+  refinement, opaque RGB preservation and translucent-edge white unmatting.
+  Ordinary image/SFX/pixel routes and human review gates remain unchanged.
+
 ## Unreleased — same-character expression/pose variants, 2026-10-28
 
 - Add `factory variant-plan/variant-run`: one selected NONPIXEL_IMAGE base, explicit reference-edit

@@ -28,13 +28,43 @@ must be inside configured roots and match SHA256
 `309c8469258dda742793dce0ebea8e6dd393174f89934733ecc8b14c76f4ddd8`.
 Official source: https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2netp.onnx
 Production never downloads weights or falls back to another model.
-The processor saves the original generation, alpha mask, masked image, final PNG
-and source/model/output hashes. Hair, clothing, edges and identity need human review.
+For this explicit local-alpha profile, the compiler renders an opaque, uniform
+white source backdrop and records the requested environment in `portrait_source`.
+The Brief's final transparency requirement remains unchanged. Ordinary images
+and environment layers keep their original scene prompts.
+The compiler also requests complete hair within the canvas and visible headroom,
+while retaining requested composition in metadata. This is a prompt instruction,
+not a guaranteed framing result; inspect the generated source. A later trial with
+explicit numeric headroom in the Brief avoided top clipping but did not exactly
+meet its requested 12% margin.
 
-Generate at 1216x1304, apply local segmentation, then uniformly contain-fit and
+For segmentation only, the processor adds a fixed white border of 10% of the
+shorter source dimension, then maps the predicted mask back to original source
+coordinates. It preserves the padded model input and full context mask as evidence.
+Source framing, RGB and final contain-fit geometry remain unchanged.
+
+The processor preserves the raw segmentation mask, rembg matting estimate, final
+alpha, uncorrected source-RGB cutout, corrected cutout and final PNG. Before
+matting, existing confident-background seeds propagate only through source pixels
+within 10/255 of white using four-neighbor connectivity. Canvas edges and temporary
+padding never seed removal, so an isolated white shirt touching the bottom remains.
+At least 99% of confident-background samples must match that white tolerance;
+otherwise delivery fails and preserves evidence. This is not a general color key
+for arbitrary backgrounds or unoutlined white foreground touching white backdrop.
+
+The processor discards estimated foreground colors. Fully opaque RGB stays exact;
+only translucent RGB is recovered using `C = alpha*F + (1-alpha)*white` before
+uniform resizing. This prevents white-backdrop contamination when recomposited on
+dark backgrounds. Alpha is unchanged by RGB recovery. `alpha_processing.json` records fixed parameters,
+library versions, hashes and failures. A matting error stops the run with no
+fallback to naive compositing. Hair, clothing, edges and identity need human review.
+
+Generate at 1216x1304, apply local segmentation and alpha matting, then uniformly contain-fit and
 transparently pad to 1212x1300. No crop is applied. Scale and offsets are recorded.
 Existing-image execution validated RGBA and exact dimensions; this is processor
 evidence, not generation E2E or art approval. ComfyUI readiness is a separate gate.
+The [2026-10-29 source/alpha validation](../factory/PORTRAIT_SOURCE_ALPHA_VALIDATION_20261029.md)
+adds real generation and offline replay evidence, including remaining quality failures.
 
 ## Environment STYLE-111 route
 

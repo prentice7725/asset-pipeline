@@ -1,0 +1,232 @@
+{
+  "date": "2026-10-30",
+  "scope": "Existing NONPIXEL project portrait source/alpha/RGB handoff",
+  "verification_authorization": "USER_STANDING_NO_FIXED_COUNT_CAP",
+  "state": "TECHNICAL_HANDOFF_VERIFIED_SELECTED_BASE_REFERENCE_EDIT_BLOCKED",
+  "tests": {
+    "passed": 812,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "suite_duration_seconds": 773.27,
+    "pytest_reported_total_seconds": 779.14,
+    "skip_reason": "Local migration benchmark data unavailable",
+    "evidence": [
+      {
+        "path": "workspace/isekai-human-identity-20261030/pytest-unmatte.xml",
+        "sha256": "bb4852c7f96e418d094a647374d921aea64d88701068812a71e426ae7d40a986"
+      },
+      {
+        "path": "workspace/isekai-human-identity-20261030/pytest-unmatte.log",
+        "sha256": "e81b0e818cc03f262f0ee2143a770ffbbfb29f34d886e76717830bf91daf1251"
+      }
+    ],
+    "focused_portrait_passed": 24
+  },
+  "earlier_interrupted_full_run": {
+    "result": "NOT_PASS",
+    "observed_failure": "Existing one-second fake-CLI timeout child call log assertion",
+    "log": {
+      "path": "workspace/isekai-human-identity-20261030/pytest-before-edge-recovery.log",
+      "sha256": "c916662d9d9c1a53f499bcdf219ace10f516aff1bd9c38ce967934dad8bdcb08"
+    },
+    "unchanged_test_isolated_result": "PASS",
+    "isolated_evidence": {
+      "path": "workspace/isekai-human-identity-20261030/timeout-check.xml",
+      "sha256": "f83c87667062f69b32ffbed9408cd80bcf2ac0a2a21f6e8657e75b0c0d1850f5"
+    },
+    "note": "Final full run retains the unchanged timeout test; no CLI code/test timeout was relaxed."
+  },
+  "implementation": {
+    "model_changed": false,
+    "model_sha256": "309c8469258dda742793dce0ebea8e6dd393174f89934733ecc8b14c76f4ddd8",
+    "white_tolerance": 10,
+    "minimum_confident_background_white_fraction": 0.99,
+    "source_background_connectivity": 4,
+    "edge_or_padding_background_seeds": false,
+    "opaque_rgb": "PRESERVED_EXACTLY",
+    "translucent_rgb": "STRAIGHT_ALPHA_WHITE_UNMATTE",
+    "rgb_preservation_stage": "BEFORE_UNIFORM_RESIZE",
+    "alpha_during_rgb_recovery": "PRESERVED_EXACTLY",
+    "source_crop": false,
+    "source_hashes_unchanged": true
+  },
+  "offline_replay": {
+    "path": "workspace/isekai-human-identity-20261030/final-replay-evidence.json",
+    "sha256": "4ec27af2e38ecef70f69b76b41665574dbee5959975fbcc3ce7b6343e27998df"
+  },
+  "earlier_gap_reproduction": {
+    "path": "workspace/isekai-human-identity-20261030/refinement-replay.json",
+    "sha256": "6ea5667620cc61ea58bc555b5b1940103fc2d6acb031bca96d3642133f94f234"
+  },
+  "live_jobs": [
+    {
+      "case": "headroom-validation",
+      "authorization_id": "bd11dc2688714b59a604d75584733ff7",
+      "prompt_id": "d8245f73-ca98-417b-8d07-362a05db3839",
+      "fresh_sampler_and_decoder": true,
+      "source": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\bd11dc2688714b59a604d75584733ff7\\run\\010_generation\\001_iex_portrait_d01_001_school_neutral_headroom_v001_00001_.png",
+      "source_sha256": "1c9e2dd7701717a0eae9b72f8aec396a346519129f4e4ba8352a00b6a99e6f8b",
+      "output": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\bd11dc2688714b59a604d75584733ff7\\run\\020_delivery\\0\\portrait.png",
+      "output_sha256": "28635de3ff9b57d06982ce2d44e12161b78b0b8daec4b55d5d5f9a51c8769059",
+      "top_margin_rows_alpha64": 0,
+      "top_margin_fraction": 0.0,
+      "opaque_top_edge_pixels": 172,
+      "numeric_12_percent_headroom_met": false,
+      "source_top_edge_nonwhite_pixels": 135,
+      "technical_qa": "PASS",
+      "human_identity_base_selected": false,
+      "review_state": "REVIEW_REQUIRED",
+      "game_ready": false,
+      "manifest": {
+        "path": "workspace/factory_budget/bd11dc2688714b59a604d75584733ff7/run/run_manifest.json",
+        "sha256": "276a07bcca195f6115098d262a9ad64dee3e5f6cff857b1ee9fd17df0bad2d93"
+      },
+      "authorization": {
+        "path": "workspace/isekai-human-identity-20261030/headroom-validation/authorization.json",
+        "sha256": "bbce313dad2381a79bf67560ba25901dbd1bb99e445c7fcb4b1fcf07b9eecdc8"
+      },
+      "history": {
+        "path": "workspace/isekai-human-identity-20261030/headroom-validation/comfy-history.json",
+        "sha256": "5e140b98f92fb90982f20b80055e6663cf95b4af2767582abad7f865772d0a0f"
+      }
+    },
+    {
+      "case": "numeric-headroom-validation",
+      "authorization_id": "ad82485c22ef4b75b558c9604e7088d9",
+      "prompt_id": "d40eab51-3cb2-47f0-8786-c7979c74a443",
+      "fresh_sampler_and_decoder": true,
+      "source": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\ad82485c22ef4b75b558c9604e7088d9\\run\\010_generation\\001_iex_portrait_d01_001_school_neutral_headroom_numeric_v001_00001_.png",
+      "source_sha256": "40e0879f6880c01b2a7a62d9f177b9e537a661dc6e3acd2b1fa801fc72eeff44",
+      "output": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\ad82485c22ef4b75b558c9604e7088d9\\run\\020_delivery\\0\\portrait.png",
+      "output_sha256": "ae31d62785a1c9c8a99c7f9323f3eb63ae7e30a1571c0bf08acb50b33fde6298",
+      "top_margin_rows_alpha64": 96,
+      "top_margin_fraction": 0.07384615384615385,
+      "opaque_top_edge_pixels": 0,
+      "numeric_12_percent_headroom_met": false,
+      "source_top_edge_nonwhite_pixels": 0,
+      "technical_qa": "PASS",
+      "human_identity_base_selected": false,
+      "review_state": "REVIEW_REQUIRED",
+      "game_ready": false,
+      "manifest": {
+        "path": "workspace/factory_budget/ad82485c22ef4b75b558c9604e7088d9/run/run_manifest.json",
+        "sha256": "02361c8666b27ddf349e4c3a26c3c5a09fd25a6eba856589279ec2dfbdb870d7"
+      },
+      "authorization": {
+        "path": "workspace/isekai-human-identity-20261030/numeric-headroom-validation/authorization.json",
+        "sha256": "1adbea2b8ba35454ab1a12ae2b4a88d5be0bb4c4836ade5b8e6422fb9340eeb1"
+      },
+      "history": {
+        "path": "workspace/isekai-human-identity-20261030/numeric-headroom-validation/comfy-history.json",
+        "sha256": "648c1b3e7e0d7495518b8b4156366df4635184c2e740eda78380a1c3df2f43f2"
+      }
+    },
+    {
+      "case": "final-handoff-validation",
+      "authorization_id": "cafbb34ff7924de3a31afef888ed90d6",
+      "prompt_id": "264c9e82-7ea2-4c46-8d32-ca629f3e509c",
+      "fresh_sampler_and_decoder": false,
+      "source": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\cafbb34ff7924de3a31afef888ed90d6\\run\\010_generation\\001_iex_portrait_d01_001_school_neutral_finalhandoff_v001_00001_.png",
+      "source_sha256": "f54a6fdc61276052d1e1579ffa75acf1cc911b37ae18fd7cb418ee3f2eb78197",
+      "output": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\cafbb34ff7924de3a31afef888ed90d6\\run\\020_delivery\\0\\portrait.png",
+      "output_sha256": "4f20aa36e0785472925252664c27aa4c76febf52f27f4aff36b3a0e5569c40df",
+      "top_margin_rows_alpha64": 96,
+      "top_margin_fraction": 0.07384615384615385,
+      "opaque_top_edge_pixels": 0,
+      "numeric_12_percent_headroom_met": false,
+      "source_top_edge_nonwhite_pixels": 0,
+      "technical_qa": "PASS",
+      "human_identity_base_selected": false,
+      "review_state": "REVIEW_REQUIRED",
+      "game_ready": false,
+      "manifest": {
+        "path": "workspace/factory_budget/cafbb34ff7924de3a31afef888ed90d6/run/run_manifest.json",
+        "sha256": "e5a909b17e64d30554c21e8baf2ff6ee70cee674d1ea7c55d26b3122ba512fd3"
+      },
+      "authorization": {
+        "path": "workspace/isekai-human-identity-20261030/final-handoff-validation/authorization.json",
+        "sha256": "f5443edaf1c9e6110371130e56c5e5d223f047c08b13de20f2a5d9b0990e7ab1"
+      },
+      "history": {
+        "path": "workspace/isekai-human-identity-20261030/final-handoff-validation/comfy-history.json",
+        "sha256": "4cc895d49beb03408478d4fe8515d3c47ad7411f7e83388867f5ecefa9dbe4a1"
+      }
+    }
+  ],
+  "final_candidate": {
+    "output": {
+      "path": "workspace/factory_budget/cafbb34ff7924de3a31afef888ed90d6/run/020_delivery/0/portrait.png",
+      "sha256": "4f20aa36e0785472925252664c27aa4c76febf52f27f4aff36b3a0e5569c40df"
+    },
+    "dimensions": [
+      1212,
+      1300
+    ],
+    "mode": "RGBA",
+    "same_raw_rgb_as_prior_numeric_trial": true,
+    "top_margin_pixels": 96,
+    "top_margin_fraction": 0.07384615384615385,
+    "requested_numeric_margin_fraction": 0.12,
+    "exact_numeric_margin_met": false,
+    "opaque_top_edge_pixels": 0,
+    "delivery_record": {
+      "path": "workspace/factory_budget/cafbb34ff7924de3a31afef888ed90d6/run/020_delivery/0/delivery_record.json",
+      "sha256": "20dcf7b6432a910ba30032558c4ecbd37627d41bb241bbab560df188473fab88"
+    },
+    "review_preview": {
+      "path": "workspace/isekai-human-identity-20261030/final-handoff-validation/review-backgrounds.png",
+      "sha256": "171e4e04fa4e8f855cbcb3fb6a1e5510cd711a1f8fa74722981803726a7ff031"
+    }
+  },
+  "base_selection": {
+    "selected_by": "user",
+    "meaning": "IDENTITY_BASE_CHOICE_NOT_ART_APPROVAL",
+    "record": {
+      "path": "workspace/isekai-human-identity-20261030/identity-base-selection.json",
+      "sha256": "77d54c98cec8bb4f46c3dbcf727ee81ebeebea918643996f6f6bc629f74ec0ef"
+    }
+  },
+  "expression_variant": {
+    "provider": "grok_imagine",
+    "state": "BLOCKED",
+    "generation_requests": 0,
+    "budget_reservations": 0,
+    "reason": "IDENTITY_VARIANT_ROUTE_BLOCKED: Explicit workflow/model conflicts with style menu binding",
+    "plan": {
+      "path": "workspace/isekai-human-identity-20261030/surprised-variant-plan.json",
+      "sha256": "d4bb46196a6a95f11b4ea86b8b642131937bfcbd390cae36a6f75f0d8f58fc6d"
+    },
+    "proposal": {
+      "path": "workspace/isekai-human-identity-20261030/identity-variant-project-contract-proposal.md",
+      "sha256": "059fc72a6269743f3818214267272864928178e3b2788bc5795949d896ec0052"
+    }
+  },
+  "human_art_review": "REQUIRED",
+  "edited_identity_review": "HUMAN_REQUIRED",
+  "game_ready": false,
+  "production_activation": false,
+  "live_mcp_replacement": false,
+  "source": {
+    "branch": "codex/portrait-source-background-20261029",
+    "base_commit": "9090e1ecfb3fbbb24dfaec6cd7add6f0bd02a952",
+    "patch": {
+      "path": "workspace/isekai-human-identity-20261030/source-change.patch",
+      "sha256": "5b3a18bfcd69d57d2aaf0f8ac31b217446ad164f12651d43c24da6b7196359cb"
+    },
+    "files": [
+      {
+        "path": "workspace/portrait-source-background-worktree/src/assetpipe/portrait_delivery.py",
+        "sha256": "761941f2e5691923e115305c9ee301eb9a77ff1d63ca2e2c95a6cabd178599de"
+      },
+      {
+        "path": "workspace/portrait-source-background-worktree/src/assetpipe/prompts/__init__.py",
+        "sha256": "276b8102f9c9a395c2282eac5d902241ef69a16de324aaf40ce29d6c073bf45b"
+      },
+      {
+        "path": "workspace/portrait-source-background-worktree/tests/unit/test_project_portrait.py",
+        "sha256": "0631db047bb477ab2467fe4cae9a4e0855edfc3daf005b2de7f467fc5235d631"
+      }
+    ]
+  }
+}

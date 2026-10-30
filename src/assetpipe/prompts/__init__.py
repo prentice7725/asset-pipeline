@@ -166,6 +166,16 @@ def _compile_bound_prompt(brief, workflow, root, menu_decision=None):
 
 def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_context=None):
     """Shared dialect compiler for validated offline specs; performs no routing or generation."""
+    from ..portrait_delivery import profile as delivery_profile, SOURCE_BACKGROUND, SOURCE_FRAMING
+    delivery = delivery_profile(brief, root, workflow['id'])
+    requested_environment = spec.get('environment')
+    requested_composition = spec.get('composition')
+    if delivery:
+        # Delivery is RGBA, but the registered T2I workflow generates opaque RGB.
+        # Keep that technical source stage separate from the final scene contract.
+        spec = copy.deepcopy(spec)
+        spec['environment'] = SOURCE_BACKGROUND
+        spec['composition'] = ' '.join(filter(None, [requested_composition, SOURCE_FRAMING]))
     profiles = yaml.safe_load((Path(root) / 'config/model_profiles.yaml').read_text(encoding='utf-8'))
     profile_id = workflow.get('model_profile')
     if profile_id not in profiles['profiles']:
@@ -272,10 +282,13 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         result['style_contract_review'] = style_contract_review_template(style_contract)
     if instruction_review:
         result['exclusion_review'] = review_template(negative_items)
-    from ..portrait_delivery import profile as delivery_profile
-    delivery = delivery_profile(brief, root, workflow['id'])
     if delivery:
         result['delivery_profile'] = delivery
+        result['portrait_source'] = {'background': 'SOLID_WHITE',
+                                     'requested_environment': requested_environment,
+                                     'requested_composition': requested_composition,
+                                     'framing': SOURCE_FRAMING,
+                                     'final_transparency': brief['constraints']['transparency']}
     if spatial['mappings']:
         result['spatial_relationships'] = spatial['mappings']
     if spec.get('subject_integrity'):

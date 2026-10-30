@@ -213,3 +213,228 @@ def test_unsupported_delivery_size_blocks_even_without_alpha_or_negatives():
     assert 'DELIVERY_RESOLUTION_UNSUPPORTED' in r['reason']
     b['constraints']['resolution'] = [1216, 1304]
     assert route_brief(b, ROOT)['status'] == 'ROUTED'
+
+
+def test_portrait_source_backdrop_is_distinct_from_transparent_delivery():
+    b = portrait()
+    b['prompt_spec']['environment'] = 'transparent alpha; no baked background'
+    original = copy.deepcopy(b)
+    compiled = compile_prompt(b, load_registry(ROOT)['krea2_base'], ROOT)
+    assert 'Uniform solid white backdrop' in compiled['positive']
+    assert 'transparent alpha; no baked background' not in compiled['positive']
+    assert 'Keep the complete hairstyle inside the source canvas with visible white headroom' in compiled['positive']
+    assert compiled['portrait_source']['requested_composition'] == b['prompt_spec']['composition']
+    assert compiled['portrait_source']['requested_environment'] == b['prompt_spec']['environment']
+    assert compiled['delivery_profile']['operation'] == 'LOCAL_MASK_UNIFORM_CONTAIN'
+    assert b == original and b['constraints']['transparency'] is True
+
+
+def test_source_backdrop_policy_does_not_override_ordinary_images():
+    b = make(asset_id='scene', output_class='NONPIXEL_IMAGE', prompt='A person in a garden')
+    b['workflow_preferences']['id'] = 'krea2_base'
+    b['prompt_spec'] = {'subject': 'person', 'environment': 'garden'}
+    compiled = compile_prompt(b, load_registry(ROOT)['krea2_base'], ROOT)
+    assert compiled['prompt_spec']['environment'] == 'garden'
+    assert 'portrait_source' not in compiled and 'Uniform solid white backdrop' not in compiled['positive']
+
+
+@pytest.mark.parametrize('failure', ['exception', 'opaque', 'wrong_size'])
+def test_matting_failure_preserves_segmentation_without_silent_fallback(tmp_path, monkeypatch, failure):
+    import sys
+    from types import ModuleType
+    from PIL import Image, ImageOps
+    import assetpipe.portrait_delivery as delivery
+    fake_rembg, fake_bg = ModuleType('rembg'), ModuleType('rembg.bg')
+    fake_rembg.new_session = lambda *args, **kwargs: object()
+    mask = Image.new('L', (32,32), 0)
+    for x in range(8,24):
+        for y in range(8,24):
+            mask.putpixel((x,y),255)
+    fake_rembg.remove = lambda image, **kwargs: ImageOps.expand(mask, border=3, fill=0)
+    def fail(*args, **kwargs):
+        if failure == 'opaque':
+            return Image.new('RGBA',(32,32),(255,255,255,255))
+        if failure == 'wrong_size':
+            return Image.new('RGBA',(8,8),(0,0,0,0))
+        raise ValueError('matting failed')
+    fake_bg.alpha_matting_cutout = fail
+    monkeypatch.setitem(sys.modules, 'rembg', fake_rembg)
+    monkeypatch.setitem(sys.modules, 'rembg.bg', fake_bg)
+    monkeypatch.setattr(delivery, 'preflight', lambda value: tmp_path/'pinned-model.onnx')
+    monkeypatch.setattr(delivery, '_source_background',
+                        lambda image, mask: (mask, Image.new('1', image.size, 0),
+                                             {'verified_white_fraction': 1.0}))
+    monkeypatch.setattr(delivery.importlib.metadata, 'version', lambda name: 'test-version')
+    source = tmp_path/'source.png'
+    Image.new('RGB',(32,32),'white').save(source)
+    output = tmp_path/'delivery'
+    with pytest.raises(ValueError, match='matting failed|matting returned an invalid|matte has no'):
+        delivery.process(source, [32,32], {'operation':'LOCAL_MASK_UNIFORM_CONTAIN'}, output)
+    assert (output/'segmentation_mask.png').is_file()
+    assert not (output/'portrait.png').exists() and not (output/'masked_original.png').exists()
+    import json
+    audit = json.loads((output/'alpha_processing.json').read_text())
+    assert audit['status'] == 'FAILED' and audit['fallback'] == 'NONE'
+
+
+def test_real_matting_keeps_white_clothing_inside_subject(tmp_path, monkeypatch):
+    rembg = pytest.importorskip('rembg')
+    from PIL import Image, ImageDraw, ImageOps
+    import hashlib
+    import assetpipe.portrait_delivery as delivery
+    image = Image.new('RGB', (64,64), 'white')
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((12,8,52,63), fill='black')
+    draw.rectangle((23,29,41,47), fill='white')
+    mask = Image.new('L',(64,64),0)
+    ImageDraw.Draw(mask).rectangle((12,8,52,63),fill=255)
+    source = tmp_path/'source.png'
+    image.save(source)
+    before = hashlib.sha256(source.read_bytes()).hexdigest()
+    monkeypatch.setattr(delivery, 'preflight', lambda value: tmp_path/'pinned-model.onnx')
+    monkeypatch.setattr(rembg, 'new_session', lambda *args, **kwargs: object())
+    def segment(padded, **kwargs):
+        assert padded.size == (76,76)
+        assert padded.crop((6,6,70,70)).tobytes() == image.tobytes()
+        assert padded.getpixel((0,0)) == (255,255,255)
+        return ImageOps.expand(mask, border=6, fill=0)
+    monkeypatch.setattr(rembg, 'remove', segment)
+    output, record = delivery.process(source,[64,64],{'operation':'LOCAL_MASK_UNIFORM_CONTAIN'},tmp_path/'delivery')
+    actual = Image.open(output)
+    assert actual.getpixel((32,38)) == (255,255,255,255)
+    assert actual.getpixel((2,2))[3] == 0 and actual.getpixel((32,20))[3] == 255
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == before
+    assert Image.open(tmp_path/'delivery/masked_original.png').convert('RGB').tobytes() == image.tobytes()
+    assert record['crop'] is False and record['approval_effect'] == 'NONE'
+    assert record['alpha_processing']['status'] == 'COMPLETED_REVIEW_REQUIRED'
+    assert record['alpha_processing']['rgb_policy'] == 'PRESERVE_OPAQUE_RGB_UNMATTE_WHITE_EDGES'
+    assert record['alpha_processing']['segmentation_context']['mask_source_box'] == [6,6,70,70]
+    assert Image.open(tmp_path/'delivery/segmentation_mask.png').tobytes() == mask.tobytes()
+
+
+def test_white_source_refinement_requires_source_seed_and_preserves_border_clothing():
+    pytest.importorskip('scipy')
+    from PIL import Image, ImageDraw
+    from assetpipe.portrait_delivery import _source_background
+    image = Image.new('RGB',(20,20),'black')
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((0,0,4,19),fill='white')
+    draw.rectangle((8,12,14,19),fill='white')  # white shirt touches bottom
+    draw.point((5,19),fill=(244,244,244))
+    mask = Image.new('L',image.size,255)
+    mask.putpixel((0,0),0)
+    refined,background,record = _source_background(image,mask)
+    assert refined.getpixel((4,19)) == 0
+    assert refined.getpixel((5,19)) == 255  # outside fixed white tolerance
+    assert refined.getpixel((10,19)) == 255  # no seed from canvas/padding
+    assert not background.getpixel((10,19))
+    assert record['padding_or_edge_seeds'] is False
+
+
+def test_invalid_context_mask_stops_before_matting(tmp_path, monkeypatch):
+    import sys
+    from types import ModuleType
+    from PIL import Image
+    import assetpipe.portrait_delivery as delivery
+    fake_rembg, fake_bg = ModuleType('rembg'), ModuleType('rembg.bg')
+    fake_rembg.new_session = lambda *args, **kwargs: object()
+    fake_rembg.remove = lambda *args, **kwargs: Image.new('L', (32,32), 0)
+    fake_bg.alpha_matting_cutout = lambda *args, **kwargs: pytest.fail('invalid mask must stop')
+    monkeypatch.setitem(sys.modules, 'rembg', fake_rembg)
+    monkeypatch.setitem(sys.modules, 'rembg.bg', fake_bg)
+    monkeypatch.setattr(delivery, 'preflight', lambda value: tmp_path/'pinned-model.onnx')
+    source = tmp_path/'source.png'
+    Image.new('RGB',(32,32),'white').save(source)
+    output = tmp_path/'delivery'
+    with pytest.raises(ValueError, match='segmentation returned invalid dimensions'):
+        delivery.process(source,[32,32],{'operation':'LOCAL_MASK_UNIFORM_CONTAIN'},output)
+    assert (output/'segmentation_input.png').is_file()
+    assert not (output/'portrait.png').exists()
+
+
+def test_source_background_gap_misclassified_as_foreground_is_removed_without_erasing_white_details(tmp_path, monkeypatch):
+    rembg = pytest.importorskip('rembg')
+    from PIL import Image, ImageDraw, ImageOps
+    import assetpipe.portrait_delivery as delivery
+    image = Image.new('RGB', (80,80), 'white')
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((8,0,72,79), fill='black')
+    # Background channel between strands reaches a falsely confident foreground.
+    draw.rectangle((25,0,40,40), fill='white')
+    # An enclosed eye/shirt detail must survive the same white color.
+    draw.rectangle((45,48,58,61), fill='white')
+    mask = Image.new('L',image.size,0)
+    ImageDraw.Draw(mask).rectangle((8,0,72,79),fill=255)
+    ImageDraw.Draw(mask).rectangle((25,0,40,4),fill=0)
+    source = tmp_path/'source.png'
+    image.save(source)
+    monkeypatch.setattr(delivery,'preflight',lambda value: tmp_path/'pinned-model.onnx')
+    monkeypatch.setattr(rembg,'new_session',lambda *args,**kwargs: object())
+    monkeypatch.setattr(rembg,'remove',lambda *args,**kwargs: ImageOps.expand(mask,border=8,fill=0))
+    output,record = delivery.process(source,[80,80],{'operation':'LOCAL_MASK_UNIFORM_CONTAIN'},tmp_path/'delivery')
+    actual = Image.open(output)
+    assert actual.getpixel((32,25))[3] == 0, 'open white background gap must not remain opaque'
+    assert actual.getpixel((51,54)) == (255,255,255,255), 'enclosed white detail must remain'
+    assert actual.getpixel((20,50)) == (0,0,0,255), 'dark silhouette must remain'
+    assert Image.open(tmp_path/'delivery/masked_original.png').convert('RGB').tobytes() == image.tobytes()
+
+
+def test_translucent_portrait_edge_composites_without_white_backdrop_contamination(tmp_path, monkeypatch):
+    pytest.importorskip('scipy')
+    import sys
+    from types import ModuleType
+    from PIL import Image, ImageDraw, ImageOps
+    import assetpipe.portrait_delivery as delivery
+    image=Image.new('RGB',(32,32),'white')
+    ImageDraw.Draw(image).rectangle((10,8,23,31),fill=(25,75,125))
+    # The known 50%-alpha edge of that color composited onto white.
+    ImageDraw.Draw(image).line((9,8,9,31),fill=(140,165,190))
+    alpha=Image.new('L',image.size,0)
+    ImageDraw.Draw(alpha).rectangle((10,8,23,31),fill=255)
+    ImageDraw.Draw(alpha).line((9,8,9,31),fill=128)
+    fake_rembg,fake_bg=ModuleType('rembg'),ModuleType('rembg.bg')
+    fake_rembg.new_session=lambda *a,**kw: object()
+    fake_rembg.remove=lambda *a,**kw: ImageOps.expand(alpha,border=3,fill=0)
+    estimate=image.convert('RGBA'); estimate.putalpha(alpha)
+    fake_bg.alpha_matting_cutout=lambda *a,**kw: estimate
+    monkeypatch.setitem(sys.modules,'rembg',fake_rembg)
+    monkeypatch.setitem(sys.modules,'rembg.bg',fake_bg)
+    monkeypatch.setattr(delivery,'preflight',lambda value: tmp_path/'pinned.onnx')
+    monkeypatch.setattr(delivery.importlib.metadata,'version',lambda name:'test')
+    source=tmp_path/'source.png'; image.save(source)
+    output,record=delivery.process(source,[32,32],{'operation':'LOCAL_MASK_UNIFORM_CONTAIN'},tmp_path/'delivery')
+    actual=Image.open(output)
+    # Composite over black: expected source color * alpha, within 8-bit rounding.
+    composite=Image.alpha_composite(Image.new('RGBA',image.size,'black'),actual)
+    assert all(abs(c-e)<=1 for c,e in zip(composite.getpixel((9,16))[:3],(13,38,63)))
+    assert actual.getpixel((15,16)) == (25,75,125,255)
+    assert actual.getchannel('A').tobytes() == alpha.tobytes()
+    assert actual.getpixel((0,0)) == (255,255,255,0)
+
+
+def test_nonwhite_backdrop_stops_before_white_edge_recovery(tmp_path,monkeypatch):
+    pytest.importorskip('scipy')
+    import sys
+    import json
+    from types import ModuleType
+    from PIL import Image,ImageDraw,ImageOps
+    import assetpipe.portrait_delivery as delivery
+    image=Image.new('RGB',(32,32),(220,210,200))
+    ImageDraw.Draw(image).rectangle((10,8,23,31),fill='black')
+    mask=Image.new('L',image.size,0)
+    ImageDraw.Draw(mask).rectangle((10,8,23,31),fill=255)
+    fake_rembg,fake_bg=ModuleType('rembg'),ModuleType('rembg.bg')
+    fake_rembg.new_session=lambda *a,**kw: object()
+    fake_rembg.remove=lambda *a,**kw: ImageOps.expand(mask,border=3,fill=0)
+    fake_bg.alpha_matting_cutout=lambda *a,**kw: pytest.fail('unverified backdrop must stop')
+    monkeypatch.setitem(sys.modules,'rembg',fake_rembg)
+    monkeypatch.setitem(sys.modules,'rembg.bg',fake_bg)
+    monkeypatch.setattr(delivery,'preflight',lambda value: tmp_path/'pinned.onnx')
+    monkeypatch.setattr(delivery.importlib.metadata,'version',lambda name:'test')
+    source=tmp_path/'source.png'; image.save(source)
+    out=tmp_path/'delivery'
+    with pytest.raises(ValueError,match='not verified uniform white'):
+        delivery.process(source,[32,32],{'operation':'LOCAL_MASK_UNIFORM_CONTAIN'},out)
+    audit=json.loads((out/'alpha_processing.json').read_text())
+    assert audit['status']=='FAILED' and audit['fallback']=='NONE'
+    assert (out/'segmentation_mask.png').is_file() and not (out/'portrait.png').exists()
