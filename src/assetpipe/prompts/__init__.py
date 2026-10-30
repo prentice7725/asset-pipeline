@@ -176,7 +176,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         spec = copy.deepcopy(spec)
         spec['environment'] = SOURCE_BACKGROUND
         if delivery.get('reference_input') == 'EXACT_RGBA':
-            spec['composition'] = 'Preserve the reference framing and canvas exactly; no zoom, recrop or body-pose change.'
+            spec['composition'] = 'Preserve the reference framing and canvas exactly; no zoom or recrop.'
             spec.setdefault('constraints', []).append(
                 'Consume the supplied RGBA reference unchanged. The solid white source backdrop is temporary; '
                 'local delivery restores final alpha. Preserve reference rendering style, identity and clothing.')

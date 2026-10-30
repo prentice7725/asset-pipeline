@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — Codex project reference edits, 2026-10-30
+
+- Extend explicit portrait edit contracts to Codex while retaining Grok and legacy
+  single-editor SOTs. Reject ambiguous/invalid declarations; retain exact RGBA,
+  style fingerprint, one-attempt execution and per-output human review.
+
 ## Unreleased — reference-input integration, 2026-10-30
 
 - Attach exact Codex CLI references with `--image`; pin each provider's edit tool.

@@ -24,8 +24,8 @@ def save(path,value):
     return path
 
 
-@pytest.fixture
-def project_lab(tmp_path,monkeypatch):
+@pytest.fixture(params=['grok_imagine','codex_imagegen'])
+def project_lab(tmp_path,monkeypatch,request):
     import assetpipe.portrait_delivery as delivery
     from assetpipe.providers.comfyui import ComfyUIProvider
     box=Sandbox(tmp_path,monkeypatch)
@@ -56,18 +56,21 @@ def project_lab(tmp_path,monkeypatch):
          'asset_id':'human_surprised','base':{'manifest_ref':str(base),'manifest_sha256':digest(base),
              'image':{'path':str(image),'sha256':digest(image)},'selected_by':'unit-test human choice',
              'reason':'synthetic contract fixture; no real art approval'},
-         'variation':{'kind':'EXPRESSION','target':'surprised'},'provider':{'workflow_id':'grok_imagine'}}
+         'variation':{'kind':'EXPRESSION','target':'surprised'},'provider':{'workflow_id':request.param}}
     box.job=save(box.root/'workspace/job.json',job)
     box.base_image=image
-    box.grok()
+    box.editor=request.param
+    box.grok(); box.codex()
     (tmp_path/'grok_home').mkdir(exist_ok=True)
-    box.allowed=[box.root,tmp_path/'grok_home']
+    (tmp_path/'codex_home').mkdir(exist_ok=True)
+    box.allowed=[box.root,tmp_path/'grok_home',tmp_path/'codex_home']
     return box
 
 
 @pytest.mark.parametrize('changed_sot',[False,True])
 def test_project_variant_pins_contract_and_preserves_selected_rgba(project_lab,changed_sot):
     box=project_lab
+    editor_dir=box.grok_dir if box.editor=='grok_imagine' else box.codex_dir
     plan=plan_variant(box.job,box.root,allowed_roots=box.allowed)
     assert plan['project_reference_edit']['reference_input']=='EXACT_RGBA'
     auth=save(box.root/'workspace/auth.json',{'schema_version':1,'type':'IDENTITY_VARIANT_AUTHORIZATION',
@@ -80,18 +83,18 @@ def test_project_variant_pins_contract_and_preserves_selected_rgba(project_lab,c
         with pytest.raises(ValueError,match='PLAN_CHANGED'):
             run_variant(box.job,plan['plan_sha256'],auth,box.root,authorize_generation=True,allowed_roots=box.allowed)
         assert not (box.root/'workspace/factory_budget'/('b'*32)).exists()
-        assert box.calls(box.grok_dir)==[]
+        assert box.calls(editor_dir)==[]
         return
     receipt=run_variant(box.job,plan['plan_sha256'],auth,box.root,authorize_generation=True,allowed_roots=box.allowed)
     result=json.loads(receipt.read_text())
     assert result['status']=='CANDIDATE_REVIEW_REQUIRED' and result['game_ready'] is False
     manifest=json.loads(Path(result['manifest_path']).read_text())
     provider=manifest['generation']['provider']
-    assert provider['tool']=='image_edit' and provider['reference']['sha256']==digest(box.base_image)
+    assert provider['tool']==plan['workflow']['edit_tool'] and provider['reference']['sha256']==digest(box.base_image)
     assert provider['reference']['contract']=='EXACT_RGBA_UNCHANGED'
-    assert len(box.calls(box.grok_dir))==1
+    assert len(box.calls(editor_dir))==1
     assert manifest['generation']['raw_outputs']!=manifest['outputs']
     assert manifest['qa_results'][0]['resolution']==[1212,1300]
     with pytest.raises(ValueError,match='ALREADY_RESERVED'):
         run_variant(box.job,plan['plan_sha256'],auth,box.root,authorize_generation=True,allowed_roots=box.allowed)
-    assert len(box.calls(box.grok_dir))==1
+    assert len(box.calls(editor_dir))==1

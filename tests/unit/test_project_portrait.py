@@ -458,18 +458,19 @@ def reference_portrait():
     return b
 
 
-def test_explicit_project_reference_edit_retains_style_and_uses_local_delivery(monkeypatch):
+@pytest.mark.parametrize('workflow_id',['grok_imagine','codex_imagegen'])
+def test_explicit_project_reference_edit_retains_style_and_uses_local_delivery(monkeypatch,workflow_id):
     import assetpipe.portrait_delivery as delivery
     from assetpipe.router import route
     monkeypatch.setattr(delivery,'preflight',lambda value: None)
-    b=reference_portrait(); original=copy.deepcopy(b)
+    b=reference_portrait(); b['workflow_preferences']['id']=workflow_id; original=copy.deepcopy(b)
     decision=route(b,load_registry(ROOT),ROOT)
-    assert decision['selected_workflow']=='grok_imagine'
+    assert decision['selected_workflow']==workflow_id
     assert decision['style_selection']['style_id']=='STYLE-104'
     assert decision['delivery_handling']['native_transparency_supported'] is False
     assert decision['delivery_handling']['resolution']==[1212,1300]
     assert decision['fallback_candidates']==[]
-    compiled=compile_prompt(b,load_registry(ROOT)['grok_imagine'],ROOT)
+    compiled=compile_prompt(b,load_registry(ROOT)[workflow_id],ROOT)
     contract=compiled['delivery_profile']['project_reference_edit']
     assert contract['base_workflow_id']=='krea2_base' and len(contract['sot_sha256'])==64
     assert compiled['delivery_profile']['reference_input']=='EXACT_RGBA'
@@ -490,6 +491,19 @@ def test_expression_target_replaces_parent_neutral_expression_without_unlocking_
     assert child['identity']==b['identity']
 
 
+def test_project_pose_target_is_not_contradicted_by_expression_only_body_lock():
+    from assetpipe.factory.variant import variant_brief
+    b=portrait()
+    job={'asset_id':'hand_raised','project_id':'isekai_examiner',
+         'provider':{'workflow_id':'codex_imagegen'},
+         'variation':{'kind':'POSE','target':'raise one hand near the shoulder'}}
+    child,_=variant_brief(b,job,'selected.png')
+    compiled=compile_prompt(child,load_registry(ROOT)['codex_imagegen'],ROOT)
+    assert 'raise one hand near the shoulder' in compiled['positive']
+    assert 'Keep the body pose exactly as in the reference' not in compiled['positive']
+    assert 'body-pose change' not in compiled['positive']
+
+
 @pytest.mark.parametrize('change',[{'resolution':[1024,1024]},{'transparency':False}])
 def test_project_edit_rejects_changed_final_contract(change):
     from assetpipe.router import route
@@ -501,6 +515,34 @@ def test_project_edit_rejects_changed_final_contract(change):
 def test_project_edit_does_not_unlock_t2i_or_other_editors():
     from assetpipe.router import route
     for b in [portrait(),reference_portrait()]:
-        b['workflow_preferences']={'id':'grok_imagine' if b['source']['type']!='REFERENCE_IMAGE' else 'codex_imagegen','allow_experimental':True}
+        b['workflow_preferences']={'id':'grok_imagine' if b['source']['type']!='REFERENCE_IMAGE' else 'anima_base','allow_experimental':True}
         with pytest.raises(ValueError,match='conflicts with style menu binding'):
             route(b,load_registry(ROOT),ROOT)
+
+
+def test_legacy_single_reference_contract_remains_supported():
+    from assetpipe.styles.project import _reference_edits
+    item={'workflow_id':'grok_imagine','model_profile':'grok-imagine',
+          'reference_input':'EXACT_RGBA','source_background':'UNIFORM_NEUTRAL',
+          'resolution':[1212,1300],'human_review_required':True}
+    assert _reference_edits({'reference_edit_contract':item})=={'grok_imagine':item}
+
+
+@pytest.mark.parametrize('failure',['both','empty','unknown','mismatch','null_legacy'])
+def test_ambiguous_or_invalid_reference_contract_declarations_fail_closed(failure):
+    import yaml
+    from assetpipe.styles.project import _reference_edits
+    data=yaml.safe_load((ROOT/'config/styles/projects/isekai_examiner/visual_sot.yaml').read_text(encoding='utf-8'))
+    scope=data['asset_class_contracts']['character_portrait']
+    if failure=='both':
+        scope['reference_edit_contract']=copy.deepcopy(scope['reference_edit_contracts']['grok_imagine'])
+    elif failure=='empty':
+        scope['reference_edit_contracts']={}
+    elif failure=='unknown':
+        scope['reference_edit_contracts']['unsupported']=scope['reference_edit_contracts'].pop('codex_imagegen')
+    elif failure=='mismatch':
+        scope['reference_edit_contracts']['codex_imagegen']['model_profile']='grok-imagine'
+    else:
+        scope.pop('reference_edit_contracts'); scope['reference_edit_contract']=None
+    with pytest.raises(ValueError,match='PROJECT_REFERENCE_EDIT_CONTRACT'):
+        _reference_edits(scope)

@@ -70,13 +70,14 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
 | Provider | 상태 |
 | --- | --- |
 | `grok_imagine` (Grok CLI) | EXPERIMENTAL·명시 선택 전용. 이세계 초상화 계약의 실제 편집·로컬 RGBA 전달과 사용자 인물 보존 수용 근거가 있다. 일반 Provider 승격·최종 미술 승인은 별도다 |
-| `codex_imagegen` (Codex CLI) | 참조 복사본 1장을 `codex exec --image`로 첨부하고 `image_gen` 편집을 지시한다. EXPERIMENTAL·명시 선택 전용이며 가짜 CLI 검증만 수행한다. 실제 편집·동일 인물 유지 검증은 남아 있다 |
+| `codex_imagegen` (Codex CLI) | 참조 복사본 1장을 `codex exec --image`로 첨부한다. 프로젝트 초상화의 실제 `image_gen` 참조 편집·로컬 RGBA 기술 검증 근거가 있다. EXPERIMENTAL·명시 선택 전용이며 인물 보존·최종 미술 승인은 결과별로 기록한다 |
 | AGY 나노바나나 | 미등록. [P0 조사](../m1/ANTIGRAVITY_P0_INSPECTION_20261014.md)의 재시도 상한·출력 대응 문제를 먼저 해결해야 한다 |
 | ComfyUI 워크플로 | 현재 등록된 것은 참조 편집 기능이 없어 차단된다 |
 
 Codex는 실행 전 `exec --help`에 `--image`가 있는지 확인하며, 없으면 생성 전에
 `REFERENCE_UNSUPPORTED`로 차단한다. `image_edit`라는 별도 Codex 도구를 가정하지 않는다.
-참조 입력 지원과 실제 인물 유지·편집 성공은 별개이며 `validation.real_generation: NOT_RUN`을 유지한다.
+참조 입력 지원과 실제 인물 유지는 별개다. 프로젝트 참조 편집의 실제 근거와,
+일반 M1 `provider_e2e.py`의 T2I 검증·ACTIVE 승격은 구분한다.
 CLI 입력 옵션은 [공식 문서](https://learn.chatgpt.com/docs/cli/reference)를 따른다.
 새 편집 기능은 워크플로 해시와 변형 계획에 반영되므로 기존 계획·승인 파일을 재사용하지 않는다.
 
@@ -91,13 +92,17 @@ CLI 입력 옵션은 [공식 문서](https://learn.chatgpt.com/docs/cli/referenc
 
 ## 이세계 전생 심사국 초상화 참조 편집 계약 (2026-10-30)
 
-사용자가 승인한 `character_portrait.reference_edit_contract`는 명시적인
-`REFERENCE_IMAGE` + `grok_imagine` + `project_contract_required: true`에만 적용한다.
+사용자가 승인한 `character_portrait.reference_edit_contracts`는 명시적인
+`REFERENCE_IMAGE` + 등록된 `grok_imagine` 또는 `codex_imagegen` +
+`project_contract_required: true`에만 적용한다. 이전 단일
+`reference_edit_contract` 형식도 지원하지만, 두 형식을 함께 선언하면 차단한다.
 Krea2 T2I 바인딩과 STYLE-104 지문은 그대로 유지한다. 같은 스타일의 참조 편집
 레시피는 `UNTESTED`이며, 새 화풍이나 미술 승인으로 취급하지 않는다.
+각 계약의 workflow/model 쌍과 고정 RGBA·중립 배경·최종 크기·사람 검수 조건을
+검증한다. 알 수 없는 편집기나 불일치 선언은 허용하지 않는다.
 
 - 선택한 1212×1300 RGBA를 그대로 복사한다. 입력 크기·모드·복사 해시를 확인하고,
-  원래 선택 해시 및 실제 `image_edit` 소비는 별도로 검증한다.
+  원래 선택 해시 및 등록된 편집 도구(`image_edit`/`image_gen`)의 실제 참조 소비는 별도로 검증한다.
 - 표정 변형의 부모 `pose`에 남은 무표정 지시는 새 표정 목표로 교체한다.
   몸 포즈·구도는 참조에 고정하고, T2I용 머리 여백 지시를 다시 적용하지 않는다.
 - Grok의 네이티브 투명도·정확한 크기 지원은 여전히 false다. 기존 로컬 분할/매팅,
@@ -111,4 +116,10 @@ Krea2 T2I 바인딩과 STYLE-104 지문은 그대로 유지한다. 같은 스타
 
 기존 여섯 MCP 도구와 공개 작업 스키마는 바꾸지 않았다. 현재 개발 CLI의
 [실제 검증](PROJECT_REFERENCE_EDIT_VALIDATION_20261030.md)은 선택된 사람 베이스
-한 건에 대한 실험적 근거이며, 인물 유지·Aseprite/Golden 승인이나 운영 활성화가 아니다.
+한 건에 대한 실험적 근거다. 해당 Grok 결과는 사용자가 인물 보존을 수용했으며,
+최종 미술·Aseprite/Golden 승인과 운영 활성화는 별도다.
+
+후속 [Codex 프로젝트 참조 편집 검증](CODEX_PROJECT_REFERENCE_EDIT_VALIDATION_20261030.md)은
+첨부 PNG의 실제 세션 내 해시와 도구가 소비한 복사본 경로, 실제 `image_gen` 1회,
+최종 1212×1300 RGBA를 별도로 확인한다. Grok 결과의 사용자 수용을 Codex 결과에
+자동 적용하지 않는다. 새 계약으로 계획/SOT 해시가 바뀌므로 이전 승인 파일은 재사용하지 않는다.

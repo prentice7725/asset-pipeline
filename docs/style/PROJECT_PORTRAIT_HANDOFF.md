@@ -70,7 +70,7 @@ adds real generation and offline replay evidence, including remaining quality fa
 
 For the explicitly authorized portrait reference-edit contract, see
 [identity variants](../factory/IDENTITY_VARIANT.md). It retains STYLE-104 and the
-Krea2 base path, but binds an explicit Grok reference input to local RGBA delivery.
+Krea2 base path, but binds an explicit Grok or Codex reference input to local RGBA delivery.
 The reference is copied byte-for-byte; a verified uniform light neutral backdrop
 may be measured for compositing. Ordinary T2I retains the white-background rule.
 No native Grok alpha/exact-resolution capability or style approval is implied.

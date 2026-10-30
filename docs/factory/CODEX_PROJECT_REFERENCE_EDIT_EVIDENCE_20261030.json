@@ -1,0 +1,148 @@
+{
+  "date": "2026-10-30",
+  "state": "REAL_REFERENCE_EDIT_TECHNICAL_PASS",
+  "scope": "Codex project portrait EXPRESSION edit; not generic M1 T2I promotion or real POSE validation",
+  "consent": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\contract-consent.json",
+    "sha256": "f14c551114ab42154d575aeb35481d33748967ec80d5b2356fa426d606e63b4f"
+  },
+  "initial_blocked_route": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\initial-project-route.json",
+    "sha256": "55976f24fbe71dc4f6c97a6254bdfa01c53c825878053be495abaed8b53d8453"
+  },
+  "diagnosis": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\diagnosis.json",
+    "sha256": "f2cdc6ae74239f4eed900f903ed398518b3e18ce1f1d2215c2d48199c16d9f20"
+  },
+  "plan": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\attempt-01\\plan.json",
+    "sha256": "f4695908c99b8e5145774758b162f85cf90b9dffa2314200738e7399c2cb3808"
+  },
+  "authorization": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\attempt-01\\authorization.json",
+    "sha256": "839f9e0f055ccc1fd31616d2524643df0538dd213b7cdcc1e45cbaf1b3110e00"
+  },
+  "prompt_review": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\attempt-01\\prompt-review.json",
+    "sha256": "baa951277fa2fc4f49e73c1d6f47601d9bd0f9d5f6400ea61076fa9f87b5487c"
+  },
+  "actual_execution_compiled_prompt": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\attempt-01\\compiled.json",
+    "sha256": "385046afa33a47e43e7e8121e751022bd6b21264c82b115a8c199731f034bf01"
+  },
+  "execution_audit": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\attempt-01\\audit.json",
+    "sha256": "3c57852d3ef723302f0b135df0e2979f71f2c4c245286e80e9fba50b5a7283d6"
+  },
+  "native_session_sha256": "770add2aea720c490671dab1a2957fc7f0d5d65c94818cfc578d13f7bb3825cf",
+  "attachment_sha256": "4f20aa36e0785472925252664c27aa4c76febf52f27f4aff36b3a0e5569c40df",
+  "actual_image_gen_calls": 1,
+  "generation_cli_invocations": 1,
+  "exec_wrapper_calls": 1,
+  "actual_other_tool_methods": [],
+  "actual_tool_uses_copied_reference": true,
+  "observed_agent_model": "gpt-6.1-sol",
+  "underlying_image_model": "NOT_IDENTIFIED",
+  "registry_status": "EXPERIMENTAL_EXPLICIT_ONLY",
+  "manifest": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\9eccb362c3cc40ba82b8b7d43480220b\\run\\run_manifest.json",
+    "sha256": "853a85b7e8e3c1f87066c701092ddc6db2b4821e7d011707f4bcfc817e541f29"
+  },
+  "receipt": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\9eccb362c3cc40ba82b8b7d43480220b\\variant.json",
+    "sha256": "4f2f6bcecee165ff19402c63e5dc67671e5a00c661b31c225b3640dd4249860a"
+  },
+  "raw_output_sha256": "e9cd703a479c16e1ce714dd83684c7e2030e46eb10e06a3f6600f79a66218405",
+  "output": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\9eccb362c3cc40ba82b8b7d43480220b\\run\\020_delivery\\0\\portrait.png",
+    "sha256": "11e51d16bb81b8ce8ac475244911cfde263a861a8c43fbddadb3c7389c8e4347"
+  },
+  "raw_resolution": [
+    1211,
+    1299
+  ],
+  "raw_mode": "RGB",
+  "final_resolution": [
+    1212,
+    1300
+  ],
+  "final_mode": "RGBA",
+  "qa": "PASS",
+  "delivery_audit": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\9eccb362c3cc40ba82b8b7d43480220b\\run\\020_delivery\\0\\alpha_processing.json",
+    "sha256": "bb1bcee19a9f626676db2f71df25b3ccc09db0d4cf9bd0f57ff598d059752a55"
+  },
+  "opaque_source_rgb_exact_before_resize": true,
+  "comparison": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\comparison.png",
+    "sha256": "56dd72b7d83c5c9ed1cbec6577ff3cc2807fc1ce9600ed88aaef09c88ed0d9b0"
+  },
+  "tests": {
+    "passed": 845,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "reported_seconds": 710.8,
+    "skip_reason": "Local migration benchmark data unavailable",
+    "evidence": [
+      {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\pytest-final.xml",
+        "sha256": "6f2f437f756a451846fe76e688436f5596a8261665507909ea16860d79889501"
+      },
+      {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\pytest-final.log",
+        "sha256": "9f12284826c63f034a6706d09a2bde9b82cb2c0978ea6fa6eee2625a27fabf53"
+      }
+    ],
+    "focused_final": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\focused-final.xml",
+      "sha256": "17497883039754575af76f93b90edc4a87cdf9995a057d5a56b77ed9f46b8dc6"
+    },
+    "pre_pose_correction_full_run": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\pytest.xml",
+      "sha256": "e08e4689a0e059d4cbe8ff9e8a3b1415b6aba996055916c56733af555560da66"
+    }
+  },
+  "post_live_offline_correction": "Removed redundant shared body-pose ban; EXPRESSION still locks body pose in coordinator/preserve list. Actual expression generated before removal with the same intended preservation. POSE checked offline only; no extra generation.",
+  "human_review": {
+    "identity_review": "HUMAN_REQUIRED",
+    "state": "PENDING_USER_RESPONSE",
+    "art_approval": "NOT_GRANTED"
+  },
+  "human_review_evidence": null,
+  "game_ready": false,
+  "live_mcp_replacement": false,
+  "production_activation": false,
+  "formal_provider_e2e_T2I": "NOT_RUN",
+  "public_brief_variant_and_six_mcp_schemas": "UNCHANGED",
+  "source": {
+    "base_commit": "1165490",
+    "branch": "codex/codex-project-edit-20261030",
+    "patch": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\source-change.patch",
+      "sha256": "d27cf4fac6d9cf8bd88ace0390aaba1fce810af79b9f80476a1ea338c67737a8"
+    },
+    "files": [
+      {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\config\\styles\\projects\\isekai_examiner\\visual_sot.yaml",
+        "sha256": "a705ac047fd629b76f66e0a141a8f5ce2cff57c06491aeb1bda131fe935175e6"
+      },
+      {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\src\\assetpipe\\prompts\\__init__.py",
+        "sha256": "c2b904ae01e53b54610ab52bfa2bf7551842b0b2e20e82022820922e381696e8"
+      },
+      {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\src\\assetpipe\\styles\\project.py",
+        "sha256": "926e14c871081d539a34aedf2e9dcf927b3a2b5ec690d215bdf8dbae5ca404c7"
+      },
+      {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\tests\\unit\\test_project_portrait.py",
+        "sha256": "576a787fb1a8c8c5914a821f8f2e70c7f2e055a7447bb8d3b10d1f99e008209b"
+      },
+      {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\tests\\unit\\test_project_reference_edit.py",
+        "sha256": "9de7d73c8a80490a8919eb8bd1f4281c12d66bb8cd6c04d07e12f59d5bd96587"
+      }
+    ]
+  }
+}

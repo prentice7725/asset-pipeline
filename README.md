@@ -324,7 +324,7 @@ CLI provider는 아래를 보장하지 못합니다. 요청에 이런 조건이 
 
 ### Windows 참고
 
-Codex·Grok은 npm으로 설치하면 `.cmd` 실행 파일이 생깁니다. 이 저장소는 셸 없이 인자 목록으로 실행하며 프롬프트를 stdin/파일로 넘깁니다. Windows에서 Grok 프로젝트 참조 편집은 실제 검증했으며, Codex 참조 편집의 실제 생성 검증은 남아 있습니다.
+Codex·Grok은 npm으로 설치하면 `.cmd` 실행 파일이 생깁니다. 이 저장소는 셸 없이 인자 목록으로 실행하며 프롬프트를 stdin/파일로 넘깁니다. Windows에서 두 Provider의 프로젝트 참조 편집을 실제 검증했습니다. 설치된 CLI의 기능·로그인과 프로젝트 계약은 실행 전에 확인합니다.
 
 ## Asset Brief와 공통 프롬프트
 
@@ -396,7 +396,7 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
   --authorization workspace/jobs/fox_surprised-auth.json --authorize-generation --allowed-root . --allowed-root <provider 출력 폴더>
 ```
 
-- 참조 편집은 Grok CLI(`grok_imagine`)와 Codex CLI(`codex_imagegen`)에 등록돼 있습니다. 둘 다 실험적입니다. Grok은 프로젝트 초상화의 실제 편집·RGBA 전달과 사용자 인물 보존 수용 근거가 있으며, Codex 실생성 검증은 남아 있습니다. [프로젝트 참조 편집 계약](docs/factory/IDENTITY_VARIANT.md)을 따릅니다. AGY 나노바나나는 후속 단계입니다.
+- 참조 편집은 Grok CLI(`grok_imagine`)와 Codex CLI(`codex_imagegen`)에 등록돼 있습니다. 둘 다 실험적이며 프로젝트 초상화의 실제 참조 편집·RGBA 전달 근거가 있습니다. 인물 보존 수용은 결과별 사람 검토로 기록합니다. [프로젝트 참조 편집 계약](docs/factory/IDENTITY_VARIANT.md)을 따릅니다. AGY 나노바나나는 후속 단계입니다.
 - 유지 항목(얼굴·헤어·의상·장비·화풍 등)은 변형 종류별로 고정되며, 인물이 유지됐는지는 사람이 판단합니다.
 
 작업 파일 형식, 승인 파일, 제한 사항은 [동일 인물 변형 작업](docs/factory/IDENTITY_VARIANT.md)을 참고하세요.
