@@ -140,7 +140,7 @@ def test_unverified_cli_provider_cannot_be_promoted_to_active(box):
     assert load_registry(box.root)['codex_imagegen']['status'] == 'ACTIVE'
 
 
-@pytest.mark.parametrize('arg', ['--always-approve', '--sandbox=danger-full-access', '-c', 'bypassPermissions', '--cwd', '--permission-mode=bypassPermissions'])
+@pytest.mark.parametrize('arg', ['--always-approve', '--sandbox=danger-full-access', '-c', 'bypassPermissions', '--cwd', '--permission-mode=bypassPermissions', '--image', '--image=foreign.png', '-i', '-iforeign.png'])
 def test_registry_rejects_cli_args_that_weaken_isolation(box, arg):
     box.edit_registry('grok_imagine', lambda e: e['backend'].update(cli_args=[arg]))
     with pytest.raises(ValueError, match='forbidden'):
@@ -183,8 +183,7 @@ def test_router_blocks_unsupported_requirements_instead_of_dropping_them():
         route(value, registry)
     reference = make(asset_id='x', output_class='NONPIXEL_IMAGE', reference='ref.png')
     reference['workflow_preferences'] = {'id': 'codex_imagegen', 'allow_experimental': True}
-    with pytest.raises(ValueError, match='character_reference'):
-        route(reference, registry)
+    assert route(reference, registry)['selected_workflow'] == 'codex_imagegen'
     reference['workflow_preferences']['id'] = 'grok_imagine'
     assert route(reference, registry)['selected_workflow'] == 'grok_imagine'
 
@@ -319,6 +318,47 @@ def test_grok_reference_image_uses_image_edit_with_copied_reference(box, tmp_pat
     call = box.calls(box.grok_dir)[0]
     assert call['argv'][call['argv'].index('--tools') + 1] == 'image_edit' and 'reference.png' in call['prompt'] and 'image_edit' in call['prompt']
     assert str(reference) not in json.dumps(call['prompt'])
+
+
+@pytest.mark.parametrize('mode, code', [('ok', None), ('two', 'OUTPUT_AMBIGUOUS'),
+                                      ('no_output', 'OUTPUT_MISSING'), ('refuse', 'REFUSED')])
+def test_codex_reference_attaches_exact_copy_and_preserves_failure_gates(box, tmp_path, mode, code):
+    box.codex(mode=mode)
+    reference = tmp_path / 'original reference.png'
+    Image.new('RGB', (32, 32), (1, 2, 3)).save(reference)
+    expected = hashlib.sha256(reference.read_bytes()).hexdigest()
+    value = make(asset_id='fox', output_class='NONPIXEL_IMAGE', prompt='surprised fox', reference=str(reference))
+    value['workflow_preferences'] = {'id': 'codex_imagegen', 'allow_experimental': True}
+    manifest, error, _ = box.attempt(value)
+    calls = box.calls(box.codex_dir)
+    assert len(calls) == 1
+    call = calls[0]
+    attached = Path(call['argv'][call['argv'].index('--image') + 1])
+    assert attached != reference and attached.name == 'reference.png'
+    assert attached.is_relative_to(Path(call['cwd'])) and call['reference_sha256'] == expected
+    assert call['argv'][-2:] == ['--', '-'] and 'single attached reference' in call['prompt']
+    assert str(reference) not in call['prompt'] and '--sandbox' in call['argv']
+    record = manifest['generation']['provider']
+    assert record['tool'] == 'image_gen' and record['reference']['sha256'] == expected
+    assert record['retry']['attempts'] == 1 and manifest['game_ready'] is False
+    assert hashlib.sha256(reference.read_bytes()).hexdigest() == expected
+    assert not any(box.jobs.iterdir())
+    if code:
+        assert error is not None and manifest['error_code'] == code and manifest['outputs'] == []
+    else:
+        assert error is None and manifest['status'] == 'CANDIDATE_READY_REVIEW_REQUIRED'
+
+
+def test_codex_without_image_flag_blocks_reference_before_generation(box, tmp_path):
+    box.codex(reference_support=False)
+    reference = tmp_path / 'ref.png'
+    Image.new('RGB', (32, 32)).save(reference)
+    value = make(asset_id='fox', output_class='NONPIXEL_IMAGE', prompt='surprised fox', reference=str(reference))
+    value['workflow_preferences'] = {'id': 'codex_imagegen', 'allow_experimental': True}
+    manifest, error, _ = box.attempt(value)
+    assert error is not None and manifest['error_code'] == 'REFERENCE_UNSUPPORTED'
+    assert manifest['status'] == 'BLOCKED' and box.calls(box.codex_dir) == []
+    assert not any(box.jobs.iterdir())
 
 
 def test_grok_unsupported_aspect_ratio_is_rejected_before_any_request(box):

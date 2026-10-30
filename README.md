@@ -240,7 +240,8 @@ assetpipe create --type nonpixel-image --project game-a --asset-id fox `
   --prompt "a small fox scout with a red scarf, flat colors"
 ```
 
-레퍼런스 이미지로 편집하려면 Grok의 `image_edit`를 씁니다(Codex는 아직 레퍼런스를 지원하지 않아 라우터가 차단합니다).
+레퍼런스 이미지 편집은 Grok의 `image_edit` 또는 Codex의 `image_gen` 참조 입력을 명시해 사용합니다.
+Codex는 복사본 1장을 `--image`로 첨부합니다. 두 경로 모두 실험적이며 참조 편집 실생성·동일 인물 유지 검증은 남아 있습니다.
 
 ```powershell
 assetpipe create --type nonpixel-image --asset-id fox --reference ref.png `
@@ -298,7 +299,8 @@ CLI provider는 아래를 보장하지 못합니다. 요청에 이런 조건이 
 | `EXECUTABLE_NOT_FOUND`, `CLI_NOT_RUNNABLE`, `IMAGE_FEATURE_DISABLED` | `UNAVAILABLE` | CLI 설치·경로 설정, Codex 이미지 기능 활성화 |
 | `AUTH_NOT_CONFIGURED` | `BLOCKED` | 로그인(`codex login` / `grok login`) 또는 API 키 환경변수 설정 |
 | `RECURSION_BLOCKED` | 없음(실행 폴더·manifest를 만들기 전에 거부) | 생성 CLI 안에서 assetpipe를 다시 호출함. 의도한 동작이 아니면 CLI의 플러그인·MCP 설정 확인 |
-| `ASPECT_RATIO_UNSUPPORTED`, `REFERENCE_UNSUPPORTED` | `FAILED` | 요청 전에 중단됨. 브리프 조건 조정 |
+| `ASPECT_RATIO_UNSUPPORTED` | `FAILED` | 요청 전에 중단됨. 브리프 조건 조정 |
+| `REFERENCE_UNSUPPORTED` | `BLOCKED` / `FAILED` | 참조 입력 미지원. Codex는 `exec --help`의 `--image` 지원 확인 필요 |
 | `TIMEOUT` | `FAILED` | 시간 초과 후 프로세스 종료. **재시도하지 않음**. 계정에서 요청이 처리됐을 수 있으니 확인 후 직접 재실행 |
 | `CLI_EXIT_NONZERO` | `FAILED` | CLI 비정상 종료. `stderr.log`(마스킹됨) 확인 |
 | `REFUSED` | `FAILED` | CLI가 생성을 거절함. 프롬프트·금지 요소 검토 |
@@ -394,7 +396,7 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
   --authorization workspace/jobs/fox_surprised-auth.json --authorize-generation --allowed-root . --allowed-root <provider 출력 폴더>
 ```
 
-- 현재 참조 편집이 등록된 provider는 Grok CLI(`grok_imagine`, 실험적)뿐입니다. Codex CLI와 AGY 나노바나나는 후속 단계입니다.
+- 참조 편집은 Grok CLI(`grok_imagine`)와 Codex CLI(`codex_imagegen`)에 등록돼 있습니다. 둘 다 실험적이며, 실생성 검증과 사람의 동일 인물 판정은 남아 있습니다. AGY 나노바나나는 후속 단계입니다.
 - 유지 항목(얼굴·헤어·의상·장비·화풍 등)은 변형 종류별로 고정되며, 인물이 유지됐는지는 사람이 판단합니다.
 
 작업 파일 형식, 승인 파일, 제한 사항은 [동일 인물 변형 작업](docs/factory/IDENTITY_VARIANT.md)을 참고하세요.

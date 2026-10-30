@@ -9,7 +9,7 @@ Factory motion dispatch, new-coordinator real generation, human quality acceptan
 and production activation remain blocked/unverified. See
 [motion integration evidence](MOTION_JOB_VALIDATION_20261027.md).
 
-**Same-character variants (2026-10-28):** [expression/pose edit from one selected base](IDENTITY_VARIANT.md) — offline contract and fake-CLI tests only; no real generation yet.
+**Same-character variants:** [expression/pose edit from one selected base](IDENTITY_VARIANT.md) — Grok and Codex reference-input adapters; offline contract and fake-CLI tests only; no real generation yet.
 
 Implementation references: [M3.0 contract](M30_OFFLINE_CONTRACT.md), [M3.1 SFX](M31_SFX_OFFLINE.md).
 

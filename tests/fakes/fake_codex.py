@@ -3,6 +3,7 @@
 같은 폴더의 mode.json으로 동작을 고르고, 호출 기록은 calls.jsonl에 남긴다.
 """
 import json
+import hashlib
 import os
 import pathlib
 import sys
@@ -32,9 +33,12 @@ elif args[:2] == ['features', 'list']:
     print('image_generation                         stable             ' + ('true' if cfg.get('feature', True) else 'false'))
 elif args[:2] == ['login', 'status']:
     print('Logged in using ChatGPT' if cfg.get('logged_in', True) else 'Not logged in')
+elif args[:2] == ['exec', '--help']:
+    print('Usage: codex exec ' + ('--image <FILE>...' if cfg.get('reference_support', True) else '[PROMPT]'))
 elif args[:1] == ['exec']:
     prompt = sys.stdin.read()
-    record('exec', prompt=prompt)
+    reference = pathlib.Path(args[args.index('--image') + 1]) if '--image' in args else None
+    record('exec', prompt=prompt, reference_sha256=hashlib.sha256(reference.read_bytes()).hexdigest() if reference else None)
     mode = cfg.get('mode', 'ok')
     last = pathlib.Path(args[args.index('-o') + 1]) if '-o' in args else None
     home = pathlib.Path(os.environ.get('CODEX_HOME', str(pathlib.Path.home() / '.codex')))
@@ -46,16 +50,17 @@ elif args[:1] == ['exec']:
     elif mode == 'nonzero':
         print('boom', file=sys.stderr)
         sys.exit(2)
-    print(json.dumps({'type': 'thread.started', 'thread_id': 'thread_abc123'}))
+    session = cfg.get('session_id', 'thread_abc123')
+    print(json.dumps({'type': 'thread.started', 'thread_id': session}))
     if mode == 'leak':
         print('token sk-TESTSECRET1234567890 and Authorization: Bearer abcdefghijklmnop1234')
     if mode in ('ok', 'leak', 'two'):
         old = home / 'generated_images' / 'other_thread' / 'old.png'
         png(old, (8, 8))
         os.utime(old, (time.time() - 3600, time.time() - 3600))
-        png(home / 'generated_images' / 'thread_abc123' / 'ig_1.png', cfg.get('size', (64, 64)))
+        png(home / 'generated_images' / session / 'ig_1.png', cfg.get('size', (64, 64)))
         if mode == 'two':
-            png(home / 'generated_images' / 'thread_abc123' / 'ig_2.png', cfg.get('size', (64, 64)))
+            png(home / 'generated_images' / session / 'ig_2.png', cfg.get('size', (64, 64)))
     print(json.dumps({'type': 'turn.completed', 'usage': {'input_tokens': 10, 'output_tokens': 5}, 'model': 'fake-image-model'}))
     if last:
         last.write_text("I can't help with that request; it violates content policy." if mode == 'refuse' else 'DONE', encoding='utf-8')
