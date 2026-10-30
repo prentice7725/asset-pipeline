@@ -1,28 +1,12 @@
 # Changelog
 
-## Unreleased — Codex project reference edits, 2026-10-30
+## Unreleased — project identity edits and alpha delivery, 2026-10-30
 
-- Extend explicit portrait edit contracts to Codex while retaining Grok and legacy
-  single-editor SOTs. Reject ambiguous/invalid declarations; retain exact RGBA,
-  style fingerprint, one-attempt execution and per-output human review.
-
-## Unreleased — reference-input integration, 2026-10-30
-
-- Attach exact Codex CLI references with `--image`; pin each provider's edit tool.
-  Reject injected image arguments and Grok generation tools used as reference editors.
-
-## Unreleased — project portrait reference edits, 2026-10-30
-
-- Add explicit isekai portrait/Grok reference-edit binding, exact RGBA input and
-  pinned SOT contract with local alpha/size delivery and verified neutral backdrop.
-  Preserve T2I bindings, one-attempt execution and human identity/art review.
-
-## Unreleased — portrait source/alpha handoff, 2026-10-29
-
-- Separate opaque portrait source backdrops from final transparent delivery; add
-  existing rembg alpha matting with fixed segmentation context, verified white-background
-  refinement, opaque RGB preservation and translucent-edge white unmatting.
-  Ordinary image/SFX/pixel routes and human review gates remain unchanged.
+- Add explicit Grok/Codex project reference edits with exact RGBA input, pinned SOT,
+  fixed preserve lists, one-attempt execution and local portrait alpha delivery.
+- Preserve opaque RGB and verify neutral source backdrops; reject injected image
+  arguments and mismatched edit tools. Record real edits and per-output user identity
+  acceptance while keeping final art/Golden/Aseprite approval separate.
 
 ## Unreleased — same-character expression/pose variants, 2026-10-28
 
