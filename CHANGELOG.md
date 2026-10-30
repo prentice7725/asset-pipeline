@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — Factory CLI provider provenance, 2026-10-30
+
+- Fix `factory execute` marking successful Codex/Grok candidates FAILED after generation:
+  only the provider's original save location (`source_path`) is exempt from root checks.
+  Identity variants reuse the same check instead of skipping manifest validation.
+
 ## Unreleased — project identity edits and alpha delivery, 2026-10-30
 
 - Add explicit Grok/Codex project reference edits with exact RGBA input, pinned SOT,
