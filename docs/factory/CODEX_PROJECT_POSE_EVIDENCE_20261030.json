@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-30",
+  "type": "CODEX_PROJECT_POSE_VALIDATION",
+  "state": "REAL_POSE_EDIT_TECHNICAL_PASS_IDENTITY_ACCEPTED_BY_USER",
+  "source_commit": "655e45ccc8c59c0b0e780c13f5c7ce1f1235065b",
+  "pipeline_code_changed": false,
+  "registry_config_and_public_schemas_changed": false,
+  "scope": "Existing selected human base, existing Codex project contract, one successful greeting pose edit",
+  "authorization_policy": "Standing uncapped verification-count approval; each run separately reserved. Not production authorization.",
+  "generation_cli_invocations_total": 2,
+  "budget_reservations_total": 2,
+  "actual_image_gen_calls_total": 1,
+  "first_run": {
+    "authorization": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-01\\authorization.json",
+      "sha256": "b90d483e2eb33c21efe77b01961dc212f07b7b94837633d529e45c53d486db4c"
+    },
+    "plan": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-01\\plan.json",
+      "sha256": "15c2d3a5966194ae2d526f74df032f7df8fb972dccf38be9d902e8574ed47551"
+    },
+    "receipt": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\53a978879fb14f069eb85f983b0c53dd\\variant.json",
+      "sha256": "2a627ae8930e78971f6f4af3cb74121c5c645ef635b5db2a358aeae82358c064"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\53a978879fb14f069eb85f983b0c53dd\\run\\010_generation\\codex_cli\\stderr.log",
+      "sha256": "60e1652d01a2c93deb2f87923fc6079e2b1b57d5e17d654d058460b03db68664"
+    },
+    "stdout": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\53a978879fb14f069eb85f983b0c53dd\\run\\010_generation\\codex_cli\\stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "state": "FAILED_BEFORE_NATIVE_SESSION_INITIALIZATION",
+    "actual_image_gen_calls": 0,
+    "diagnosis": "External Codex profile/app-server access denied under host sandbox; empty stdout, no native session or generated output.",
+    "reservation_reused": false
+  },
+  "distinct_corrected_run": {
+    "authorization": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-02\\authorization.json",
+      "sha256": "be390ea69be97cd4282cecb778d15af1bac37b2c67c0707fcc163132521e5e27"
+    },
+    "plan": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-02\\plan.json",
+      "sha256": "1e35944c7b001c7ba811b30e5cdfae683c68706ee2859083dcd3617c9428e4ea"
+    },
+    "compiled_prompt": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-02\\compiled.json",
+      "sha256": "cabdd6e1ddf633f7f9cba9f9927e8b4893416801bf3e88d3e6e8e95f8b0a77c1"
+    },
+    "art_director_plan": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-02\\art-director-plan.json",
+      "sha256": "d42dd51953597c9036e3fc19b475dba55d8b6c865e44a34ae096999e3a57ee31"
+    },
+    "prompt_review": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-02\\prompt-review.json",
+      "sha256": "92adc7d3e02a7635fa921629947ff6b691b4df04ad89e66dc3f3ec8d1aa29569"
+    },
+    "receipt": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\e665026801ed4ecb9ef98eb79640fb26\\variant.json",
+      "sha256": "99de2c69f1cab392653b711e8beadb3cd3a39297dec2c581bd80b95258210a70"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\e665026801ed4ecb9ef98eb79640fb26\\run\\run_manifest.json",
+      "sha256": "5f054b2b8c3df877c3f7a5e3cb042e634ccb13553d59b831509ee0bdcb86c5ae"
+    },
+    "audit": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\attempt-02\\audit.json",
+      "sha256": "523596c7eebf7e026d85315a0bcbb5cb5965ac304e84cdeef4a1302ec6550639"
+    },
+    "details": {
+      "status": "REAL_REFERENCE_EDIT_TECHNICAL_PASS",
+      "provider": "codex_imagegen",
+      "authorization_id": "e665026801ed4ecb9ef98eb79640fb26",
+      "session_id": "01a18bf7-d24c-7aa3-a285-d4acb7085f99",
+      "cli_version": "codex-cli 0.164.0",
+      "observed_agent_model": "gpt-6.1-sol",
+      "generation_cli_invocations": 1,
+      "actual_image_gen_calls": 1,
+      "actual_other_tool_methods": [],
+      "exec_wrapper_calls": 1,
+      "actual_tool_result_count": 1,
+      "attached_png_sha256": "4f20aa36e0785472925252664c27aa4c76febf52f27f4aff36b3a0e5569c40df",
+      "actual_tool_uses_copied_reference": true,
+      "session_path": "C:\\Users\\seung\\.codex\\sessions\\2026\\10\\30\\rollout-2026-10-30T17-40-37-01a18bf7-d24c-7aa3-a285-d4acb7085f99.jsonl",
+      "session_sha256": "93e5a0e8518d8c2418957b4ed148792fedb449c16e0d5e6a0ebc576a0b320495",
+      "tool_input_sha256": "36121c4107fe07d2b5728a00315ea0848e06fa4de364825eeb06df367ebe694f",
+      "output": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\e665026801ed4ecb9ef98eb79640fb26\\run\\020_delivery\\0\\portrait.png",
+      "output_sha256": "154e38265f4925bbabb990548f1f0529417a86a663bf8554e64752082aba137f",
+      "raw_resolution": [
+        1211,
+        1299
+      ],
+      "raw_mode": "RGB",
+      "final_resolution": [
+        1212,
+        1300
+      ],
+      "final_mode": "RGBA",
+      "raw_sha256": "cf0dfed7e18ec9ddb4c513bdd98903bdecdaf600452212dafad8033dd743f051",
+      "opaque_rgb_exact_before_resize": true,
+      "qa": "PASS",
+      "identity_review": "HUMAN_REQUIRED",
+      "art_approval": "NOT_GRANTED",
+      "game_ready": false
+    },
+    "execution_correction": "Host process allowed access to its existing Codex profile; native read-only sandbox and isolation unchanged.",
+    "automatic_retry": false,
+    "fallback": false
+  },
+  "human_review": {
+    "schema_version": 1,
+    "date": "2026-10-30",
+    "state": "ACCEPTED_BY_USER",
+    "identity_review": "ACCEPTED_BY_USER",
+    "scope": "POSE_VARIANT_IDENTITY_PRESERVATION_ONLY",
+    "reviewed_by": "user",
+    "user_answer": "포즈 변형도 동일 인물로 수용",
+    "reviewed_items": [
+      "face shape",
+      "hairstyle",
+      "school uniform",
+      "rendering style"
+    ],
+    "allowed_change": "right-hand greeting pose",
+    "base": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\factory_budget\\cafbb34ff7924de3a31afef888ed90d6\\run\\020_delivery\\0\\portrait.png",
+      "sha256": "4f20aa36e0785472925252664c27aa4c76febf52f27f4aff36b3a0e5569c40df"
+    },
+    "variant": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\e665026801ed4ecb9ef98eb79640fb26\\run\\020_delivery\\0\\portrait.png",
+      "sha256": "154e38265f4925bbabb990548f1f0529417a86a663bf8554e64752082aba137f"
+    },
+    "comparison": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\comparison.png",
+      "sha256": "d7cdae7bba3583f530f5835f51ca478b2d5bca914470536019b5877c31e3e45c"
+    },
+    "run_manifest": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\e665026801ed4ecb9ef98eb79640fb26\\run\\run_manifest.json",
+      "sha256": "5f054b2b8c3df877c3f7a5e3cb042e634ccb13553d59b831509ee0bdcb86c5ae"
+    },
+    "variant_receipt": {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\workspace\\factory_budget\\e665026801ed4ecb9ef98eb79640fb26\\variant.json",
+      "sha256": "99de2c69f1cab392653b711e8beadb3cd3a39297dec2c581bd80b95258210a70"
+    },
+    "art_approval": "NOT_GRANTED",
+    "golden_approval": "NOT_GRANTED",
+    "aseprite_approval": "NOT_GRANTED",
+    "game_ready": false,
+    "immutable_run_receipts_changed": false
+  },
+  "human_review_evidence": {
+    "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\human-review.json",
+    "sha256": "17e8b4e2987a3fadc02a3f4a024e1199ff027a020abbeae8e430d08e785ce478"
+  },
+  "visual_review": {
+    "right_hand_and_five_fingers_visible": true,
+    "palm_facing_viewer": true,
+    "neutral_expression_retained": true,
+    "alpha_art_review_note": "Pale edge fringes visible around dark hair; final alpha/art review remains required.",
+    "art_approval": "NOT_GRANTED"
+  },
+  "verification": {
+    "artifact_hash_checks": "PASS",
+    "native_attachment_and_tool_consumption_audit": "PASS",
+    "local_rgba_and_opaque_rgb_checks": "PASS",
+    "new_full_pytest_run": "NOT_RUN_NO_PIPELINE_CODE_CHANGES",
+    "existing_source_regression": {
+      "passed": 845,
+      "skipped": 1,
+      "source_commit": "35af5a2",
+      "evidence": {
+        "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-project-edit-worktree\\docs\\factory\\CODEX_PROJECT_REFERENCE_EDIT_EVIDENCE_20261030.json",
+        "sha256": "7710b778ace806bc63b64b9806960da9b30f2862096b5ffe5768d8309d759f17"
+      }
+    }
+  },
+  "audit_scripts": [
+    {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-pose-live-20261030\\audit.py",
+      "sha256": "13eb95d0c439d790efbc1c0189b81ec7be798f9c45c4d2634e6fc69d25550d53"
+    },
+    {
+      "path": "C:\\workspace\\asset-pipeline\\workspace\\codex-reference-live-20261030\\audit_attempt.py",
+      "sha256": "1a10ce2817a9aad29eb1d77b8caace9e9810d9d937cdad615eca5750bf6a7548"
+    }
+  ],
+  "game_ready": false,
+  "live_mcp_replacement": false,
+  "production_activation": false,
+  "formal_provider_e2e_T2I": "NOT_RUN",
+  "provider_status": "EXPERIMENTAL_EXPLICIT_ONLY",
+  "underlying_image_model": "NOT_IDENTIFIED"
+}
