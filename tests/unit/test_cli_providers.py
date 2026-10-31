@@ -20,7 +20,7 @@ from assetpipe.pipelines import create
 from assetpipe.prompts import compile_prompt
 from assetpipe.providers import CLI_ENGINES, cli_base, diagnose_providers
 from assetpipe.providers.base import AVAILABLE, BLOCKED, UNAVAILABLE, ProviderBlocked
-from assetpipe.providers.cli_runner import DEPTH_ENV, MAX_LOG_CHARS, SAFE_ENV_NAMES, Redactor, assert_not_nested, build_env, image_paths_in, iter_json_values
+from assetpipe.providers.cli_runner import DEPTH_ENV, MAX_LOG_CHARS, SAFE_ENV_NAMES, Redactor, assert_not_nested, build_env, canonical_path, image_paths_in, iter_json_values
 from assetpipe.providers.codex_cli import CodexCliProvider
 from assetpipe.providers.comfyui import ComfyUIProvider
 from assetpipe.providers.grok_cli import GrokCliProvider
@@ -494,7 +494,8 @@ def test_grok_session_folders_are_removed_only_when_empty(box):
     manifest, error, _ = box.attempt(brief('grok_imagine'), name='ok')
     assert error is None
     source = Path(manifest['generation']['provider']['outputs'][0]['source_path'])
-    assert source.is_file() and source.is_relative_to(sessions)
+    # Windows에서는 출처 경로가 \\?\ 정식 경로로 기록되므로 같은 형식으로 비교한다.
+    assert source.is_file() and canonical_path(source).is_relative_to(canonical_path(sessions))
 
 
 def test_ambiguous_outputs_are_listed_but_not_chosen(box):
