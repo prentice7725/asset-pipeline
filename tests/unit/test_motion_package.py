@@ -98,7 +98,13 @@ def test_nonpixel_create_cli_runs_existing_job_and_preserves_parent(case, monkey
     capsys.readouterr()
     receipt = output/'factory_motion.json'
     assert inspect_job(output, fingerprint(receipt), root)['generation_requests'] == 0
-    assert (output/'exports/godot/walk.tres').exists() or (output/'exports/walk.tres').exists()
+    # 요청의 동작(test)과 asset_id(clip)로 엔진 리소스 이름을 정한다.
+    exports = output/'exports'
+    assert (exports/'test.tres').is_file() and not (exports/'walk.tres').exists()
+    assert '"name":&"test"' in (exports/'test.tres').read_text(encoding='utf-8')
+    assert json.loads((exports/'phaser-animation.json').read_text(encoding='utf-8'))['key'] == 'clip_test'
+    placement = json.loads((exports/'placement.json').read_text(encoding='utf-8'))
+    assert placement['phaser']['texture_key'] == 'clip_test' and placement['animation']['godot_resource'] == 'test.tres'
     assert before == {p: fingerprint(p) for p in before}
 
 
@@ -408,3 +414,13 @@ def test_millisecond_timebase_containers_accept_constant_rate_and_reject_jitter(
                     '-c:v', 'ffv1', str(jitter)], capture_output=True, check=True, timeout=30)
     with pytest.raises(ValueError, match='MOTION_TIMING_UNSUPPORTED'):
         _probe(jitter)
+
+
+@pytest.mark.parametrize('action, asset_id, expected', [
+    ('walk', 'fox', {'animation': 'walk', 'godot_resource': 'walk.tres', 'phaser_key': 'fox_walk'}),
+    ('Idle Breathing', 'fox-01', {'animation': 'idle_breathing', 'godot_resource': 'idle_breathing.tres', 'phaser_key': 'fox_01_idle_breathing'}),
+    ('../걷기', 'fox', {'animation': 'motion', 'godot_resource': 'motion.tres', 'phaser_key': 'fox_motion'}),
+])
+def test_export_resource_names_follow_action_and_stay_path_safe(action, asset_id, expected):
+    from assetpipe.motion.exports import resource_names
+    assert resource_names(action, asset_id) == expected

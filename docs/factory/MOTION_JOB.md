@@ -137,14 +137,20 @@ existing source/masked/final/mask/atlas/review evidence. Optional historical
 generation bytes are copied as `historical-generation.json`, without following
 old model paths or interpreting them as current read permissions.
 
-`exports/` contains exact copied `sprites.png`, native Godot `walk.tres`, native
+`exports/` contains exact copied `sprites.png`, native Godot `<action>.tres`, native
 Phaser atlas and animation JSON, and `placement.json` with original frame indices,
 pivot mapping and candidate digest. This is resource formatting, not a new
 extraction/packing algorithm. No animation frame, RGB, pivot or timing is changed.
 
-- Godot: load `walk.tres` as SpriteFrames. Its sibling image is referenced by a
-  relative path. Use the recorded centered/offset mapping from `placement.json`.
-- Phaser: load atlas as texture key `motion` with the sibling PNG and
+Resource names come from the request: `<action>` is `motion.action` lowercased with
+other characters replaced by `_` (`motion` if nothing remains), and the Phaser key is
+`<asset_id>_<action>`. `placement.json` records both under `animation`, so several
+actions of one asset do not collide.
+
+- Godot: load `<action>.tres` as SpriteFrames (animation name `<action>`). Its sibling
+  image is referenced by a relative path. Use the recorded centered/offset mapping
+  from `placement.json`.
+- Phaser: load atlas as texture key `<asset_id>_<action>` with the sibling PNG and
   `phaser-atlas.json`; pass the loaded `phaser-animation.json` unchanged to
   `scene.anims.create()`. Apply the recorded origin separately.
 

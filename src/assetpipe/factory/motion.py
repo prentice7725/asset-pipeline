@@ -219,7 +219,9 @@ def run_job(job_path, plan_sha256, output, root, *, authorization=None,
                                   'sha256': fingerprint(recipe_manifest)})
         write(manifest, receipt)
         from ..motion.exports import export_candidate
+        request = json.loads(Path(plan['source_plan']['request']['path']).read_text(encoding='utf-8'))
         export_candidate(recipe_manifest.parent, fingerprint(recipe_manifest), output / 'exports', root,
+                         action=request['motion']['action'], asset_id=request['asset_id'],
                          allowed_roots=resolver.roots)
         if plan_job(job_path, root, allowed_roots=resolver.roots) != plan:
             raise ValueError('FACTORY_MOTION_SOURCE_CHANGED')

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — motion export names per action, 2026-10-31
+
+- Name Godot/Phaser motion exports from the request: `<action>.tres` and Phaser key
+  `<asset_id>_<action>` (recorded in `placement.json`), so several actions no longer collide.
+
 ## Unreleased — Aseprite output decoding, 2026-10-31
 
 - Decode Aseprite output as UTF-8 with replacement so non-ASCII (e.g. Korean) paths on
