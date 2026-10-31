@@ -20,7 +20,10 @@ def test_normal_true_pixel_art_is_unchanged(tmp_path: Path) -> None:
     )
     assert report["status"] == "PASS"
     assert report["changed_pixel_count"] == 0
-    assert report["input_sha256"] == report["output_sha256"]
+    # PNG 바이트는 Pillow/zlib 버전마다 달라질 수 있어 원본 파일 해시 대신 픽셀과 같은 인코더로 쓴 스냅숏을 비교한다.
+    with Image.open(ASSETS / "true_pixel_art.png") as source, Image.open(output / "refined.png") as refined:
+        assert source.convert("RGBA").tobytes() == refined.convert("RGBA").tobytes()
+    assert (output / "input.png").read_bytes() == (output / "refined.png").read_bytes()
     assert report["operations"][0]["applied"] is False
     assert all((output / name).is_file() for name in ("input.png", "refined.png", "diff.png", "refine_report.json", "refine_report.md"))
 
