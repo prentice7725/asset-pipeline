@@ -46,7 +46,9 @@ def test_pixel_failure_prevents_aseprite(monkeypatch, tmp_path):
     source = ROOT / 'tests/assets/downscaled_illustration.png'
     monkeypatch.setattr(ComfyUIProvider, 'generate', lambda *args: [source])
     brief = make(asset_id='failed_static', output_class='PIXEL_STATIC', prompt='fixture only')
-    brief['constraints']['resolution'] = list(Image.open(source).size)
+    # Palette quantization now removes the color-budget failure, so fail on an explicit
+    # resolution mismatch instead; the point here is that a failed gate locks Aseprite.
+    brief['constraints']['resolution'] = [v + 1 for v in Image.open(source).size]
     run = tmp_path / 'run'
     with pytest.raises(ValueError, match='Pixel Gate failed'):
         create(brief, ROOT, run)

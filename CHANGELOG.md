@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — manifest-spec delivery and pixel palette budget, 2026-10-31
+
+- NONPIXEL_IMAGE briefs with `constraints.resolution` + `transparency: true` (and optional new
+  `max_file_kb`) get local background removal and exact contain resize without a project SOT;
+  QA fails files over `max_file_kb`. Review gates are unchanged.
+- PIXEL_STATIC quantizes to the 32-color budget (or brief palette) before Pixel Gate.
+- README documents MCP runtime redeploy (`workspace/mcp_runtime/redeploy.py`).
+
 ## Unreleased — Grok empty session folder cleanup, 2026-10-31
 
 - Remove Grok session folders a run created in the user's Grok home only when they stay

@@ -169,8 +169,8 @@ def _compile_bound_prompt(brief, workflow, root, menu_decision=None):
 
 def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_context=None):
     """Shared dialect compiler for validated offline specs; performs no routing or generation."""
-    from ..portrait_delivery import profile as delivery_profile, SOURCE_BACKGROUND, SOURCE_FRAMING
-    delivery = delivery_profile(brief, root, workflow['id'])
+    from ..portrait_delivery import profile as delivery_profile, SOURCE_BACKGROUND, framing_text
+    delivery = delivery_profile(brief, root, workflow['id'], workflow)
     requested_environment = spec.get('environment')
     requested_composition = spec.get('composition')
     if delivery:
@@ -184,7 +184,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
                 'Consume the supplied RGBA reference unchanged. The solid white source backdrop is temporary; '
                 'local delivery restores final alpha. Preserve reference rendering style, identity and clothing.')
         else:
-            spec['composition'] = ' '.join(filter(None, [requested_composition, SOURCE_FRAMING]))
+            spec['composition'] = ' '.join(filter(None, [requested_composition, framing_text(brief)]))
     profiles = yaml.safe_load((Path(root) / 'config/model_profiles.yaml').read_text(encoding='utf-8'))
     profile_id = workflow.get('model_profile')
     if profile_id not in profiles['profiles']:
@@ -323,10 +323,15 @@ def workflow_values(compiled, workflow, brief):
             w, h = map(int, ratio.split(':'))
             if resolution[0] * h != resolution[1] * w:
                 raise ValueError('PromptSpec aspect ratio conflicts with explicit resolution')
+        base = max(values.get('width', 0), values.get('height', 0))
         values['width'], values['height'] = resolution
         if compiled.get('delivery_profile'):
+            # The opaque source is generated at least at the workflow's preset size and
+            # scaled down locally; small delivery canvases must not shrink the generation.
             multiple = workflow.get('delivery_resolution_multiple', 8)
-            values['width'], values['height'] = [(v + multiple - 1) // multiple * multiple for v in resolution]
+            scale = max(1.0, base / max(resolution)) if base else 1.0
+            source = [round(v * scale) for v in resolution]
+            values['width'], values['height'] = [(v + multiple - 1) // multiple * multiple for v in source]
     elif ratio:
         w, h = map(int, ratio.split(':'))
         base = min(values['width'], values['height'])

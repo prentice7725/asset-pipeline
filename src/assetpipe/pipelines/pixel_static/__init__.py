@@ -24,6 +24,20 @@ def process_candidate(candidate, brief, config, directory, manifest):
     refined = refine_image(candidate, directory / '030_refiner', profile='binary_alpha_only', analyzer_max_colors=config.section('pixel').get('max_colors', 32))
     manifest['pipeline_steps'].append({'step': 'safe_refine', 'operation': 'binary_alpha_only', 'report': str(directory / '030_refiner/refine_report.json')})
     path = directory / '030_refiner/refined.png'
+    pixel = config.section('pixel')
+    if pixel.get('quantize_to_budget', True):
+        # Color budget reduction is an explicit, recorded step; Pixel Gate re-analyzes the result
+        # and the candidate still needs human review.
+        from ...pixel.quantize import quantize_candidate
+        path, quantized = quantize_candidate(path, directory / '035_quantize', max_colors=pixel.get('max_colors', 32),
+                                             allowed_palette=brief['constraints']['palette'] or None)
+        manifest['qa_results'].append(quantized)
+        # Keep the unquantized evidence visible: reducing colors does not make a smooth
+        # illustration pixel art, so the reviewer sees what the source analysis found.
+        manifest['pipeline_steps'].append({'step': 'palette_quantize', 'status': quantized['status'], 'operation': quantized['method'],
+            'unique_colors_before': quantized['unique_colors_before'], 'unique_colors_after': quantized['unique_colors_after'],
+            'source_analysis_status': initial['status'], 'source_failure_reasons': initial['reasons']['failure'],
+            'report': str(directory / '035_quantize/quantize_report.json')})
     gate = analyze_image(path, max_colors=config.section('pixel').get('max_colors', 32), allowed_palette=brief['constraints']['palette'] or None,
         target_width=size[0] if size else None, target_height=size[1] if size else None)
     write_report(gate, directory / '040_pixel_gate')

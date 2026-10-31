@@ -34,7 +34,7 @@ SCHEMA = obj({
     'purpose': {'type': 'string', 'minLength': 1},
     'source': obj({'type': {'enum': ['PROMPT', 'REFERENCE_IMAGE', 'DOCUMENTS']}, 'paths': STRINGS, 'references': STRINGS}, ['type', 'paths', 'references']),
     'identity': obj({'canonical_traits': STRINGS, 'visual_traits': STRINGS}, ['canonical_traits', 'visual_traits']),
-    'constraints': obj({'resolution': {'oneOf': [{'type': 'null'}, {'type': 'array', 'items': {'type': 'integer', 'minimum': 1}, 'minItems': 2, 'maxItems': 2}]}, 'transparency': {'type': ['boolean', 'null']}, 'palette': STRINGS, 'silhouette': {'type': ['string', 'null']}, 'style': {'type': ['string', 'null']}}, ['resolution', 'transparency', 'palette', 'silhouette', 'style']),
+    'constraints': obj({'resolution': {'oneOf': [{'type': 'null'}, {'type': 'array', 'items': {'type': 'integer', 'minimum': 1}, 'minItems': 2, 'maxItems': 2}]}, 'transparency': {'type': ['boolean', 'null']}, 'max_file_kb': {'type': ['integer', 'null'], 'minimum': 1}, 'palette': STRINGS, 'silhouette': {'type': ['string', 'null']}, 'style': {'type': ['string', 'null']}}, ['resolution', 'transparency', 'palette', 'silhouette', 'style']),
     'animation': obj({'action': {'type': ['string', 'null']}, 'frame_target': {'type': ['integer', 'null'], 'minimum': 1}, 'motion_constraints': STRINGS}, ['action', 'frame_target', 'motion_constraints']),
     'workflow_preferences': obj({'id': {'type': ['string', 'null']}, 'model_profile': {'type': 'string', 'minLength': 1}, 'tags': STRINGS, 'preset': {'type': 'string'}, 'allow_experimental': {'type': 'boolean'}}),
     'forbidden_elements': STRINGS, 'unspecified_elements': STRINGS,

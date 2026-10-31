@@ -51,7 +51,9 @@ def test_revalidated_bad_pixels_keep_export_locked(tmp_path):
     source = ROOT/'tests/assets/downscaled_illustration.png'
     brief = make(asset_id='bad_candidate',output_class='PIXEL_STATIC',prompt='Failure fixture')
     with Image.open(source) as image:
-        brief['constraints']['resolution'] = list(image.size)
+        # Palette quantization removes the color-budget failure; an explicit size mismatch
+        # still fails the gate, which is what must keep export locked.
+        brief['constraints']['resolution'] = [v + 1 for v in image.size]
     with pytest.raises(ValueError,match='Pixel Gate failed'):
         revalidate_static_candidate(brief,source,ROOT,tmp_path/'failed')
     assert not (tmp_path/'failed/050_resolution').exists()

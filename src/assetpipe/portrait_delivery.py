@@ -1,7 +1,16 @@
-"""Explicit portrait mask/contain delivery. No generation or automatic approval."""
+"""Explicit mask/contain delivery for NONPIXEL_IMAGE. No generation or automatic approval.
+
+Two triggers share one implementation:
+- a project Visual SOT ``delivery_profile`` (character portraits, explicit workflow binding);
+- a brief alone: ``constraints.resolution`` plus ``constraints.transparency: true`` on a workflow
+  without native transparent output, using the ``nonpixel_delivery`` section of config/pipeline.yaml.
+"""
+import copy
 import hashlib
 import importlib.metadata
 from pathlib import Path
+
+import yaml
 
 from PIL import Image, ImageOps
 
@@ -14,6 +23,10 @@ SOURCE_BACKGROUND = ('Uniform solid white backdrop for the opaque source image, 
 SOURCE_FRAMING = ('Keep the complete hairstyle inside the source canvas with visible white headroom '
                   'above its highest point. Keep both shoulders readable within the head-to-chest framing. '
                   'Do not cut hair at the top edge; retain the source-defined viewing angle and eye line.')
+GENERIC_SOURCE_FRAMING = ('Keep the complete subject inside the source canvas with visible white margin on every side. '
+                          'Do not crop the subject at any canvas edge; center it on the plain backdrop and keep the '
+                          'requested viewing angle.')
+DEFAULT_SECTION = 'nonpixel_delivery'
 MATTING_PARAMETERS = {'foreground_threshold': 240, 'background_threshold': 10, 'erode_structure_size': 10}
 MASK_CONTEXT_FRACTION = 0.1
 SOURCE_WHITE_TOLERANCE = 10
@@ -69,11 +82,49 @@ def _unmatte_source_edges(image, alpha, background_rgb=(255,255,255)):
                     'opaque_rgb': 'PRESERVED_EXACTLY', 'alpha': 'PRESERVED_EXACTLY'}
 
 
-def profile(brief, root, workflow_id):
+def default_profile(brief, root, workflow_id, workflow=None):
+    """Brief-only delivery: explicit dimensions and transparency without a project SOT profile.
+
+    The brief's own constraints are the request; nothing is inferred. Workflows that
+    already deliver transparent output are left alone. Returns None when the pipeline
+    config has no ``nonpixel_delivery`` section, so routing blocks as before.
+    """
+    constraints = brief['constraints']
+    if (brief['output_class'] != 'NONPIXEL_IMAGE' or not constraints['resolution']
+            or constraints['transparency'] is not True):
+        return None
+    if workflow is None:
+        from .registry import load_registry
+        workflow = load_registry(root).get(workflow_id)
+    if workflow is None or workflow.get('capabilities', {}).get('transparent_output'):
+        return None
+    root = Path(root).resolve()
+    config = yaml.safe_load((root / 'config/pipeline.yaml').read_text(encoding='utf-8')) or {}
+    value = config.get(DEFAULT_SECTION)
+    if not value:
+        return None
+    if (not isinstance(value, dict) or value.get('operation') != 'LOCAL_MASK_UNIFORM_CONTAIN'
+            or value.get('human_review_required') is not True):
+        raise ValueError('Unsupported default delivery policy')
+    value = copy.deepcopy(value)
+    value['model_path'] = str((root / value['model_path']).resolve())
+    value['model_roots'] = [str((root / p).resolve()) for p in value['model_roots']]
+    value.update(workflow_id=workflow_id, source='PIPELINE_DEFAULT',
+                 trigger='BRIEF_RESOLUTION_AND_TRANSPARENCY', max_file_kb=constraints.get('max_file_kb'))
+    return value
+
+
+def framing_text(brief):
+    return SOURCE_FRAMING if brief['asset_type'] == 'character_portrait' else GENERIC_SOURCE_FRAMING
+
+
+def profile(brief, root, workflow_id, workflow=None):
     sot, sot_path = project_sot(brief, root)
     value = sot.get('delivery_profile')
     if not value:
-        return None
+        # A registered project contract keeps authority over its asset class; the brief-only
+        # default applies only when the project has no Visual SOT contract at all.
+        return None if sot else default_profile(brief, root, workflow_id, workflow)
     if not (brief.get('project_contract_required') is True
             and brief['output_class'] == 'NONPIXEL_IMAGE'
             and brief['asset_type'] == 'character_portrait'
@@ -101,7 +152,7 @@ def preflight(value):
     return model
 
 
-def process(source, resolution, value, directory):
+def process(source, resolution, value, directory, max_file_kb=None):
     model = preflight(value)
     from rembg import new_session, remove
     from rembg.bg import alpha_matting_cutout
@@ -185,21 +236,12 @@ def process(source, resolution, value, directory):
     audit['status'] = 'COMPLETED_REVIEW_REQUIRED'
     write(directory / 'alpha_processing.json', audit)
     rgba.save(directory / 'masked_original.png')
-    target = tuple(resolution)
-    scale = min(target[0] / rgba.width, target[1] / rgba.height)
-    size = (max(1, round(rgba.width * scale)), max(1, round(rgba.height * scale)))
-    resized = rgba.resize(size, Image.Resampling.LANCZOS)
-    offset = ((target[0] - size[0]) // 2, (target[1] - size[1]) // 2)
-    canvas = Image.new('RGBA', target, (0, 0, 0, 0))
-    canvas.paste(resized, offset)
-    output = directory / 'portrait.png'
-    canvas.save(output)
+    output, placement = contain(rgba, resolution, directory / 'portrait.png', max_file_kb)
     record = {'operation': value['operation'], 'source': str(source),
               'source_sha256': hashlib.sha256(Path(source).read_bytes()).hexdigest(),
               'model_sha256': MODEL_SHA256, 'rembg_version': '2.0.69',
-              'alpha_processing': audit,
-              'source_size': list(image.size), 'delivery_size': list(target),
-              'uniform_scale': scale, 'resized_size': list(size), 'offset': list(offset),
+              'alpha_processing': audit, 'profile_source': value.get('source', 'PROJECT_SOT'),
+              'source_size': list(image.size), **placement,
               'crop': False, 'output_sha256': hashlib.sha256(output.read_bytes()).hexdigest(),
               'human_review': 'REVIEW_REQUIRED', 'approval_effect': 'NONE',
               'checks': {key: 'NOT_REVIEWED' for key in
@@ -207,3 +249,24 @@ def process(source, resolution, value, directory):
                           'source_crop_preserved', 'identity_preserved')}}
     write(directory / 'delivery_record.json', record)
     return output, record
+
+
+def contain(rgba, resolution, output, max_file_kb=None):
+    """Uniformly scale an RGBA image into the exact target canvas, centered, never cropped.
+
+    PNG compression is the only size lever; the limit is recorded, never enforced by
+    degrading the image. QA fails a delivery that stays above ``max_file_kb``.
+    """
+    target = tuple(int(v) for v in resolution)
+    scale = min(target[0] / rgba.width, target[1] / rgba.height)
+    size = (max(1, round(rgba.width * scale)), max(1, round(rgba.height * scale)))
+    resized = rgba.resize(size, Image.Resampling.LANCZOS)
+    offset = ((target[0] - size[0]) // 2, (target[1] - size[1]) // 2)
+    canvas = Image.new('RGBA', target, (0, 0, 0, 0))
+    canvas.paste(resized, offset)
+    output = Path(output)
+    canvas.save(output, optimize=True)
+    file_size = output.stat().st_size
+    return output, {'delivery_size': list(target), 'uniform_scale': scale, 'resized_size': list(size),
+                    'offset': list(offset), 'file_size_bytes': file_size, 'max_file_kb': max_file_kb,
+                    'within_file_limit': None if not max_file_kb else file_size <= max_file_kb * 1024}

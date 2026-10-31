@@ -24,8 +24,19 @@ workspace:
   output: workspace/output
   reports: workspace/reports
   runs: workspace/runs
+# Brief-only transparent delivery for NONPIXEL_IMAGE: constraints.resolution plus transparency: true
+# on a workflow without native transparent output, when the project SOT has no delivery_profile.
+# Same local segmentation model as the project profiles; no automatic download, human review stays.
+nonpixel_delivery:
+  operation: LOCAL_MASK_UNIFORM_CONTAIN
+  human_review_required: true
+  model_path: C:/workspace/asset-pipeline/workspace/local_models/u2netp.onnx
+  model_roots:
+  - C:/workspace/asset-pipeline/workspace/local_models
 pixel:
   max_colors: 32
+  # Reduce PIXEL_STATIC candidates to the color budget (or the brief palette) before Pixel Gate.
+  quantize_to_budget: true
   alpha_mode: binary
   alpha_threshold: 128
   gradient_suspicion_threshold: 0.18
