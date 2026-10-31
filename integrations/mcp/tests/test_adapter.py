@@ -112,6 +112,22 @@ def test_failed_child_without_manifest_is_reported(adapter, monkeypatch):
     assert stored['status'] == 'FAILED' and stored['exit_code'] == 1
 
 
+def test_killed_child_with_running_manifest_is_reported_failed(adapter, monkeypatch):
+    # manifest를 RUNNING으로 쓴 뒤 강제 종료된 생성 프로세스는 이후 조회에서도 FAILED로 보인다.
+    class Child:
+        pid = 123
+        def poll(self):
+            return -9
+    monkeypatch.setattr(subprocess, 'Popen', lambda *args, **kwargs: Child())
+    result = adapter.generate(brief=brief())
+    manifest = Path(result['manifest'])
+    manifest.parent.mkdir(parents=True)
+    manifest.write_text(json.dumps({'status': 'RUNNING', 'asset_id': 'test', 'output_class': 'NONPIXEL_IMAGE', 'outputs': []}))
+    for _ in range(2):
+        inspected = adapter.inspect(result['run_id'])
+        assert inspected['status'] == 'FAILED' and 'code -9' in inspected['error']
+
+
 def test_projects_partition_runs_requests_and_inspection(adapter, monkeypatch):
     class Child:
         pid = 123

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — run status after lost processes, 2026-10-31
+
+- MCP inspection reports FAILED when the generation process exited while its manifest was RUNNING;
+  ComfyUI waits fail fast when a prompt is neither queued nor in history.
+
 ## Unreleased — low-severity hardening, 2026-10-31
 
 - Report a hung `codex login status` as UNAVAILABLE, not logged out; require factory statuses to

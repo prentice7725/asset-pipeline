@@ -59,3 +59,33 @@ def test_unexpected_error_after_queue_marks_generation_failed(fake, tmp_path):
         runner.run_workflow(fake, workflow_name='concept_character', prompt='fox', seed=1, output_dir=tmp_path / 'out')
     metadata = json.loads((tmp_path / 'out/generation.json').read_text(encoding='utf-8'))
     assert metadata['status'] == 'FAILED' and metadata['prompt_id'] == 'prompt-1' and 'disk full' in metadata['error']
+
+
+class ScriptedClient(runner.ComfyClient):
+    """정해진 순서로 /history와 /queue 응답을 돌려주는 클라이언트."""
+
+    def __init__(self, histories, queues):
+        super().__init__('http://127.0.0.1:1', execution_timeout=5, poll_interval=0)
+        self.histories, self.queues = list(histories), list(queues)
+
+    def _json(self, path, **kwargs):
+        return self.histories.pop(0) if path.startswith('/history/') else self.queues.pop(0)
+
+
+DONE = {'p1': {'status': {'status_str': 'success', 'completed': True},
+               'outputs': {'9': {'images': [{'filename': 'out.png'}]}}}}
+EMPTY_QUEUE = {'queue_running': [], 'queue_pending': []}
+
+
+def test_prompt_dropped_from_queue_fails_without_waiting_for_timeout():
+    client = ScriptedClient([{}, {}], [EMPTY_QUEUE])
+    with pytest.raises(ExternalServiceError, match='dropped'):
+        client.wait_for_outputs('p1', ('9',))
+
+
+@pytest.mark.parametrize('histories, queues', [
+    ([{}, DONE], [{'queue_running': [], 'queue_pending': [[1, 'p1', {}]]}]),  # 대기 중이었다가 끝남
+    ([{}, DONE, DONE], [EMPTY_QUEUE]),  # 큐 조회 직전에 끝나 기록에만 있음
+])
+def test_queued_or_just_finished_prompt_is_collected(histories, queues):
+    assert ScriptedClient(histories, queues).wait_for_outputs('p1', ('9',)) == [{'filename': 'out.png'}]

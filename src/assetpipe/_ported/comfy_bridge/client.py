@@ -166,10 +166,28 @@ class ComfyClient:
                             f"ComfyUI prompt {prompt_id} completed but produced no images at the configured output nodes."
                         )
                     return collected
+            elif not self._is_queued(prompt_id):
+                # 서버 재시작·큐 삭제로 사라진 작업은 기록에 나타나지 않는다. 끝나는 순간과 겹칠 수 있으니 기록을 한 번 더 본다.
+                history = self._json(f"/history/{prompt_id}")
+                if not (isinstance(history, dict) and isinstance(history.get(prompt_id), dict)):
+                    raise ExternalServiceError(
+                        f"ComfyUI prompt {prompt_id} is neither queued nor in history; it was dropped by the server."
+                    )
+                continue
             time.sleep(self.poll_interval)
         raise ExternalServiceError(
             f"ComfyUI prompt {prompt_id} did not finish within {self.execution_timeout:g} seconds."
         )
+
+    def _is_queued(self, prompt_id: str) -> bool:
+        queue = self._json("/queue")
+        if not isinstance(queue, dict):
+            raise ExternalServiceError(f"ComfyUI returned an unexpected queue state: {queue}")
+        for key in ("queue_running", "queue_pending"):
+            for item in queue.get(key, []) or []:
+                if isinstance(item, (list, tuple)) and len(item) > 1 and item[1] == prompt_id:
+                    return True
+        return False
 
     def download_image(self, image: dict[str, Any], destination: Path) -> None:
         self.download_asset(image, destination)
