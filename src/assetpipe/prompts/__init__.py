@@ -29,7 +29,10 @@ SCHEMA = {
 
 
 def validate_spec(spec):
-    Draft202012Validator(SCHEMA).validate(spec)
+    # 스키마 오류도 Brief 검증과 같은 ValueError로 돌려 API가 BLOCKED로 답하게 한다.
+    errors = sorted(Draft202012Validator(SCHEMA).iter_errors(spec), key=lambda e: str(e.path))
+    if errors:
+        raise ValueError('PromptSpec ' + '; '.join(f'{".".join(map(str, e.path)) or "spec"}: {e.message}' for e in errors))
     if not spec['subject'].strip():
         raise ValueError('PromptSpec subject must not be empty')
     validate_contract(spec, check_style=False)
