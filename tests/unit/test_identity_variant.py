@@ -231,3 +231,29 @@ def test_published_schema_and_example_match_the_contract():
     root = Path(__file__).resolve().parents[2]
     assert json.loads((root / 'schemas/factory_identity_variant_job_v1.schema.json').read_text(encoding='utf-8')) == SCHEMA
     Draft202012Validator(SCHEMA).validate(json.loads((root / 'examples/factory_identity_variant_job.json').read_text(encoding='utf-8')))
+
+
+def test_base_in_extra_allowed_root_passes_post_dispatch_validation(tmp_path, monkeypatch):
+    # 계획 단계에서 허용한 추가 루트의 베이스 이미지는 편집 실행 뒤 결과 검증에서도 같은 루트로 허용돼야 한다.
+    box = Sandbox(tmp_path, monkeypatch)
+    external = tmp_path / 'external'
+    for folder in (external, tmp_path / 'codex_home', tmp_path / 'grok_home'):
+        folder.mkdir(exist_ok=True)
+    roots = [box.root, tmp_path / 'codex_home', tmp_path / 'grok_home', external]
+    parent = brief('codex_imagegen')
+    parent['project_id'] = 'game_a'
+    manifest = Path(create(parent, box.root, external / 'base', None, resolver=RootResolver(roots, base=box.root)))
+    image = Path(json.loads(manifest.read_text(encoding='utf-8'))['outputs'][0])
+    job = save(box.root / 'workspace/jobs/job.json', {
+        'schema_version': 1, 'kind': 'FACTORY_IDENTITY_VARIANT_JOB', 'project_id': 'game_a', 'asset_id': 'fox_surprised',
+        'base': {'manifest_ref': str(manifest), 'manifest_sha256': digest(manifest),
+                 'image': {'path': str(image), 'sha256': digest(image)}, 'selected_by': 'tester', 'reason': 'external base'},
+        'variation': {'kind': 'EXPRESSION', 'target': 'surprised'}, 'provider': {'workflow_id': 'grok_imagine'}})
+    plan = plan_variant(job, box.root, allowed_roots=roots)
+    auth = save(box.root / 'workspace/jobs/auth.json', {
+        'schema_version': 1, 'type': 'IDENTITY_VARIANT_AUTHORIZATION', 'authorization_id': 'a' * 32,
+        'project_id': 'game_a', 'asset_id': 'fox_surprised', 'plan_sha256': plan['plan_sha256'],
+        'workflow_id': plan['workflow']['id'], 'workflow_sha256': plan['workflow']['hash'],
+        'max_requests': 1, 'authorized_by': 'tester', 'reason': 'contract test'})
+    receipt_path = run_variant(job, plan['plan_sha256'], auth, box.root, authorize_generation=True, allowed_roots=roots)
+    assert json.loads(receipt_path.read_text(encoding='utf-8'))['status'] == 'CANDIDATE_REVIEW_REQUIRED'

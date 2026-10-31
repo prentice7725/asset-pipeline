@@ -161,8 +161,9 @@ def run_cli(argv: list[str], *, cwd: Path, env: dict[str, str], timeout: float, 
             out, err = process.communicate(timeout=15)
         except subprocess.TimeoutExpired:
             out, err = b'', b''
+    # 세션 이벤트는 출력 앞부분에 있으므로 여기서는 자르지 않는다. 로그 파일에 쓸 때만 자른다.
     return CliResult(argv=list(argv), returncode=None if timed_out else process.returncode, timed_out=timed_out,
-        stdout=out.decode('utf-8', 'replace')[-MAX_LOG_CHARS:], stderr=err.decode('utf-8', 'replace')[-MAX_LOG_CHARS:],
+        stdout=out.decode('utf-8', 'replace'), stderr=err.decode('utf-8', 'replace'),
         started=started, finished=now_iso(), duration_seconds=round(time.monotonic() - clock, 3))
 
 

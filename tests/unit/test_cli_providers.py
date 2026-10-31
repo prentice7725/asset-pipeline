@@ -20,7 +20,7 @@ from assetpipe.pipelines import create
 from assetpipe.prompts import compile_prompt
 from assetpipe.providers import CLI_ENGINES, cli_base, diagnose_providers
 from assetpipe.providers.base import AVAILABLE, BLOCKED, UNAVAILABLE, ProviderBlocked
-from assetpipe.providers.cli_runner import DEPTH_ENV, SAFE_ENV_NAMES, Redactor, assert_not_nested, build_env, image_paths_in, iter_json_values
+from assetpipe.providers.cli_runner import DEPTH_ENV, MAX_LOG_CHARS, SAFE_ENV_NAMES, Redactor, assert_not_nested, build_env, image_paths_in, iter_json_values
 from assetpipe.providers.codex_cli import CodexCliProvider
 from assetpipe.providers.comfyui import ComfyUIProvider
 from assetpipe.providers.grok_cli import GrokCliProvider
@@ -451,8 +451,31 @@ def test_grok_failure_modes(box, mode, code):
 
 def test_ambiguous_outputs_are_listed_but_not_chosen(box):
     box.codex(mode='two')
-    manifest, _, _ = box.attempt(brief())
-    assert len(manifest['generation']['provider']['orphan_outputs']) == 2 and manifest['outputs'] == []
+    manifest, _, out = box.attempt(brief())
+    orphans = manifest['generation']['provider']['orphan_outputs']
+    assert len(orphans) == 2 and manifest['outputs'] == []
+    # 작업 폴더가 정리돼도 채택하지 않은 출력은 run 안에 해시와 함께 남는다.
+    for row in orphans:
+        path = Path(row['path'])
+        assert path.is_relative_to(out) and hashlib.sha256(path.read_bytes()).hexdigest() == row['sha256']
+
+
+def test_large_cli_output_keeps_leading_session_event_and_trims_only_logs(box):
+    box.codex(noise_chars=MAX_LOG_CHARS + 10)
+    manifest, error, out = box.attempt(brief())
+    assert error is None and manifest['generation']['provider']['request']['session_id'] == 'thread_abc123'
+    assert len((out / '010_generation/codex_cli/stdout.log').read_text(encoding='utf-8')) == MAX_LOG_CHARS
+
+
+def test_unexpected_error_after_cli_run_keeps_provider_record(box, monkeypatch):
+    def broken(*args, **kwargs):
+        raise OSError('disk full')
+    monkeypatch.setattr(cli_base, 'preserve_outputs', broken)
+    manifest, error, _ = box.attempt(brief())
+    record = manifest['generation']['provider']
+    assert error is not None and manifest['error_code'] == 'PROVIDER_INTERNAL_ERROR' and manifest['status'] == 'FAILED'
+    assert record['status'] == 'FAILED' and record['exit_code'] == 0 and record['request']['session_id'] == 'thread_abc123'
+    assert record['retry']['attempts'] == 1 and 'stdout' in record['logs'] and len(box.calls(box.codex_dir)) == 1
 
 
 def test_timeout_kills_job_and_does_not_retry(box, monkeypatch):

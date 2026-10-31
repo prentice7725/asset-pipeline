@@ -216,7 +216,8 @@ def run_variant(job_path, plan_sha256, authorization, root, *, authorize_generat
         if manifest_path != run / 'run_manifest.json':
             raise ValueError('IDENTITY_VARIANT_RESULT_INVALID: unexpected manifest')
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
-        validate_run_manifest(manifest, outputs)
+        # 입력 참조(베이스 이미지 등)는 계획 단계와 같은 허용 루트로 검사한다. 출력은 아래에서 run 안인지 따로 본다.
+        validate_run_manifest(manifest, resolver)
         if (manifest.get('game_ready') is not False or manifest.get('status') != 'CANDIDATE_READY_REVIEW_REQUIRED'
                 or any(manifest.get(key) != plan['brief'][key] for key in ['asset_id', 'project_id', 'output_class'])
                 or not manifest.get('outputs')):

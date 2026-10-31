@@ -12,7 +12,7 @@ from typing import Any
 
 from .base import (AVAILABLE, BLOCKED, UNAVAILABLE, Diagnosis, ImageProvider, ProviderBlocked, ProviderError,
                    ProviderFailed, ProviderRun)
-from .cli_runner import (CliResult, JobDir, Redactor, assert_not_nested, build_env, find_first, is_within,
+from .cli_runner import (MAX_LOG_CHARS, CliResult, JobDir, Redactor, assert_not_nested, build_env, find_first, is_within,
                          iter_json_values, now_iso, preserve_outputs, probe, resolve_executable, run_cli, sha256_file,
                          sha256_text, snapshot_images)
 
@@ -137,6 +137,13 @@ class CliImageProvider(ImageProvider):
             record.update({'status': exc.status, 'error_code': exc.code, 'error': Redactor()(str(exc))[:500]})
             exc.record = {**exc.record, **record}
             raise
+        except Exception as exc:
+            if not record['retry']['attempts']:
+                raise
+            # CLI가 이미 실행된(유료 요청이 나간) 뒤의 예상 밖 오류도 provider 기록을 manifest에 남긴다. 재시도하지 않는다.
+            message = Redactor()(f'{type(exc).__name__}: {exc}')[:500]
+            record.update({'status': 'FAILED', 'error_code': 'PROVIDER_INTERNAL_ERROR', 'error': message})
+            raise ProviderFailed('PROVIDER_INTERNAL_ERROR', message, record=record) from exc
 
     def _run(self, brief: dict, entry: dict, backend: dict, auth: dict, output: Path, record: dict) -> ProviderRun:
         from ..manifests import write
@@ -205,7 +212,7 @@ class CliImageProvider(ImageProvider):
             (log_dir / 'last_message.txt').write_text(redact(last_message), encoding='utf-8')
             record['logs']['last_message'] = str(log_dir / 'last_message.txt')
             if result.timed_out:
-                record['orphan_outputs'] = [str(p) for p in self._safe_harvest(result, parsed, job, env, state)]
+                record['orphan_outputs'] = self._preserve_orphans(self._safe_harvest(result, parsed, job, env, state), log_dir, record)
                 raise ProviderFailed('TIMEOUT', f'{self.engine} timed out after {timeout:g}s; no automatic retry to avoid duplicate paid requests')
             combined = result.stdout + '\n' + result.stderr
             if result.returncode != 0:
@@ -219,7 +226,7 @@ class CliImageProvider(ImageProvider):
                     raise ProviderFailed('REFUSED', f'{self.engine} declined to generate the image')
                 raise ProviderFailed('OUTPUT_MISSING', f'{self.engine} finished without producing an image file')
             if len(candidates) > int(backend.get('max_outputs', 1)):
-                record['orphan_outputs'] = [str(p) for p in candidates]
+                record['orphan_outputs'] = self._preserve_orphans(candidates, log_dir, record)
                 raise ProviderFailed('OUTPUT_AMBIGUOUS', f'{len(candidates)} image files appeared; refusing to guess which belongs to this request')
             rows = preserve_outputs(candidates, log_dir / 'raw', state.get('correlated_roots', []))
             record['outputs'] = rows
@@ -234,9 +241,23 @@ class CliImageProvider(ImageProvider):
         return [os.environ[n] for n in names if n in os.environ]
 
     def _write_logs(self, log_dir: Path, result: CliResult, redact: Redactor) -> dict[str, str]:
-        (log_dir / 'stdout.log').write_text(redact(result.stdout), encoding='utf-8')
-        (log_dir / 'stderr.log').write_text(redact(result.stderr), encoding='utf-8')
+        # 비밀값이 경계에서 잘려 일부만 남지 않도록 가린 뒤에 자른다.
+        (log_dir / 'stdout.log').write_text(redact(result.stdout)[-MAX_LOG_CHARS:], encoding='utf-8')
+        (log_dir / 'stderr.log').write_text(redact(result.stderr)[-MAX_LOG_CHARS:], encoding='utf-8')
         return {'stdout': str(log_dir / 'stdout.log'), 'stderr': str(log_dir / 'stderr.log'), 'redacted': True}
+
+    def _preserve_orphans(self, paths: list[Path], log_dir: Path, record: dict) -> list[dict[str, Any]]:
+        """채택하지 않은 출력도 작업 폴더 정리 전에 run 안으로 복사해 둔다. 후보로 고르지는 않는다."""
+        rows = []
+        for index, source in enumerate(paths, 1):
+            try:
+                target = log_dir / 'orphans' / f'{index:02d}_{source.name}'
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, target)
+                rows.append({'path': str(target), 'sha256': sha256_file(target), 'source_path': str(source)})
+            except OSError as exc:  # 보존 실패가 원래 실패 코드를 가리지 않게 기록만 남긴다.
+                rows.append({'path': None, 'source_path': str(source), 'preservation_error': type(exc).__name__})
+        return rows
 
     def _safe_harvest(self, result, parsed, job, env, state) -> list[Path]:
         try:
