@@ -24,7 +24,7 @@ def _probe(video):
     if not executable:
         raise ValueError('MOTION_FFPROBE_UNAVAILABLE')
     command = [executable, '-v', 'error', '-select_streams', 'v',
-               '-show_entries', 'stream=width,height,avg_frame_rate,r_frame_rate,duration:format=duration',
+               '-show_entries', 'stream=width,height,avg_frame_rate,r_frame_rate,time_base,duration:format=duration',
                '-of', 'json', str(video)]
     result = subprocess.run(command, capture_output=True, text=True, timeout=30, check=True)
     data = json.loads(result.stdout)
@@ -32,7 +32,11 @@ def _probe(video):
     if len(streams) != 1:
         raise ValueError('MOTION_VIDEO_INVALID: exactly one video stream required')
     stream = streams[0]
-    fps = Fraction(stream['avg_frame_rate'])
+    try:
+        fps = Fraction(stream['avg_frame_rate'])
+        time_base = Fraction(stream.get('time_base') or '0/1')
+    except (ValueError, ZeroDivisionError) as exc:
+        raise ValueError('MOTION_VIDEO_INVALID: unreadable frame rate or timebase') from exc
     duration = float(stream.get('duration', data.get('format', {}).get('duration', 0)))
     width, height = stream['width'], stream['height']
     if (fps <= 0 or fps > 60 or not math.isfinite(duration) or not 0 < duration <= 10
@@ -51,11 +55,13 @@ def _probe(video):
     if not 1 <= len(frames) <= 240:
         raise ValueError('MOTION_VIDEO_LIMIT: invalid frame count')
     start = float(frames[0]['best_effort_timestamp_time'])
+    # 컨테이너는 시각을 timebase 단위로 반올림해 저장한다(WebM/MKV는 1ms). 그 반올림 오차까지는 일정한 간격으로 본다.
+    tolerance = max(0.00001, float(time_base) / 2 + 0.000001)
     for index, frame in enumerate(frames):
         timestamp = float(frame['best_effort_timestamp_time'])
         if ([frame['width'], frame['height']] != [width, height]
                 or not math.isfinite(timestamp) or not math.isfinite(start)
-                or abs(timestamp - start - index / float(fps)) > 0.00001):
+                or abs(timestamp - start - index / float(fps)) > tolerance):
             raise ValueError('MOTION_TIMING_UNSUPPORTED: variable timing or frame size')
     return {'command': command, 'timeline_command': timeline_command,
             'frame_count': len(frames), 'source_start_seconds': start,

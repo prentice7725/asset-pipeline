@@ -387,3 +387,24 @@ def test_parent_drift_after_extraction_cannot_report_success(case, monkeypatch):
     assert receipt['status'] == 'FAILED'
     assert 'outputs' not in receipt
     assert not (case[3] / 'review.json').exists()
+
+
+def test_millisecond_timebase_containers_accept_constant_rate_and_reject_jitter(tmp_path):
+    # MKV/WebM은 시각을 1ms 단위로 저장한다. 24fps처럼 나누어떨어지지 않는 간격도 일정하면 통과해야 한다.
+    if not shutil.which('ffmpeg') or not shutil.which('ffprobe'):
+        pytest.skip('Local FFmpeg/FFprobe required; no external-tool PASS inferred')
+    from assetpipe.motion.package import _probe
+    for index in range(24):
+        Image.new('RGB', (64, 64), (index * 10, 0, 0)).save(tmp_path / f'{index:02d}.png')
+    steady = tmp_path / 'steady.mkv'
+    subprocess.run([shutil.which('ffmpeg'), '-v', 'error', '-framerate', '24', '-i', str(tmp_path / '%02d.png'),
+                    '-c:v', 'ffv1', str(steady)], capture_output=True, check=True, timeout=30)
+    assert _probe(steady)['frame_count'] == 24
+    listing = tmp_path / 'list.txt'
+    listing.write_text(''.join(f"file '{index:02d}.png'\nduration {0.0625 if index == 11 else 1 / 24}\n"
+                               for index in range(24)) + "file '23.png'\n", encoding='utf-8')
+    jitter = tmp_path / 'jitter.mkv'
+    subprocess.run([shutil.which('ffmpeg'), '-v', 'error', '-f', 'concat', '-i', str(listing), '-fps_mode', 'vfr',
+                    '-c:v', 'ffv1', str(jitter)], capture_output=True, check=True, timeout=30)
+    with pytest.raises(ValueError, match='MOTION_TIMING_UNSUPPORTED'):
+        _probe(jitter)
