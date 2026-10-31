@@ -114,3 +114,14 @@ def test_real_windows_target_lock_fails_closed(tmp_path):
         assert json.loads(staged[0].read_text(encoding='utf-8')) == {'new': True}
     finally:
         assert kernel.CloseHandle(handle)
+
+
+def test_write_new_publishes_once_and_never_replaces(tmp_path):
+    # 사람 리뷰처럼 한 번만 기록하는 문서는 완성본으로만 나타나고 기존 기록을 덮어쓰지 않는다.
+    from assetpipe.manifests import write_new
+    target = tmp_path / 'listening_review.json'
+    write_new(target, {'outcome': 'PASS'})
+    with pytest.raises(FileExistsError):
+        write_new(target, {'outcome': 'REJECT'})
+    assert json.loads(target.read_text(encoding='utf-8')) == {'outcome': 'PASS'}
+    assert [path.name for path in tmp_path.iterdir()] == ['listening_review.json']

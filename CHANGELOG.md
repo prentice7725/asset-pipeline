@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — low-severity hardening, 2026-10-31
+
+- Report a hung `codex login status` as UNAVAILABLE, not logged out; require factory statuses to
+  end in `REVIEW_REQUIRED`; publish listening/style reviews atomically; keep ACTIVE CLI evidence
+  inside the repository root.
+
 ## Unreleased — motion timing on millisecond containers, 2026-10-31
 
 - Accept constant-rate WebM/MKV motion clips whose timestamps are rounded to the container

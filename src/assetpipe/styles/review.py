@@ -40,5 +40,6 @@ def record_style_contract_review(review_file: Path, observed_features: dict, *,
                                 'reason': reason.strip()},
                   approval_effect='NONE')
     report['style_contract_review'] = review
-    path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    from ..manifests import write
+    write(path, report)  # 중간에 실패해도 기존 리뷰 파일이 잘린 채 남지 않게 원자적으로 쓴다.
     return report

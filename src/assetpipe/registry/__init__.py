@@ -83,9 +83,12 @@ def _normalize_cli_entry(key, item, root, registry_version):
         validation = item.get('validation') or {}
         evidence = validation.get('evidence')
         verified = False
-        if validation.get('status') == 'REAL_GENERATION_VERIFIED' and isinstance(evidence, str) and (root / evidence).is_file():
+        # 증거 파일은 저장소 루트 안에 있어야 한다(절대 경로·../·심볼릭 링크로 밖을 가리키지 못하게 한다).
+        evidence_path = (root / evidence).resolve() if isinstance(evidence, str) else None
+        if (validation.get('status') == 'REAL_GENERATION_VERIFIED' and evidence_path is not None
+                and evidence_path.is_relative_to(root) and evidence_path.is_file()):
             try:
-                record = json.loads((root / evidence).read_text(encoding='utf-8'))
+                record = json.loads(evidence_path.read_text(encoding='utf-8'))
                 verified = record.get('provider_id') == key and record.get('result') == 'REAL_GENERATION_VERIFIED'
             except ValueError:
                 verified = False

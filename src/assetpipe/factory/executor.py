@@ -107,7 +107,9 @@ def execute_file(request_path, root, *, authorize_generation=False, seed=None,
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
         # 입력 참조는 계획 단계와 같은 허용 루트로 검사한다. 출력은 아래에서 run 안인지 따로 본다.
         validate_run_manifest(manifest, resolver)
-        if (manifest.get('game_ready') is not False or 'REVIEW_REQUIRED' not in manifest.get('status', '')
+        status = manifest.get('status')
+        # 후보 상태는 모두 ..._REVIEW_REQUIRED로 끝난다. 부분 문자열로 보면 다른 상태가 섞여도 통과할 수 있다.
+        if (manifest.get('game_ready') is not False or not isinstance(status, str) or not status.endswith('REVIEW_REQUIRED')
                 or any(manifest.get(key) != brief[key] for key in ['asset_id', 'project_id', 'output_class'])):
             raise ValueError('FACTORY_RESULT_INVALID: candidate identity/review state differs')
         if any(item.get('status') == 'FAIL' for item in manifest.get('qa_results', [])):

@@ -140,6 +140,17 @@ def test_unverified_cli_provider_cannot_be_promoted_to_active(box):
     assert load_registry(box.root)['codex_imagegen']['status'] == 'ACTIVE'
 
 
+@pytest.mark.parametrize('location', ['absolute', 'parent'])
+def test_active_evidence_outside_repository_root_is_rejected(box, location):
+    outside = box.tmp / 'outside-evidence.json'
+    outside.write_text(json.dumps({'provider_id': 'codex_imagegen', 'result': 'REAL_GENERATION_VERIFIED'}))
+    reference = str(outside) if location == 'absolute' else '../outside-evidence.json'
+    box.edit_registry('codex_imagegen', lambda e: e.update(
+        status='ACTIVE', validation={'status': 'REAL_GENERATION_VERIFIED', 'evidence': reference}))
+    with pytest.raises(ValueError, match='real-generation evidence'):
+        load_registry(box.root)
+
+
 def test_registry_rejects_grok_generation_tool_as_reference_editor(box):
     box.edit_registry('grok_imagine', lambda entry: entry['backend'].update(edit_tool='image_gen'))
     with pytest.raises(ValueError, match='reference edit tool'):
@@ -246,6 +257,21 @@ def test_codex_diagnosis_states(box):
     diagnosis = CodexCliProvider(box.config()).diagnose()
     assert diagnosis.status == UNAVAILABLE and diagnosis.details['block_code'] == 'EXECUTABLE_NOT_FOUND'
     assert diagnosis.details['generation_probe'] == 'NOT_RUN'
+
+
+def test_codex_login_probe_timeout_is_unavailable_not_logged_out(box, monkeypatch):
+    # 로그인 확인 명령이 멈추면 로그인 여부를 모르는 것이지, 로그아웃된 것이 아니다.
+    import assetpipe.providers.codex_cli as codex_module
+    from assetpipe.providers.cli_runner import CliResult
+    real = codex_module.probe
+    def probe(argv, **kwargs):
+        if argv[1:3] == ['login', 'status']:
+            return CliResult(argv, None, True, '', '', 'now', 'now', 15.0)
+        return real(argv, **kwargs)
+    monkeypatch.setattr(codex_module, 'probe', probe)
+    diagnosis = CodexCliProvider(box.config()).diagnose()
+    assert diagnosis.status == UNAVAILABLE and diagnosis.details['block_code'] == 'CLI_PROBE_TIMEOUT'
+    assert 'login_state' not in diagnosis.details
 
 
 def test_codex_diagnosis_records_login_category_without_secrets(box):

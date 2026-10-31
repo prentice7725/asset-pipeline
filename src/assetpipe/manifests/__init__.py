@@ -32,3 +32,29 @@ def write(path, value):
     # cross-process transaction. JSON serialization and staging remain concurrent.
     with _publication_lock:
         tmp.replace(path)
+
+
+def write_new(path, value):
+    """Publish one complete JSON document only if the target does not exist yet.
+
+    The document is staged next to the target and hard-linked into place, so a
+    crash never leaves a truncated record and an existing record is never replaced.
+    """
+    serialized = json.dumps(value, indent=2, ensure_ascii=False) + '\n'
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with NamedTemporaryFile(mode='w', encoding='utf-8', dir=path.parent,
+                            prefix=f'.{path.name}.', suffix='.tmp', delete=False) as stream:
+        tmp = Path(stream.name)
+        stream.write(serialized)
+    try:
+        path.hardlink_to(tmp)  # 대상이 이미 있으면 FileExistsError로 거부한다.
+    except FileExistsError:
+        raise
+    except OSError:
+        # 하드 링크를 지원하지 않는 파일 시스템에서는 배타적 생성으로 덮어쓰기만 막는다.
+        with path.open('x', encoding='utf-8') as stream:
+            stream.write(serialized)
+    finally:
+        tmp.unlink()
+    return path

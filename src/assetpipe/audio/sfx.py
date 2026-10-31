@@ -72,7 +72,7 @@ def validate_receipt(run, resolver=None):
     if len(originals)!=1 or len(waves)!=1: raise ValueError('SFX_EVIDENCE_INVALID: ambiguous clip')
     from ..pipelines.sfx import analyze_audio
     actual=analyze_audio(checked_file(waves[0]['path'],resolver),receipt['clip']['duration_seconds'])
-    recorded=json.loads(checked_file(receipt['qa']['path'],resolver).read_text())
+    recorded=json.loads(checked_file(receipt['qa']['path'],resolver).read_text(encoding='utf-8'))
     if actual['status']!='PASS' or any(recorded.get(k)!=v for k,v in actual.items()):
         raise ValueError('SFX_LISTENING_BLOCKED: audio QA differs')
     metadata=probe_flac(checked_file(originals[0]['path'],resolver))
@@ -111,6 +111,5 @@ def record_review(run, review, *, listened, resolver=None):
     record={**review,'status':'AUDIO_LISTENING_REVIEW_'+review['outcome'],'recorded_at':now(),'game_ready':False}
     target=path.parent/'listening_review.json'
     # An existing review is immutable; changes require a separately named audit process.
-    with target.open('x',encoding='utf-8') as stream:
-        stream.write(json.dumps(record,indent=2,ensure_ascii=False)+'\n')
-    return target
+    from ..manifests import write_new
+    return write_new(target,record)

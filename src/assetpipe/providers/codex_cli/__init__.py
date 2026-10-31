@@ -40,6 +40,12 @@ class CodexCliProvider(CliImageProvider):
     def check_auth(self, exe, env, auth, diagnosis: Diagnosis) -> None:
         result = probe([exe, 'login', 'status'], env=env, timeout=15)
         text = (result.stdout + '\n' + result.stderr).lower()
+        if result.returncode is None:
+            # 시간 초과나 실행 실패는 로그인 여부를 알 수 없으므로 '로그인 안 됨'으로 보고하지 않는다.
+            diagnosis.status = UNAVAILABLE
+            diagnosis.reasons.append('codex login status probe timed out or could not run')
+            diagnosis.details['block_code'] = 'CLI_PROBE_TIMEOUT'
+            return
         if 'not logged in' in text or 'logged in' not in text:
             diagnosis.status = BLOCKED
             diagnosis.reasons.append('Codex is not logged in; run `codex login` first (no API-key bypass is attempted)')
