@@ -71,7 +71,9 @@ def _sha256(path: Path) -> str:
 
 def _run(command: Sequence[str], timeout: int) -> subprocess.CompletedProcess[str]:
     try:
-        return subprocess.run(command, check=False, capture_output=True, text=True, timeout=timeout)
+        # Windows 기본 코드 페이지(cp949 등)로 엄격하게 디코딩하면 한글 경로 출력에서 UnicodeDecodeError가 난다.
+        return subprocess.run(command, check=False, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace", timeout=timeout)
     except (OSError, subprocess.TimeoutExpired) as exc:
         raise AsepriteError(f"Aseprite command failed to launch or timed out: {exc}") from exc
 

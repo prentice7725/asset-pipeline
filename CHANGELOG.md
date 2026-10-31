@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — Aseprite output decoding, 2026-10-31
+
+- Decode Aseprite output as UTF-8 with replacement so non-ASCII (e.g. Korean) paths on
+  Windows code pages raise the coded Aseprite error path instead of UnicodeDecodeError.
+
 ## Unreleased — run status after lost processes, 2026-10-31
 
 - MCP inspection reports FAILED when the generation process exited while its manifest was RUNNING;
