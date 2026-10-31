@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — motion timing on millisecond containers, 2026-10-31
+
+- Accept constant-rate WebM/MKV motion clips whose timestamps are rounded to the container
+  timebase (e.g. 24/30 fps at 1 ms); real frame-interval jitter is still rejected.
+
 ## Unreleased — routing and contract gate fixes, 2026-10-31
 
 - Reject attached short CLI options (`-sVALUE`, `-C/tmp`) in registry `cli_args`; check
