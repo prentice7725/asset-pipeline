@@ -19,6 +19,7 @@ def test_executable_discovery_uses_config_then_environment_then_path(tmp_path):
     path_exe = path_dir / "Aseprite.exe"
     for path in (configured, env_path, path_exe):
         path.write_bytes(b"fixture")
+        path.chmod(0o755)  # POSIX의 shutil.which는 실행 권한이 있는 파일만 찾는다.
 
     assert find_aseprite(str(configured), environ={"ASEPRITE_PATH": str(env_path)}, path_value=str(path_dir)).path == configured.resolve()
     assert find_aseprite(None, environ={"ASEPRITE_PATH": str(env_path)}, path_value=str(path_dir)).path == env_path.resolve()
