@@ -184,6 +184,5 @@ def record_review(run, review, *, listened, resolver=None):
     record = {**review, 'status': 'AUDIO_LISTENING_REVIEW_' + review['outcome'], 'recorded_at': now(), 'game_ready': False}
     target = path.parent / 'listening_review.json'
     # An existing review is immutable; changes require a separately named audit process.
-    with target.open('x', encoding='utf-8') as stream:
-        stream.write(json.dumps(record, indent=2, ensure_ascii=False) + '\n')
-    return target
+    from ..manifests import write_new
+    return write_new(target, record)

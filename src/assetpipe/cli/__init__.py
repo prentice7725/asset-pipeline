@@ -290,9 +290,8 @@ def main(argv=None):
         elif args.command == 'style-review':
             from ..styles.review import record_style_contract_review
             outcomes = json.loads(args.observed_features.read_text(encoding='utf-8'))
-            result = record_style_contract_review(args.review_file, outcomes,
-                                                  reviewed_by=args.reviewed_by, reason=args.reason)
-            write(args.review_file, result)
+            record_style_contract_review(args.review_file, outcomes,
+                                         reviewed_by=args.reviewed_by, reason=args.reason)
             print(args.review_file)
         elif args.command == 'mining':
             from ..prompt_mining import load_candidates, library, compile_candidate, normalize_civitai
