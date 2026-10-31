@@ -156,9 +156,16 @@ class Adapter:
             return {'run_id': run_id, 'project_id': receipt.get('project_id', 'default'), 'status': receipt['status'], 'manifest': str(manifest), 'outputs': [], 'qa': [], 'review_items': [], 'error': receipt.get('error')}
         if child is not None:
             poll = getattr(child, 'poll', None)
-            if callable(poll) and poll() is not None:
+            exit_code = poll() if callable(poll) else None
+            if exit_code is not None:
                 self._children.pop(run_id, None)
+                receipt['exit_code'] = exit_code
+                write(receipt_path, receipt)
         result = api.inspect_manifest(manifest, self.resolver)
+        if result['status'] == 'RUNNING' and receipt.get('exit_code') is not None:
+            # 프로세스가 끝났는데 manifest가 RUNNING이면 비정상 종료다. 계속 진행 중으로 보고하지 않는다.
+            result.update(status='FAILED', error=f"Generation process exited with code {receipt['exit_code']} "
+                                                 'while the run manifest was still RUNNING')
         result['outputs'] = [str(self.output_path(p)) for p in result['outputs']]
         return {'run_id': run_id, 'project_id': receipt.get('project_id', 'default'), **result}
 
