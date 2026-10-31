@@ -209,3 +209,17 @@ def test_real_aseprite_saves_new_revision_and_preserves_reference_layer(tmp_path
     assert {"PIXEL_ANIMATION", "REFERENCE_WALK"}.issubset(set(report["layers"]))
     assert "walk" in report["tags"]
     assert "character_pivot" in report["slices"]
+
+
+@pytest.mark.skipif(__import__("os").name == "nt", reason="POSIX shell launcher fixture")
+def test_non_utf8_or_korean_output_never_escapes_as_decode_error(tmp_path):
+    # 한글 경로나 깨진 바이트가 출력에 섞여도 Aseprite 단계가 UnicodeDecodeError로 죽지 않아야 한다.
+    import sys
+    from assetpipe._ported.aseprite_bridge.runner import AsepriteExecutable, get_version
+    script = tmp_path / "fake_aseprite.py"
+    script.write_text("import sys\nsys.stdout.buffer.write('Aseprite 1.3 C:/사용자/'.encode('utf-8') + b'\\xff\\n')\n", encoding="utf-8")
+    launcher = tmp_path / "aseprite"
+    launcher.write_text(f'#!/bin/sh\nexec "{sys.executable}" "{script}" "$@"\n', encoding="utf-8")
+    launcher.chmod(0o755)
+    version = get_version(AsepriteExecutable(launcher, "test"))
+    assert version.startswith("Aseprite 1.3 C:/사용자/") and "\ufffd" in version
