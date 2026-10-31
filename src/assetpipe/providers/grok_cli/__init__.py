@@ -76,7 +76,7 @@ class GrokCliProvider(CliImageProvider):
                 len(str(session_parent / invocation_id(job) / 'images')) >= 248 or
                 len(str(session_parent / invocation_id(job) / 'images' / '1.png')) >= 260):
             raise ProviderFailed('SESSION_PATH_TOO_LONG', 'Grok session path exceeds the Windows path budget')
-        session_parent.mkdir(parents=True, exist_ok=True)
+        job.make_outside_dir(session_parent)
         session_scope(session_home / 'sessions', encoded_cwd)
         env['ASSETPIPE_GROK_SESSION_PARENT'] = str(session_parent)
         # Grok 1.0.50 expands the verified 8.3 cwd before deriving its session store.
@@ -94,7 +94,7 @@ class GrokCliProvider(CliImageProvider):
         if canonical_encoded != encoded_cwd and len(canonical_encoded.encode('utf-8')) <= 255:
             session_scope(session_home / 'sessions', canonical_encoded)
             canonical_parent = canonical_path(session_home / 'sessions' / canonical_encoded)
-            canonical_parent.mkdir(parents=True, exist_ok=True)
+            job.make_outside_dir(canonical_parent)
             env['ASSETPIPE_GROK_CANONICAL_SESSION_PARENT'] = str(canonical_parent)
         env['ASSETPIPE_GROK_SESSION_ID'] = invocation_id(job)
         return env
