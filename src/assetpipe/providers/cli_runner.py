@@ -186,9 +186,22 @@ class JobDir:
         self.work = self.root / 'work'
         self.inputs = self.work / 'inputs'
         self.inputs.mkdir(parents=True)
+        self.created_outside: list[Path] = []
+
+    def make_outside_dir(self, path: Path) -> None:
+        """작업 폴더 밖(예: CLI 세션 저장소)에 만드는 폴더. 이번 실행이 새로 만든 경우에만 정리 대상으로 기억한다."""
+        if not path.exists():
+            path.mkdir(parents=True)
+            self.created_outside.append(path)
 
     def cleanup(self) -> None:
         shutil.rmtree(self.root, ignore_errors=True)
+        # 밖에 만든 폴더는 비어 있을 때만 지운다. 세션 이미지 등 출처 기록이 가리키는 원본은 그대로 둔다.
+        for path in reversed(self.created_outside):
+            try:
+                path.rmdir()
+            except OSError:
+                pass
 
 
 def iter_json_values(text: str) -> Iterator[Any]:

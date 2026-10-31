@@ -484,6 +484,19 @@ def test_grok_failure_modes(box, mode, code):
     assert len(box.calls(box.grok_dir)) == 1
 
 
+def test_grok_session_folders_are_removed_only_when_empty(box):
+    # 이미지 없이 끝난 실행의 빈 세션 폴더는 지우고, 출처 기록이 가리키는 세션 이미지는 남긴다.
+    sessions = box.tmp / 'grok_home' / 'sessions'
+    box.grok(mode='no_output')
+    box.attempt(brief('grok_imagine'), name='empty')
+    assert not sessions.exists() or not any(sessions.iterdir())
+    box.grok()
+    manifest, error, _ = box.attempt(brief('grok_imagine'), name='ok')
+    assert error is None
+    source = Path(manifest['generation']['provider']['outputs'][0]['source_path'])
+    assert source.is_file() and source.is_relative_to(sessions)
+
+
 def test_ambiguous_outputs_are_listed_but_not_chosen(box):
     box.codex(mode='two')
     manifest, _, out = box.attempt(brief())
