@@ -176,7 +176,9 @@ def process(source, resolution, value, directory, max_file_kb=None):
     if extrema[0] == extrema[1]:
         raise ValueError('Portrait alpha mask has no foreground/background separation')
     background_rgb = (255,255,255)
-    if value.get('reference_input') == 'EXACT_RGBA' and value.get('source_background_policy') == 'UNIFORM_NEUTRAL':
+    # Reference edits and the brief-only default accept a light uniform neutral backdrop
+    # (T2I models rarely emit pure #FFFFFF); project T2I profiles stay pure-white only.
+    if value.get('source_background_policy') == 'UNIFORM_NEUTRAL':
         import numpy as np
         samples = np.asarray(image)[np.asarray(mask) < MATTING_PARAMETERS['background_threshold']]
         if not len(samples):

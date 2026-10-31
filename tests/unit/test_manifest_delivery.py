@@ -158,3 +158,34 @@ def test_pipeline_delivers_rgba_candidate_and_keeps_review_gate(no_model_check, 
     assert result['generation']['raw_outputs'][0].endswith('source.png')
     assert result['portrait_delivery'][0]['within_file_limit'] is True
     assert result['qa_results'][0]['status'] == 'PASS'
+
+
+@pytest.mark.parametrize('policy, passes', [('UNIFORM_NEUTRAL', True), (None, False)])
+def test_default_profile_accepts_light_neutral_t2i_backdrop(tmp_path, monkeypatch, policy, passes):
+    """Krea2 emitted ~RGB(238,234,234) for a 'white' backdrop in the 2026-11-01 real run."""
+    rembg = pytest.importorskip('rembg')
+    from PIL import ImageOps
+    import assetpipe.portrait_delivery as delivery
+    image = Image.new('RGB', (64, 64), (238, 234, 234))
+    ImageDraw.Draw(image).rectangle((16, 10, 48, 63), fill=(70, 50, 40))
+    mask = Image.new('L', (64, 64), 0)
+    ImageDraw.Draw(mask).rectangle((16, 10, 48, 63), fill=255)
+    source = tmp_path / 'source.png'
+    image.save(source)
+    monkeypatch.setattr(delivery, 'preflight', lambda value: tmp_path / 'pinned.onnx')
+    monkeypatch.setattr(rembg, 'new_session', lambda *a, **kw: object())
+    monkeypatch.setattr(rembg, 'remove', lambda padded, **kw: ImageOps.expand(mask, border=6, fill=0))
+    value = {'operation': 'LOCAL_MASK_UNIFORM_CONTAIN', 'source': 'PIPELINE_DEFAULT'}
+    if policy:
+        value['source_background_policy'] = policy
+    if not passes:
+        with pytest.raises(ValueError, match='not verified uniform white'):
+            delivery.process(source, [32, 32], value, tmp_path / 'out')
+        return
+    output, record = delivery.process(source, [32, 32], value, tmp_path / 'out', max_file_kb=512)
+    with Image.open(output) as result:
+        assert result.size == (32, 32) and result.mode == 'RGBA'
+        assert result.getpixel((1, 1))[3] == 0 and result.getpixel((16, 20))[3] == 255
+    assert record['alpha_processing']['source_background_refinement']['background_rgb'] == [238, 234, 234]
+    assert record['profile_source'] == 'PIPELINE_DEFAULT' and record['within_file_limit'] is True
+    assert record['human_review'] == 'REVIEW_REQUIRED'

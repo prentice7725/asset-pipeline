@@ -30,6 +30,8 @@ workspace:
 nonpixel_delivery:
   operation: LOCAL_MASK_UNIFORM_CONTAIN
   human_review_required: true
+  # Light near-gray backdrops pass when 99% of background pixels sit within 10 levels of their median.
+  source_background_policy: UNIFORM_NEUTRAL
   model_path: C:/workspace/asset-pipeline/workspace/local_models/u2netp.onnx
   model_roots:
   - C:/workspace/asset-pipeline/workspace/local_models
