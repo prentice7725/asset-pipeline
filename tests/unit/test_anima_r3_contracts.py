@@ -153,3 +153,30 @@ def test_review_rejects_missing_outcomes_and_unknown_failure_codes(tmp_path):
         record_style_contract_review(path, {}, reviewed_by='human', reason='incomplete')
     with pytest.raises(ValueError, match='COVER_EVERY_CONTRACT_FEATURE'):
         record_style_contract_review(path, {'UNKNOWN_CODE': True}, reviewed_by='human', reason='invalid')
+
+
+def _side_spec(side, **extra):
+    item = {'source_trait': 'one sword in right hand', 'relationship': 'carried', 'subject_side': side, **extra}
+    return {'subject': 'knight', 'pose': 'front view', 'subject_integrity': {
+        'class': 'full_character', 'whole_subject_required': True, 'physically_connected_body': True,
+        'camera_view': 'front', 'equipment': [item]}}
+
+
+@pytest.mark.parametrize('extra', [{}, {'visible_count': 1}])
+def test_subject_side_must_match_source_with_or_without_count(extra):
+    # visible_count가 없어도 좌우는 원본 특성과 맞아야 한다.
+    from assetpipe.prompts.subject_contract import validate_contract
+    validate_contract(_side_spec('SUBJECT_RIGHT', **extra), check_style=False)
+    with pytest.raises(ValueError, match='subject_side must match'):
+        validate_contract(_side_spec('SUBJECT_LEFT', **extra), check_style=False)
+
+
+def test_empty_brief_list_item_is_blocked_not_raised():
+    # Brief 스키마는 빈 문자열을 허용하지만 PromptSpec은 거부한다. 이 차이가 API 밖으로 예외로 새면 안 된다.
+    from assetpipe.api import route_brief
+    research = yaml.safe_load((ROOT / 'config/style_menu/nonpixel_prompt_research_v0.yaml').read_text(encoding='utf-8'))
+    style_id = next(iter(research['recipes']))
+    brief = afp._fixture(style_id, research['recipes'][style_id], 'anima_base')
+    brief['forbidden_elements'] = ['']
+    result = route_brief(brief, ROOT)
+    assert result['status'] == 'BLOCKED' and 'PromptSpec' in result['reason']

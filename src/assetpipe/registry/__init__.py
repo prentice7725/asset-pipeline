@@ -27,8 +27,11 @@ def _validate_cli_args(key, args):
         raise ValueError(f'backend.cli_args must be a list of strings: {key}')
     for arg in args:
         name, _, value = arg.partition('=')
-        if (name in FORBIDDEN_CLI_ARGS or (arg.startswith('-i') and not arg.startswith('--'))
-                or arg in FORBIDDEN_CLI_VALUES or value in FORBIDDEN_CLI_VALUES):
+        # 짧은 옵션은 값이 붙어 올 수 있다(-sVALUE, -C/tmp). 앞 두 글자와 붙은 값을 따로 본다.
+        short = arg[:2] if arg.startswith('-') and not arg.startswith('--') else None
+        if (name in FORBIDDEN_CLI_ARGS or short in FORBIDDEN_CLI_ARGS
+                or arg in FORBIDDEN_CLI_VALUES or value in FORBIDDEN_CLI_VALUES
+                or (short and arg[2:].lstrip('=') in FORBIDDEN_CLI_VALUES)):
             raise ValueError(f'backend.cli_args contains a forbidden isolation/approval option ({arg}): {key}')
 
 def _normalize_cli_entry(key, item, root, registry_version):

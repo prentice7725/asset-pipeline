@@ -97,16 +97,18 @@ def validate_contract(spec, brief=None, style_context=None, *, check_style=True)
             counts = [int(v) if v.isdigit() else numbers[v] for v in matches]
             if counts != [count]:
                 raise ValueError('SUBJECT_SOURCE_CONFLICT: visible count must match an unambiguous explicit source count')
-            location = item.get('location', 'unspecified')
-            subject_side = item.get('subject_side')
-            if subject_side:
-                if location != 'unspecified':
-                    raise ValueError('SPATIAL_RELATIONSHIP_CONFLICT: use subject_side instead of ambiguous location')
-                anatomical = 'left' if subject_side == 'SUBJECT_LEFT' else 'right'
-                if not re.search(r"\b" + anatomical + r" hand\b", trait, re.I):
-                    raise ValueError('SUBJECT_SOURCE_CONFLICT: subject_side must match the explicit source trait')
-            if location != 'unspecified' and not re.search(r'\b' + location + r'\b', trait, re.I):
-                raise ValueError('SUBJECT_SOURCE_CONFLICT: equipment location must be explicit in its source trait')
+        # 위치·좌우는 개수 지정 여부와 상관없이 원본 특성과 맞아야 한다.
+        location = item.get('location', 'unspecified')
+        subject_side = item.get('subject_side')
+        if subject_side:
+            if location != 'unspecified':
+                raise ValueError('SPATIAL_RELATIONSHIP_CONFLICT: use subject_side instead of ambiguous location')
+            anatomical = 'left' if subject_side == 'SUBJECT_LEFT' else 'right'
+            if not re.search(r"\b" + anatomical + r" hand\b", trait, re.I):
+                raise ValueError('SUBJECT_SOURCE_CONFLICT: subject_side must match the explicit source trait')
+        if location != 'unspecified' and not re.search(r'\b' + location + r'\b', trait, re.I):
+            raise ValueError('SUBJECT_SOURCE_CONFLICT: equipment location must be explicit in its source trait')
+        if count:
             if (view, location) in {('front', 'rear'), ('rear', 'front'), ('left', 'right'), ('right', 'left')}:
                 raise ValueError('BRIEF_COMPOSITION_CONFLICT: camera cannot show the required equipment count at its declared location')
     if direction:

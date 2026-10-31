@@ -146,7 +146,9 @@ def _route_bound(brief, registry, root, menu_decision=None):
         selected_style = recipes.get(key)
         _, intent = apply_intent(brief, apply_style(from_brief(brief), selected_style), selected_style)
     decision = {'selected_workflow': key, 'output_class': brief['output_class'], 'matching_tags': matching,
-        'selection_reason': 'explicit compatible workflow' if requested else 'ACTIVE capability match, tags, priority',
+        'selection_reason': ('explicit compatible workflow' if requested
+                             else 'explicit model_profile match' if key in explicit_ids
+                             else 'ACTIVE capability match, tags, priority'),
         'fallback_candidates': [row[0] for row in candidates[1:]], 'rejected_candidates': rejections,
         'execution_mode': 'REUSE_MOTION_REFERENCE' if reusable_motion else 'GENERATE', 'required_capabilities': required}
     if instruction_review_allowed(brief, style, key):

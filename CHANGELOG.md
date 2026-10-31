@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — routing and contract gate fixes, 2026-10-31
+
+- Reject attached short CLI options (`-sVALUE`, `-C/tmp`) in registry `cli_args`; check
+  equipment `subject_side`/`location` against the source trait even without `visible_count`;
+  return PromptSpec schema errors as BLOCKED; record model_profile-based selection as explicit.
+
 ## Unreleased — paid-run record preservation, 2026-10-31
 
 - Keep provider/factory records after a generation request was sent: validate variant/factory

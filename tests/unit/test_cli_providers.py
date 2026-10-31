@@ -146,7 +146,8 @@ def test_registry_rejects_grok_generation_tool_as_reference_editor(box):
         load_registry(box.root)
 
 
-@pytest.mark.parametrize('arg', ['--always-approve', '--sandbox=danger-full-access', '-c', 'bypassPermissions', '--cwd', '--permission-mode=bypassPermissions', '--image', '--image=foreign.png', '-i', '-iforeign.png'])
+@pytest.mark.parametrize('arg', ['--always-approve', '--sandbox=danger-full-access', '-c', 'bypassPermissions', '--cwd', '--permission-mode=bypassPermissions', '--image', '--image=foreign.png', '-i', '-iforeign.png',
+                                 '-sdanger-full-access', '-C/tmp', '-oout.txt', '-ccfg', '-s=danger-full-access'])
 def test_registry_rejects_cli_args_that_weaken_isolation(box, arg):
     box.edit_registry('grok_imagine', lambda e: e['backend'].update(cli_args=[arg]))
     with pytest.raises(ValueError, match='forbidden'):
@@ -157,6 +158,14 @@ def test_cli_entry_rejects_comfy_workflow_and_non_nonpixel_class(box):
     box.edit_registry('codex_imagegen', lambda e: e.update(workflow_file='config/workflows/baseline_anima_api.json'))
     with pytest.raises(ValueError, match='must not declare'):
         load_registry(box.root)
+
+
+def test_model_profile_selection_is_recorded_as_explicit():
+    value = brief(None)
+    value['workflow_preferences'] = {'model_profile': 'codex-imagegen', 'allow_experimental': True}
+    decision = route(value, load_registry(ROOT))
+    assert decision['selected_workflow'] == 'codex_imagegen'
+    assert decision['selection_reason'] == 'explicit model_profile match'
 
 
 def test_router_never_auto_selects_cli_providers_and_requires_explicit_opt_in():
