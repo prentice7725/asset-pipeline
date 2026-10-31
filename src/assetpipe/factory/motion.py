@@ -181,7 +181,10 @@ def run_job(job_path, plan_sha256, output, root, *, authorization=None,
             child = execute_prepared(incoming['run_ref'], authorization, root,
                 authorize_generation=True, allowed_roots=resolver.roots,
                 **{k: incoming[k] for k in ['seed', 'width', 'height']})
+            # 생성 요청은 이미 나갔다. 아래 검증이 실패해도 하위 영수증을 찾을 수 있게 먼저 기록한다.
+            receipt['generation_receipt'] = {'path': str(child), 'sha256': None}
             child = outputs(child)
+            receipt['generation_receipt'] = {'path': str(child), 'sha256': fingerprint(child)}
             data = json.loads(child.read_text(encoding='utf-8'))
             if (data.get('status') != 'CANDIDATE_REVIEW_REQUIRED' or data.get('execution_plan') != plan['generation_plan']
                     or data.get('authorization_sha256') != auth_record['sha256']
@@ -191,8 +194,7 @@ def run_job(job_path, plan_sha256, output, root, *, authorization=None,
             package_manifest = outputs(data['package_manifest_path'])
             if fingerprint(package_manifest) != data['package_manifest_sha256']:
                 raise ValueError('FACTORY_MOTION_GENERATION_RECEIPT_INVALID')
-            receipt.update(generation_requests=data['queue_attempts'],
-                           generation_receipt={'path': str(child), 'sha256': fingerprint(child)})
+            receipt['generation_requests'] = data['queue_attempts']
         else:
             if plan['input'].get('generation_record'):
                 row = plan['input']['generation_record']

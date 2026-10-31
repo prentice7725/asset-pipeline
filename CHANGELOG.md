@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — paid-run record preservation, 2026-10-31
+
+- Keep provider/factory records after a generation request was sent: validate variant/factory
+  result inputs with the planned allowed roots, parse full CLI output (trim logs only), copy
+  orphan outputs into the run, record unexpected post-run errors, check ComfyUI output folders
+  before queueing, never leave `generation.json` RUNNING, and record motion child receipts first.
+
 ## Unreleased — BGM output class offline contract, 2026-10-30
 
 - Add `BGM` (`create --type bgm`, `bgm-review`) on an EXPERIMENTAL ComfyUI YuE2 workflow

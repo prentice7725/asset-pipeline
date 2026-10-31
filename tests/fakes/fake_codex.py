@@ -52,6 +52,8 @@ elif args[:1] == ['exec']:
         sys.exit(2)
     session = cfg.get('session_id', 'thread_abc123')
     print(json.dumps({'type': 'thread.started', 'thread_id': session}))
+    if cfg.get('noise_chars'):
+        print('x' * cfg['noise_chars'])
     if mode == 'leak':
         print('token sk-TESTSECRET1234567890 and Authorization: Bearer abcdefghijklmnop1234')
     if mode in ('ok', 'leak', 'two'):

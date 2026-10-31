@@ -110,23 +110,35 @@ def run_workflow(
     comfy_version = stats.get("system", {}).get("comfyui_version")
     logger.info("Connected to ComfyUI%s.", f" {comfy_version}" if comfy_version else "")
 
-    uploaded_image = client.upload_image(input_image) if input_image else None
-    api_prompt = patch_workflow(
-        workflow,
-        prompt=prompt,
-        seed=chosen_seed,
-        negative_prompt=negative_prompt,
-        input_image=uploaded_image,
-        filename_prefix=filename_prefix or f"pixelpipe/{workflow_name}",
-        lora_strength=lora_strength,
-        workflow_inputs=workflow_inputs,
-    )
-    client_id = str(uuid4())
-    prompt_id = client.queue_prompt(api_prompt, client_id)
+    # 지정된 출력 폴더 충돌은 큐에 넣기 전에 확인한다. 큐 등록 뒤에 실패하면 추적되지 않는 작업이 서버에 남는다.
+    if output_dir is not None:
+        output_dir = Path(output_dir).expanduser().resolve()
+        output_dir.mkdir(parents=True, exist_ok=False)
+    reserved_dir = output_dir
+    try:
+        input_image_sha256 = hashlib.sha256(input_image.read_bytes()).hexdigest() if input_image else None
+        uploaded_image = client.upload_image(input_image) if input_image else None
+        api_prompt = patch_workflow(
+            workflow,
+            prompt=prompt,
+            seed=chosen_seed,
+            negative_prompt=negative_prompt,
+            input_image=uploaded_image,
+            filename_prefix=filename_prefix or f"pixelpipe/{workflow_name}",
+            lora_strength=lora_strength,
+            workflow_inputs=workflow_inputs,
+        )
+        client_id = str(uuid4())
+        prompt_id = client.queue_prompt(api_prompt, client_id)
+    except BaseException:
+        # 큐 등록 전 실패면 방금 만든 빈 폴더를 지워 같은 경로로 다시 실행할 수 있게 한다.
+        if reserved_dir is not None and not any(reserved_dir.iterdir()):
+            reserved_dir.rmdir()
+        raise
 
-    output_dir = output_dir or (config.path_for("workspace", "intermediate") / f"comfy_{prompt_id}")
-    output_dir = Path(output_dir).expanduser().resolve()
-    output_dir.mkdir(parents=True, exist_ok=False)
+    if output_dir is None:
+        output_dir = (config.path_for("workspace", "intermediate") / f"comfy_{prompt_id}").expanduser().resolve()
+        output_dir.mkdir(parents=True, exist_ok=False)
     metadata: dict[str, Any] = {
         "status": "RUNNING",
         "workflow": workflow.name,
@@ -149,7 +161,7 @@ def run_workflow(
         "comfyui_base_url": client.base_url,
         "comfyui_version": comfy_version,
         "input_image": str(input_image.resolve()) if input_image else None,
-        "input_image_sha256": hashlib.sha256(input_image.read_bytes()).hexdigest() if input_image else None,
+        "input_image_sha256": input_image_sha256,
         "uploaded_input_image": uploaded_image,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "artifacts": [],
@@ -176,9 +188,10 @@ def run_workflow(
         metadata["completed_at_utc"] = datetime.now(timezone.utc).isoformat()
         _write_json(output_dir / "generation.json", metadata)
         return saved_paths
-    except ExternalServiceError as exc:
+    except BaseException as exc:
+        # 디스크 오류·중단 등 어떤 실패도 RUNNING으로 남기지 않는다.
         metadata["status"] = "FAILED"
-        metadata["error"] = str(exc)
+        metadata["error"] = str(exc) if isinstance(exc, ExternalServiceError) else f"{type(exc).__name__}: {exc}"
         metadata["failed_at_utc"] = datetime.now(timezone.utc).isoformat()
         _write_json(output_dir / "generation.json", metadata)
         raise
