@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — motion export names per action, 2026-10-31
+
+- Name Godot/Phaser motion exports from the request: `<action>.tres` and Phaser key
+  `<asset_id>_<action>` (recorded in `placement.json`), so several actions no longer collide.
+
 ## Unreleased — run status after lost processes, 2026-10-31
 
 - MCP inspection reports FAILED when the generation process exited while its manifest was RUNNING;
