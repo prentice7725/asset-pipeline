@@ -74,7 +74,7 @@ def _route_bound(brief, registry, root, menu_decision=None):
         from ..prompts.exclusion_policy import instruction_review_allowed
         instruction_review = instruction_review_allowed(brief, style, key)
         from ..portrait_delivery import profile, preflight
-        delivery = profile(brief, root, key) if root is not None else None
+        delivery = profile(brief, root, key, item) if root is not None else None
         delivery_error = None
         if delivery:
             try:
@@ -132,7 +132,7 @@ def _route_bound(brief, registry, root, menu_decision=None):
     candidates.sort(key=lambda row: (0 if row[0] == requested else 1, -len(row[2]), -row[1].get('priority', 0), row[0]))
     key, item, matching = candidates[0]
     from ..portrait_delivery import profile as delivery_profile
-    selected_delivery = delivery_profile(brief, root, key) if root is not None else None
+    selected_delivery = delivery_profile(brief, root, key, item) if root is not None else None
     if subject_spec is not None and root is not None:
         from ..prompts import compile_spec
         from ..styles import apply_style

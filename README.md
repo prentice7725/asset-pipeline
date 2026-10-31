@@ -156,6 +156,23 @@ MCP는 기존 코어를 호출하는 6개 도구를 제공합니다: `asset_capa
 
 [로컬 설치 안내](docs/plugin/LOCAL_SETUP.md)와 [도구 계약](docs/plugin/MCP_TOOL_CONTRACT.md)을 참고하세요. Claude Code 플러그인은 Linux에서 매니페스트 검증(`claude plugin validate`), 로컬 마켓플레이스 설치, MCP 서버 연결까지 확인했습니다. 다만 Windows에서 실제 생성은 아직 확인하지 않았습니다. Codex 플러그인 패키지는 공식 Plugin Creator 검증과 실제 호스트 설치가 아직 미완료입니다. 공개 플러그인 배포나 원격 서비스는 포함하지 않습니다.
 
+### MCP 배포본 갱신
+
+Claude Code와 Codex에 등록된 `asset_pipeline` 서버는 저장소 작업 트리가 아니라 `workspace/mcp_runtime/launch.py`가
+`revision.txt`에 적힌 커밋을 `git archive`로 풀어 둔 고정 사본을 띄웁니다. 변경을 main에 합친 뒤 다음으로 갱신합니다.
+
+```powershell
+.venv\Scripts\python workspace\mcp_runtime
+edeploy.py            # origin/main을 풀고 6개 도구와 asset_capabilities를 확인한 뒤 전환
+.venv\Scripts\python workspace\mcp_runtime
+edeploy.py --status   # 현재·이전 리비전
+.venv\Scripts\python workspace\mcp_runtime
+edeploy.py --rollback # 이전 리비전으로
+```
+
+생성 요청은 보내지 않습니다. 실행 중인 세션은 재시작해야 새 서버를 씁니다. 새 의존성(예: `rembg`)은
+`.venv`에 먼저 설치해야 합니다. `workspace/`는 git에 올리지 않으므로 이 스크립트는 로컬 운영 도구입니다.
+
 ## 프로젝트별 저장
 
 Brief에 `project_id`를 지정하거나 CLI에서 `--project game-a`를 사용합니다. 생략하면 `default`를 사용하며 소스 경로로 프로젝트를 추측하지 않습니다.
@@ -271,7 +288,7 @@ CLI provider는 아래를 보장하지 못합니다. 요청에 이런 조건이 
 | --- | --- |
 | `seed`, 정확한 재현 | 미지원. manifest에 `seed: null`, `seed_support: UNSUPPORTED`로 기록하고 사용자가 지정한 값은 `requested_seed`로만 남김 |
 | 정확한 해상도(`constraints.resolution`) | 라우터가 `exact_resolution` 부족으로 차단 |
-| 투명 배경 | 라우터가 `transparent_output` 부족으로 차단 |
+| 투명 배경 | `resolution`과 함께 요청하면 로컬 배경 제거로 전달(아래 "크기·투명·용량 규격으로 내보내기"), 크기 없이 요청하면 라우터가 `transparent_output` 부족으로 차단 |
 | 이미지 속 글자 | 라우터가 `text_rendering` 부족으로 차단 |
 | 종횡비 | Grok은 지원 목록 밖이면 요청 전에 중단, 그 외는 결과를 QA가 3% 허용 오차로 검사 |
 
@@ -327,6 +344,22 @@ CLI provider는 아래를 보장하지 못합니다. 요청에 이런 조건이 
 ### Windows 참고
 
 Codex·Grok은 npm으로 설치하면 `.cmd` 실행 파일이 생깁니다. 이 저장소는 셸 없이 인자 목록으로 실행하며 프롬프트를 stdin/파일로 넘깁니다. Windows에서 두 Provider의 프로젝트 참조 편집을 실제 검증했습니다. 설치된 CLI의 기능·로그인과 프로젝트 계약은 실행 전에 확인합니다.
+
+## 크기·투명·용량 규격으로 내보내기
+
+게임 매니페스트 규격(예: 256×256, 알파, 512KB 이하)은 브리프의 `constraints`에 그대로 적습니다.
+
+```json
+"constraints": {"resolution": [256, 256], "transparency": true, "max_file_kb": 512, "palette": [], "silhouette": null, "style": null}
+```
+
+`resolution`과 `transparency: true`가 함께 있고 workflow가 투명 출력을 지원하지 않으면, NONPIXEL_IMAGE는
+흰 배경 원본을 workflow 기본 크기(krea2_base는 1024px) 이상으로 생성한 뒤 로컬에서 배경을 제거하고
+비율을 유지한 채 정확한 캔버스에 가운데 맞춥니다(잘라내지 않음). 설정은 `config/pipeline.yaml`의
+`nonpixel_delivery`이며 프로젝트 초상화와 같은 `u2netp.onnx` 모델과 `rembg==2.0.69`(`pip install -e ".[portrait]"`)를 씁니다.
+모델이 없거나 해시가 다르면 과금 전에 라우터가 차단합니다. `max_file_kb`를 넘는 결과는 QA가 실패 처리합니다.
+프로젝트 Visual SOT가 있는 프로젝트는 SOT의 `delivery_profile`만 따르고 이 기본값을 쓰지 않습니다.
+결과는 여전히 `CANDIDATE_READY_REVIEW_REQUIRED`, `game_ready: false`이며 사람이 고릅니다.
 
 ## Asset Brief와 공통 프롬프트
 
@@ -406,6 +439,11 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
 ## 픽셀 검증과 Static Master 승인
 
 > 픽셀 경로는 현재 연구 동결 상태입니다. 기존 기능은 그대로 동작하지만 새 개발은 하지 않습니다.
+
+PIXEL_STATIC 후보는 Pixel Gate 앞에서 색 수를 `pixel.max_colors`(기본 32색)로 줄입니다(디더 없음, 알파·크기 보존).
+브리프에 `palette`가 있으면 각 픽셀을 가장 가까운 허용 색으로 맞춥니다. 결과는 `035_quantize/`에 보고서와 함께 남고,
+양자화 전 분석의 실패 사유(그라데이션·안티에일리어스 의심)도 manifest에 그대로 기록됩니다. 색을 줄였다고 승인되지는 않습니다.
+끄려면 `config/pipeline.yaml`의 `pixel.quantize_to_budget: false`.
 
 Krea2 Pixel64는 실험 상태입니다. 설치된 로더에서 magnitude 키 120개 누락을
 CPU 실행으로 재현했습니다. [호환성 조사](docs/research/KREA2_LOADER_COMPATIBILITY_20261025.md)는

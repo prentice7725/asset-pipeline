@@ -2,6 +2,7 @@
 
 QA가 통과해도 후보는 자동 승인되지 않는다. 정본·금지 요소 준수는 사람이 확인해야 하며 보고서에 그 항목을 남긴다.
 """
+from pathlib import Path
 from PIL import Image
 from ..providers.cli_runner import sha256_file
 
@@ -22,6 +23,11 @@ def basic_image_qa(path, brief, *, external_engine=False):
             report['reasons'].append('Image resolution differs from brief')
         if brief['constraints']['transparency'] is True and image.convert('RGBA').getchannel('A').getextrema()[0] == 255:
             report['reasons'].append('Requested transparent image is fully opaque')
+        limit = brief['constraints'].get('max_file_kb')
+        if limit:
+            report['file_size_bytes'] = Path(path).stat().st_size
+            if report['file_size_bytes'] > limit * 1024:
+                report['reasons'].append(f'Image file size exceeds max_file_kb ({report["file_size_bytes"]} bytes > {limit} KB)')
         ratio = (brief.get('prompt_spec') or {}).get('aspectRatio')
         if ratio and external_engine:
             w, h = map(int, ratio.split(':'))

@@ -209,6 +209,13 @@
             "null"
           ]
         },
+        "max_file_kb": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
         "palette": {
           "type": "array",
           "items": {

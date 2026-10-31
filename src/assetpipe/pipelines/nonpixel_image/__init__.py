@@ -4,7 +4,7 @@ from ...qa import basic_image_qa
 
 def run(brief, workflow, config, directory, manifest, seed):
     from ...portrait_delivery import profile, preflight, process
-    delivery = profile(brief, config.root, workflow['id'])
+    delivery = profile(brief, config.root, workflow['id'], workflow)
     if delivery:
         preflight(delivery)
     engine = workflow.get('engine', 'comfyui')
@@ -33,8 +33,10 @@ def run(brief, workflow, config, directory, manifest, seed):
         raise ValueError('Portrait delivery requires preserved compiled prompt evidence')
     if delivery:
         manifest['generation']['raw_outputs'] = [str(path) for path in paths]
+        limit = brief['constraints'].get('max_file_kb')
+        extra = {'max_file_kb': limit} if limit else {}
         processed = [process(path, brief['constraints']['resolution'], delivery,
-                             directory / '020_delivery' / str(index)) for index, path in enumerate(paths)]
+                             directory / '020_delivery' / str(index), **extra) for index, path in enumerate(paths)]
         paths = [row[0] for row in processed]
         manifest['portrait_delivery'] = [row[1] for row in processed]
         manifest['delivery_ready'] = False
