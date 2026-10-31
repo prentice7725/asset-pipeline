@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — Grok empty session folder cleanup, 2026-10-31
+
+- Remove Grok session folders a run created in the user's Grok home only when they stay
+  empty; session images referenced by provenance `source_path` are kept.
+
 ## Unreleased — motion export names per action, 2026-10-31
 
 - Name Godot/Phaser motion exports from the request: `<action>.tres` and Phaser key
