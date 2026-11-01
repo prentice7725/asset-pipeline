@@ -79,6 +79,22 @@ def resolve_path(value, resolver=None, *, strict=True):
     return resolver(value, strict=strict) if resolver else Path(value).resolve(strict=strict)
 
 
+def validate_run_manifest(manifest, resolver=None):
+    """Check a run manifest's references, except where an external CLI first saved its output.
+
+    ``generation.provider.outputs[].source_path`` records where Codex/Grok wrote the image
+    (e.g. ~/.codex/generated_images) before it was copied into the run. It is provenance only
+    and is never read, so it is exempt; every other reference must stay inside configured roots.
+    """
+    checked = json.loads(json.dumps(manifest))
+    generation = checked.get('generation')
+    provider = generation.get('provider') if isinstance(generation, dict) else None
+    for row in provider.get('outputs', []) if isinstance(provider, dict) else []:
+        if isinstance(row, dict):
+            row.pop('source_path', None)
+    validate_references(checked, resolver)
+
+
 def validate_references(value, resolver=None):
     """Check serialized provenance references, including unused candidate rows.
 

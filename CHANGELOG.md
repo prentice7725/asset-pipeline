@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — inspect CLI provider runs, 2026-11-01
+
+- `asset_inspect_run` no longer fails on Codex/Grok runs whose provider record keeps the CLI's
+  original save path (e.g. `~/.codex/generated_images`); it shares the Factory exemption, and all
+  other references must still be inside configured roots. Existing manifests read unchanged.
+
 ## Unreleased — manifest-spec delivery and pixel palette budget, 2026-10-31
 
 - NONPIXEL_IMAGE briefs with `constraints.resolution` + `transparency: true` (and optional new
