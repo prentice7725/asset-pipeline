@@ -1,9 +1,12 @@
 """Explicit mask/contain delivery for NONPIXEL_IMAGE. No generation or automatic approval.
 
 Two triggers share one implementation:
-- a project Visual SOT ``delivery_profile`` (character portraits, explicit workflow binding);
+- a project Visual SOT ``delivery_profile`` (an asset class contract with an explicit workflow binding);
 - a brief alone: ``constraints.resolution`` plus ``constraints.transparency: true`` on a workflow
   without native transparent output, using the ``nonpixel_delivery`` section of config/pipeline.yaml.
+
+Opaque reference edits use ``LOCAL_RESIZE_SAME_ASPECT``: the edited image is resized back to the
+reference canvas only when its aspect ratio already matches; no crop, padding or stretch.
 """
 import copy
 import hashlib
@@ -31,6 +34,9 @@ MATTING_PARAMETERS = {'foreground_threshold': 240, 'background_threshold': 10, '
 MASK_CONTEXT_FRACTION = 0.1
 SOURCE_WHITE_TOLERANCE = 10
 SOURCE_WHITE_MINIMUM_FRACTION = 0.99
+MASK = 'LOCAL_MASK_UNIFORM_CONTAIN'
+RESIZE = 'LOCAL_RESIZE_SAME_ASPECT'
+ASPECT_TOLERANCE = 0.01
 
 
 def _source_background(image, mask, background_rgb=(255,255,255)):
@@ -127,13 +133,20 @@ def profile(brief, root, workflow_id, workflow=None):
         return None if sot else default_profile(brief, root, workflow_id, workflow)
     if not (brief.get('project_contract_required') is True
             and brief['output_class'] == 'NONPIXEL_IMAGE'
-            and brief['asset_type'] == 'character_portrait'
             and value.get('workflow_id') == workflow_id):
         return None
-    if value.get('operation') != 'LOCAL_MASK_UNIFORM_CONTAIN' or value.get('human_review_required') is not True:
+    if value.get('operation') not in (MASK, RESIZE) or value.get('human_review_required') is not True:
         raise ValueError('Unsupported portrait delivery policy')
-    if not brief['constraints']['resolution'] or brief['constraints']['transparency'] is not True:
-        raise ValueError('Portrait delivery requires explicit dimensions and transparent output')
+    if value['operation'] == MASK:
+        # The scoped class contract decides; a project-wide (unscoped) mask profile stays portrait-only.
+        if brief['asset_type'] != 'character_portrait' and not sot.get('_scoped'):
+            return None
+        if not brief['constraints']['resolution'] or brief['constraints']['transparency'] is not True:
+            raise ValueError('Portrait delivery requires explicit dimensions and transparent output')
+    elif not sot.get('_reference_edit'):
+        raise ValueError('Unsupported portrait delivery policy')  # Resize is only for opaque reference edits.
+    elif not brief['constraints']['resolution'] or brief['constraints']['transparency'] is not False:
+        raise ValueError('Opaque reference-edit delivery requires explicit dimensions and opaque output')
     if sot.get('_reference_edit'):
         value['project_reference_edit'] = {**sot['_reference_edit'],
             'sot_path': str(sot_path.resolve()), 'sot_sha256': hashlib.sha256(sot_path.read_bytes()).hexdigest()}
@@ -141,6 +154,8 @@ def profile(brief, root, workflow_id, workflow=None):
 
 
 def preflight(value):
+    if value['operation'] == RESIZE:
+        return None  # Resize only; no segmentation model is involved.
     model = Path(value['model_path']).resolve()
     roots = [Path(p).resolve() for p in value['model_roots']]
     if not any(model.is_relative_to(root) for root in roots):
@@ -153,6 +168,8 @@ def preflight(value):
 
 
 def process(source, resolution, value, directory, max_file_kb=None):
+    if value['operation'] == RESIZE:
+        return resize_same_aspect(source, resolution, value, directory, max_file_kb)
     model = preflight(value)
     from rembg import new_session, remove
     from rembg.bg import alpha_matting_cutout
@@ -249,6 +266,41 @@ def process(source, resolution, value, directory, max_file_kb=None):
               'checks': {key: 'NOT_REVIEWED' for key in
                          ('hair_and_clothing_preserved', 'no_halo', 'no_background',
                           'source_crop_preserved', 'identity_preserved')}}
+    write(directory / 'delivery_record.json', record)
+    return output, record
+
+
+def resize_same_aspect(source, resolution, value, directory, max_file_kb=None):
+    """Bring an opaque edited image back to the reference canvas without crop, padding or stretch.
+
+    A provider that returned a different aspect ratio fails this gate; the raw output stays as evidence.
+    """
+    from .manifests import write
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=False)
+    target = tuple(int(v) for v in resolution)
+    with Image.open(source) as opened:
+        image = opened.convert('RGB')
+    deviation = abs((image.width / image.height) / (target[0] / target[1]) - 1)
+    record = {'operation': value['operation'], 'source': str(source),
+              'source_sha256': hashlib.sha256(Path(source).read_bytes()).hexdigest(),
+              'profile_source': value.get('source', 'PROJECT_SOT'), 'source_size': list(image.size),
+              'delivery_size': list(target), 'aspect_deviation': deviation,
+              'aspect_tolerance': ASPECT_TOLERANCE, 'crop': False, 'padding': False, 'stretch': False,
+              'human_review': 'REVIEW_REQUIRED', 'approval_effect': 'NONE',
+              'checks': {key: 'NOT_REVIEWED' for key in
+                         ('requested_change_only', 'composition_preserved', 'style_preserved')}}
+    if deviation > ASPECT_TOLERANCE:
+        record['status'] = 'FAILED'
+        write(directory / 'delivery_record.json', record)
+        raise ValueError(f'DELIVERY_ASPECT_MISMATCH: edited output {image.width}x{image.height} '
+                         f'does not match reference canvas {target[0]}x{target[1]}; no crop or stretch')
+    output = directory / 'delivery.png'
+    (image if image.size == target else image.resize(target, Image.Resampling.LANCZOS)).save(output, optimize=True)
+    file_size = output.stat().st_size
+    record.update(status='COMPLETED_REVIEW_REQUIRED', output_sha256=hashlib.sha256(output.read_bytes()).hexdigest(),
+                  file_size_bytes=file_size, max_file_kb=max_file_kb,
+                  within_file_limit=None if not max_file_kb else file_size <= max_file_kb * 1024)
     write(directory / 'delivery_record.json', record)
     return output, record
 

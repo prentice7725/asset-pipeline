@@ -23,6 +23,11 @@ Reopened by the user on 2026-10-30 (BGM only): BGM output class via ComfyUI YuE2
 Read docs/BGM.md. Instrumental by default, vocals and loop seams are listening review items; MiniMax Music
 and other paid cloud nodes are not used. Real generation needs a separate request.
 
+Reopened by the user on 2026-11-01 (general reference edits): reference-edit contracts per asset class
+and general edit kinds (e.g. CLEANUP for text/watermark/artifact removal), using the existing
+codex_imagegen/grok_imagine providers. Read docs/factory/IDENTITY_VARIANT.md. Same rules as identity
+variants: explicit workflow id, one attempt, no retry/fallback, HUMAN_REQUIRED review, six MCP tools.
+
 Change discipline:
 - One topic per branch/PR. Do not bundle research commits into a feature PR.
 - Prefer code plus tests over new dated reports. Add a dated validation document only when
