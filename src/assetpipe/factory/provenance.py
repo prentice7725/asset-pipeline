@@ -3,20 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 from PIL import Image
-from ..paths import RootResolver, validate_references
-
-def validate_run_manifest(manifest, resolver):
-    """실행 결과 manifest의 참조를 검사한다.
-
-    CLI provider 기록의 outputs[].source_path는 provider가 처음 저장한 위치(예: ~/.codex, ~/.grok)를
-    남긴 출처 기록이며 여기서 읽지 않는다. 그 값만 제외하고 나머지 참조는 그대로 루트 안에 있어야 한다.
-    """
-    checked = json.loads(json.dumps(manifest))
-    provider = checked.get('generation', {}).get('provider', {}) if isinstance(checked.get('generation'), dict) else {}
-    for row in provider.get('outputs', []) if isinstance(provider, dict) else []:
-        if isinstance(row, dict):
-            row.pop('source_path', None)
-    validate_references(checked, resolver)
+from ..paths import RootResolver, validate_references, validate_run_manifest  # noqa: F401  (re-exported)
 
 def fingerprint(path):
     with path.open('rb') as stream:

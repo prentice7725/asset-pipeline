@@ -1,6 +1,6 @@
 """High-level core contracts shared by CLI integrations; no MCP dependency."""
 import copy
-from .paths import resolve_path, validate_references
+from .paths import resolve_path, validate_run_manifest
 from pathlib import Path
 import json
 import shutil
@@ -96,7 +96,8 @@ def route_brief(brief, root, resolver=None):
 def inspect_manifest(path, resolver=None):
     path = resolve_path(path, resolver)
     manifest = json.loads(path.read_text(encoding='utf-8'))
-    validate_references(manifest, resolver)
+    # Same exemption as Factory: a CLI provider's original save location is provenance, not a read.
+    validate_run_manifest(manifest, resolver)
     raw_status = manifest['status']
     if raw_status == 'FAILED':
         status = 'FAILED'
