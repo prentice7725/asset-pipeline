@@ -5,12 +5,9 @@ asset_class_contracts:
   environment_background_layer:
     source: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
     review_state: REVIEW_REQUIRED
-    art_style: watercolor_storybook
-    style_id: STYLE-111
+    style_id: ISEKAI-ENV-SEMIREAL-001
     workflow_id: krea2_base
     model_profile: krea2
-    # User authorized 2026-11-01: explicit Grok and Codex reference edits of a selected opaque
-    # wall (e.g. CLEANUP of baked-in text). T2I remains bound to Krea2; not art approval.
     reference_edit_contracts:
       grok_imagine:
         workflow_id: grok_imagine
@@ -18,7 +15,9 @@ asset_class_contracts:
         reference_input: EXACT_RGB
         source_background: OPAQUE_REFERENCE
         delivery: LOCAL_RESIZE_SAME_ASPECT
-        resolution: [1920, 1080]
+        resolution:
+        - 1920
+        - 1080
         human_review_required: true
       codex_imagegen:
         workflow_id: codex_imagegen
@@ -26,7 +25,9 @@ asset_class_contracts:
         reference_input: EXACT_RGB
         source_background: OPAQUE_REFERENCE
         delivery: LOCAL_RESIZE_SAME_ASPECT
-        resolution: [1920, 1080]
+        resolution:
+        - 1920
+        - 1080
         human_review_required: true
     exclusion_policy:
       mode: POSITIVE_TEXT_INSTRUCTION_REVIEW_REQUIRED
@@ -36,89 +37,84 @@ asset_class_contracts:
       version: 1.0.0
       status: UNTESTED
       expression:
-      - Project adaptation of STYLE MENU v1 STYLE-111 watercolor_storybook for the
-        Day 01 wall layer.
+      - Clean semi-realistic digital game background; functional celestial public
+        office, not watercolor.
       colors:
-      - Preserve source-defined warm ivory wall and pale marble treatment; do not
-        impose sepia or brown-gold color grading.
+      - Warm ivory and pale marble with restrained neutral variation; avoid uniform
+        sepia or gold.
       linework:
-      - Delicate ink contours; keep the wide wall plane quiet and readable at game-screen
-        scale.
+      - Clear practical forms and subdued edges; no ornamental framing.
       shading:
-      - Soft transparent watercolor washes with even neutral office lighting.
+      - Bright, even neutral office light, weak shadows and controlled tonal transitions.
       texture:
-      - Restrained watercolor paper grain and wash texture; avoid heavy impasto.
+      - Readable realistic materials, low-gloss wood, restrained wear and repair;
+        avoid watercolor washes and paper grain.
       forbidden_elements: []
       required_capabilities: []
-      sources:
-      - url: https://github.com/prentice7725/asset-pipeline/blob/5d6353ffa58a05e80a1821d402ca29fdf67da6cf/config/styles/style_menu_v1.yaml
-        description: User-selected STYLE MENU v1 STYLE-111; review state remains REVIEW_REQUIRED.
+      sources: &id001
+      - url: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
+        description: Project split art contract and user-selected semi-realistic direction,
+          2026-11-01.
       - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
-        description: Day 01 environment SOT controls wall palette, public-office function
-          and background hierarchy.
-      - url: C:/workspace/isekai/workspace/asset-pipeline_handoff_20261008/iex_env_day01_backwall_style111_source_extract.md
-        description: Source-grounded extraction for the wall-only opaque candidate.
+        description: Day 01 materials, neutral light and public-office identity.
     recipes:
-      STYLE-111:
-        codex_imagegen:
-          version: 1.0.0
-          status: UNTESTED
-          style_sha256: 405aa4d75d13e1cb1100bd7b2f96c79a846d05a0fa4b25e7f497fb974a40d97a
-          model_profile: codex-imagegen
-          positive:
-          - Match the supplied reference rendering style exactly; do not restyle or redraw the wall.
-          negative: []
-          required_capabilities: [image_to_image]
-          sources:
-          - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
-            description: Same project wall style; explicit Codex reference-edit extension authorized 2026-11-01, not art approval.
-        grok_imagine:
-          version: 1.0.0
-          status: UNTESTED
-          style_sha256: 405aa4d75d13e1cb1100bd7b2f96c79a846d05a0fa4b25e7f497fb974a40d97a
-          model_profile: grok-imagine
-          positive:
-          - Match the supplied reference rendering style exactly; do not restyle or redraw the wall.
-          negative: []
-          required_capabilities: [image_to_image]
-          sources:
-          - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
-            description: Same project wall style; explicit Grok reference-edit extension authorized 2026-11-01, not art approval.
+      ISEKAI-ENV-SEMIREAL-001:
         krea2_base:
           version: 1.0.0
           status: UNTESTED
-          style_sha256: 405aa4d75d13e1cb1100bd7b2f96c79a846d05a0fa4b25e7f497fb974a40d97a
+          style_sha256: bfa1db93af12eb2ffd5e259776fa1a61dd85970e1be969d7111bc6c6e9dc39dc
           model_profile: krea2
           positive:
-          - Storybook watercolor illustration with delicate ink contours and soft
-            translucent washes.
-          - Keep the wide public-service office wall quiet; preserve warm ivory and
-            pale marble roles under bright even neutral light.
-          - Use restrained paper grain; practical maintained construction with only
-            source-authorized architectural forms.
+          - Clean semi-realistic game background with readable practical materials
+            and even neutral office light.
+          - Preserve separate production layers, restrained wear and source-defined
+            palette.
           negative: []
           required_capabilities: []
-          sources:
-          - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
-            description: Project environment adaptation; recipe is untested and not
-              art approval.
+          sources: *id001
+        codex_imagegen:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: bfa1db93af12eb2ffd5e259776fa1a61dd85970e1be969d7111bc6c6e9dc39dc
+          model_profile: codex-imagegen
+          positive:
+          - Preserve the supplied reference composition and clean semi-realistic rendering
+            except for the specified local edit.
+          negative: []
+          required_capabilities:
+          - image_to_image
+          sources: *id001
+        grok_imagine:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: bfa1db93af12eb2ffd5e259776fa1a61dd85970e1be969d7111bc6c6e9dc39dc
+          model_profile: grok-imagine
+          positive:
+          - Preserve the supplied reference composition and clean semi-realistic rendering
+            except for the specified local edit.
+          negative: []
+          required_capabilities:
+          - image_to_image
+          sources: *id001
   character_portrait:
-    # User authorized 2026-10-30: explicit existing Grok and Codex reference edits.
-    # T2I remains bound to Krea2; this is not human art/style approval.
     reference_edit_contracts:
       grok_imagine:
         workflow_id: grok_imagine
         model_profile: grok-imagine
         reference_input: EXACT_RGBA
         source_background: UNIFORM_NEUTRAL
-        resolution: [1212, 1300]
+        resolution:
+        - 1212
+        - 1300
         human_review_required: true
       codex_imagegen:
         workflow_id: codex_imagegen
         model_profile: codex-imagegen
         reference_input: EXACT_RGBA
         source_background: UNIFORM_NEUTRAL
-        resolution: [1212, 1300]
+        resolution:
+        - 1212
+        - 1300
         human_review_required: true
     delivery_profile:
       workflow_id: krea2_base
@@ -169,24 +165,32 @@ asset_class_contracts:
           style_sha256: 141f12de1e90ef52b3dc3f6a7d820cab25f47a898e7077e6c7ad93ea5463c168
           model_profile: codex-imagegen
           positive:
-          - Match the supplied reference rendering style exactly; do not restyle or redesign the character.
+          - Match the supplied reference rendering style exactly; do not restyle or
+            redesign the character.
           negative: []
-          required_capabilities: [image_to_image, character_reference]
+          required_capabilities:
+          - image_to_image
+          - character_reference
           sources:
           - url: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
-            description: Same project portrait style; explicit Codex reference-edit extension authorized 2026-10-30, not art approval.
+            description: Same project portrait style; explicit Codex reference-edit
+              extension authorized 2026-10-30, not art approval.
         grok_imagine:
           version: 1.0.0
           status: UNTESTED
           style_sha256: 141f12de1e90ef52b3dc3f6a7d820cab25f47a898e7077e6c7ad93ea5463c168
           model_profile: grok-imagine
           positive:
-          - Match the supplied reference rendering style exactly; do not restyle or redesign the character.
+          - Match the supplied reference rendering style exactly; do not restyle or
+            redesign the character.
           negative: []
-          required_capabilities: [image_to_image, character_reference]
+          required_capabilities:
+          - image_to_image
+          - character_reference
           sources:
           - url: https://drive.google.com/file/d/1-77-LRqbHFDgkaG_GBLoqG_Zx9PYPPf0/view
-            description: Same project portrait style; explicit reference-edit contract authorized 2026-10-30, not art approval.
+            description: Same project portrait style; explicit reference-edit contract
+              authorized 2026-10-30, not art approval.
         krea2_base:
           version: 1.0.0
           status: UNTESTED

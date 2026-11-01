@@ -62,7 +62,7 @@ def test_wall_cleanup_keeps_t2i_binding_for_other_workflows():
     b = edited_wall('anima_base')
     b['workflow_preferences']['allow_experimental'] = True
     decision = route_brief(b, ROOT)
-    assert decision['status'] == 'BLOCKED' and 'style menu binding' in decision['reason']
+    assert decision['status'] == 'BLOCKED' and 'project binding' in decision['reason']
 
 
 def test_class_without_reference_edit_contract_still_blocks(tmp_path, monkeypatch):
