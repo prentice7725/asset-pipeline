@@ -73,7 +73,9 @@
         "kind": {
           "enum": [
             "EXPRESSION",
-            "POSE"
+            "POSE",
+            "CLEANUP",
+            "DETAIL_EDIT"
           ]
         },
         "target": {

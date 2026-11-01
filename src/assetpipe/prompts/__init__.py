@@ -169,11 +169,17 @@ def _compile_bound_prompt(brief, workflow, root, menu_decision=None):
 
 def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_context=None):
     """Shared dialect compiler for validated offline specs; performs no routing or generation."""
-    from ..portrait_delivery import profile as delivery_profile, SOURCE_BACKGROUND, framing_text
+    from ..portrait_delivery import profile as delivery_profile, SOURCE_BACKGROUND, RESIZE, framing_text
     delivery = delivery_profile(brief, root, workflow['id'], workflow)
     requested_environment = spec.get('environment')
     requested_composition = spec.get('composition')
-    if delivery:
+    if delivery and delivery['operation'] == RESIZE:
+        # Opaque reference edit: the scene stays as the reference shows it; only the job's change applies.
+        spec = copy.deepcopy(spec)
+        spec['composition'] = 'Preserve the reference framing, canvas and aspect ratio exactly; no zoom, recrop or extension.'
+        spec.setdefault('constraints', []).append(
+            'Edit the supplied reference image itself; do not regenerate or restyle the scene.')
+    elif delivery:
         # Delivery is RGBA, but the registered T2I workflow generates opaque RGB.
         # Keep that technical source stage separate from the final scene contract.
         spec = copy.deepcopy(spec)
@@ -293,6 +299,7 @@ def compile_spec(brief, workflow, root, spec, *, preserve_case=False, style_cont
         result['exclusion_review'] = review_template(negative_items)
     if delivery:
         result['delivery_profile'] = delivery
+    if delivery and delivery['operation'] != RESIZE:
         result['portrait_source'] = {'background': 'SOLID_WHITE',
                                      'requested_environment': requested_environment,
                                      'requested_composition': requested_composition,

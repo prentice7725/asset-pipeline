@@ -169,14 +169,16 @@ class CliImageProvider(ImageProvider):
                 reference_name = 'reference' + reference.suffix.lower()
                 shutil.copy2(reference, job.inputs / reference_name)
                 record['reference'] = {'sha256': sha256_file(reference), 'copied_as': 'inputs/' + reference_name}
-                if compiled.get('delivery_profile', {}).get('reference_input') == 'EXACT_RGBA':
+                exact = compiled.get('delivery_profile', {}).get('reference_input')
+                if exact in {'EXACT_RGBA', 'EXACT_RGB'}:
                     from PIL import Image
+                    mode = exact.removeprefix('EXACT_')
                     with Image.open(job.inputs / reference_name) as image:
-                        if image.mode != 'RGBA' or list(image.size) != brief['constraints']['resolution']:
-                            raise ProviderFailed('REFERENCE_RGBA_REQUIRED', 'Project reference edit requires exact-size RGBA input')
+                        if image.mode != mode or list(image.size) != brief['constraints']['resolution']:
+                            raise ProviderFailed(f'REFERENCE_{mode}_REQUIRED', f'Project reference edit requires exact-size {mode} input')
                     if sha256_file(job.inputs / reference_name) != record['reference']['sha256']:
                         raise ProviderFailed('REFERENCE_CHANGED', 'Copied reference differs from selected input')
-                    record['reference']['contract'] = 'EXACT_RGBA_UNCHANGED'
+                    record['reference']['contract'] = exact + '_UNCHANGED'
             prompt_text = self.wrap_prompt(spec_text, tool, compiled.get('aspect_ratio'), job.inputs / reference_name if reference_name else None)
             argv, stdin_text, extra = self.build_argv(exe, job, backend, tool, job.inputs / reference_name if reference_name else None)
             env, names = self._env(auth, job)

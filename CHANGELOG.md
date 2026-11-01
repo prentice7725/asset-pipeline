@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — general reference edits, 2026-11-01
+
+- Any asset class may declare `reference_edit_contracts`; opaque classes use `EXACT_RGB` input and
+  `LOCAL_RESIZE_SAME_ASPECT` delivery (no crop/pad/stretch). Portrait contracts behave as before.
+- New edit kinds `CLEANUP` (remove named text/watermark/artifacts) and `DETAIL_EDIT`; isekai wall layer
+  gains Codex/Grok edit contracts. Offline only; no generation was run.
+
 ## Unreleased — inspect CLI provider runs, 2026-11-01
 
 - `asset_inspect_run` no longer fails on Codex/Grok runs whose provider record keeps the CLI's

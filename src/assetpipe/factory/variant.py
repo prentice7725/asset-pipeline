@@ -1,4 +1,6 @@
-"""동일 인물 변형(표정·포즈) 작업: 기존 NONPIXEL_IMAGE 베이스 1장 → 참조 편집 1회.
+"""참조 편집 작업: 기존 NONPIXEL_IMAGE 베이스 1장 → 참조 편집 1회.
+
+동일 인물 변형(표정·포즈)과 일반 편집(정리·국소 수정)을 같은 계약으로 실행한다.
 
 T2I 베이스는 기존 정지 경로가 만든다. 이 모듈은 사람이 고른 베이스 출력 하나를 해시로 고정하고,
 참조 편집 기능이 등록된 provider를 명시해 한 번만 실행한다. 재시도·provider 전환·자동 승인은 없다.
@@ -20,7 +22,8 @@ from .provenance import Sources, fingerprint, validate_run_manifest
 HASH = {'type': 'string', 'pattern': '^[a-f0-9]{64}$'}
 TEXT = {'type': 'string', 'minLength': 1, 'maxLength': 300}
 IDENTIFIER = {'type': 'string', 'pattern': '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$'}
-KINDS = ['EXPRESSION', 'POSE']
+KINDS = ['EXPRESSION', 'POSE', 'CLEANUP', 'DETAIL_EDIT']
+IDENTITY_KINDS = {'EXPRESSION', 'POSE'}
 SCHEMA = obj({'schema_version': {'type': 'integer', 'const': 1},
     'kind': {'const': 'FACTORY_IDENTITY_VARIANT_JOB'},
     'project_id': IDENTIFIER, 'asset_id': IDENTIFIER,
@@ -37,9 +40,17 @@ SCHEMA['$id'] = 'urn:assetpipe:factory-identity-variant-job:1'
 # 변형 종류별로 바꿀 것과 유지할 것을 고정한다. 작업 파일에서 유지 항목을 줄일 수 없다.
 IDENTITY = ['face shape and facial features', 'hairstyle and hair color', 'outfit and clothing details',
             'accessories', 'equipment and item count', 'body proportions', 'color palette', 'rendering style']
-CHANGE = {'EXPRESSION': 'facial expression', 'POSE': 'body pose'}
+# 일반 편집은 인물이 아닌 이미지 전체를 지킨다. CLEANUP은 지정한 불필요 요소(글자·워터마크·서명·잡티)만 지우고,
+# DETAIL_EDIT은 지정한 국소 디테일 하나만 바꾼다. 구도·캔버스는 둘 다 유지한다.
+IMAGE = ['overall composition and layout', 'framing, canvas and aspect ratio', 'color palette',
+         'rendering style and texture', 'lighting', 'subject and every other element']
+CHANGE = {'EXPRESSION': 'facial expression', 'POSE': 'body pose',
+          'CLEANUP': 'named unwanted elements, which are removed and filled with the surrounding surface',
+          'DETAIL_EDIT': 'one named local detail'}
 PRESERVE = {'EXPRESSION': IDENTITY + ['body pose', 'framing and canvas', 'background'],
-            'POSE': IDENTITY + ['background']}
+            'POSE': IDENTITY + ['background'],
+            'CLEANUP': IMAGE,
+            'DETAIL_EDIT': IMAGE}
 # 베이스 모델용 화풍 바인딩·우회 필드. 편집 provider에는 맞지 않으므로 계획에 기록하고 제거한다.
 # 화풍은 참조 이미지 자체와 유지 항목(rendering style)으로 전달한다.
 PARENT_ONLY = ['style_id', 'art_style', 'style_selection_policy', 'model_override', 'workflow_override',
@@ -63,7 +74,12 @@ def _policy(root, allowed_roots):
 
 
 def variation_constraints(kind, target):
-    return ['Image edit of the provided reference image; the result shows the same character.',
+    if kind == 'CLEANUP':
+        return ['Image edit of the provided reference image; the result shows the same image.',
+                f'Remove only these unwanted elements: {target}. Fill the removed areas with the surrounding surface; add nothing.',
+                'Keep unchanged: ' + ', '.join(PRESERVE[kind]) + '.']
+    subject = 'character' if kind in IDENTITY_KINDS else 'image'
+    return [f'Image edit of the provided reference image; the result shows the same {subject}.',
             f'Change only the {CHANGE[kind]} to: {target}.',
             'Keep unchanged: ' + ', '.join(PRESERVE[kind]) + '.']
 
@@ -84,7 +100,7 @@ def variant_brief(parent, job, image_path):
         raise ValueError('IDENTITY_VARIANT_SUBJECT_MISSING: parent Brief has no subject')
     if kind == 'POSE':
         spec['pose'] = target
-    else:
+    elif kind == 'EXPRESSION':
         # A T2I parent may encode its neutral facial expression in `pose`.
         # Reference-edit expression instructions must not simultaneously demand
         # that old expression; body pose remains locked to the selected image.
@@ -131,7 +147,8 @@ def plan_variant(job_path, root, *, allowed_roots=None):
     workflow = load_registry(root)[decision['selected_workflow']]
     capabilities = workflow['capabilities']
     if (workflow['output_class'] != 'NONPIXEL_IMAGE' or not capabilities.get('image_to_image')
-            or not capabilities.get('character_reference') or not workflow.get('backend', {}).get('edit_tool')):
+            or (job['variation']['kind'] in IDENTITY_KINDS and not capabilities.get('character_reference'))
+            or not workflow.get('backend', {}).get('edit_tool')):
         raise ValueError('IDENTITY_VARIANT_PROVIDER_UNSUPPORTED: no registered reference edit path')
     result = {'schema_version': 1, 'kind': 'FACTORY_IDENTITY_VARIANT_PLAN',
         'job_path': str(path), 'job_sha256': sha, 'parent': planned['parent'], 'base_image': image,
@@ -151,9 +168,10 @@ def plan_variant(job_path, root, *, allowed_roots=None):
     delivery = profile(brief, root, workflow['id'])
     if delivery and delivery.get('project_reference_edit'):
         from PIL import Image
+        mode = delivery['project_reference_edit']['reference_input'].removeprefix('EXACT_')
         with Image.open(image['path']) as reference:
-            if reference.mode != 'RGBA' or list(reference.size) != brief['constraints']['resolution']:
-                raise ValueError('IDENTITY_VARIANT_REFERENCE_RGBA_REQUIRED')
+            if reference.mode != mode or list(reference.size) != brief['constraints']['resolution']:
+                raise ValueError(f'IDENTITY_VARIANT_REFERENCE_{mode}_REQUIRED')
         result['project_reference_edit'] = delivery['project_reference_edit']
     if sources.document(path)[1] != sha or fingerprint(Path(image['path'])) != image['sha256']:
         raise ValueError('IDENTITY_VARIANT_SOURCE_CHANGED')
@@ -227,7 +245,8 @@ def run_variant(job_path, plan_sha256, authorization, root, *, authorize_generat
         if plan.get('project_reference_edit'):
             compiled = manifest['generation'].get('compiled_prompt', {}).get('delivery_profile', {})
             if (compiled.get('project_reference_edit') != plan['project_reference_edit']
-                    or provider.get('reference', {}).get('contract') != 'EXACT_RGBA_UNCHANGED'):
+                    or provider.get('reference', {}).get('contract')
+                    != plan['project_reference_edit']['reference_input'] + '_UNCHANGED'):
                 raise ValueError('IDENTITY_VARIANT_PROJECT_CONTRACT_CHANGED')
         if (provider.get('reference', {}).get('sha256') != plan['base_image']['sha256']
                 or provider.get('tool') != plan['workflow']['edit_tool']):

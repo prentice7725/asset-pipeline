@@ -9,6 +9,25 @@ asset_class_contracts:
     style_id: STYLE-111
     workflow_id: krea2_base
     model_profile: krea2
+    # User authorized 2026-11-01: explicit Grok and Codex reference edits of a selected opaque
+    # wall (e.g. CLEANUP of baked-in text). T2I remains bound to Krea2; not art approval.
+    reference_edit_contracts:
+      grok_imagine:
+        workflow_id: grok_imagine
+        model_profile: grok-imagine
+        reference_input: EXACT_RGB
+        source_background: OPAQUE_REFERENCE
+        delivery: LOCAL_RESIZE_SAME_ASPECT
+        resolution: [1920, 1080]
+        human_review_required: true
+      codex_imagegen:
+        workflow_id: codex_imagegen
+        model_profile: codex-imagegen
+        reference_input: EXACT_RGB
+        source_background: OPAQUE_REFERENCE
+        delivery: LOCAL_RESIZE_SAME_ASPECT
+        resolution: [1920, 1080]
+        human_review_required: true
     exclusion_policy:
       mode: POSITIVE_TEXT_INSTRUCTION_REVIEW_REQUIRED
       workflow_id: krea2_base
@@ -41,6 +60,30 @@ asset_class_contracts:
         description: Source-grounded extraction for the wall-only opaque candidate.
     recipes:
       STYLE-111:
+        codex_imagegen:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: 405aa4d75d13e1cb1100bd7b2f96c79a846d05a0fa4b25e7f497fb974a40d97a
+          model_profile: codex-imagegen
+          positive:
+          - Match the supplied reference rendering style exactly; do not restyle or redraw the wall.
+          negative: []
+          required_capabilities: [image_to_image]
+          sources:
+          - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
+            description: Same project wall style; explicit Codex reference-edit extension authorized 2026-11-01, not art approval.
+        grok_imagine:
+          version: 1.0.0
+          status: UNTESTED
+          style_sha256: 405aa4d75d13e1cb1100bd7b2f96c79a846d05a0fa4b25e7f497fb974a40d97a
+          model_profile: grok-imagine
+          positive:
+          - Match the supplied reference rendering style exactly; do not restyle or redraw the wall.
+          negative: []
+          required_capabilities: [image_to_image]
+          sources:
+          - url: https://drive.google.com/file/d/1hPjEm4n5QB72ozZtw7pjfq1OR-TuyKcW/view
+            description: Same project wall style; explicit Grok reference-edit extension authorized 2026-11-01, not art approval.
         krea2_base:
           version: 1.0.0
           status: UNTESTED

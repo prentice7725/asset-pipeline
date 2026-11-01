@@ -110,7 +110,7 @@ def main(argv=None):
             stage.add_argument('--authorization', type=Path)
             stage.add_argument('--authorize-generation', action='store_true')
     for name in ['variant-plan', 'variant-run']:
-        variant = factory_commands.add_parser(name, help='Same-character expression/pose edit from one selected base image; one authorized attempt')
+        variant = factory_commands.add_parser(name, help='Reference edit (expression/pose/cleanup/detail) of one selected base image; one authorized attempt')
         variant.add_argument('--job', required=True, type=Path)
         variant.add_argument('--allowed-root', action='append', type=Path)
         if name == 'variant-run':

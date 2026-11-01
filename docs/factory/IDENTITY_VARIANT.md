@@ -1,4 +1,8 @@
-# 동일 인물 변형 작업 (표정·포즈)
+# 참조 편집 작업 (표정·포즈·정리·국소 수정)
+
+> 2026-11-01: 사용자가 참조 편집을 인물 변형 밖으로 일반화했다. 같은 작업 파일과 실행 규칙으로
+> 벽·소품 같은 다른 NONPIXEL 에셋의 불필요한 글자·워터마크 제거(`CLEANUP`)와 국소 수정(`DETAIL_EDIT`)도 한다.
+> 아래 [일반 참조 편집](#일반-참조-편집-2026-11-01)을 참고한다.
 
 ComfyUI 이미지 모델은 T2I만 지원해서 매번 새로 그리면 같은 인물이 유지되지 않는다.
 그래서 정지 이미지를 두 단계로 나눈다. 먼저 T2I로 베이스를 만들고, 사람이 그중 한 장을 고른다.
@@ -23,8 +27,8 @@ ComfyUI 이미지 모델은 T2I만 지원해서 매번 새로 그리면 같은 �
 | `base.manifest_ref` / `manifest_sha256` | 베이스를 만든 NONPIXEL_IMAGE 실행의 `run_manifest.json` |
 | `base.image` | 그 실행에 기록된 출력 이미지 1장과 SHA-256 |
 | `base.selected_by` / `reason` | 누가 왜 이 베이스를 골랐는지. **인물 선택일 뿐 미술 승인이 아니다** |
-| `variation.kind` | `EXPRESSION` 또는 `POSE` |
-| `variation.target` | 바꿀 내용(예: `surprised, eyes wide`, `mid-stride running, side view`) |
+| `variation.kind` | `EXPRESSION`, `POSE`, `CLEANUP`, `DETAIL_EDIT` 중 하나. 그 밖의 값은 스키마에서 거부한다 |
+| `variation.target` | 바꿀 내용(예: `surprised, eyes wide`, `mid-stride running, side view`, `all baked-in text on the wall`) |
 | `provider.workflow_id` | 참조 편집이 등록된 워크플로를 명시. 자동 선택·전환은 없다 |
 
 베이스 실행은 상태가 `CANDIDATE_READY_REVIEW_REQUIRED`이고 QA 실패가 없어야 한다.
@@ -37,6 +41,8 @@ ComfyUI 이미지 모델은 T2I만 지원해서 매번 새로 그리면 같은 �
 | --- | --- | --- |
 | `EXPRESSION` | 얼굴 표정 | 얼굴형·이목구비, 헤어, 의상, 액세서리, 장비·개수, 체형, 팔레트, 렌더링 화풍, **포즈, 구도·캔버스**, 배경 |
 | `POSE` | 몸 포즈(PromptSpec `pose`에 반영) | 얼굴형·이목구비, 헤어, 의상, 액세서리, 장비·개수, 체형, 팔레트, 렌더링 화풍, 배경 |
+| `CLEANUP` | `target`에 적은 불필요 요소(글자·워터마크·서명·잡티)만 지우고 주변 표면으로 메움 | 전체 구도·배치, 프레이밍·캔버스·종횡비, 팔레트, 렌더링 화풍·질감, 조명, 대상과 나머지 모든 요소 |
+| `DETAIL_EDIT` | `target`에 적은 국소 디테일 하나 | `CLEANUP`과 같음 |
 
 부모 Brief의 정체성 특징(`identity`), 금지 요소, 제약 조건은 그대로 이어받는다.
 베이스 모델용 화풍 바인딩과 우회 필드(`style_id`, `art_style`, override 계열)는 편집 provider와 맞지 않는다.
@@ -128,3 +134,26 @@ Krea2 T2I 바인딩과 STYLE-104 지문은 그대로 유지한다. 같은 스타
 [Codex 포즈 실생성 검증](CODEX_PROJECT_POSE_VALIDATION_20261030.md)도 같은 사람 베이스로
 진행했다. 사용자는 오른손 인사 포즈 결과를 별도로 동일 인물 변형으로 수용했다.
 초기화 실패와 별도 승인으로 실행한 성공 기록을 함께 보존하며, 최종 알파·미술 승인은 별도다.
+
+## 일반 참조 편집 (2026-11-01)
+
+참조 편집 허용 여부와 전달 방식은 **에셋 클래스 계약**이 정한다. 프로젝트 Visual SOT의
+`asset_class_contracts.<클래스>.reference_edit_contracts`에 편집기별 계약을 선언한 클래스만 편집할 수 있다.
+계약이 없는 클래스는 이전처럼 SOT 모델 바인딩 충돌로 BLOCKED된다.
+
+| `reference_input` | 클래스 조건 | 전달 |
+| --- | --- | --- |
+| `EXACT_RGBA` (+ `source_background: UNIFORM_NEUTRAL`) | 클래스에 `LOCAL_MASK_UNIFORM_CONTAIN` `delivery_profile`이 있고 Brief `transparency: true` | 기존 초상화 경로 그대로: 로컬 분할·매팅·contain |
+| `EXACT_RGB` (+ `source_background: OPAQUE_REFERENCE`, `delivery: LOCAL_RESIZE_SAME_ASPECT`) | 클래스에 마스크 전달이 없고 Brief `transparency: false` | 편집 결과의 종횡비가 참조 캔버스와 1% 이내일 때만 정확한 크기로 리사이즈. crop·패딩·늘이기 없음. 다르면 `DELIVERY_ASPECT_MISMATCH`로 실패하고 원본 출력은 증거로 남는다 |
+
+- 계약의 `resolution`과 Brief 해상도가 같아야 하고, 참조 이미지는 그 크기·모드(RGB/RGBA) 그대로 provider에 복사된다
+  (provider 기록 `EXACT_RGB_UNCHANGED` / `EXACT_RGBA_UNCHANGED`).
+- 일반 편집 종류는 `character_reference` 기능을 요구하지 않는다. `image_to_image`와 등록된 편집 도구는 필요하다.
+- 편집기 레시피는 같은 화풍 지문의 `UNTESTED` 레시피로 클래스마다 둔다. 화풍 승인이 아니다.
+- 이세계 전생 심사국 `environment_background_layer`(STYLE-111 벽, 1920×1080 불투명)에 `codex_imagegen`·`grok_imagine`
+  `EXACT_RGB` 계약을 추가했다. 예: 벽에 박힌 글자를 `CLEANUP`으로 제거.
+- 규칙은 같다: 명시 workflow id + `allow_experimental`, 1회 실행, 재시도·전환 없음, 승인 파일, `HUMAN_REQUIRED` 검수,
+  여섯 MCP 도구 유지. 이 변경은 오프라인 계약만 추가했다(OFFLINE_CONTRACT_PASS / GENERATION_NOT_RUN).
+- 알려진 위험: Codex 이미지 도구는 3:2 같은 고정 비율로 반환할 수 있다. 그 경우 16:9 벽은 종횡비 게이트에서 실패한다.
+  실제 편집 결과로 확인하기 전까지 provider별 통과 여부를 가정하지 않는다.
+
