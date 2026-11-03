@@ -1,5 +1,7 @@
 # Codex에서 SFX 만들기
 
+짧은 UI·레트로 합성 효과음은 [rfxgen 합성 경로](SFX_RFXGEN.md)(오프라인 계약)를 참고하세요.
+
 M3.1 오프라인 receipt·청취 기록 절차는 [SFX 운영 계약](factory/M31_SFX_OFFLINE.md)을
 참조하세요. 기술 QA 통과 시에도 승인하지 않습니다. `clip_receipt.json`과
 검토 템플릿을 보존하며, `sfx-review`는 명시적 청취 관찰만 기록합니다.

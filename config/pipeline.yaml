@@ -18,6 +18,9 @@ providers:
     executable: null
     pass_env: []
     job_root: null
+# rfxgen 합성 SFX(sfx_rfxgen). executable: null이면 PATH에서 rfxgen을 찾는다.
+rfxgen:
+  executable: null
 workspace:
   input: workspace/input
   intermediate: workspace/intermediate

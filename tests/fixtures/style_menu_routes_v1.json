@@ -63,6 +63,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -186,6 +187,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -309,6 +311,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -434,6 +437,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -557,6 +561,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -682,6 +687,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -809,6 +815,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -936,6 +943,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1061,6 +1069,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1187,6 +1196,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1312,6 +1322,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1437,6 +1448,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1562,6 +1574,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1685,6 +1698,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1808,6 +1822,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -1933,6 +1948,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2059,6 +2075,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2185,6 +2202,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2310,6 +2328,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2436,6 +2455,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2561,6 +2581,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2687,6 +2708,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2810,6 +2832,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -2935,6 +2958,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },
@@ -3058,6 +3082,7 @@
         "nonpixel_motion_contract": "output_class mismatch",
         "audio_stable_audio_3_medium": "output_class mismatch",
         "audio_yue2_bgm": "output_class mismatch",
+        "sfx_rfxgen": "output_class mismatch",
         "codex_imagegen": "requested model_profile mismatch",
         "grok_imagine": "requested model_profile mismatch"
       },

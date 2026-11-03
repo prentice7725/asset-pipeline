@@ -109,6 +109,17 @@ models:
     source_kind: LOCAL_CONFIG
     author_claims: []
     art_quality: UNKNOWN
+  rfxgen:
+    family: rFXGen
+    variant: v5 sfxr-style parameter synthesizer (.rfx render, SFX offline contract, generation not run)
+    workflows: [sfx_rfxgen]
+    status: EXPERIMENTAL
+    local_installation: NOT_PROBED_THIS_SESSION
+    license_review: REQUIRED
+    source: https://github.com/raysan5/rfxgen
+    source_kind: LOCAL_CONFIG
+    author_claims: []
+    art_quality: UNKNOWN
   codex-imagegen:
     family: Codex image_gen
     variant: CLI provider unspecified model

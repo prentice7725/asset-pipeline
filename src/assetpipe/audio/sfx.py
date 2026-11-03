@@ -18,15 +18,20 @@ AUDIO_CONTRACT = obj({
 CHECKS = ['intent_matches','no_unwanted_music','no_unwanted_voice','no_unwanted_noise',
           'no_audible_clipping','onset_and_tail_suitable','game_context_suitable']
 
-def clip_contract(value, asset_id):
-    errors=list(Draft202012Validator(AUDIO_CONTRACT).iter_errors(value))
+# rfxgen 합성음은 0.02–10초. 길이는 요청값이 아니라 렌더링 결과에서 정해진다.
+SYNTH_CONTRACT = obj({**AUDIO_CONTRACT['properties'], 'duration_seconds': {'type':'number','minimum':0.02,'maximum':10}},
+                     ['duration_seconds'])
+
+def clip_contract(value, asset_id, *, synth=False):
+    contract=SYNTH_CONTRACT if synth else AUDIO_CONTRACT
+    errors=list(Draft202012Validator(contract).iter_errors(value))
     if errors or not math.isfinite(value.get('duration_seconds',float('nan'))):
         raise ValueError('SFX_CLIP_CONTRACT_INVALID')
     result={'category':'UNSPECIFIED','clip_name':asset_id,'no_music':True,'no_voice':True,**value}
     name=result['clip_name'].upper()
     if name in {'CON','PRN','AUX','NUL',*[f'COM{i}' for i in range(10)],*[f'LPT{i}' for i in range(10)]}:
         raise ValueError('SFX_CLIP_CONTRACT_INVALID: reserved filename')
-    Draft202012Validator(AUDIO_CONTRACT).validate(result)
+    Draft202012Validator(contract).validate(result)
     return result
 
 def sha(path):
@@ -62,11 +67,14 @@ def validate_receipt(run, resolver=None):
     manifest=json.loads(checked_file(run/'run_manifest.json',resolver).read_text(encoding='utf-8'))
     if manifest.get('output_class')!='SFX' or any(manifest.get(k)!=receipt.get(k) for k in ['project_id','asset_id']):
         raise ValueError('SFX_EVIDENCE_INVALID: project/run binding differs')
-    clip_contract(receipt['clip'],receipt['asset_id'])
+    synth=receipt.get('engine')=='rfxgen'
+    clip_contract(receipt['clip'],receipt['asset_id'],synth=synth)
     for item in receipt['artifacts']+[receipt['qa'],receipt['generation_evidence']]:
         path=checked_file(item['path'],resolver)
         if not path.is_relative_to(run) or sha(path)!=item['sha256']:
             raise ValueError('SFX_EVIDENCE_CHANGED')
+    if synth:
+        return _validate_synth(receipt_path,receipt,resolver)
     originals=[i for i in receipt['artifacts'] if i['role']=='ORIGINAL_FLAC']
     waves=[i for i in receipt['artifacts'] if i['role']=='PCM_WAV']
     if len(originals)!=1 or len(waves)!=1: raise ValueError('SFX_EVIDENCE_INVALID: ambiguous clip')
@@ -77,6 +85,25 @@ def validate_receipt(run, resolver=None):
         raise ValueError('SFX_LISTENING_BLOCKED: audio QA differs')
     metadata=probe_flac(checked_file(originals[0]['path'],resolver))
     if metadata['sample_rate']!=actual['sample_rate'] or metadata['channels']!=actual['channels']:
+        raise ValueError('SFX_LISTENING_BLOCKED: sample format drift')
+    return receipt_path,receipt,sha(receipt_path)
+
+def _validate_synth(receipt_path, receipt, resolver):
+    """rfxgen 후보: 고정한 .rfx와 렌더링한 WAV, 기록한 QA가 지금도 그대로인지 다시 확인한다."""
+    from .rfxgen import parse_rfx
+    params=[i for i in receipt['artifacts'] if i['role']=='SYNTH_PARAMS_RFX']
+    waves=[i for i in receipt['artifacts'] if i['role']=='PCM_WAV']
+    if len(params)!=1 or len(waves)!=1 or len(receipt['artifacts'])!=2: raise ValueError('SFX_EVIDENCE_INVALID: ambiguous clip')
+    if params[0]['sha256']!=receipt['synth']['params_sha256']:
+        raise ValueError('SFX_EVIDENCE_CHANGED: rendered parameters differ from the Brief')
+    parse_rfx(checked_file(params[0]['path'],resolver))
+    from ..pipelines.sfx import analyze_audio
+    actual=analyze_audio(checked_file(waves[0]['path'],resolver),receipt['clip']['duration_seconds'])
+    recorded=json.loads(checked_file(receipt['qa']['path'],resolver).read_text(encoding='utf-8'))
+    if actual['status']!='PASS' or any(recorded.get(k)!=v for k,v in actual.items()):
+        raise ValueError('SFX_LISTENING_BLOCKED: audio QA differs')
+    rate,_,channels=(int(v) for v in receipt['synth']['output_format'].split(','))
+    if actual['sample_rate']!=rate or actual['channels']!=channels:
         raise ValueError('SFX_LISTENING_BLOCKED: sample format drift')
     return receipt_path,receipt,sha(receipt_path)
 

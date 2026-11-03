@@ -41,6 +41,9 @@ SCHEMA = obj({
     'source_notes': {'type': 'array', 'items': obj({'classification': {'enum': ['EXPLICIT', 'DERIVED', 'UNSPECIFIED']}, 'text': {'type': 'string'}, 'source': {'type': 'string'}}, ['classification', 'text', 'source'])},
     'prompt': {'type': 'string'}, 'negative_prompt': {'type': 'string'}, 'prompt_spec': PROMPT_SPEC_SCHEMA,
     'audio': obj({'duration_seconds': {'type': 'number', 'minimum': 1, 'maximum': 30}}, ['duration_seconds']),
+    # SFX 합성 경로: 사람이 만든 rfxgen 파라미터(.rfx)를 해시로 고정한다. 길이는 파라미터가 정한다.
+    'synth': obj({'engine': {'const': 'rfxgen'}, 'params_path': {'type': 'string', 'minLength': 1},
+                  'params_sha256': {'type': 'string', 'pattern': '^[0-9a-f]{64}$'}}, ['engine', 'params_path', 'params_sha256']),
     'bgm': obj({'duration_seconds': {'type': 'number', 'minimum': 10, 'maximum': 300}, 'instrumental': {'type': 'boolean'},
                 'lyrics': {'type': 'string'}, 'tempo_bpm': {'type': 'integer', 'minimum': 40, 'maximum': 240},
                 'mood': {'type': 'string', 'minLength': 1}, 'loop': {'type': 'boolean'}}, ['duration_seconds']),
@@ -52,6 +55,8 @@ def validate(brief):
     errors = sorted(Draft202012Validator(SCHEMA).iter_errors(brief), key=lambda e: str(e.path))
     if errors:
         raise ValueError('; '.join(f'{".".join(map(str, e.path)) or "brief"}: {e.message}' for e in errors))
+    if 'synth' in brief and (brief['output_class'] != 'SFX' or 'audio' in brief):
+        raise ValueError('SFX_SYNTH_INVALID: synth parameters are SFX-only and define their own duration')
     if brief.get('project_contract_required') and (not brief.get('project_id') or brief['output_class'] != 'NONPIXEL_IMAGE'):
         raise ValueError('Required project contract needs project_id and NONPIXEL_IMAGE')
     if OVERRIDE_FIELDS & brief.keys():
