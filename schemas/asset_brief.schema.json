@@ -602,6 +602,28 @@
       ],
       "additionalProperties": false
     },
+    "synth": {
+      "type": "object",
+      "properties": {
+        "engine": {
+          "const": "rfxgen"
+        },
+        "params_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "params_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "engine",
+        "params_path",
+        "params_sha256"
+      ],
+      "additionalProperties": false
+    },
     "bgm": {
       "type": "object",
       "properties": {

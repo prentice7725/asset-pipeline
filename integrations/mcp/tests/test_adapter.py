@@ -203,3 +203,13 @@ def test_continue_animation_reselects_workflow_after_output_class_change(adapter
 def test_unsupported_animation_constraints_are_rejected(adapter):
     with pytest.raises(ValueError):
         adapter.continue_animation('examples/character_test_brief.yaml', 'walk', 'PIXEL_ANIMATION', {'executable': 'cmd.exe'})
+
+
+def test_synth_params_must_stay_inside_source_roots(adapter, tmp_path):
+    # rfxgen .rfx도 다른 입력 파일처럼 허용 루트 밖이면 거부한다.
+    outside = tmp_path / 'outside.rfx'
+    outside.write_bytes(b'rFX ' + bytes(100))
+    value = make(asset_id='ui_confirm', output_class='SFX', prompt='UI confirm blip')
+    value['synth'] = {'engine': 'rfxgen', 'params_path': str(outside), 'params_sha256': '0' * 64}
+    with pytest.raises(ValueError, match='outside'):
+        adapter.secure_brief(value)

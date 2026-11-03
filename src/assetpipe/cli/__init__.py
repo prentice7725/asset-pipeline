@@ -131,6 +131,7 @@ def main(argv=None):
     run.add_argument('--brief', type=Path)
     run.add_argument('--type', choices=['pixel-static', 'pixel-animation', 'nonpixel-image', 'nonpixel-animation', 'sfx', 'bgm'])
     run.add_argument('--duration', type=float, help='SFX duration in seconds (1–30; default 5) or BGM maximum duration (10–300; default 60)')
+    run.add_argument('--rfx', type=Path, help='SFX only: render this rfxgen .rfx with the explicit sfx_rfxgen workflow; length comes from the file')
     run.add_argument('--lyrics', help='BGM only: sung lyrics; omitted means instrumental (default)')
     run.add_argument('--tempo-bpm', type=int, help='BGM only: tempo hint (40–240)')
     run.add_argument('--mood', help='BGM only: intended mood hint')
@@ -408,6 +409,14 @@ def main(argv=None):
                     brief['audio'] = {'duration_seconds': args.duration}
                 else:
                     raise ValueError('--duration is only supported for SFX and BGM')
+            if args.rfx is not None:
+                if brief['output_class'] != 'SFX' or args.duration is not None:
+                    raise ValueError('--rfx is SFX-only and cannot be combined with --duration')
+                import hashlib
+                params = args.rfx.resolve(strict=True)
+                brief['synth'] = {'engine': 'rfxgen', 'params_path': str(params),
+                                  'params_sha256': hashlib.sha256(params.read_bytes()).hexdigest()}
+                brief['workflow_preferences'].update(id=args.workflow or 'sfx_rfxgen', allow_experimental=True)
             if args.preset:
                 brief['workflow_preferences']['preset'] = args.preset
             if args.allow_experimental:

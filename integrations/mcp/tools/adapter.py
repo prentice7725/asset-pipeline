@@ -53,6 +53,9 @@ class Adapter:
         for key, value in brief.get('production', {}).items():
             if key != 'direct_profile':
                 brief['production'][key] = str(self.source(value, file=key != 'source_frames'))
+        if 'synth' in brief:
+            # 합성 파라미터도 다른 입력처럼 허용 루트 안의 파일이어야 한다.
+            brief['synth']['params_path'] = str(self.source(brief['synth']['params_path']))
         if brief['source']['type'] == 'DOCUMENTS':
             for note in brief['source_notes']:
                 note['source'] = str(self.source(note['source']))

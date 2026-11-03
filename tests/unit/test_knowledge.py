@@ -60,8 +60,8 @@ def mutate(root, name, callback):
 def test_complete_mapping_and_counts():
     result = build_snapshot(ROOT)
     assert result["research_state"] == "INVENTORY_ONLY"
-    assert result["counts"]["workflows"] == 12
-    assert result["counts"]["model_variants"] == 11
+    assert result["counts"]["workflows"] == 13
+    assert result["counts"]["model_variants"] == 12
     assert result["counts"]["model_profiles"] == 9  # Includes the explicit MiniMax research compiler profile.
     assert result["counts"]["styles"] == 33
     assert result["counts"]["runtime_recipes"] == 91

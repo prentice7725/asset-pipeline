@@ -19,6 +19,13 @@ stated intent when clear; ask if choosing it would change the requested asset.
 기본 오디오 QA를 통과해도 청취 검토가 필수이며 자동 승인하지 않는다.
 원본 FLAC과 PCM WAV를 프로젝트별 실행 폴더에 보존한다.
 
+# SFX 합성 경로 (rfxgen)
+
+`sfx_rfxgen`은 사람이 만든 rfxgen `.rfx`를 WAV로 렌더링하는 EXPERIMENTAL·explicit_only 경로다.
+prepared brief에 `synth: {engine: rfxgen, params_path, params_sha256}`와 `workflow_id: sfx_rfxgen`을
+명시해야 하며, 프롬프트만으로는 선택되지 않는다. 길이는 `.rfx`가 정하므로 `duration_seconds`와
+함께 쓰지 않는다. 실제 rfxgen 실행은 아직 검증하지 않았다. 청취 검토는 텍스트 SFX와 같다.
+
 # BGM 출력 확장
 
 `BGM`은 YuE2 기반 게임 배경음악 후보다. `bgm.duration_seconds`는 10–300초(기본 60),

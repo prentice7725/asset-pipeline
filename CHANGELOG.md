@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — rfxgen synth SFX offline contract, 2026-11-03
+
+- Add EXPERIMENTAL explicit-only `sfx_rfxgen` inside `SFX` (`create --type sfx --rfx`): renders a
+  hash-pinned human-made `.rfx` once, validates the file first, 0.02–10 s QA, same listening review.
+  Zero real rfxgen executions: OFFLINE_CONTRACT_PASS / GENERATION_NOT_RUN.
+
 ## Unreleased — general reference edits, 2026-11-01
 
 - Any asset class may declare `reference_edit_contracts`; opaque classes use `EXACT_RGB` input and

@@ -6,6 +6,9 @@ from .._ported.comfy_bridge.workflow_loader import load_workflow
 
 STATUSES = {'ACTIVE', 'VALIDATED', 'EXPERIMENTAL', 'REJECTED'}
 CLI_ENGINES = {'codex_cli', 'grok_cli'}
+# 파라미터 파일을 렌더링하는 로컬 합성기. 모델 추론·네트워크 없이 같은 입력을 오프라인으로 변환한다.
+SYNTH_ENGINES = {'rfxgen'}
+RFXGEN_FORMATS = {'22050,16,1', '44100,16,1', '22050,16,2', '44100,16,2'}
 CLI_TOOLS = {'codex_cli': {'image_gen'}, 'grok_cli': {'image_gen', 'image_edit'}}
 AUTH_MODES = {'codex_cli': {'cli_login'}, 'grok_cli': {'cli_login', 'env_api_key'}}
 # 격리·승인 정책을 약화시키는 인자는 registry에서 지정할 수 없다.
@@ -78,6 +81,10 @@ def _normalize_cli_entry(key, item, root, registry_version):
     item.setdefault('models', {})
     item['version'] = item.get('version') or registry_version
     item['hash'] = hashlib.sha256(json.dumps({'engine': engine, 'backend': backend, 'capabilities': item.get('capabilities', {})}, sort_keys=True).encode('utf-8')).hexdigest()
+    _require_real_evidence(key, item, root)
+
+
+def _require_real_evidence(key, item, root):
     # 실제 생성이 검증되지 않은 provider는 자동 라우팅 대상(ACTIVE)이 될 수 없다.
     if item['status'] == 'ACTIVE':
         validation = item.get('validation') or {}
@@ -95,6 +102,29 @@ def _normalize_cli_entry(key, item, root, registry_version):
         if not verified:
             raise ValueError(f'CLI provider cannot be ACTIVE without real-generation evidence: {key}')
 
+def _normalize_synth_entry(key, item, root, registry_version):
+    """rfxgen: 명시한 .rfx 파라미터만 WAV로 렌더링한다. 프롬프트 해석이나 프리셋 무작위 생성은 하지 않는다."""
+    if item.get('workflow_file') or item.get('workflow_name'):
+        raise ValueError(f'Synth entries must not declare a ComfyUI workflow: {key}')
+    if item['output_class'] != 'SFX':
+        raise ValueError(f'Synth entries support SFX only: {key}')
+    if item.get('selection') != 'explicit_only':
+        raise ValueError(f'Synth entries must be explicit_only: {key}')
+    raw = item.get('backend')
+    if not isinstance(raw, dict) or set(raw) - {'output_format', 'timeout_seconds'}:
+        raise ValueError(f'Synth backend allows only output_format and timeout_seconds: {key}')
+    backend = {'output_format': raw.get('output_format', '44100,16,1'), 'timeout_seconds': raw.get('timeout_seconds', 30)}
+    if backend['output_format'] not in RFXGEN_FORMATS:
+        raise ValueError(f'Unsupported rfxgen output_format (16-bit PCM only): {key}')
+    if type(backend['timeout_seconds']) is not int or not 5 <= backend['timeout_seconds'] <= 300:
+        raise ValueError(f'backend.timeout_seconds must be an integer between 5 and 300: {key}')
+    item['backend'] = backend
+    item.setdefault('models', {})
+    item['version'] = item.get('version') or registry_version
+    item['hash'] = hashlib.sha256(json.dumps({'engine': item['engine'], 'backend': backend, 'capabilities': item.get('capabilities', {})}, sort_keys=True).encode('utf-8')).hexdigest()
+    _require_real_evidence(key, item, root)
+
+
 def load_registry(root):
     root = Path(root).resolve()
     value = yaml.safe_load((root / 'config/workflow_registry.yaml').read_text(encoding='utf-8'))
@@ -108,6 +138,9 @@ def load_registry(root):
         item['id'] = key
         if engine in CLI_ENGINES:
             _normalize_cli_entry(key, item, root, value.get('registry_version'))
+            continue
+        if engine in SYNTH_ENGINES:
+            _normalize_synth_entry(key, item, root, value.get('registry_version'))
             continue
         if engine != 'comfyui':
             raise ValueError(f'Unsupported engine: {key}')

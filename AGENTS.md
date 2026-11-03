@@ -28,6 +28,11 @@ and general edit kinds (e.g. CLEANUP for text/watermark/artifact removal), using
 codex_imagegen/grok_imagine providers. Read docs/factory/IDENTITY_VARIANT.md. Same rules as identity
 variants: explicit workflow id, one attempt, no retry/fallback, HUMAN_REQUIRED review, six MCP tools.
 
+Reopened by the user on 2026-11-03 (rfxgen SFX only): an rfxgen synth option inside the SFX output class,
+offline contract first. Read docs/SFX_RFXGEN.md. Render only explicit human-made .rfx files (no --generate
+presets), EXPERIMENTAL explicit_only, one attempt, no retry/fallback, listening review required, six MCP
+tools. Real rfxgen execution needs a separate request; no layering/mixing with other sources.
+
 Change discipline:
 - One topic per branch/PR. Do not bundle research commits into a feature PR.
 - Prefer code plus tests over new dated reports. Add a dated validation document only when

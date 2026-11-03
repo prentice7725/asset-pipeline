@@ -46,7 +46,7 @@ def _route_bound(brief, registry, root, menu_decision=None):
     reusable_motion = bool(brief.get('production', {}).get('motion_reference'))
     required = []
     if not reusable_motion:
-        required.append('text_to_audio' if brief['output_class'] == 'SFX' else 'text_to_music' if brief['output_class'] == 'BGM' else 'character_reference' if brief['source']['type'] == 'REFERENCE_IMAGE' else 'text_to_image')
+        required.append(('synth_params' if brief.get('synth') else 'text_to_audio') if brief['output_class'] == 'SFX' else 'text_to_music' if brief['output_class'] == 'BGM' else 'character_reference' if brief['source']['type'] == 'REFERENCE_IMAGE' else 'text_to_image')
     if brief['output_class'] in {'SFX', 'BGM'} and brief['source']['type'] == 'REFERENCE_IMAGE':
         raise ValueError(f"{brief['output_class']} workflow supports text only")
     if brief['constraints']['transparency'] is True and brief['output_class'] == 'NONPIXEL_IMAGE':

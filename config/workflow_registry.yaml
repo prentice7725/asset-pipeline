@@ -504,6 +504,28 @@ workflows:
     validation:
       status: REAL_GENERATION_AND_AUDIO_QA_PASS
       evidence: docs/sfx_verification.json
+  sfx_rfxgen:
+    output_class: SFX
+    engine: rfxgen
+    status: EXPERIMENTAL
+    selection: explicit_only
+    priority: 0
+    tags:
+    - sfx
+    - audio
+    - synth
+    - retro
+    backend:
+      output_format: 44100,16,1
+      timeout_seconds: 30
+    capabilities:
+      synth_params: true
+      text_to_audio: false
+      negative_prompt: false
+      audio_reference: false
+    validation:
+      status: OFFLINE_CONTRACT_PASS_GENERATION_NOT_RUN
+      evidence: docs/SFX_RFXGEN.md
   audio_yue2_bgm:
     output_class: BGM
     engine: comfyui
