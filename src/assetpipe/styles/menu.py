@@ -33,6 +33,16 @@ def bind_menu(brief, root, registry=None):
         raise ValueError('Visual SOT art_style lock conflicts with requested style')
     slug = locked or requested
     if not slug:
+        workflow = sot.get('workflow_id')
+        model = sot.get('model_profile')
+        preferences = result.setdefault('workflow_preferences', {})
+        if ((workflow and preferences.get('id') not in (None, workflow))
+                or (model and preferences.get('model_profile') not in (None, model))):
+            raise ValueError('Explicit workflow/model conflicts with project binding')
+        if workflow:
+            preferences['id'] = workflow
+        if model:
+            preferences['model_profile'] = model
         return result, None
     if result['output_class'] != 'NONPIXEL_IMAGE':
         raise ValueError('Style menu supports NONPIXEL_IMAGE only')

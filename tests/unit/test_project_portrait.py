@@ -32,13 +32,13 @@ def environment_wall():
     b = make(asset_id='env_wall_test', output_class='NONPIXEL_IMAGE',
              prompt='Warm ivory wall plane in a maintained public-service office')
     b.update(asset_type='environment_background_layer', project_id='isekai_examiner',
-             project_contract_required=True, art_style='watercolor_storybook', style_id='STYLE-111',
+             project_contract_required=True, style_id='ISEKAI-ENV-SEMIREAL-001',
              purpose='Opaque wall-only candidate')
     b['source'] = {'type': 'DOCUMENTS', 'paths': ['source_extract.md'], 'references': []}
     b['identity']['canonical_traits'] = ['Warm ivory wall', 'Pale marble lower-wall treatment']
     b['identity']['visual_traits'] = ['Practical maintained public-service office architecture']
     b['constraints'].update(resolution=[1920, 1080], transparency=False,
-                            palette=['Warm Ivory', 'Pale Marble'], style='STYLE-111 watercolor_storybook')
+                            palette=['Warm Ivory', 'Pale Marble'], style='Clean semi-realistic game background')
     b['workflow_preferences'] = {'id': 'krea2_base', 'model_profile': 'krea2'}
     b['forbidden_elements'] = ['characters, portraits, desks, counters, notice boards, number displays, printers, documents, readable signage, text, or UI',
                                'cathedral scale, grand altar staging, ornate fantasy excess, heavy impasto, cinematic lighting, dramatic spotlighting',
@@ -51,8 +51,8 @@ def environment_wall():
         'composition': 'Wide 16:9 wall-only layer; quiet planar architecture; avoid invented architecture.',
         'environment': 'Warm ivory wall, simple pale marble lower wall, practical construction, restrained wear.',
         'lighting': 'Bright, even, neutral office light.', 'mood': 'Dry bureaucratic black comedy in the premise only.',
-        'appearance': ['Use STYLE-111 watercolor_storybook as rendering technique only.',
-                       'Keep delicate watercolor texture readable at game scale.',
+        'appearance': ['Use clean semi-realistic rendering.',
+                       'Keep practical material texture readable at game scale.',
                        'Preserve warm ivory and pale marble color roles; do not impose sepia.'],
         'constraints': ['Preserve layer separation and gameplay hierarchy.', 'Do not create readable text or visual interaction cues.'],
         'negative': ['characters', 'furniture or foreground props', 'cathedral', 'ornate fantasy architecture',
@@ -177,12 +177,10 @@ def test_environment_style_menu_binding_and_project_negative_review():
     decision = route_brief(b, ROOT)
     assert decision['status'] == 'ROUTED'
     assert decision['selected_workflow'] == 'krea2_base'
-    assert decision['style_selection']['style_id'] == 'STYLE-111'
+    assert decision['style_selection']['style_id'] == 'ISEKAI-ENV-SEMIREAL-001'
     assert decision['style_selection']['selection_source'] == 'PROJECT_VISUAL_SOT'
     assert decision['style_selection']['recipe_file'].endswith('isekai_examiner/visual_sot.yaml')
-    assert decision['style_menu']['source_file'] == 'config/styles/style_menu_v1.yaml'
-    assert decision['style_menu']['style_id'] == 'STYLE-111'
-    assert decision['style_menu']['menu_candidate_id'] == 'CAND-011'
+    assert not decision.get('style_menu')
     assert decision['exclusion_handling']['native_negative_supported'] is False
     compiled = compile_prompt(b, load_registry(ROOT)['krea2_base'], ROOT)
     assert compiled['negative_mode'] == 'POSITIVE_TEXT_INSTRUCTION_REVIEW_REQUIRED'
@@ -199,7 +197,7 @@ def test_blocked_style_menu_route_keeps_the_menu_selection():
     decision = route_brief(b, ROOT)
     assert decision['status'] == 'BLOCKED'
     assert decision['missing_capabilities'] == ['transparent_output']
-    assert decision['style_menu']['style_id'] == 'STYLE-111'
+    assert not decision.get('style_menu')
     assert decision['style_selection']['selection_source'] == 'PROJECT_VISUAL_SOT'
 
 
