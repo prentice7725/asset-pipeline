@@ -204,3 +204,109 @@ def test_rfx_option_rejects_duration_and_other_output_types(lab):
     assert main(['--root', str(lab.root), 'create', '--type', 'bgm', '--asset-id', 'y', '--prompt', 'p',
                  '--rfx', str(rfx), '--output', str(lab.tmp / 'runs/y')]) == 1
     assert lab.calls() == []
+
+
+# ---------- 승인 프리셋 라이브러리 ----------
+
+from assetpipe.audio import rfx_library
+
+
+def test_committed_library_is_valid_and_starts_without_approvals():
+    data = rfx_library.load(ROOT)
+    assert data['schema_version'] == 1 and all(e['state'] != 'APPROVED' or e.get('approval') for e in data['entries'].values())
+
+
+def register(lab, entry_id='ui_confirm', **params):
+    rfx = make_rfx(lab.tmp / 'gui' / f'{entry_id}.rfx', **params)
+    return rfx_library.add_candidate(lab.root, entry_id, rfx, category='UI_CONFIRM',
+                                     description='Short bright confirm blip', added_by='SYNTHETIC_TEST')
+
+
+def render_preset(lab, entry_id='ui_confirm', name=None):
+    out = lab.tmp / 'runs' / (name or entry_id)
+    code = main(['--root', str(lab.root), 'create', '--type', 'sfx', '--asset-id', name or entry_id,
+                 '--prompt', 'library render', '--rfx-preset', entry_id, '--output', str(out)])
+    return code, out
+
+
+def listen(out, outcome, checks):
+    review = json.loads((out / '020_audio/listening_review_template.json').read_text(encoding='utf-8'))
+    review.update(listened=True, reviewed_by='SYNTHETIC_TEST', reason='fixture only', outcome=outcome,
+                  checks={k: checks for k in CHECKS})
+    record_review(out, review, listened=True)
+
+
+def test_register_copies_human_rfx_as_candidate_and_never_overwrites(lab):
+    entry = register(lab)
+    stored = lab.root / 'config/sfx_library/ui_confirm.rfx'
+    assert entry['state'] == 'CANDIDATE' and entry['sha256'] == digest(stored) and 'approval' not in entry
+    with pytest.raises(ValueError, match='SFX_LIBRARY_EXISTS'):
+        register(lab)
+    bad = lab.tmp / 'bad.rfx'
+    bad.write_bytes(b'not an rfx')
+    for kwargs in [{'rfx': bad, 'category': 'UI_CLICK'}, {'rfx': stored, 'category': 'MUSIC'}]:
+        with pytest.raises(ValueError):
+            rfx_library.add_candidate(lab.root, 'other', kwargs['rfx'], category=kwargs['category'],
+                                      description='d', added_by='t')
+    assert set(rfx_library.load(lab.root)['entries']) == {'ui_confirm'}
+
+
+def test_preset_render_records_library_state_and_approval_needs_pass_review(lab):
+    register(lab, seed=11)
+    code, out = render_preset(lab)
+    receipt = json.loads((out / '020_audio/clip_receipt.json').read_text(encoding='utf-8'))
+    assert code == 0 and receipt['synth']['library'] == {'id': 'ui_confirm', 'state_at_render': 'CANDIDATE', 'category': 'UI_CONFIRM'}
+    with pytest.raises(ValueError, match='SFX_LIBRARY_REVIEW_REQUIRED'):
+        rfx_library.approve(lab.root, 'ui_confirm', out)
+    listen(out, 'HOLD', False)
+    with pytest.raises(ValueError, match='SFX_LIBRARY_REVIEW_NOT_PASS'):
+        rfx_library.approve(lab.root, 'ui_confirm', out)
+    _, passed = render_preset(lab, name='ui_confirm_second')
+    listen(passed, 'PASS', True)
+    entry = rfx_library.approve(lab.root, 'ui_confirm', passed)
+    assert entry['state'] == 'APPROVED' and entry['approval']['run_id'] == 'ui_confirm_second'
+    assert entry['approval']['reviewed_by'] == 'SYNTHETIC_TEST'
+    assert rfx_library.load(lab.root)['entries']['ui_confirm']['state'] == 'APPROVED'
+    with pytest.raises(ValueError, match='ALREADY_APPROVED'):
+        rfx_library.approve(lab.root, 'ui_confirm', passed)
+    # 승인 뒤에 새로 렌더링한 결과도 여전히 청취 검토 대상이다.
+    _, again = render_preset(lab, name='ui_confirm_third')
+    manifest = json.loads((again / 'run_manifest.json').read_text(encoding='utf-8'))
+    assert manifest['status'] == 'AUDIO_CANDIDATE_READY_REVIEW_REQUIRED' and manifest['game_ready'] is False
+
+
+def test_approval_rejects_a_run_of_different_parameters(lab):
+    register(lab)
+    _, out, _ = lab.create(make_rfx(lab.tmp / 'other.rfx', seed=99), 'other_params')
+    listen(out, 'PASS', True)
+    with pytest.raises(ValueError, match='SFX_LIBRARY_RUN_MISMATCH'):
+        rfx_library.approve(lab.root, 'ui_confirm', out)
+
+
+def test_tampered_library_blocks_loading_and_rendering(lab):
+    register(lab)
+    index = lab.root / 'config/sfx_library/library.json'
+    original = index.read_text(encoding='utf-8')
+    data = json.loads(original)
+    data['entries']['ui_confirm']['state'] = 'APPROVED'  # 청취 근거 없이 승인으로 바꿈
+    index.write_text(json.dumps(data), encoding='utf-8')
+    with pytest.raises(ValueError, match='SFX_LIBRARY_INVALID'):
+        rfx_library.load(lab.root)
+    index.write_text(original, encoding='utf-8')
+    stored = lab.root / 'config/sfx_library/ui_confirm.rfx'
+    make_rfx(stored, seed=5)  # 등록 뒤 파라미터가 바뀜
+    with pytest.raises(ValueError, match='SFX_LIBRARY_CHANGED'):
+        rfx_library.load(lab.root)
+    code, out = render_preset(lab)
+    assert code == 1 and lab.calls() == []
+
+
+def test_library_cli_lists_and_registers_without_rendering(lab, capsys):
+    rfx = make_rfx(lab.tmp / 'gui/laser_small.rfx')
+    assert main(['--root', str(lab.root), 'sfx-library', 'add', '--id', 'laser_small', '--rfx', str(rfx),
+                 '--category', 'LASER', '--description', 'Small retro laser', '--added-by', 'SYNTHETIC_TEST']) == 0
+    assert main(['--root', str(lab.root), 'sfx-library', 'list']) == 0
+    listed = json.loads(capsys.readouterr().out.split('\n}\n', 1)[1])
+    assert listed['entries']['laser_small']['state'] == 'CANDIDATE' and lab.calls() == []
+    assert main(['--root', str(lab.root), 'sfx-library', 'approve', '--id', 'laser_small',
+                 '--run', str(lab.tmp / 'runs/none')]) == 1

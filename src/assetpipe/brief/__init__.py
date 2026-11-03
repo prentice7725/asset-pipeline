@@ -43,7 +43,8 @@ SCHEMA = obj({
     'audio': obj({'duration_seconds': {'type': 'number', 'minimum': 1, 'maximum': 30}}, ['duration_seconds']),
     # SFX 합성 경로: 사람이 만든 rfxgen 파라미터(.rfx)를 해시로 고정한다. 길이는 파라미터가 정한다.
     'synth': obj({'engine': {'const': 'rfxgen'}, 'params_path': {'type': 'string', 'minLength': 1},
-                  'params_sha256': {'type': 'string', 'pattern': '^[0-9a-f]{64}$'}}, ['engine', 'params_path', 'params_sha256']),
+                  'params_sha256': {'type': 'string', 'pattern': '^[0-9a-f]{64}$'},
+                  'library_id': {'type': 'string', 'pattern': '^[a-z0-9][a-z0-9_]{0,63}$'}}, ['engine', 'params_path', 'params_sha256']),
     'bgm': obj({'duration_seconds': {'type': 'number', 'minimum': 10, 'maximum': 300}, 'instrumental': {'type': 'boolean'},
                 'lyrics': {'type': 'string'}, 'tempo_bpm': {'type': 'integer', 'minimum': 40, 'maximum': 240},
                 'mood': {'type': 'string', 'minLength': 1}, 'loop': {'type': 'boolean'}}, ['duration_seconds']),

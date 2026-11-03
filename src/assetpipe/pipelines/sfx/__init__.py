@@ -137,6 +137,14 @@ def run_synth(brief, workflow, config, directory, manifest):
     if not source.is_file() or sha(source) != synth['params_sha256']:
         raise ValueError('SFX_SYNTH_PARAMS_CHANGED: .rfx is missing or its hash differs from the Brief')
     params = rfxgen.parse_rfx(source)
+    library = None
+    if synth.get('library_id'):
+        # 라이브러리 프리셋은 등록된 파일·해시와 정확히 같아야 한다. 승인 상태는 렌더링 시점 값을 기록만 한다.
+        from ...audio.rfx_library import resolve
+        entry = resolve(config.root, synth['library_id'])
+        if entry['sha256'] != synth['params_sha256'] or entry['path'].resolve() != source.resolve():
+            raise ValueError('SFX_LIBRARY_MISMATCH: Brief parameters differ from the library entry')
+        library = {'id': synth['library_id'], 'state_at_render': entry['state'], 'category': entry['category']}
     executable = rfxgen.find_executable(config)  # 실행 파일이 없으면 출력 폴더를 만들기 전에 멈춘다.
     backend = workflow['backend']
     directory = Path(directory).resolve(strict=True)
@@ -153,7 +161,7 @@ def run_synth(brief, workflow, config, directory, manifest):
                'artifacts': [], 'attempts': 1, 'fallback': 'NONE', 'workflow': manifest.get('workflow', {}),
                'synth': {'engine': 'rfxgen', 'params_sha256': synth['params_sha256'], 'params_origin': str(source),  # 출처 기록. run 밖 경로라 다시 읽지 않는다.
                          'output_format': backend['output_format'], 'parameters': params,
-                         'exact_reproduction': 'NOT_VERIFIED'}}
+                         'exact_reproduction': 'NOT_VERIFIED', 'library': library}}
     manifest['audio_clip_receipt_path'] = str(receipt_path)
     manifest['game_ready'] = False
     manifest['generation']['synth'] = {'engine': 'rfxgen', 'params_sha256': synth['params_sha256'],
