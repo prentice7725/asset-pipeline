@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — rfxgen preset library, 2026-11-03
+
+- Add `config/sfx_library` and `sfx-library list|add|approve`, plus `create --rfx-preset`: human-made
+  `.rfx` files are registered as hash-pinned CANDIDATEs and become APPROVED only from a run that rendered
+  them with a PASS listening record. Renders stay review-required; no presets are shipped.
+
 ## Unreleased — rfxgen synth SFX offline contract, 2026-11-03
 
 - Add EXPERIMENTAL explicit-only `sfx_rfxgen` inside `SFX` (`create --type sfx --rfx`): renders a

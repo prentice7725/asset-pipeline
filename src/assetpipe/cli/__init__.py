@@ -61,6 +61,18 @@ def main(argv=None):
     audio_review.add_argument('--run',required=True,type=Path)
     audio_review.add_argument('--review',required=True,type=Path)
     audio_review.add_argument('--listened',required=True,action='store_true')
+    library = commands.add_parser('sfx-library', help='rfxgen preset library: list, register a human-made .rfx, approve from a PASS listening record')
+    library_commands = library.add_subparsers(dest='library_command', required=True)
+    library_commands.add_parser('list')
+    library_add = library_commands.add_parser('add', help='Register a human-made .rfx as CANDIDATE (no rendering)')
+    library_add.add_argument('--id', required=True)
+    library_add.add_argument('--rfx', required=True, type=Path)
+    library_add.add_argument('--category', required=True)
+    library_add.add_argument('--description', required=True)
+    library_add.add_argument('--added-by', required=True)
+    library_approve = library_commands.add_parser('approve', help='Approve a CANDIDATE from a run that rendered it and has a PASS listening record')
+    library_approve.add_argument('--id', required=True)
+    library_approve.add_argument('--run', required=True, type=Path)
     music_review = commands.add_parser('bgm-review',help='Record explicit BGM listening observations; no generation or game approval')
     music_review.add_argument('--run',required=True,type=Path)
     music_review.add_argument('--review',required=True,type=Path)
@@ -131,6 +143,7 @@ def main(argv=None):
     run.add_argument('--brief', type=Path)
     run.add_argument('--type', choices=['pixel-static', 'pixel-animation', 'nonpixel-image', 'nonpixel-animation', 'sfx', 'bgm'])
     run.add_argument('--duration', type=float, help='SFX duration in seconds (1–30; default 5) or BGM maximum duration (10–300; default 60)')
+    run.add_argument('--rfx-preset', help='SFX only: render a registered sfx-library entry (CANDIDATE or APPROVED) with sfx_rfxgen')
     run.add_argument('--rfx', type=Path, help='SFX only: render this rfxgen .rfx with the explicit sfx_rfxgen workflow; length comes from the file')
     run.add_argument('--lyrics', help='BGM only: sung lyrics; omitted means instrumental (default)')
     run.add_argument('--tempo-bpm', type=int, help='BGM only: tempo hint (40–240)')
@@ -227,6 +240,18 @@ def main(argv=None):
             from ..motion.package import package_video
             print(package_video(args.request, args.video, args.video_sha256, args.output,
                                 args.root, allowed_roots=args.allowed_root))
+        elif args.command == 'sfx-library':
+            from ..audio import rfx_library
+            if args.library_command == 'list':
+                result = rfx_library.load(args.root)
+            elif args.library_command == 'add':
+                result = rfx_library.add_candidate(args.root, args.id, args.rfx, category=args.category,
+                                                   description=args.description, added_by=args.added_by)
+            else:
+                from ..paths import RootResolver
+                resolver = RootResolver([args.root], base=args.root)
+                result = rfx_library.approve(args.root, args.id, resolver(args.run), resolver=resolver)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
         elif args.command in {'sfx-review', 'bgm-review'}:
             from ..paths import RootResolver
             from importlib import import_module
@@ -409,13 +434,19 @@ def main(argv=None):
                     brief['audio'] = {'duration_seconds': args.duration}
                 else:
                     raise ValueError('--duration is only supported for SFX and BGM')
-            if args.rfx is not None:
-                if brief['output_class'] != 'SFX' or args.duration is not None:
-                    raise ValueError('--rfx is SFX-only and cannot be combined with --duration')
-                import hashlib
-                params = args.rfx.resolve(strict=True)
-                brief['synth'] = {'engine': 'rfxgen', 'params_path': str(params),
-                                  'params_sha256': hashlib.sha256(params.read_bytes()).hexdigest()}
+            if args.rfx is not None or args.rfx_preset is not None:
+                if brief['output_class'] != 'SFX' or args.duration is not None or (args.rfx and args.rfx_preset):
+                    raise ValueError('--rfx/--rfx-preset are SFX-only, exclusive, and cannot be combined with --duration')
+                if args.rfx_preset:
+                    from ..audio.rfx_library import resolve
+                    entry = resolve(args.root, args.rfx_preset)
+                    brief['synth'] = {'engine': 'rfxgen', 'params_path': str(entry['path']),
+                                      'params_sha256': entry['sha256'], 'library_id': args.rfx_preset}
+                else:
+                    import hashlib
+                    params = args.rfx.resolve(strict=True)
+                    brief['synth'] = {'engine': 'rfxgen', 'params_path': str(params),
+                                      'params_sha256': hashlib.sha256(params.read_bytes()).hexdigest()}
                 brief['workflow_preferences'].update(id=args.workflow or 'sfx_rfxgen', allow_experimental=True)
             if args.preset:
                 brief['workflow_preferences']['preset'] = args.preset
