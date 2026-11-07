@@ -67,6 +67,19 @@ A/B 당시 `workspace/checkouts/m3-motion-audit-20261023`)가 이 PC에 없다. 
 
 수용 기준: 투명 64px 후보가 기술 게이트를 통과하고 사람 정지 이미지 검토로 넘어간다.
 
+등록(2026-11-07): `krea2_pixel64` 워크플로(EXPERIMENTAL, explicit_only, PIXEL_STATIC).
+`assetpipe create --brief <brief> --allow-experimental --seed N`으로 실행한다. 크기 지정은
+Refiner(논리 크기)에 연결되고 1024px 생성 크기는 고정이며, 1024px 원본은 해시와 함께 보존한다.
+첫 실행(seed 20261107)은 생성 39.8초, 23색, Pixel Gate PASS, 배경 불투명, 사람 검토 대기다.
+
+투명 납품(2026-11-07): `assetpipe pixel-transparent --input <불투명 후보> --output <새 폴더>
+--created-by <이름> [--hole X,Y ...] [--aseprite]` (`assetpipe.pixel.transparent`). 테두리 전체가
+선언한 배경색(기본 흰색, 거리 10 이내)의 한 색일 때만 동작하고, 테두리에 이어진 그 색만 이진 알파로
+지운다. 캐릭터 안에 갇힌 배경색 영역은 `--hole`로 지정한 곳만 지우고 나머지는 보고서와
+`review_preview.png`(자홍색)로 남긴다. 그림자 같은 비배경색과 불투명 픽셀 RGB는 바꾸지 않는다.
+첫 9장(궁수 + 8종)은 모두 게이트와 Aseprite RGBA 왕복을 통과했다. 지운 내부 영역은 궁수 활 틈,
+고블린 팔·다리 틈, 마법사 지팡이 틈, 늑대 수인 팔 틈이고 눈·여우 꼬리 끝·유리 반사는 남겼다.
+
 ### P2. LoRA `.magnitude` 로더
 
 [출처 기록](../research/KREA2_PIXEL64_PROVENANCE_20261027.md)의 남은 차단 요인을 순서대로 푼다.

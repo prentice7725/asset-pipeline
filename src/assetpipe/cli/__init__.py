@@ -92,6 +92,14 @@ def main(argv=None):
     ledger_review.add_argument('--edit-minutes', required=True, type=float, help='Your actual Aseprite minutes on this candidate')
     ledger_review.add_argument('--reviewer', required=True)
     ledger_review.add_argument('--note', default='')
+    pixel_transparent = commands.add_parser('pixel-transparent', help='Pixel64 binary-alpha delivery copy; enclosed background is cleared only at explicit --hole seeds')
+    pixel_transparent.add_argument('--input', required=True, type=Path, help='Opaque generated candidate (left unchanged)')
+    pixel_transparent.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    pixel_transparent.add_argument('--created-by', required=True)
+    pixel_transparent.add_argument('--hole', action='append', default=[], metavar='X,Y', help='Seed inside an enclosed background region to clear')
+    pixel_transparent.add_argument('--background', default='255,255,255', metavar='R,G,B')
+    pixel_transparent.add_argument('--tolerance', type=float, default=10.0)
+    pixel_transparent.add_argument('--aseprite', action='store_true', help='Also build an Aseprite master and require an exact RGBA round trip')
     music_review = commands.add_parser('bgm-review',help='Record explicit BGM listening observations; no generation or game approval')
     music_review.add_argument('--run',required=True,type=Path)
     music_review.add_argument('--review',required=True,type=Path)
@@ -287,6 +295,24 @@ def main(argv=None):
                                               edit_minutes=args.edit_minutes, reviewer=args.reviewer, note=args.note)
             else:
                 result = ledger.summarize(book)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel-transparent':
+            from ..paths import RootResolver
+            from ..pixel.transparent import make_transparent
+            resolver = RootResolver([args.root], base=args.root)
+            output = resolver(args.output, strict=False)
+            seeds = [tuple(int(v) for v in item.split(',')) for item in args.hole]
+            result = make_transparent(resolver(args.input), output, created_by=args.created_by, hole_seeds=seeds,
+                                      background_rgb=tuple(int(v) for v in args.background.split(',')),
+                                      tolerance=args.tolerance)
+            if args.aseprite:
+                from .._ported.config import load_config
+                from ..manifests import write_new
+                from ..providers.aseprite import AsepriteProvider
+                export = AsepriteProvider(load_config(args.root / 'config/pipeline.yaml')).export(
+                    [Path(result['output'])], output / 'aseprite', output.name)
+                write_new(output / 'aseprite_roundtrip.json', export)
+                result['aseprite'] = {'status': export['status'], 'master': export['master']}
             print(json.dumps(result, ensure_ascii=False, indent=2))
         elif args.command in {'sfx-review', 'bgm-review'}:
             from ..paths import RootResolver
