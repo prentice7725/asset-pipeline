@@ -7,6 +7,19 @@ from ..router import route
 from ..pipelines import create
 from ..manifests import write, now
 
+def _pixel_aseprite(args, output, result):
+    """Optional exact-RGBA Aseprite round trip for a Pixel64 delivery or edit output."""
+    if not args.aseprite:
+        return
+    from .._ported.config import load_config
+    from ..manifests import write_new
+    from ..providers.aseprite import AsepriteProvider
+    export = AsepriteProvider(load_config(args.root / 'config/pipeline.yaml')).export(
+        [Path(result['output'])], output / 'aseprite', output.name)
+    write_new(output / 'aseprite_roundtrip.json', export)
+    result['aseprite'] = {'status': export['status'], 'master': export['master']}
+
+
 def main(argv=None):
     # 권장 진입점과 저수준 모션 도구를 도움말에서 구분한다. 기존 명령은 호환을 위해 모두 유지한다.
     parser = argparse.ArgumentParser(
@@ -100,6 +113,12 @@ def main(argv=None):
     pixel_transparent.add_argument('--background', default='255,255,255', metavar='R,G,B')
     pixel_transparent.add_argument('--tolerance', type=float, default=10.0)
     pixel_transparent.add_argument('--aseprite', action='store_true', help='Also build an Aseprite master and require an exact RGBA round trip')
+    pixel_edit = commands.add_parser('pixel-edit', help='Pixel64 masked edit from an explicit JSON spec; no pixel outside the mask may change')
+    pixel_edit.add_argument('--input', required=True, type=Path, help='64px image with binary alpha (left unchanged)')
+    pixel_edit.add_argument('--spec', required=True, type=Path, help='PIXEL64_MASKED_EDIT_SPEC JSON')
+    pixel_edit.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    pixel_edit.add_argument('--created-by', required=True)
+    pixel_edit.add_argument('--aseprite', action='store_true', help='Also build an Aseprite master and require an exact RGBA round trip')
     music_review = commands.add_parser('bgm-review',help='Record explicit BGM listening observations; no generation or game approval')
     music_review.add_argument('--run',required=True,type=Path)
     music_review.add_argument('--review',required=True,type=Path)
@@ -305,14 +324,15 @@ def main(argv=None):
             result = make_transparent(resolver(args.input), output, created_by=args.created_by, hole_seeds=seeds,
                                       background_rgb=tuple(int(v) for v in args.background.split(',')),
                                       tolerance=args.tolerance)
-            if args.aseprite:
-                from .._ported.config import load_config
-                from ..manifests import write_new
-                from ..providers.aseprite import AsepriteProvider
-                export = AsepriteProvider(load_config(args.root / 'config/pipeline.yaml')).export(
-                    [Path(result['output'])], output / 'aseprite', output.name)
-                write_new(output / 'aseprite_roundtrip.json', export)
-                result['aseprite'] = {'status': export['status'], 'master': export['master']}
+            _pixel_aseprite(args, output, result)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel-edit':
+            from ..paths import RootResolver
+            from ..pixel.edit import apply_edit
+            resolver = RootResolver([args.root], base=args.root)
+            output = resolver(args.output, strict=False)
+            result = apply_edit(resolver(args.input), resolver(args.spec), output, created_by=args.created_by)
+            _pixel_aseprite(args, output, result)
             print(json.dumps(result, ensure_ascii=False, indent=2))
         elif args.command in {'sfx-review', 'bgm-review'}:
             from ..paths import RootResolver
