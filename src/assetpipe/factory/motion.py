@@ -176,7 +176,7 @@ def run_job(job_path, plan_sha256, output, root, *, authorization=None,
             raise ValueError('FACTORY_MOTION_SOURCE_CHANGED')
         from ..motion.package import package_video
         if generated:
-            from ..providers.video.executor import execute_prepared
+            from ..providers.video.executor import execute_prepared, verified_package_manifest
             incoming = plan['input']
             child = execute_prepared(incoming['run_ref'], authorization, root,
                 authorize_generation=True, allowed_roots=resolver.roots,
@@ -185,15 +185,9 @@ def run_job(job_path, plan_sha256, output, root, *, authorization=None,
             receipt['generation_receipt'] = {'path': str(child), 'sha256': None}
             child = outputs(child)
             receipt['generation_receipt'] = {'path': str(child), 'sha256': fingerprint(child)}
-            data = json.loads(child.read_text(encoding='utf-8'))
-            if (data.get('status') != 'CANDIDATE_REVIEW_REQUIRED' or data.get('execution_plan') != plan['generation_plan']
-                    or data.get('authorization_sha256') != auth_record['sha256']
-                    or data.get('review_state') != 'REVIEW_REQUIRED' or data.get('game_ready') is not False
-                    or data.get('queue_attempts') != 1 or data.get('uploads') != 1):
-                raise ValueError('FACTORY_MOTION_GENERATION_RECEIPT_INVALID')
-            package_manifest = outputs(data['package_manifest_path'])
-            if fingerprint(package_manifest) != data['package_manifest_sha256']:
-                raise ValueError('FACTORY_MOTION_GENERATION_RECEIPT_INVALID')
+            data = _receipt(child, receipt['generation_receipt']['sha256'], outputs)
+            package_manifest = verified_package_manifest(
+                data, plan['generation_plan'], auth_sha, outputs)
             receipt['generation_requests'] = data['queue_attempts']
         else:
             if plan['input'].get('generation_record'):
@@ -277,15 +271,16 @@ def inspect_job(run, expected_sha256, root, *, allowed_roots=None):
     if fingerprint(package_path) != package['sha256']:
         raise ValueError('FACTORY_MOTION_RECEIPT_CHANGED')
     if plan['generation_plan']:
+        from ..providers.video.executor import verified_package_manifest
         row = receipt['generation_receipt']
         data = _receipt(row['path'], row['sha256'], outputs)
         authorization = receipt['authorization']
         Sources(resolver).document(authorization['path'], authorization['sha256'])
-        if (data.get('execution_plan') != plan['generation_plan'] or data.get('status') != 'CANDIDATE_REVIEW_REQUIRED'
-                or data.get('authorization_sha256') != authorization['sha256']
-                or outputs(data['package_manifest_path']) != package_path
+        verified_path = verified_package_manifest(
+            data, plan['generation_plan'], authorization['sha256'], outputs)
+        if (verified_path != package_path
                 or data['package_manifest_sha256'] != package['sha256']
-                or data.get('queue_attempts') != 1 or receipt['generation_requests'] != 1):
+                or receipt['generation_requests'] != 1):
             raise ValueError('FACTORY_MOTION_GENERATION_RECEIPT_INVALID')
     elif package_path != run / 'package/run_manifest.json' or receipt['generation_requests'] != 0 or receipt['authorization'] is not None:
         raise ValueError('FACTORY_MOTION_STAGES_INVALID')
