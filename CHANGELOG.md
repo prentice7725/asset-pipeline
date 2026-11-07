@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — Pixel64 production path, 2026-11-07
+
+- `krea2_pixel64` now applies the k2-pixel64 DoRA LoRA (all 360 tensors) via the experimental
+  `integrations/comfyui_dora` node; the stock-loader graph stays as `krea2_pixel64_stock`.
+- PIXEL_STATIC runs with `transparent_delivery` write a binary-alpha copy, preview and Aseprite round
+  trip to `070_transparent/`; non-background borders stop as `BLOCKED_REVIEW_REQUIRED`.
+- Add `pixel-transparent`, `pixel-edit` and `pixel-ledger` commands.
+
 ## Unreleased — rfxgen preset library, 2026-11-03
 
 - Add `config/sfx_library` and `sfx-library list|add|approve`, plus `create --rfx-preset`: human-made

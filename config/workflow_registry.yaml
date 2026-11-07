@@ -434,6 +434,11 @@ workflows:
       exact_resolution: true
     # The graph saves the raw 1024px generation before the refined 64px candidate.
     preserved_intermediate_outputs: 1
+    # After Pixel Gate PASS, write a binary-alpha delivery copy (070_transparent) from the declared
+    # white background; border mismatches and enclosed pockets stop as review items.
+    transparent_delivery:
+      background_rgb: [255, 255, 255]
+      tolerance: 10
     presets:
       sprite64:
         width: 64
@@ -488,6 +493,11 @@ workflows:
       exact_resolution: true
     # The graph saves the raw 1024px generation before the refined 64px candidate.
     preserved_intermediate_outputs: 1
+    # After Pixel Gate PASS, write a binary-alpha delivery copy (070_transparent) from the declared
+    # white background; border mismatches and enclosed pockets stop as review items.
+    transparent_delivery:
+      background_rgb: [255, 255, 255]
+      tolerance: 10
     presets:
       sprite64:
         width: 64

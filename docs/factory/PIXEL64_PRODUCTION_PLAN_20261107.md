@@ -80,6 +80,12 @@ Refiner(논리 크기)에 연결되고 1024px 생성 크기는 고정이며, 102
 첫 9장(궁수 + 8종)은 모두 게이트와 Aseprite RGBA 왕복을 통과했다. 지운 내부 영역은 궁수 활 틈,
 고블린 팔·다리 틈, 마법사 지팡이 틈, 늑대 수인 팔 틈이고 눈·여우 꼬리 끝·유리 반사는 남겼다.
 
+생성 경로 연결(2026-11-07): 레지스트리 항목에 `transparent_delivery`(배경 흰색, 거리 10)를 선언하면
+`create`가 Pixel Gate PASS 후 `070_transparent/`에 납품본·미리보기·Aseprite 왕복을 만든다. 불투명 후보와
+해상도 검토는 그대로다. 테두리 게이트 실패는 실행을 실패시키지 않고 `transparent_delivery.status =
+BLOCKED_REVIEW_REQUIRED`와 사유로 남는다. 실제 확인: 기사(seed 20261108)는 검은 띠로 BLOCKED, 고블린(seed
+20261110)은 납품본·Aseprite PASS와 갇힌 영역 4곳 검토 대기이며 A/B DoRA 결과와 픽셀이 같다.
+
 ### P2. LoRA `.magnitude` 로더
 
 [출처 기록](../research/KREA2_PIXEL64_PROVENANCE_20261027.md)의 남은 차단 요인을 순서대로 푼다.

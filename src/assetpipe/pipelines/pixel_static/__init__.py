@@ -18,10 +18,11 @@ def run(brief, workflow, config, directory, manifest, seed):
         manifest['pipeline_steps'].append({'step': 'generation_intermediates',
             'outputs': [{'path': str(p), 'sha256': hashlib.sha256(Path(p).read_bytes()).hexdigest()}
                         for p in paths[:preserved]]})
-    return process_candidate(paths[-1], brief, config, directory, manifest)
+    return process_candidate(paths[-1], brief, config, directory, manifest,
+                             transparent=workflow.get('transparent_delivery'))
 
 
-def process_candidate(candidate, brief, config, directory, manifest):
+def process_candidate(candidate, brief, config, directory, manifest, *, transparent=None):
     """Shared static gates for generated or explicitly imported existing candidates."""
     size = brief['constraints']['resolution']
     initial = analyze_image(candidate, max_colors=config.section('pixel').get('max_colors', 32))
@@ -61,7 +62,44 @@ def process_candidate(candidate, brief, config, directory, manifest):
     manifest['qa_results'].append(resolution)
     manifest['status'] = 'RESOLUTION_REVIEW_REQUIRED'
     manifest['pipeline_steps'].append({'step': 'resolution_gate', 'status': 'REVIEW_REQUIRED', 'report': str(directory / '050_resolution/resolution_report.json')})
+    if transparent:
+        transparent_delivery(path, transparent, config, directory, manifest, size)
     return manifest
+
+
+def transparent_delivery(path, settings, config, directory, manifest, size):
+    """Binary-alpha delivery copy of the gated opaque candidate, declared per workflow.
+
+    The opaque candidate stays the reviewed output. A border that is not the declared background
+    (e.g. generated side bars) or enclosed background pockets stop here as review items with the
+    reason recorded; hole seeds are never guessed. Aseprite round trip runs only on a produced copy.
+    """
+    from ...pixel.transparent import make_transparent
+    from ...providers.aseprite import AsepriteProvider
+    from ...manifests import write_new
+    output = directory / '070_transparent'
+    step = {'step': 'transparent_delivery', 'source': str(path)}
+    try:
+        report = make_transparent(path, output, background_rgb=settings.get('background_rgb', (255, 255, 255)),
+                                  tolerance=settings.get('tolerance', 10), expected_size=tuple(size) if size else (64, 64),
+                                  created_by='assetpipe pixel_static transparent_delivery')
+    except ValueError as exc:
+        code = str(exc).split(':', 1)[0]
+        if not code.startswith('PIXEL64_TRANSPARENT_'):
+            raise
+        step.update(status='BLOCKED_REVIEW_REQUIRED', reason=str(exc))
+        manifest['pipeline_steps'].append(step)
+        manifest['transparent_delivery'] = {'status': 'BLOCKED_REVIEW_REQUIRED', 'reason': str(exc)}
+        return
+    step.update(status=report['status'], report=str(output / 'transparent_report.json'), output=report['output'],
+                unresolved_enclosed_regions=len(report['unresolved_enclosed_regions']))
+    export = AsepriteProvider(config).export([Path(report['output'])], output / 'aseprite', manifest['asset_id'])
+    write_new(output / 'aseprite_roundtrip.json', export)
+    step['aseprite_roundtrip'] = export['status']
+    manifest['pipeline_steps'].append(step)
+    manifest['transparent_delivery'] = {'status': report['status'], 'output': report['output'],
+                                        'preview': str(output / 'review_preview.png'),
+                                        'aseprite_roundtrip': export['status'], 'review': 'HUMAN_REQUIRED'}
 
 def export_reviewed(config, run_dir, review_path, manifest):
     import json
