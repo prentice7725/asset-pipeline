@@ -102,3 +102,19 @@ def test_delivery_reports_enclosed_background_as_palette_review(monkeypatch, tmp
     conformance = manifest['transparent_delivery']['palette_conformance']
     assert conformance == {'status': 'REVIEW_REQUIRED', 'colors_outside_palette': ['#FFFFFF'], 'pixels_outside_palette': 1}
     assert manifest['transparent_delivery']['status'] == 'ENCLOSED_BACKGROUND_REVIEW_REQUIRED'
+
+
+def test_cli_palette_file_fills_brief_and_pins_source(monkeypatch, tmp_path, capsys):
+    from pathlib import Path
+    from assetpipe import cli
+    root = Path(__file__).resolve().parents[2]
+    (tmp_path / 'p.hex').write_text('000000\nFF004D\n', encoding='utf-8')
+    captured = {}
+    monkeypatch.setattr(cli, 'create', lambda brief, *a, **k: captured.update(brief=brief, kwargs=k) or 'manifest')
+    assert cli.main(['--root', str(root), 'create', '--type', 'pixel-static', '--prompt', 'knight',
+                     '--palette-file', str(tmp_path / 'p.hex')]) == 0
+    assert captured['brief']['constraints']['palette'] == ['#000000', '#FF004D']
+    assert captured['kwargs']['palette_source']['color_count'] == 2
+    assert cli.main(['--root', str(root), 'create', '--type', 'sfx', '--prompt', 'hit',
+                     '--palette-file', str(tmp_path / 'p.hex')]) == 1
+    assert 'only supported for PIXEL_STATIC' in capsys.readouterr().err

@@ -547,7 +547,8 @@ def main(argv=None):
                 brief['constraints']['palette'] = list(palette_source['colors'])
                 if 'palette' in brief.get('unspecified_elements', []):
                     brief['unspecified_elements'].remove('palette')
-            print(create(brief, args.root, args.output, args.seed, palette_source=palette_source))
+            extra = {'palette_source': palette_source} if palette_source is not None else {}
+            print(create(brief, args.root, args.output, args.seed, **extra))
         return 0
     except Exception as exc:
         print(f'assetpipe: {exc}', file=__import__('sys').stderr)
