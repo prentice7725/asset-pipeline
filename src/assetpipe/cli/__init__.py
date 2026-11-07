@@ -73,6 +73,25 @@ def main(argv=None):
     library_approve = library_commands.add_parser('approve', help='Approve a CANDIDATE from a run that rendered it and has a PASS listening record')
     library_approve.add_argument('--id', required=True)
     library_approve.add_argument('--run', required=True, type=Path)
+    pixel_ledger = commands.add_parser('pixel-ledger', help='Pixel64 adoption-time ledger; human review minutes are entered by the reviewer, never inferred')
+    pixel_ledger_commands = pixel_ledger.add_subparsers(dest='ledger_command', required=True)
+    for name in ('init', 'add', 'review', 'summary'):
+        sub = pixel_ledger_commands.add_parser(name)
+        sub.add_argument('--ledger', required=True, type=Path)
+        if name in {'add', 'review'}:
+            sub.add_argument('--id', required=True)
+            sub.add_argument('--candidate', required=True, type=Path)
+    ledger_add = pixel_ledger_commands.choices['add']
+    ledger_add.add_argument('--path-id', required=True)
+    ledger_add.add_argument('--brief', required=True)
+    ledger_add.add_argument('--generation-seconds', type=float, help='Omit when not measured')
+    ledger_add.add_argument('--postprocess-seconds', type=float, help='Omit when not measured')
+    ledger_add.add_argument('--added-by', required=True)
+    ledger_review = pixel_ledger_commands.choices['review']
+    ledger_review.add_argument('--decision', required=True, choices=['ADOPTED', 'REJECTED'])
+    ledger_review.add_argument('--edit-minutes', required=True, type=float, help='Your actual Aseprite minutes on this candidate')
+    ledger_review.add_argument('--reviewer', required=True)
+    ledger_review.add_argument('--note', default='')
     music_review = commands.add_parser('bgm-review',help='Record explicit BGM listening observations; no generation or game approval')
     music_review.add_argument('--run',required=True,type=Path)
     music_review.add_argument('--review',required=True,type=Path)
@@ -251,6 +270,23 @@ def main(argv=None):
                 from ..paths import RootResolver
                 resolver = RootResolver([args.root], base=args.root)
                 result = rfx_library.approve(args.root, args.id, resolver(args.run), resolver=resolver)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel-ledger':
+            from ..paths import RootResolver
+            from ..pixel import ledger
+            resolver = RootResolver([args.root], base=args.root)
+            book = resolver(args.ledger, strict=args.ledger_command != 'init')
+            if args.ledger_command == 'init':
+                result = ledger.create(book)
+            elif args.ledger_command == 'add':
+                result = ledger.add_candidate(book, args.id, resolver(args.candidate), path_id=args.path_id,
+                                              brief=args.brief, generation_seconds=args.generation_seconds,
+                                              postprocess_seconds=args.postprocess_seconds, added_by=args.added_by)
+            elif args.ledger_command == 'review':
+                result = ledger.record_review(book, args.id, resolver(args.candidate), decision=args.decision,
+                                              edit_minutes=args.edit_minutes, reviewer=args.reviewer, note=args.note)
+            else:
+                result = ledger.summarize(book)
             print(json.dumps(result, ensure_ascii=False, indent=2))
         elif args.command in {'sfx-review', 'bgm-review'}:
             from ..paths import RootResolver

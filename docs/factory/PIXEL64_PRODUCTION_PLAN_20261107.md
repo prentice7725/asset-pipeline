@@ -50,6 +50,14 @@
 
 수용 기준: 장부 스키마와 검증 테스트가 있고, 사람 입력이 없는 항목은 NOT_MEASURED로 남는다.
 
+구현: `assetpipe pixel-ledger init|add|review|summary --ledger <json>` (`assetpipe.pixel.ledger`).
+`add`는 64×64 이미지의 해시로 후보를 등록하고, `review`는 같은 이미지에 대해 한 번만
+채택/거절과 수정 분을 기록한다. 거절한 후보에 쓴 시간도 경로 비용에 포함한다.
+
+2026-11-07 확인: 궁수 2장의 실행 폴더(`workspace/runs/krea2_pixel64_*_20261003`,
+A/B 당시 `workspace/checkouts/m3-motion-audit-20261023`)가 이 PC에 없다. 기록된 해시는
+초기 원본 `432232f0…`, 재생성 원본 `fc412775…`다. 파일을 찾기 전에는 장부에 넣지 않는다.
+
 ### P1. Krea2 64px 후보 경로 (M3.5 D1)
 
 - **투명 납품:** 불투명 생성본과 투명 납품본을 분리한다. [초상화 알파 검증](PORTRAIT_SOURCE_ALPHA_VALIDATION_20261029.md)의 원칙(원본 RGB 보존)을 따르되, 64px에서는 반투명 없이 이진 알파만 쓴다.
