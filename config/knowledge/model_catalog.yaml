@@ -67,8 +67,8 @@ models:
   krea2-pixel64-experimental:
     family: Krea2
     variant: Turbo + e-n-v-y Pixel Art LoRA + Refiner
-    workflows: []
-    status: RESEARCH_ONLY
+    workflows: [krea2_pixel64]
+    status: EXPERIMENTAL
     local_installation: NOT_PROBED_THIS_SESSION
     license_review: REQUIRED
     source: https://github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner

@@ -64,6 +64,13 @@ profiles:
       - https://github.com/krea-ai/krea-2/blob/main/docs/prompting.md
     community_style_reference: https://kreastyles.thetacursed.com/
 
+  krea2-pixel64:
+    prompt_adapter: natural_language
+    defaults: {}
+    notes: Krea-2 Turbo + creator k2-pixel64 LoRA. The creator recommends omitting the 64px trigger phrase; no negative prompt (ConditioningZeroOut).
+    sources:
+      - https://huggingface.co/e-n-v-y/Krea-2-Pixel-Art
+
   codex-imagegen:
     prompt_adapter: natural_language
     defaults: {}

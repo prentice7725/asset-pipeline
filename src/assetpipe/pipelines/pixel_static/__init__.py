@@ -8,9 +8,17 @@ from ..._ported.pixel_gate.report import write_report
 
 def run(brief, workflow, config, directory, manifest, seed):
     paths = ComfyUIProvider(config).generate(brief, workflow, directory / '010_generation', seed)
-    if len(paths) != 1:
+    # A workflow may save declared intermediates (e.g. the raw image before an in-graph refiner)
+    # ahead of the single candidate; they are preserved and hashed, never gated or exported.
+    preserved = workflow.get('preserved_intermediate_outputs', 0)
+    if len(paths) != 1 + preserved:
         raise ValueError('Static pipeline expects one image candidate')
-    return process_candidate(paths[0], brief, config, directory, manifest)
+    if preserved:
+        import hashlib
+        manifest['pipeline_steps'].append({'step': 'generation_intermediates',
+            'outputs': [{'path': str(p), 'sha256': hashlib.sha256(Path(p).read_bytes()).hexdigest()}
+                        for p in paths[:preserved]]})
+    return process_candidate(paths[-1], brief, config, directory, manifest)
 
 
 def process_candidate(candidate, brief, config, directory, manifest):
