@@ -19,7 +19,14 @@ forward. Every triple must map to a model weight and every tensor must be consum
 node fails instead of loading a partial adapter.
 """
 
+import hashlib
+from pathlib import Path
+
 NODE_NAME = 'AssetpipeAIToolkitDoRALoader'
+# Hash of the code ComfyUI actually loaded. It is published in the node description so the asset
+# pipeline can refuse to generate when the installed copy differs from the repository or ComfyUI
+# has not been restarted after an update.
+SOURCE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 TRIPLE_SUFFIXES = ('.lora_A.weight', '.lora_B.weight', '.magnitude')
 
 
@@ -117,7 +124,8 @@ class AssetpipeAIToolkitDoRALoader:
     RETURN_TYPES = ('MODEL',)
     FUNCTION = 'load'
     DESCRIPTION = ('EXPERIMENTAL: applies ai-toolkit DoRA files including .magnitude '
-                   '(adapted-weight norm, strength inside). alpha_over_rank is an explicit hypothesis.')
+                   '(adapted-weight norm, strength inside). alpha_over_rank is an explicit hypothesis. '
+                   f'source_sha256={SOURCE_SHA256}')
 
     @classmethod
     def INPUT_TYPES(cls):

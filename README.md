@@ -449,8 +449,14 @@ PIXEL_STATIC 후보는 Pixel Gate 앞에서 색 수를 `pixel.max_colors`(기본
 ### 64px 픽셀 (Krea2 Pixel64, 실험)
 
 `krea2_pixel64`는 Krea2 Turbo FP8과 제작자 k2-pixel64 DoRA LoRA로 1024px를 만들고 제작자 Refiner로
-64×64·24색으로 정리합니다. LoRA의 `.magnitude`까지 적용하려면 ComfyUI `custom_nodes`에
-`integrations/comfyui_dora`를 `assetpipe_aitoolkit_dora` 폴더로 복사하고 ComfyUI를 재시작해야 합니다.
+64×64·24색으로 정리합니다. LoRA의 `.magnitude`까지 적용하는 저장소 노드를 ComfyUI에 설치해야 합니다.
+`create`는 생성 전에 ComfyUI가 실제로 불러온 노드의 해시를 저장소 파일과 비교해, 설치가 안 됐거나
+업데이트 후 재시작하지 않았으면 `COMFYUI_CUSTOM_NODE_MISSING`/`STALE`로 멈춥니다.
+
+```powershell
+.venv/Scripts/python scripts/install_comfyui_dora.py --comfyui-root <ComfyUI 폴더> --update --restart
+```
+
 기존 로더(magnitude 미적용) 그래프는 `krea2_pixel64_stock`입니다. alpha/rank=1은 소스 근거 가설입니다.
 
 ```powershell

@@ -210,6 +210,9 @@
   "31"
  ],
  "required_custom_nodes": [
-  "AssetpipeAIToolkitDoRALoader"
+  {
+   "class": "AssetpipeAIToolkitDoRALoader",
+   "source": "integrations/comfyui_dora/__init__.py"
+  }
  ]
 }

@@ -7,6 +7,8 @@
 - PIXEL_STATIC runs with `transparent_delivery` write a binary-alpha copy, preview and Aseprite round
   trip to `070_transparent/`; non-background borders stop as `BLOCKED_REVIEW_REQUIRED`.
 - Add `pixel-transparent`, `pixel-edit` and `pixel-ledger` commands.
+- ComfyUI runs check `required_custom_nodes` before submit: the node's loaded source hash must match
+  the repository (`scripts/install_comfyui_dora.py --update --restart` installs and verifies).
 
 ## Unreleased — rfxgen preset library, 2026-11-03
 
