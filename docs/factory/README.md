@@ -9,6 +9,8 @@ Factory motion dispatch, new-coordinator real generation, human quality acceptan
 and production activation remain blocked/unverified. See
 [motion integration evidence](MOTION_JOB_VALIDATION_20261027.md).
 
+**Pixel64 (reopened 2026-11-07):** [Pixel64 production plan](PIXEL64_PRODUCTION_PLAN_20261107.md) restarts the Krea2 64px path, LoRA `.magnitude` loader, 64px region edits and one pixel-native generator comparison. 32px stays on hold.
+
 **Reference edits:** [expression/pose variants and general cleanup/detail edits from one selected base](IDENTITY_VARIANT.md) supports explicit Grok and Codex reference-input adapters. [Grok project validation](PROJECT_REFERENCE_EDIT_VALIDATION_20261030.md) records actual experimental edits, local RGBA delivery and user acceptance of identity preservation. [Codex expression validation](CODEX_PROJECT_REFERENCE_EDIT_VALIDATION_20261030.md) and [Codex pose validation](CODEX_PROJECT_POSE_VALIDATION_20261030.md) record actual reference edits, exact attachment/tool-input evidence and separate user identity acceptance. Human identity review is per output; final art/Golden/Aseprite approval remains separate.
 
 [Portrait source/alpha validation, 2026-10-29](PORTRAIT_SOURCE_ALPHA_VALIDATION_20261029.md): separate opaque source generation from transparent delivery, reuse alpha matting while preserving source RGB, and retain explicit human review.
