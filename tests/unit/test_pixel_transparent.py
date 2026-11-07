@@ -102,3 +102,25 @@ def test_non_opaque_source_rejected(tmp_path):
     Image.new('RGBA', (64, 64), (255, 255, 255, 0)).save(path)
     with pytest.raises(ValueError, match='SOURCE_NOT_OPAQUE'):
         make_transparent(path, tmp_path / 'out', created_by='test')
+
+
+def test_enclosed_regions_get_display_only_hole_or_highlight_hints(tmp_path):
+    import json
+    from assetpipe.pixel.transparent import make_transparent
+    image = np.full((64, 64, 3), 255, dtype=np.uint8)
+    image[10:54, 10:54] = (20, 20, 20)          # dark body / outline
+    image[14:18, 14:18] = 255                   # 16 px gap bordered by dark pixels -> possible hole
+    image[30:40, 30:46] = (200, 200, 210)       # light robe area
+    image[33:36, 34:38] = 255                   # 12 px white inside light robe -> likely highlight
+    image[45, 45] = 255                         # 1 px eye glint in dark -> likely highlight (too small)
+    path = tmp_path / 'in.png'
+    Image.fromarray(image, 'RGB').save(path)
+    report = make_transparent(path, tmp_path / 'out', created_by='test')
+    hints = sorted((r['pixels'], r['hint']) for r in report['unresolved_enclosed_regions'])
+    assert hints == [(1, 'LIKELY_HIGHLIGHT'), (12, 'LIKELY_HIGHLIGHT'), (16, 'POSSIBLE_HOLE')]
+    assert report['possible_holes'] == 1
+    preview = np.asarray(Image.open(tmp_path / 'out/review_preview.png').convert('RGB'))
+    assert tuple(preview[15 * 8, 15 * 8]) == (255, 0, 255) and tuple(preview[34 * 8, 35 * 8]) == (0, 255, 255)
+    out = np.asarray(Image.open(tmp_path / 'out/transparent.png').convert('RGBA'))
+    assert out[15, 15, 3] == 255 and out[34, 35, 3] == 255  # hints never clear pixels
+    assert json.loads((tmp_path / 'out/transparent_report.json').read_text(encoding='utf-8'))['hint_rule']['possible_hole_min_pixels'] == 6

@@ -7,6 +7,8 @@
 - 테두리에 이어진 배경색 픽셀만 투명하게 한다(기존 검증된 edge_connected 사용).
 - 캐릭터 안에 갇힌 배경색 영역(지팡이와 몸 사이 틈, 눈 하이라이트 등)은 자동으로 지우지 않는다.
   명시한 seed 좌표가 가리키는 영역만 지우고, 나머지는 검토 항목으로 보고한다.
+- 검토를 돕기 위해 남은 영역마다 힌트를 붙인다(표시 전용, 아무것도 지우지 않는다): 6픽셀 이상이고
+  둘레의 70% 이상이 어두우면(밝기 < 100) 구멍 가능성(자홍색), 아니면 하이라이트 가능성(청록색).
 - 불투명 픽셀의 RGB와 위치는 바꾸지 않는다. 바닥 그림자 같은 비배경색은 그대로 남는다.
 - 결과는 후보이며 사람 검토가 필요하다.
 """
@@ -24,6 +26,12 @@ KIND = 'PIXEL64_TRANSPARENT_DELIVERY'
 DEFAULT_BACKGROUND = (255, 255, 255)
 DEFAULT_TOLERANCE = 10
 PREVIEW_SCALE = 8
+# Display-only hint thresholds, measured on the 2026-11-07 Pixel64 samples: cleared holes had >= 71%
+# dark 4-neighbours, kept highlights (glints, white robe, blade shine) <= 50%; eye glints are tiny.
+HOLE_HINT_MIN_PIXELS = 6
+HOLE_HINT_MIN_DARK_RING = 0.7
+DARK_LUMA = 100
+HOLE_COLOR, HIGHLIGHT_COLOR = (255, 0, 255), (0, 255, 255)
 
 
 def _sha(path):
@@ -51,20 +59,36 @@ def _label4(mask):
     return labels, count
 
 
-def _region(labels, index):
+def _region(labels, index, rgb=None):
     ys, xs = np.nonzero(labels == index)
-    return {'pixels': int(len(xs)), 'bbox_xyxy': [int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1],
-            'seed_xy': [int(xs[0]), int(ys[0])]}
+    region = {'pixels': int(len(xs)), 'bbox_xyxy': [int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1],
+              'seed_xy': [int(xs[0]), int(ys[0])]}
+    if rgb is not None:
+        region.update(_hint(rgb, labels == index))
+    return region
 
 
-def _preview(rgba, unresolved, path):
-    """Checkerboard behind transparency; unresolved enclosed background in magenta."""
+def _hint(rgb, mask):
+    """Display-only guess: a real hole is bordered by outline/dark pixels, a highlight by light ones."""
+    pad = np.pad(mask, 1)
+    ring = (pad[:-2, 1:-1] | pad[2:, 1:-1] | pad[1:-1, :-2] | pad[1:-1, 2:]) & ~mask
+    luma = rgb[ring].astype(np.float64) @ np.array([0.299, 0.587, 0.114])
+    dark = float((luma < DARK_LUMA).mean()) if len(luma) else 0.0
+    hole = int(mask.sum()) >= HOLE_HINT_MIN_PIXELS and dark >= HOLE_HINT_MIN_DARK_RING
+    return {'dark_ring_fraction': round(dark, 3), 'hint': 'POSSIBLE_HOLE' if hole else 'LIKELY_HIGHLIGHT'}
+
+
+def _preview(rgba, unresolved, path, highlight=None):
+    """Checkerboard behind transparency; unresolved enclosed background: magenta = possible hole,
+    cyan = likely highlight (``highlight`` mask)."""
     height, width = unresolved.shape
     yy, xx = np.mgrid[0:height, 0:width]
     checker = np.where(((yy // 2 + xx // 2) % 2)[..., None] == 0, [200, 200, 200], [150, 150, 150]).astype(np.uint8)
     opaque = rgba[..., 3:4] == 255
     view = np.where(opaque, rgba[..., :3], checker)
-    view[unresolved] = (255, 0, 255)
+    view[unresolved] = HOLE_COLOR
+    if highlight is not None:
+        view[unresolved & highlight] = HIGHLIGHT_COLOR
     Image.fromarray(view.astype(np.uint8), 'RGB').resize((width * PREVIEW_SCALE, height * PREVIEW_SCALE),
                                                          Image.NEAREST).save(path)
 
@@ -118,7 +142,10 @@ def make_transparent(source, output_dir, *, background_rgb=DEFAULT_BACKGROUND, t
     image_path = output_dir / 'transparent.png'
     preview_path = output_dir / 'review_preview.png'
     Image.fromarray(out, 'RGBA').save(image_path)
-    _preview(out, unresolved, preview_path)
+    unresolved_labels = sorted(set(int(v) for v in np.unique(labels[unresolved])) - {0})
+    unresolved_regions = [_region(labels, i, rgb) for i in unresolved_labels]
+    highlight = np.isin(labels, [i for i, r in zip(unresolved_labels, unresolved_regions) if r['hint'] == 'LIKELY_HIGHLIGHT'])
+    _preview(out, unresolved, preview_path, highlight)
 
     with Image.open(image_path) as written:
         check = np.asarray(written.convert('RGBA'), dtype=np.uint8)
@@ -140,7 +167,6 @@ def make_transparent(source, output_dir, *, background_rgb=DEFAULT_BACKGROUND, t
         status = 'PASS_REVIEW_REQUIRED' if not unresolved.any() else 'ENCLOSED_BACKGROUND_REVIEW_REQUIRED'
     else:
         status = 'FAIL'
-    unresolved_labels = sorted(set(int(v) for v in np.unique(labels[unresolved])) - {0})
     colors = {tuple(int(v) for v in pixel) for pixel in check[opaque][:, :3]}
     report = {
         'kind': KIND,
@@ -153,14 +179,18 @@ def make_transparent(source, output_dir, *, background_rgb=DEFAULT_BACKGROUND, t
         'output': str(image_path.resolve()),
         'output_sha256': _sha(image_path),
         'review_preview': str(preview_path.resolve()),
-        'review_preview_legend': 'checkerboard = transparent, magenta = enclosed background color left opaque',
+        'review_preview_legend': ('checkerboard = transparent; enclosed background color left opaque: magenta = possible hole, '
+                                  'cyan = likely highlight (display-only hint, nothing is cleared without --hole)'),
+        'hint_rule': {'possible_hole_min_pixels': HOLE_HINT_MIN_PIXELS, 'possible_hole_min_dark_ring_fraction': HOLE_HINT_MIN_DARK_RING,
+                      'dark_luma_below': DARK_LUMA, 'neighbourhood': '4-connected ring'},
         'method': 'uniform border color within tolerance of declared background; 4-connected edge fill of that exact color; enclosed regions only at explicit seeds',
         'declared_background_rgb': list(background_rgb),
         'tolerance_rgb_distance': tolerance,
         'background_rgb_found': list(found),
         'hole_seeds': [[int(v) for v in seed] for seed in hole_seeds],
         'cleared_enclosed_regions': [_region(labels, i) for i in sorted(cleared)],
-        'unresolved_enclosed_regions': [_region(labels, i) for i in unresolved_labels],
+        'unresolved_enclosed_regions': unresolved_regions,
+        'possible_holes': sum(r['hint'] == 'POSSIBLE_HOLE' for r in unresolved_regions),
         'transparent_pixels': int((~opaque).sum()),
         'opaque_pixels': int(opaque.sum()),
         'opaque_colors': len(colors),

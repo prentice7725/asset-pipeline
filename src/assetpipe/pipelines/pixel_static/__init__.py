@@ -112,7 +112,7 @@ def transparent_delivery(path, settings, config, directory, manifest, size, *, p
         manifest['transparent_delivery'] = {'status': 'BLOCKED_REVIEW_REQUIRED', 'reason': str(exc)}
         return
     step.update(status=report['status'], report=str(output / 'transparent_report.json'), output=report['output'],
-                unresolved_enclosed_regions=len(report['unresolved_enclosed_regions']))
+                unresolved_enclosed_regions=len(report['unresolved_enclosed_regions']), possible_holes=report['possible_holes'])
     conformance = None
     if palette:
         # Unresolved enclosed background pockets keep the background color and show up here.
@@ -133,7 +133,7 @@ def transparent_delivery(path, settings, config, directory, manifest, size, *, p
     step['aseprite_roundtrip'] = export['status']
     manifest['pipeline_steps'].append(step)
     manifest['transparent_delivery'] = {'status': report['status'], 'output': report['output'],
-                                        'preview': str(output / 'review_preview.png'),
+                                        'preview': str(output / 'review_preview.png'), 'possible_holes': report['possible_holes'],
                                         'aseprite_roundtrip': export['status'], 'review': 'HUMAN_REQUIRED'}
     if conformance is not None:
         manifest['transparent_delivery']['palette_conformance'] = conformance

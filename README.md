@@ -468,7 +468,7 @@ assetpipe pixel-ledger review --ledger workspace/pixel64_ledger.json --id knight
 
 `create`는 Pixel Gate 통과 후 `070_transparent/`에 이진 알파 납품본, 검토 미리보기, Aseprite 왕복 결과를 만듭니다.
 테두리가 흰 배경 한 색이 아니면(생성된 검은 띠 등) 납품본 없이 `BLOCKED_REVIEW_REQUIRED`로 이유를 남기고,
-캐릭터 안에 갇힌 배경은 자홍색으로 표시만 합니다. 지울 곳은 `pixel-transparent --hole X,Y`로 새 폴더에 다시 만듭니다.
+캐릭터 안에 갇힌 배경은 표시만 합니다(자홍색 = 구멍 가능성, 청록색 = 하이라이트 가능성). 지울 곳은 `pixel-transparent --hole X,Y`로 새 폴더에 다시 만듭니다.
 프로젝트 고정 팔레트는 `create --palette-file <.gpl|.hex|.txt>`로 지정합니다. 파일 색이 브리프 `palette`가 되고
 manifest에 파일 경로·해시가 남습니다. 흰 배경 근처 픽셀은 흰색 그대로 두어 투명 처리에서 지우고, 나머지는 가장 가까운
 팔레트 색(RGB 거리)으로 바꿉니다. 팔레트에 비슷한 색이 없으면 피부·옷 색이 바뀔 수 있으니 결과를 꼭 확인하세요.
