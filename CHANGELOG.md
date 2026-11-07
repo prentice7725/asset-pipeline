@@ -9,6 +9,8 @@
 - Add `pixel-transparent`, `pixel-edit` and `pixel-ledger` commands.
 - ComfyUI runs check `required_custom_nodes` before submit: the node's loaded source hash must match
   the repository (`scripts/install_comfyui_dora.py --update --restart` installs and verifies).
+- `create --palette-file` (.gpl/.hex/.txt) pins a project palette; transparent-delivery runs keep the
+  declared background for keying and report delivery palette conformance.
 
 ## Unreleased — rfxgen preset library, 2026-11-03
 

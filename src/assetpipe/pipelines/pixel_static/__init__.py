@@ -34,12 +34,15 @@ def process_candidate(candidate, brief, config, directory, manifest, *, transpar
     manifest['pipeline_steps'].append({'step': 'safe_refine', 'operation': 'binary_alpha_only', 'report': str(directory / '030_refiner/refine_report.json')})
     path = directory / '030_refiner/refined.png'
     pixel = config.section('pixel')
+    palette = gate_palette(brief, transparent, manifest)
     if pixel.get('quantize_to_budget', True):
         # Color budget reduction is an explicit, recorded step; Pixel Gate re-analyzes the result
         # and the candidate still needs human review.
         from ...pixel.quantize import quantize_candidate
+        background = ((transparent.get('background_rgb', (255, 255, 255)), transparent.get('tolerance', 10))
+                      if transparent and brief['constraints']['palette'] else None)
         path, quantized = quantize_candidate(path, directory / '035_quantize', max_colors=pixel.get('max_colors', 32),
-                                             allowed_palette=brief['constraints']['palette'] or None)
+                                             allowed_palette=brief['constraints']['palette'] or None, background=background)
         manifest['qa_results'].append(quantized)
         # Keep the unquantized evidence visible: reducing colors does not make a smooth
         # illustration pixel art, so the reviewer sees what the source analysis found.
@@ -47,7 +50,7 @@ def process_candidate(candidate, brief, config, directory, manifest, *, transpar
             'unique_colors_before': quantized['unique_colors_before'], 'unique_colors_after': quantized['unique_colors_after'],
             'source_analysis_status': initial['status'], 'source_failure_reasons': initial['reasons']['failure'],
             'report': str(directory / '035_quantize/quantize_report.json')})
-    gate = analyze_image(path, max_colors=config.section('pixel').get('max_colors', 32), allowed_palette=brief['constraints']['palette'] or None,
+    gate = analyze_image(path, max_colors=config.section('pixel').get('max_colors', 32), allowed_palette=palette,
         target_width=size[0] if size else None, target_height=size[1] if size else None)
     write_report(gate, directory / '040_pixel_gate')
     manifest['qa_results'].append(gate)
@@ -63,11 +66,28 @@ def process_candidate(candidate, brief, config, directory, manifest, *, transpar
     manifest['status'] = 'RESOLUTION_REVIEW_REQUIRED'
     manifest['pipeline_steps'].append({'step': 'resolution_gate', 'status': 'REVIEW_REQUIRED', 'report': str(directory / '050_resolution/resolution_report.json')})
     if transparent:
-        transparent_delivery(path, transparent, config, directory, manifest, size)
+        transparent_delivery(path, transparent, config, directory, manifest, size,
+                             palette=brief['constraints']['palette'] or None)
     return manifest
 
 
-def transparent_delivery(path, settings, config, directory, manifest, size):
+def gate_palette(brief, transparent, manifest):
+    """Colors the opaque candidate may use: the brief palette, plus the declared background when a
+    transparent delivery copy will remove it. Recorded so later review/approval gates use the same set."""
+    palette = brief['constraints']['palette'] or None
+    if palette and transparent:
+        background = '#%02X%02X%02X' % tuple(int(v) for v in transparent.get('background_rgb', (255, 255, 255)))
+        manifest['gate_palette'] = {'allowed': list(palette) + ([background] if background not in palette else []),
+                                    'background_exception': background, 'reason': 'removed by transparent_delivery'}
+        return manifest['gate_palette']['allowed']
+    return palette
+
+
+def manifest_gate_palette(manifest):
+    return (manifest.get('gate_palette') or {}).get('allowed') or manifest['asset_brief']['constraints']['palette'] or None
+
+
+def transparent_delivery(path, settings, config, directory, manifest, size, *, palette=None):
     """Binary-alpha delivery copy of the gated opaque candidate, declared per workflow.
 
     The opaque candidate stays the reviewed output. A border that is not the declared background
@@ -93,6 +113,21 @@ def transparent_delivery(path, settings, config, directory, manifest, size):
         return
     step.update(status=report['status'], report=str(output / 'transparent_report.json'), output=report['output'],
                 unresolved_enclosed_regions=len(report['unresolved_enclosed_regions']))
+    conformance = None
+    if palette:
+        # Unresolved enclosed background pockets keep the background color and show up here.
+        from ..._ported.pixel_gate.analyzer import _parse_color
+        import numpy as np
+        from PIL import Image
+        with Image.open(report['output']) as opened:
+            rgba = np.asarray(opened.convert('RGBA'))
+        allowed = {_parse_color(c) for c in palette}
+        opaque = rgba[rgba[..., 3] > 0][:, :3]
+        outside = [tuple(int(v) for v in c) for c in np.unique(opaque, axis=0) if tuple(int(v) for v in c) not in allowed]
+        outside_pixels = int(sum((opaque == np.asarray(c)).all(axis=1).sum() for c in outside))
+        conformance = {'status': 'PASS' if not outside else 'REVIEW_REQUIRED', 'colors_outside_palette':
+                       ['#%02X%02X%02X' % c for c in outside], 'pixels_outside_palette': outside_pixels}
+        step['palette_conformance'] = conformance
     export = AsepriteProvider(config).export([Path(report['output'])], output / 'aseprite', manifest['asset_id'])
     write_new(output / 'aseprite_roundtrip.json', export)
     step['aseprite_roundtrip'] = export['status']
@@ -100,6 +135,8 @@ def transparent_delivery(path, settings, config, directory, manifest, size):
     manifest['transparent_delivery'] = {'status': report['status'], 'output': report['output'],
                                         'preview': str(output / 'review_preview.png'),
                                         'aseprite_roundtrip': export['status'], 'review': 'HUMAN_REQUIRED'}
+    if conformance is not None:
+        manifest['transparent_delivery']['palette_conformance'] = conformance
 
 def export_reviewed(config, run_dir, review_path, manifest):
     import json
@@ -120,7 +157,7 @@ def export_reviewed(config, run_dir, review_path, manifest):
     candidate = Path(row['image'])
     if hashlib.sha256(candidate.read_bytes()).hexdigest() != row['sha256']:
         raise ValueError('Reviewed candidate hash changed')
-    gate = analyze_image(candidate, target_width=row['width'], target_height=row['height'], allowed_palette=manifest['asset_brief']['constraints']['palette'] or None)
+    gate = analyze_image(candidate, target_width=row['width'], target_height=row['height'], allowed_palette=manifest_gate_palette(manifest))
     manifest['qa_results'].append(gate)
     if gate['status'] != 'PASS':
         raise ValueError('Reviewed candidate Pixel Gate did not PASS')

@@ -206,6 +206,7 @@ def main(argv=None):
     run.add_argument('--preset')
     run.add_argument('--seed', type=int, help='ComfyUI only; CLI providers (codex_cli, grok_cli) record seed as unsupported')
     run.add_argument('--allow-experimental', action='store_true', help='Allow an EXPERIMENTAL workflow that was requested explicitly by --workflow')
+    run.add_argument('--palette-file', type=Path, help='PIXEL_STATIC: explicit project palette (.gpl, .hex, .txt); fills the brief palette and pins the file hash')
     run.add_argument('--output', type=Path)
     run.add_argument('--motion-job', type=Path, help='Explicit NONPIXEL_ANIMATION Factory job; no prompt-based video routing')
     run.add_argument('--motion-plan-sha256', help='Expected hash from factory motion-plan')
@@ -476,7 +477,7 @@ def main(argv=None):
                 raise ValueError('--motion-job requires --type nonpixel-animation')
             if (any(value is not None for value in [args.brief, args.reference, args.action,
                     args.asset_id, args.project, args.workflow, args.style_id, args.model_profile,
-                    args.preset, args.seed, args.duration, args.lyrics, args.tempo_bpm, args.mood]) or args.prompt
+                    args.preset, args.seed, args.duration, args.lyrics, args.tempo_bpm, args.mood, args.palette_file]) or args.prompt
                     or args.allow_experimental or args.no_loop):
                 raise ValueError('Motion inputs and settings must come from the pinned job; direct overrides are unsupported')
             from ..paths import RootResolver
@@ -534,7 +535,19 @@ def main(argv=None):
                 brief['workflow_preferences']['preset'] = args.preset
             if args.allow_experimental:
                 brief['workflow_preferences']['allow_experimental'] = True
-            print(create(brief, args.root, args.output, args.seed))
+            palette_source = None
+            if args.palette_file is not None:
+                from ..pixel.palette import load_palette_file
+                if brief['output_class'] != 'PIXEL_STATIC':
+                    raise ValueError('--palette-file is only supported for PIXEL_STATIC')
+                palette_source = load_palette_file(args.palette_file)
+                current = brief['constraints']['palette']
+                if current and [c.upper() for c in current] != palette_source['colors']:
+                    raise ValueError('PALETTE_CONFLICT: the brief already declares a different palette')
+                brief['constraints']['palette'] = list(palette_source['colors'])
+                if 'palette' in brief.get('unspecified_elements', []):
+                    brief['unspecified_elements'].remove('palette')
+            print(create(brief, args.root, args.output, args.seed, palette_source=palette_source))
         return 0
     except Exception as exc:
         print(f'assetpipe: {exc}', file=__import__('sys').stderr)

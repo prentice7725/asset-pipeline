@@ -6,6 +6,7 @@ from PIL import Image
 from ...manifests import now, write
 from ...paths import resolve_path, validate_references
 from ..._ported.pixel_gate.analyzer import analyze_image
+from . import manifest_gate_palette
 
 
 def digest(path, resolver=None):
@@ -47,7 +48,7 @@ def validate_run(manifest_path, resolver=None):
     if Path(row['image']).resolve() != Path(evidence['candidate']).resolve() or row['sha256'] != digest(evidence['candidate'], resolver):
         raise ValueError('Selected resolution candidate does not match export evidence')
     gate = analyze_image(resolve_path(evidence['export'], resolver), target_width=row['width'], target_height=row['height'],
-                         allowed_palette=manifest['asset_brief']['constraints']['palette'] or None)
+                         allowed_palette=manifest_gate_palette(manifest))
     if gate['status'] != 'PASS':
         raise ValueError('Static Master Pixel Gate did not PASS')
     with Image.open(resolve_path(evidence['candidate'], resolver)) as candidate, Image.open(resolve_path(evidence['export'], resolver)) as exported:
