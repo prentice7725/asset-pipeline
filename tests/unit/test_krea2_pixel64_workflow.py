@@ -29,6 +29,22 @@ def test_logical_size_binds_to_refiner_not_latent():
     assert workflow.output_nodes == ('9', '31')
 
 
+def test_default_graph_uses_dora_node_and_stock_graph_is_kept_unchanged():
+    registry = load_registry(ROOT)
+    assert registry['krea2_pixel64_stock']['status'] == 'EXPERIMENTAL'
+    assert registry['krea2_pixel64_stock']['selection'] == 'explicit_only'
+    dora = patch_workflow(load_workflow('krea2_pixel64_api', ROOT / 'config/workflows'), prompt='a', seed=1,
+                          filename_prefix='assetpipe/x', workflow_inputs={'lora_strength': 0.5})
+    assert dora['15']['class_type'] == 'AssetpipeAIToolkitDoRALoader'
+    assert dora['15']['inputs']['strength'] == 0.5 and dora['15']['inputs']['alpha_over_rank'] == 1.0
+    stock_path = ROOT / 'config/workflows/krea2_pixel64_stock_api.json'
+    # Identical bytes to the graph used by the 2026-11-07 batch runs (their recorded workflow_sha256).
+    assert hashlib.sha256(stock_path.read_bytes()).hexdigest().startswith('1ea5ee227549f34e')
+    stock = patch_workflow(load_workflow('krea2_pixel64_stock_api', ROOT / 'config/workflows'), prompt='a', seed=1,
+                           filename_prefix='assetpipe/x', workflow_inputs={'lora_strength': 1.0})
+    assert stock['15']['class_type'] == 'LoraLoaderModelOnly'
+
+
 def _fake(monkeypatch, paths):
     seen = {}
     monkeypatch.setattr(pixel_static.ComfyUIProvider, 'generate', lambda self, *a: paths)

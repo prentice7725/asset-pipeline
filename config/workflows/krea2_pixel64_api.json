@@ -1,7 +1,7 @@
 {
- "workflow_version": "1.0.0",
- "description": "Krea-2 Turbo FP8 + creator k2-pixel64 LoRA (strength 1.0) at 1024px, then the creator Krea2PixelArtRefiner to the logical size. Width/height bind to the Refiner (logical sprite size); the 1024px latent is fixed. Raw 1024px output is preserved before the refined candidate. The LoRA's 120 .magnitude keys are not consumed by the installed loader (see docs/research).",
- "source_workflow": "config/workflows/krea2_pixel64_redraw_experimental.json",
+ "workflow_version": "1.1.0",
+ "description": "Krea-2 Turbo FP8 + creator k2-pixel64 DoRA LoRA applied by the experimental assetpipe ai-toolkit DoRA node (all 360 A/B/magnitude tensors; alpha/rank 1.0 is a source-supported hypothesis), at 1024px, then the creator Krea2PixelArtRefiner to the logical size. Requires custom node AssetpipeAIToolkitDoRALoader from integrations/comfyui_dora. Width/height bind to the Refiner (logical sprite size); the 1024px latent is fixed. Raw 1024px output is preserved before the refined candidate. The stock-loader graph (magnitude keys unloaded) is krea2_pixel64_stock_api.",
+ "source_workflow": "config/workflows/krea2_pixel64_stock_api.json",
  "source_workflow_sha256": "a269f7377ee46410ac6b5f98559a0e8300150bf9c500327dc9060943c6d112bd",
  "models": {
   "diffusion": "krea2_turbo_fp8_scaled.safetensors",
@@ -59,14 +59,15 @@
    }
   },
   "15": {
-   "class_type": "LoraLoaderModelOnly",
+   "class_type": "AssetpipeAIToolkitDoRALoader",
    "inputs": {
     "model": [
      "10",
      0
     ],
     "lora_name": "k2-pixel64.safetensors",
-    "strength_model": 1.0
+    "strength": 1.0,
+    "alpha_over_rank": 1.0
    }
   },
   "22": {
@@ -183,7 +184,7 @@
   },
   "lora_strength": {
    "node": "15",
-   "input": "strength_model"
+   "input": "strength"
   },
   "filename_prefix": {
    "node": "31",
@@ -207,5 +208,8 @@
  "output_nodes": [
   "9",
   "31"
+ ],
+ "required_custom_nodes": [
+  "AssetpipeAIToolkitDoRALoader"
  ]
 }

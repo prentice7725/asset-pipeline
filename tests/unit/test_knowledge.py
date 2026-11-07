@@ -60,7 +60,7 @@ def mutate(root, name, callback):
 def test_complete_mapping_and_counts():
     result = build_snapshot(ROOT)
     assert result["research_state"] == "INVENTORY_ONLY"
-    assert result["counts"]["workflows"] == 14
+    assert result["counts"]["workflows"] == 15  # krea2_pixel64 (DoRA node) + krea2_pixel64_stock
     assert result["counts"]["model_variants"] == 12
     assert result["counts"]["model_profiles"] == 10  # Includes MiniMax research and Krea2 Pixel64 profiles.
     assert result["counts"]["styles"] == 33

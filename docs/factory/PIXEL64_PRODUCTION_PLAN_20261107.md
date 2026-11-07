@@ -101,7 +101,14 @@ A/B(2026-11-07, [요약](../research/KREA2_DORA_LOADER_AB_20261107.json)): 노�
 `type(a)(loaded_keys, weights)`로 다시 만드는 경로에서 실패했고(두 번째는 재시작 미적용), 고친 뒤 세 번째에서
 18개 모두 완료했다. DoRA 실행은 360개 텐서 전부를 소비했다. 기존 로더 재실행은 9장 모두 원본과 비트 단위로 같다.
 DoRA는 피사체·자세·팔레트를 유지하고 세부(얼굴, 음영, 작은 형태)를 바꿨다. 기사 DoRA 원본에는 좌우 검은 띠가 생겨
-투명 납품 테두리 게이트에서 실패했다. 어느 쪽도 채택하지 않았고, alpha/rank와 Turbo/Raw base 차이는 아직 가설이다.
+투명 납품 테두리 게이트에서 실패했다. alpha/rank와 Turbo/Raw base 차이는 아직 가설이다.
+
+사용자 결정(2026-11-07): 기사 비교를 보고 DoRA를 기본으로 정했다. `krea2_pixel64`(v1.1.0)는 15번 노드가
+`AssetpipeAIToolkitDoRALoader`이고, ComfyUI `custom_nodes`에 `integrations/comfyui_dora`를 복사해 둬야 실행된다.
+기존 로더 그래프는 `krea2_pixel64_stock`으로 남겼고 바이트가 배치 당시 그래프와 같다(sha256 `1ea5ee22…`).
+레지스트리 경로로 기사(seed 20261108)를 다시 생성하면 A/B DoRA 결과와 64px·1024px 픽셀이 모두 같다.
+기사 DoRA의 검은 띠(0–8, 55–63열, 순수 검정)는 `pixel-edit`로 배경색 252로 바꾼 뒤 투명 납품과 Aseprite 왕복을
+통과했다(갇힌 1–5픽셀 갑옷 하이라이트 14곳은 남김). 같은 띠가 다른 생성에도 나오면 테두리 게이트에서 멈춘다.
 
 ### P3. 64px 후처리와 부분 편집
 

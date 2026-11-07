@@ -67,7 +67,7 @@ models:
   krea2-pixel64-experimental:
     family: Krea2
     variant: Turbo + e-n-v-y Pixel Art LoRA + Refiner
-    workflows: [krea2_pixel64]
+    workflows: [krea2_pixel64, krea2_pixel64_stock]
     status: EXPERIMENTAL
     local_installation: NOT_PROBED_THIS_SESSION
     license_review: REQUIRED
