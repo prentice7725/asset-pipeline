@@ -66,20 +66,23 @@ def _adapter_class():
     class AIToolkitDoRAAdapter(WeightAdapterBase):
         name = 'aitoolkit_dora'
 
-        def __init__(self, loaded_keys, weights, alpha_over_rank):
+        # ComfyUI rebuilds adapters as type(a)(loaded_keys, weights) when prefetching for dynamic
+        # VRAM (comfy.lora.prefetch_prepared_value), moving only tensors inside `weights`. The
+        # alpha/rank ratio therefore travels as the last, non-tensor element of `weights`.
+        def __init__(self, loaded_keys, weights):
             self.loaded_keys = loaded_keys
             self.weights = weights
-            self.alpha_over_rank = alpha_over_rank
 
         def calculate_weight(self, weight, key, strength, strength_model, offset, function,
                              intermediate_dtype=torch.float32, original_weight=None):
             if offset is not None:
                 raise ValueError(f'DORA_OFFSET_UNSUPPORTED: {key}')
+            *tensors, alpha_over_rank = self.weights
             down, up, magnitude = (comfy.model_management.cast_to_device(t, weight.device, intermediate_dtype)
-                                   for t in self.weights)
+                                   for t in tensors)
             base = weight.to(intermediate_dtype)
             merged = aitoolkit_dora_weight(base, down, up, magnitude, strength=strength,
-                                           alpha_over_rank=self.alpha_over_rank)
+                                           alpha_over_rank=alpha_over_rank)
             apply = function if function is not None else (lambda value: value)
             weight += apply((merged - base).type(weight.dtype))
             return weight
@@ -103,7 +106,7 @@ def build_patches(model, state_dict, alpha_over_rank):
             continue
         if tuple(model_sd[target].shape) != (up.shape[0], down.shape[1]) or magnitude.shape[0] != up.shape[0]:
             raise ValueError(f'DORA_SHAPE_MISMATCH: {stem} -> {target}')
-        patches[target] = adapter({f'{stem}{s}' for s in TRIPLE_SUFFIXES}, (down, up, magnitude), alpha_over_rank)
+        patches[target] = adapter({f'{stem}{s}' for s in TRIPLE_SUFFIXES}, (down, up, magnitude, float(alpha_over_rank)))
     if missing:
         raise ValueError(f'DORA_UNMAPPED_TARGETS: {len(missing)} e.g. {missing[:3]}')
     return patches

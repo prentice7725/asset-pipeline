@@ -31,3 +31,24 @@ def test_unexpected_keys_are_rejected(extra):
 def test_node_is_registered_under_one_explicit_name():
     assert list(comfyui_dora.NODE_CLASS_MAPPINGS) == ['AssetpipeAIToolkitDoRALoader']
     assert 'EXPERIMENTAL' in comfyui_dora.AssetpipeAIToolkitDoRALoader.DESCRIPTION
+
+
+def test_adapter_survives_comfyui_two_argument_rebuild(monkeypatch):
+    """comfy.lora.prefetch_prepared_value rebuilds adapters as type(a)(loaded_keys, weights)."""
+    import sys
+    import types
+
+    class Base:
+        pass
+
+    stubs = {'torch': types.SimpleNamespace(float32='float32'),
+             'comfy': types.ModuleType('comfy'),
+             'comfy.model_management': types.ModuleType('comfy.model_management'),
+             'comfy.weight_adapter': types.ModuleType('comfy.weight_adapter'),
+             'comfy.weight_adapter.base': types.SimpleNamespace(WeightAdapterBase=Base)}
+    for name, module in stubs.items():
+        monkeypatch.setitem(sys.modules, name, module)
+    adapter_cls = comfyui_dora._adapter_class()
+    adapter = adapter_cls({'k'}, ('A', 'B', 'M', 0.5))
+    rebuilt = type(adapter)(adapter.loaded_keys, adapter.weights)
+    assert rebuilt.weights == ('A', 'B', 'M', 0.5) and rebuilt.loaded_keys == {'k'}
