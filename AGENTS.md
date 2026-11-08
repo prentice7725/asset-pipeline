@@ -8,9 +8,11 @@ The goal is one general path: NONPIXEL still → explicit motion job → frames/
 atlas and native Godot/Phaser export → human review. Work on that path's implementation order only.
 
 Frozen until the user explicitly reopens them in a new request:
-- Krea2 / Pixel64 / LoRA / DoRA / FP8 loader research, pixel postprocessing A/B, 32px research.
+- 32px research. (Krea2 / Pixel64 / LoRA / DoRA loader research and pixel postprocessing
+  were reopened on 2026-11-07; see below.)
 - Per-sample polishing of existing fox/rabbit candidates (extra alpha, loop, timing reports).
-- New providers, new styles, new MCP tools or schema changes.
+- New providers, new styles, new MCP tools or schema changes (except the single pixel-native
+  generator comparison reopened on 2026-11-07).
 Do not start frozen work because a document lists it as "remaining"; ask the user instead.
 
 Reopened by the user on 2026-10-28 (identity variants only): read docs/factory/IDENTITY_VARIANT.md.
@@ -32,6 +34,14 @@ Reopened by the user on 2026-11-03 (rfxgen SFX only): an rfxgen synth option ins
 offline contract first. Read docs/SFX_RFXGEN.md. Render only explicit human-made .rfx files (no --generate
 presets), EXPERIMENTAL explicit_only, one attempt, no retry/fallback, listening review required, six MCP
 tools. Real rfxgen execution needs a separate request; no layering/mixing with other sources.
+
+Reopened by the user on 2026-11-07 (Pixel64 only): read docs/factory/PIXEL64_PRODUCTION_PLAN_20261107.md.
+Scope: the Krea2 64px generation path toward M3.5 D1, the LoRA `.magnitude` loader fix, 64px-native
+postprocessing/region edits, and one pixel-native generator compared on the same Brief. 32px stays
+frozen. Never blind-rename `.magnitude` to `.dora_scale` or patch weights; a new provider stays
+EXPERIMENTAL explicit_only and paid cloud use needs a separate budget. One attempt per reserved run,
+no retry/fallback, HUMAN_REQUIRED Aseprite review, six MCP tools. Path choice uses the measured
+total time per adopted sprite, including human edit minutes recorded by the user.
 
 Change discipline:
 - One topic per branch/PR. Do not bundle research commits into a feature PR.

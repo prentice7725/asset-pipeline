@@ -400,6 +400,126 @@ workflows:
     installation_check:
       status: PASS
       missing: []
+  krea2_pixel64:
+    model_profile: krea2-pixel64
+    output_class: PIXEL_STATIC
+    engine: comfyui
+    workflow_file: config/workflows/krea2_pixel64_api.json
+    workflow_name: krea2_pixel64_api
+    # User decision 2026-11-08 (task 6): VALIDATED, still explicit_only; ACTIVE is a separate decision.
+    status: VALIDATED
+    selection: explicit_only
+    priority: 40
+    tags:
+    - character
+    - pixel
+    - static
+    - pixel64
+    models:
+      diffusion_models:
+      - krea2_turbo_fp8_scaled.safetensors
+      text_encoders:
+      - qwen3vl_4b_fp8_scaled.safetensors
+      vae:
+      - qwen_image_vae.safetensors
+      loras:
+      - k2-pixel64.safetensors
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: false
+      exact_resolution: true
+    # The graph saves the raw 1024px generation before the refined 64px candidate.
+    preserved_intermediate_outputs: 1
+    # After Pixel Gate PASS, write a binary-alpha delivery copy (070_transparent) from the declared
+    # white background; border mismatches and enclosed pockets stop as review items.
+    transparent_delivery:
+      background_rgb: [255, 255, 255]
+      tolerance: 10
+    presets:
+      sprite64:
+        width: 64
+        height: 64
+        colors: 24
+        lora_strength: 1.0
+    default_preset: sprite64
+    post_pipeline:
+    - pixel_analyzer_candidate_report
+    - safe_refiner_binary_alpha_only
+    # User decision 2026-11-07: default loader is the experimental ai-toolkit DoRA node
+    # (integrations/comfyui_dora, installed into ComfyUI custom_nodes). Stock graph: krea2_pixel64_stock.
+    # The loader rejects VALIDATED unless the evidence record matches this graph hash and node source.
+    validation:
+      status: REAL_GENERATION_VERIFIED
+      evidence_record: docs/research/KREA2_PIXEL64_VALIDATION_20261108.json
+      evidence_doc: docs/research/KREA2_DORA_LOADER_AB_20261107.json
+      lora_compatibility: AITOOLKIT_DORA_NODE_360_TENSORS_ALPHA_RANK_HYPOTHESIS
+      real_generation: REGISTRY_BATCH_10_RUNS_8_ADOPTED_2_APPROVED_MASTERS
+    installation_check:
+      status: PENDING_LOCAL_HASH_RECHECK
+      missing: []
+  krea2_pixel64_stock:
+    model_profile: krea2-pixel64
+    output_class: PIXEL_STATIC
+    engine: comfyui
+    workflow_file: config/workflows/krea2_pixel64_stock_api.json
+    workflow_name: krea2_pixel64_stock_api
+    status: EXPERIMENTAL
+    selection: explicit_only
+    priority: 39
+    tags:
+    - character
+    - pixel
+    - static
+    - pixel64
+    models:
+      diffusion_models:
+      - krea2_turbo_fp8_scaled.safetensors
+      text_encoders:
+      - qwen3vl_4b_fp8_scaled.safetensors
+      vae:
+      - qwen_image_vae.safetensors
+      loras:
+      - k2-pixel64.safetensors
+    capabilities:
+      text_to_image: true
+      image_to_image: false
+      character_reference: false
+      transparent_output: false
+      motion_conditioning: false
+      image_to_video: false
+      negative_prompt: false
+      exact_resolution: true
+    # The graph saves the raw 1024px generation before the refined 64px candidate.
+    preserved_intermediate_outputs: 1
+    # After Pixel Gate PASS, write a binary-alpha delivery copy (070_transparent) from the declared
+    # white background; border mismatches and enclosed pockets stop as review items.
+    transparent_delivery:
+      background_rgb: [255, 255, 255]
+      tolerance: 10
+    presets:
+      sprite64:
+        width: 64
+        height: 64
+        colors: 24
+        lora_strength: 1.0
+    default_preset: sprite64
+    post_pipeline:
+    - pixel_analyzer_candidate_report
+    - safe_refiner_binary_alpha_only
+    validation:
+      status: EXPERIMENTAL_PRIOR_SMOKE
+      evidence_doc: docs/research/KREA2_PIXEL64_SMOKE_20261003.md
+      lora_compatibility: INCOMPLETE_ADAPTER_120_MAGNITUDE_KEYS_UNLOADED
+      real_generation: NOT_RUN_THROUGH_REGISTRY
+      note: graph identical to the 2026-11-07 krea2_pixel64 batch graph (sha256 1ea5ee22...)
+    installation_check:
+      status: PENDING_LOCAL_HASH_RECHECK
+      missing: []
   minimax_character_motion_reference:
     output_class: PIXEL_ANIMATION
     engine: comfyui

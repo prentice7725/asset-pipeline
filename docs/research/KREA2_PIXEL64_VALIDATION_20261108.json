@@ -1,0 +1,182 @@
+{
+ "schema_version": 1,
+ "kind": "COMFYUI_WORKFLOW_VALIDATION",
+ "workflow_id": "krea2_pixel64",
+ "result": "REAL_GENERATION_VERIFIED",
+ "recorded_at": "2026-11-08",
+ "recorded_by": "claude (user: task 6, 2026-11-08)",
+ "workflow_file": "config/workflows/krea2_pixel64_api.json",
+ "workflow_version": "1.1.0",
+ "workflow_sha256": "a738d5b9c16d2680c731b1083759aaad9f9fd4cd4c5c310b56cea8cdbbb3059c",
+ "custom_node_sources": {
+  "integrations/comfyui_dora/__init__.py": "321968e3178ea9ce39c8057db97232e5072b44a22fabc7dc702298ec30489e94"
+ },
+ "method": "assetpipe create through the registry, one attempt per brief, distinct seeds, no retry or fallback; every candidate reviewed by the user; plan declared before generation (workspace/pixel64-batch2-20261107/plan.json, git-ignored)",
+ "pixel_gate": {
+  "pass": 10,
+  "total": 10
+ },
+ "human_review": {
+  "adopted": 8,
+  "rejected": 2,
+  "edit_minutes": 0.0,
+  "rejections": {
+   "archer_side64": "rejected by the user; resembles a well-known character",
+   "bat64": "rejected by the user; its transparency was BLOCKED (wings touch the frame)"
+  }
+ },
+ "machine_seconds_per_adopted": 72.3,
+ "approved_static_masters": [
+  {
+   "id": "coin64",
+   "status": "APPROVED_STATIC_MASTER",
+   "approved_export_sha256": "3d6f2003caad007f204858d90bc806258bfc8826ab30d4865dadbb8a0a162ac8",
+   "approval_record_sha256": "0e4e73fa4a7c936330e8d19542ab78a9f68d0c7bc00224004dd1d30d2c7df1b1",
+   "transparent_sha256": "f49b071a8a7f6549dde39596c8660d229812942099727d682a66acd82558a5ed",
+   "hole_seeds": []
+  },
+  {
+   "id": "key64",
+   "status": "APPROVED_STATIC_MASTER",
+   "approved_export_sha256": "134cac1d69e1e217a88610ff3e9aaac97c06dba2852bfbd81ce4f209b382a425",
+   "approval_record_sha256": "34e75ccf26dcfb94424952602897a3b3675f8530bfd9e289e462e9f99d6356ce",
+   "transparent_sha256": "3ed86e95947223a2a4e66d257b637c973a3681bbe81291069e0ec52bcdb857e5",
+   "hole_seeds": [
+    [
+     39,
+     13
+    ]
+   ]
+  }
+ ],
+ "runs": [
+  {
+   "id": "archer_side64",
+   "seed": 20261116,
+   "case": "side view, pose with extended arms",
+   "run_manifest_sha256": "f3454d455fec090bc1bde3fea026b7cce696d71b3d965723ba268c4eb7ef6f25",
+   "transparent_delivery": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "generation_seconds": 34.0,
+   "postprocess_seconds": 3.19,
+   "human_decision": "REJECTED",
+   "edit_minutes": 0.0,
+   "review_note": "User rejected 2026-11-07: resembles a well-known game character (green-hooded elf archer); not a full side profile"
+  },
+  {
+   "id": "horse_side64",
+   "seed": 20261117,
+   "case": "side view, quadruped wider than tall",
+   "run_manifest_sha256": "7b5784afe1f05309ab530d2e70230c2d73987a4de6bbbdc676d374cf3dc5bd4d",
+   "transparent_delivery": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "generation_seconds": 57.03,
+   "postprocess_seconds": 3.16,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  },
+  {
+   "id": "deathknight64",
+   "seed": 20261118,
+   "case": "dark subject on white",
+   "run_manifest_sha256": "a3e8ef701e1c5b37a4fbe873396f19edc775bba4f087edeaa29af837de59597c",
+   "transparent_delivery": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "generation_seconds": 55.88,
+   "postprocess_seconds": 3.1,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  },
+  {
+   "id": "skeleton64",
+   "seed": 20261119,
+   "case": "light subject on white",
+   "run_manifest_sha256": "60212b2d307d62c4a87088fd6032fe36e877b3e257b340dd9f4d0286e6eb89ee",
+   "transparent_delivery": "PASS_REVIEW_REQUIRED",
+   "generation_seconds": 56.69,
+   "postprocess_seconds": 3.44,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  },
+  {
+   "id": "coin64",
+   "seed": 20261120,
+   "case": "small simple prop",
+   "run_manifest_sha256": "0e68b52bcbe39ef566b12c5d738d8be6f04c1c63548a71d0a2f5e8017d0fefe2",
+   "transparent_delivery": "PASS_REVIEW_REQUIRED",
+   "generation_seconds": 56.3,
+   "postprocess_seconds": 3.13,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  },
+  {
+   "id": "key64",
+   "seed": 20261121,
+   "case": "thin diagonal prop",
+   "run_manifest_sha256": "a28a32e6318d8a8d8a07b194389f848c7bcd608f359f643e20acb42e26b01550",
+   "transparent_delivery": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "generation_seconds": 56.87,
+   "postprocess_seconds": 3.13,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  },
+  {
+   "id": "sword64",
+   "seed": 20261122,
+   "case": "long thin diagonal weapon",
+   "run_manifest_sha256": "844bacb02c90daf13527f4d3747c2609849b20fc855367920270bd7bd54a6add",
+   "transparent_delivery": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "generation_seconds": 56.48,
+   "postprocess_seconds": 3.36,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  },
+  {
+   "id": "dwarf_axe64",
+   "seed": 20261123,
+   "case": "large two-handed weapon",
+   "run_manifest_sha256": "82d885c4d5b8ad7a4a17e612fc6d932830b3d74af7a0ecda5118420bfc12a885",
+   "transparent_delivery": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "generation_seconds": 57.61,
+   "postprocess_seconds": 2.99,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  },
+  {
+   "id": "bat64",
+   "seed": 20261124,
+   "case": "wide flying silhouette",
+   "run_manifest_sha256": "cb495769bc5eff29cbf2d93036651c98bd9b260dfe5c139575443b2c521d8f09",
+   "transparent_delivery": "BLOCKED_REVIEW_REQUIRED",
+   "generation_seconds": 57.49,
+   "postprocess_seconds": 0.24,
+   "human_decision": "REJECTED",
+   "edit_minutes": 0.0,
+   "review_note": "User rejected 2026-11-07: wings cut off at the frame edge (transparent delivery blocked)"
+  },
+  {
+   "id": "cleric_threequarter64",
+   "seed": 20261125,
+   "case": "three-quarter view, light robe on white",
+   "run_manifest_sha256": "7c87bb9ee612ea83cc953641b447b45e654a0f9e03294b5f9a4e3f34aa7e75b2",
+   "transparent_delivery": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "generation_seconds": 61.39,
+   "postprocess_seconds": 2.69,
+   "human_decision": "ADOPTED",
+   "edit_minutes": 0.0,
+   "review_note": "User adopted from batch-2 review sheet 2026-11-07 ('나머진 오켄'); no separate Aseprite pass"
+  }
+ ],
+ "not_covered": [
+  "ACTIVE (automatic routing) is a separate decision; selection stays explicit_only",
+  "generation took ~55 s per sprite against ~30 s for the earlier stock-graph batch; cause not investigated",
+  "alpha_over_rank=1 and the Turbo base for a LoRA trained on another base remain hypotheses",
+  "a fixed project palette can shift identity colors (nearest-RGB); review item",
+  "deliveries changed with pixel-edit are not approvable through approve-static",
+  "32px stays frozen; no claim beyond 64px static sprites"
+ ]
+}

@@ -154,4 +154,39 @@ def load_registry(root):
         item['version'] = workflow.version
         # 기존 평면 키를 엔진별 backend 구조로도 노출한다. 기존 키는 그대로 유지한다.
         item.setdefault('backend', {'workflow_file': item['workflow_file'], 'workflow_name': item['workflow_name']})
+        if item['status'] == 'VALIDATED':
+            problem = workflow_evidence_problem(key, item, root)
+            # 증거가 없거나 낡으면 그 항목만 EXPERIMENTAL로 내린다. 다른 경로의 라우팅은 막지 않는다.
+            item['evidence_check'] = {'status': 'DEMOTED_TO_EXPERIMENTAL', 'reason': problem} if problem else {'status': 'PASS'}
+            if problem:
+                item['status'] = 'EXPERIMENTAL'
     return WorkflowRegistry(workflows, root)
+
+
+def workflow_evidence_problem(key, item, root):
+    """VALIDATED ComfyUI 항목은 지금의 그래프·커스텀 노드 소스로 실제 생성한 증거 기록이 있어야 한다.
+    그래프나 노드가 바뀌면 해시가 달라지므로, 새 증거 없이는 VALIDATED가 유지되지 않는다. 문제가 없으면 None."""
+    validation = item.get('validation') or {}
+    evidence = validation.get('evidence_record')
+    path = (root / evidence).resolve() if isinstance(evidence, str) else None
+    problem = None
+    if validation.get('status') != 'REAL_GENERATION_VERIFIED' or path is None or not path.is_relative_to(root) or not path.is_file():
+        problem = 'needs validation.status REAL_GENERATION_VERIFIED and an evidence_record file inside the repository'
+    else:
+        try:
+            record = json.loads(path.read_text(encoding='utf-8'))
+        except ValueError:
+            record = {}
+        if record.get('kind') != 'COMFYUI_WORKFLOW_VALIDATION' or record.get('workflow_id') != key or record.get('result') != 'REAL_GENERATION_VERIFIED':
+            problem = 'evidence record does not verify this workflow'
+        elif record.get('workflow_sha256') != item['hash']:
+            problem = 'workflow graph changed since its evidence was recorded'
+        else:
+            for source, digest in (record.get('custom_node_sources') or {}).items():
+                file = (root / source).resolve()
+                if not file.is_relative_to(root) or not file.is_file() or hashlib.sha256(file.read_bytes()).hexdigest() != digest:
+                    problem = f'custom node source changed since its evidence was recorded: {source}'
+                    break
+            if problem is None and item['output_class'] == 'PIXEL_STATIC' and not record.get('approved_static_masters'):
+                problem = 'PIXEL_STATIC evidence needs at least one approved static master'
+    return problem

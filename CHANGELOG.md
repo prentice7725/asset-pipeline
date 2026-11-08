@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased — Pixel64 production path, 2026-11-07
+
+- `krea2_pixel64` now applies the k2-pixel64 DoRA LoRA (all 360 tensors) via the experimental
+  `integrations/comfyui_dora` node; the stock-loader graph stays as `krea2_pixel64_stock`.
+- PIXEL_STATIC runs with `transparent_delivery` write a binary-alpha copy, preview and Aseprite round
+  trip to `070_transparent/`; non-background borders stop as `BLOCKED_REVIEW_REQUIRED`.
+- Add `pixel-transparent`, `pixel-edit` and `pixel-ledger` commands.
+- ComfyUI runs check `required_custom_nodes` before submit: the node's loaded source hash must match
+  the repository (`scripts/install_comfyui_dora.py --update --restart` installs and verifies).
+- `create --palette-file` (.gpl/.hex/.txt) pins a project palette; transparent-delivery runs keep the
+  declared background for keying and report delivery palette conformance.
+- `review-resolution` records the size selection; `approve-static --transparent` adds a verified
+  transparent delivery copy (master minus background only, Aseprite PASS, holes cleared or accepted).
+- `krea2_pixel64` is VALIDATED (explicit_only). A ComfyUI entry stays VALIDATED only while its evidence
+  record matches the current graph and custom node hashes; otherwise the loader demotes it to EXPERIMENTAL.
+- MCP (same six tools and input schemas): `asset_capabilities` lists `validated_workflows`; `asset_inspect_run`
+  adds `transparent_delivery`, `next_human_steps` and a re-verified `static_approval` for PIXEL_STATIC runs.
+
 ## Unreleased — rfxgen preset library, 2026-11-03
 
 - Add `config/sfx_library` and `sfx-library list|add|approve`, plus `create --rfx-preset`: human-made

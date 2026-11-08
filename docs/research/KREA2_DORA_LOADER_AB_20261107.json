@@ -1,0 +1,253 @@
+{
+ "kind": "KREA2_PIXEL64_LORA_LOADER_AB_SUMMARY",
+ "date": "2026-11-07",
+ "status": "AB_RUN_COMPLETE / REVIEW_REQUIRED",
+ "node": {
+  "path": "integrations/comfyui_dora/__init__.py",
+  "sha256": "ca4b76d851361a80a7f66b5569b0b724688ca333f0e1b8c3b8f968321e4555e6",
+  "installed_as": "ComfyUI custom_nodes/assetpipe_aitoolkit_dora (copy)",
+  "comfyui": "0.42.4",
+  "load_log": "[assetpipe DoRA] k2-pixel64.safetensors: 120 targets, 360 tensors consumed, strength 1.0, alpha/rank 1.0; 120 patches attached; stock loader logs 120 .magnitude keys not loaded"
+ },
+ "arms": {
+  "stock_rerun": "saved workflow unchanged (LoraLoaderModelOnly strength 1.0)",
+  "dora_s1_r1": {
+   "class_type": "AssetpipeAIToolkitDoRALoader",
+   "inputs": {
+    "model": [
+     "10",
+     0
+    ],
+    "lora_name": "k2-pixel64.safetensors",
+    "strength": 1.0,
+    "alpha_over_rank": 1.0
+   }
+  }
+ },
+ "change": "only node 15 replaced; prompt, seed, steps, Refiner settings unchanged",
+ "failed_attempts": [
+  {
+   "run": "r1",
+   "error": "TypeError AIToolkitDoRAAdapter.__init__ missing alpha_over_rank: comfy.lora.prefetch_prepared_value rebuilds adapters as type(a)(loaded_keys, weights)",
+   "fix": "alpha/rank carried as last non-tensor element of weights; regression test added"
+  },
+  {
+   "run": "r2",
+   "error": "same TypeError: Manager reboot POST rejected (405), old node code still loaded",
+   "fix": "restart via /api/v2/manager/reboot, verified new server PID"
+  }
+ ],
+ "determinism_control": "stock rerun refined and raw outputs are bit-identical to the 2026-11-07 batch originals for all 9 sprites",
+ "items": [
+  {
+   "id": "pixel64-archer-20261107_seed20261107",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 1487,
+   "dora_vs_stock_raw_mean_abs": 3.889,
+   "colors": {
+    "stock": 23,
+    "dora": 22
+   },
+   "wall_seconds": {
+    "stock": 36.49,
+    "dora": 36.41
+   },
+   "stock_refined_sha256": "d2c1b3cf62a760562c2e524022c86960c9f15dc88371177a8f88c1d45768be65",
+   "dora_refined_sha256": "d33cebf9a782281dd13b3d6faa4710d8be43d917e3b49b1a89bf5bc12dce42ad",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  },
+  {
+   "id": "chest64_seed20261115",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 4096,
+   "dora_vs_stock_raw_mean_abs": 8.032,
+   "colors": {
+    "stock": 23,
+    "dora": 22
+   },
+   "wall_seconds": {
+    "stock": 32.09,
+    "dora": 32.07
+   },
+   "stock_refined_sha256": "9f71653063ce41c883bd6ea4069666f71d0b9e9766f94b8daba0e8aadb049e68",
+   "dora_refined_sha256": "1758788ca055c8bbba01486ff26fdb5ea60b6e3902a2f018cbdba90049a9cd86",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  },
+  {
+   "id": "fox64_seed20261112",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 1281,
+   "dora_vs_stock_raw_mean_abs": 3.087,
+   "colors": {
+    "stock": 24,
+    "dora": 23
+   },
+   "wall_seconds": {
+    "stock": 34.95,
+    "dora": 32.1
+   },
+   "stock_refined_sha256": "2d35e6bd5954f53d7f54ae6bbdd1d6d1d3d77aef686f48dc942985f549065977",
+   "dora_refined_sha256": "04718c04987b61a8948a571850cbd424f0df6c95df8bf1e7c0a12962834aeeff",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  },
+  {
+   "id": "goblin64_seed20261110",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 1753,
+   "dora_vs_stock_raw_mean_abs": 10.965,
+   "colors": {
+    "stock": 23,
+    "dora": 22
+   },
+   "wall_seconds": {
+    "stock": 30.35,
+    "dora": 30.14
+   },
+   "stock_refined_sha256": "e25a89e33a9ebff305277e7ccd341829ed3cf5be1e577f8dacaae2a2abb187ed",
+   "dora_refined_sha256": "ec69d09defa25d3ae4e209375baff8522d32c6660c1bc95b5a4f88858b858059",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  },
+  {
+   "id": "knight64_seed20261108",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 4096,
+   "dora_vs_stock_raw_mean_abs": 87.084,
+   "colors": {
+    "stock": 23,
+    "dora": 24
+   },
+   "wall_seconds": {
+    "stock": 30.46,
+    "dora": 30.16
+   },
+   "stock_refined_sha256": "3765428678e57c1f4ef720103b67bca3741d6762680760e3bd264d762712164b",
+   "dora_refined_sha256": "bb875cecdfd1cedf8f8d3e394de7a889d0eb1773e8c54d4f0cf4f86f4e6be9e3",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ERROR PIXEL64_TRANSPARENT_BORDER_NOT_UNIFORM: 2 border colors"
+   }
+  },
+  {
+   "id": "mage64_seed20261109",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 4096,
+   "dora_vs_stock_raw_mean_abs": 10.819,
+   "colors": {
+    "stock": 23,
+    "dora": 24
+   },
+   "wall_seconds": {
+    "stock": 30.43,
+    "dora": 30.34
+   },
+   "stock_refined_sha256": "497bca993e16947a89da0852b18f968d63fd1f203b6f1285e166499dd187d25a",
+   "dora_refined_sha256": "0b2c21c3fb27118f1cdd4b39e4af57cba758d1a0933a652aa3ab8ab837483104",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  },
+  {
+   "id": "potion64_seed20261114",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 4096,
+   "dora_vs_stock_raw_mean_abs": 4.855,
+   "colors": {
+    "stock": 23,
+    "dora": 22
+   },
+   "wall_seconds": {
+    "stock": 30.47,
+    "dora": 30.48
+   },
+   "stock_refined_sha256": "40573a40aabde36a0a59d29d02a239133223e0aa16e0d9ec5450d9c00ee1bd25",
+   "dora_refined_sha256": "1c895cef85d4d855cc864ea748b80f6c763976838b00cb71f54600a7c73a987a",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  },
+  {
+   "id": "slime64_seed20261111",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 4096,
+   "dora_vs_stock_raw_mean_abs": 7.711,
+   "colors": {
+    "stock": 20,
+    "dora": 21
+   },
+   "wall_seconds": {
+    "stock": 30.54,
+    "dora": 30.41
+   },
+   "stock_refined_sha256": "59cf933bc77d77f1aba98cb2199dd7baa161191ce2c09720a43f3e8e479fbea2",
+   "dora_refined_sha256": "2cea06fffa867e6d8daaf9cd8b8dc316f38f0b262388e4137f76bddd32b1dcd3",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  },
+  {
+   "id": "wolfkin64_seed20261113",
+   "stock_status": "success",
+   "dora_status": "success",
+   "stock_vs_original_refined_changed_px": 0,
+   "stock_vs_original_raw_max_abs": 0,
+   "dora_vs_stock_refined_changed_px": 4096,
+   "dora_vs_stock_raw_mean_abs": 2.902,
+   "colors": {
+    "stock": 23,
+    "dora": 22
+   },
+   "wall_seconds": {
+    "stock": 30.46,
+    "dora": 30.22
+   },
+   "stock_refined_sha256": "e563c1a4c22a6227926cf0f02d44ca516bef81829a62ddf89fe53d2d21d9ff03",
+   "dora_refined_sha256": "b47dc0603f3465cdfcd766a45e5f1270c792b7cbb0abf669c0852d5c7c0ee701",
+   "transparent_gate": {
+    "stock": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+    "dora": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED"
+   }
+  }
+ ],
+ "agent_observation": "not approval: subjects, poses and palettes are preserved; DoRA changes fine detail (faces, shading, small shapes). Knight DoRA raw has black vertical side bars (letterbox) and fails the transparent border gate. No arm is selected; alpha/rank=1 and Turbo-vs-Raw base remain unverified hypotheses.",
+ "review": "HUMAN_REQUIRED",
+ "outputs_not_in_git": "workspace\\krea2-dora-ab-20261107-r3"
+}

@@ -1,0 +1,203 @@
+# Pixel64 생산 경로 계획, 2026-11-07
+
+**상태:** PLAN_ONLY / GENERATION_NOT_RUN. 이 문서는 생성·설치·모델 변경을 하지 않았다.
+
+## 결정
+
+2026-10-27에는 넌픽셀 경로를 먼저 만들기 위해 픽셀 작업을 동결했다.
+2026-11-07 사용자가 넌픽셀 경로가 어느 정도 갖춰졌다고 판단하고 아래 네 항목을 재개했다.
+
+1. Krea2 64px 생성 경로를 [M3.5 D1](M3_FACTORY_WORKPLAN.md) 수준의 정식 후보 경로로 만든다.
+2. LoRA `.magnitude` 로더 문제를 다시 연구한다.
+3. 64px 격자를 유지하는 후처리와 부분 편집 단계를 만든다.
+4. 픽셀 전용 생성기 한 곳을 같은 Brief로 비교한다.
+
+32px 연구는 계속 동결한다. 넌픽셀 경로는 이 작업의 선행 조건이나 대기 대상이 아니다.
+
+## 출발점 (기록된 사실)
+
+| 항목 | 현재 상태 | 근거 |
+| --- | --- | --- |
+| 생성 경로 | Krea2 Turbo FP8 1024px → 제작자 Refiner 64×64, 24색 | [스모크](../research/KREA2_PIXEL64_SMOKE_20261003.md) |
+| 결과 | 같은 궁수의 2장, 각 22색 Pixel Gate PASS, Aseprite 왕복 무변경 | 같은 문서 |
+| 소요 시간 | 생성+정리 41.86초, 50.72초 | 같은 문서 |
+| 배경 | 불투명. 투명 납품 경로 없음 | 같은 문서 |
+| LoRA | `.magnitude` 120개 미소비. 후보 로더는 키는 보존하나 수치 동등성 거부 | [로더 후보](../research/KREA2_LOADER_CANDIDATE_20261027.md), [출처](../research/KREA2_PIXEL64_PROVENANCE_20261027.md) |
+| 후처리 | Fixer 기본값 879/853색으로 FAIL. 설정 변경 비교는 하지 않음 | [A/B](../research/PIXEL64_POSTPROCESS_AB_20261027.md) |
+| 사람 검토 | 사용자 긍정 평가(가독성, 손-활 연결). Aseprite 승인과 수정 시간은 없음 | 스모크 문서 |
+
+표본 2장으로는 채택률, 다양성, 생산 효율을 판단할 수 없다.
+
+## 공통 규칙
+
+- 실행마다 예산을 따로 예약하고 기록한다. 시도는 1회이며 재시도와 대체 경로는 없다.
+- 실패한 게이트를 넘어가지 않는다. 원인을 고친 뒤 따로 근거를 남긴 검증 실행만 허용한다.
+- `.magnitude`를 `.dora_scale`로 이름만 바꾸거나 가중치를 수정·변환하지 않는다.
+- 모든 출력은 REVIEW_REQUIRED다. Aseprite 사람 승인 전에는 Static Master가 아니다.
+- 새 provider는 EXPERIMENTAL / explicit_only다. 유료 클라우드 호출은 별도 예산 승인이 필요하다.
+- MCP 도구는 6개를 유지한다. 실행 산출물은 `workspace/`에 두고 커밋하지 않는다.
+
+## 구현 순서
+
+### P0. 측정 장부 (오프라인)
+
+경로 선택 기준은 **채택된 스프라이트 한 장당 총시간**이다.
+총시간은 생성 시간, 후처리 시간, 사람의 Aseprite 수정 시간(분)을 더한 값이다.
+
+- 실행 매니페스트에 단계별 시간과 최종 상태(ADOPTED / REJECTED / PENDING)를 남기는 장부 형식을 정의한다.
+- 사람 수정 시간은 사용자가 직접 입력한다. 에이전트가 추정하거나 대신 채우지 않는다.
+- 기존 궁수 2장을 첫 기록 대상으로 삼는다. 측정은 사용자가 Aseprite에서 수행한다.
+
+수용 기준: 장부 스키마와 검증 테스트가 있고, 사람 입력이 없는 항목은 NOT_MEASURED로 남는다.
+
+구현: `assetpipe pixel-ledger init|add|review|summary --ledger <json>` (`assetpipe.pixel.ledger`).
+`add`는 64×64 이미지의 해시로 후보를 등록하고, `review`는 같은 이미지에 대해 한 번만
+채택/거절과 수정 분을 기록한다. 거절한 후보에 쓴 시간도 경로 비용에 포함한다.
+
+2026-11-07 확인: 궁수 2장의 실행 폴더(`workspace/runs/krea2_pixel64_*_20261003`,
+A/B 당시 `workspace/checkouts/m3-motion-audit-20261023`)가 이 PC에 없다. 기록된 해시는
+초기 원본 `432232f0…`, 재생성 원본 `fc412775…`다. 파일을 찾기 전에는 장부에 넣지 않는다.
+
+### P1. Krea2 64px 후보 경로 (M3.5 D1)
+
+- **투명 납품:** 불투명 생성본과 투명 납품본을 분리한다. [초상화 알파 검증](PORTRAIT_SOURCE_ALPHA_VALIDATION_20261029.md)의 원칙(원본 RGB 보존)을 따르되, 64px에서는 반투명 없이 이진 알파만 쓴다.
+- **팔레트 계약:** 프로젝트 고정 팔레트를 명시적으로 받으면 그 팔레트로만 투영한다. 팔레트를 추론하지 않는다.
+- **게이트:** 64×64, 색 수, 이진 알파, 배경 잔여 픽셀 0, Aseprite 왕복 무변경.
+- 같은 Brief로 다양한 피사체를 소량 생성해 표본을 넓힌다. 각 실행은 따로 예약한다.
+
+수용 기준: 투명 64px 후보가 기술 게이트를 통과하고 사람 정지 이미지 검토로 넘어간다.
+
+등록(2026-11-07): `krea2_pixel64` 워크플로(EXPERIMENTAL, explicit_only, PIXEL_STATIC).
+`assetpipe create --brief <brief> --allow-experimental --seed N`으로 실행한다. 크기 지정은
+Refiner(논리 크기)에 연결되고 1024px 생성 크기는 고정이며, 1024px 원본은 해시와 함께 보존한다.
+첫 실행(seed 20261107)은 생성 39.8초, 23색, Pixel Gate PASS, 배경 불투명, 사람 검토 대기다.
+
+투명 납품(2026-11-07): `assetpipe pixel-transparent --input <불투명 후보> --output <새 폴더>
+--created-by <이름> [--hole X,Y ...] [--aseprite]` (`assetpipe.pixel.transparent`). 테두리 전체가
+선언한 배경색(기본 흰색, 거리 10 이내)의 한 색일 때만 동작하고, 테두리에 이어진 그 색만 이진 알파로
+지운다. 캐릭터 안에 갇힌 배경색 영역은 `--hole`로 지정한 곳만 지우고 나머지는 보고서와
+`review_preview.png`(자홍색)로 남긴다. 그림자 같은 비배경색과 불투명 픽셀 RGB는 바꾸지 않는다.
+첫 9장(궁수 + 8종)은 모두 게이트와 Aseprite RGBA 왕복을 통과했다. 지운 내부 영역은 궁수 활 틈,
+고블린 팔·다리 틈, 마법사 지팡이 틈, 늑대 수인 팔 틈이고 눈·여우 꼬리 끝·유리 반사는 남겼다.
+
+생성 경로 연결(2026-11-07): 레지스트리 항목에 `transparent_delivery`(배경 흰색, 거리 10)를 선언하면
+`create`가 Pixel Gate PASS 후 `070_transparent/`에 납품본·미리보기·Aseprite 왕복을 만든다. 불투명 후보와
+해상도 검토는 그대로다. 테두리 게이트 실패는 실행을 실패시키지 않고 `transparent_delivery.status =
+BLOCKED_REVIEW_REQUIRED`와 사유로 남는다. 실제 확인: 기사(seed 20261108)는 검은 띠로 BLOCKED, 고블린(seed
+20261110)은 납품본·Aseprite PASS와 갇힌 영역 4곳 검토 대기이며 A/B DoRA 결과와 픽셀이 같다.
+
+### P2. LoRA `.magnitude` 로더
+
+[출처 기록](../research/KREA2_PIXEL64_PROVENANCE_20261027.md)의 남은 차단 요인을 순서대로 푼다.
+
+1. 학습 당시 alpha/export 의미와 정확한 base·학습 출처 확인
+2. 형식별 전체 대상·양자화 어댑터 수치 검증 (현재 후보는 NUMERIC_EQUIVALENCE_REJECTED)
+3. 정당한 후보가 생긴 뒤에만 같은 seed·Brief로 적용 전후 이미지 A/B
+
+수용 기준: 수치 동등성 PASS 전에는 로더를 바꾸지 않는다. A/B 결과도 사람 검토가 필요하다.
+
+실험 노드(2026-11-07): `integrations/comfyui_dora`의 `AssetpipeAIToolkitDoRALoader`(EXPERIMENTAL)는
+A/B/magnitude를 이름·값 변경 없이 읽어 메모리에서만 적용한다(LoRA 적용 후 가중치의 행 노름, 강도는 식 안).
+alpha/rank는 파일에 없어 명시 입력(기본 1, 소스 근거 가설)이다. 검증된 후보 식과 비교해 FP64 60/60(2e-15),
+FP32는 1e-5 기준 52/60이고 실패 8개는 모두 1536×512이며 출력 대비 4.3e-7이다(`scripts/krea2_dora_node_check.py`).
+기존 `workflow`와 기본 경로는 바꾸지 않았다.
+
+A/B(2026-11-07, [요약](../research/KREA2_DORA_LOADER_AB_20261107.json)): 노드를 ComfyUI에 복사 설치하고 9개 Brief의
+저장된 워크플로에서 15번 노드만 바꿔 같은 seed로 실행했다. 첫 두 시도는 ComfyUI가 어댑터를
+`type(a)(loaded_keys, weights)`로 다시 만드는 경로에서 실패했고(두 번째는 재시작 미적용), 고친 뒤 세 번째에서
+18개 모두 완료했다. DoRA 실행은 360개 텐서 전부를 소비했다. 기존 로더 재실행은 9장 모두 원본과 비트 단위로 같다.
+DoRA는 피사체·자세·팔레트를 유지하고 세부(얼굴, 음영, 작은 형태)를 바꿨다. 기사 DoRA 원본에는 좌우 검은 띠가 생겨
+투명 납품 테두리 게이트에서 실패했다. alpha/rank와 Turbo/Raw base 차이는 아직 가설이다.
+
+사용자 결정(2026-11-07): 기사 비교를 보고 DoRA를 기본으로 정했다. `krea2_pixel64`(v1.1.0)는 15번 노드가
+`AssetpipeAIToolkitDoRALoader`이고, ComfyUI `custom_nodes`에 `integrations/comfyui_dora`를 복사해 둬야 실행된다.
+기존 로더 그래프는 `krea2_pixel64_stock`으로 남겼고 바이트가 배치 당시 그래프와 같다(sha256 `1ea5ee22…`).
+레지스트리 경로로 기사(seed 20261108)를 다시 생성하면 A/B DoRA 결과와 64px·1024px 픽셀이 모두 같다.
+기사 DoRA의 검은 띠(0–8, 55–63열, 순수 검정)는 `pixel-edit`로 배경색 252로 바꾼 뒤 투명 납품과 Aseprite 왕복을
+통과했다(갇힌 1–5픽셀 갑옷 하이라이트 14곳은 남김). 같은 띠가 다른 생성에도 나오면 테두리 게이트에서 멈춘다.
+
+노드 사전 점검(2026-11-07): 노드는 불러올 때 자기 소스 해시를 설명에 `source_sha256=`로 싣는다. 워크플로가
+`required_custom_nodes`를 선언하면 `create`는 제출 전에 ComfyUI가 보고한 해시와 저장소 파일 해시를 비교해,
+없거나 다르면(설치 누락, 업데이트 후 재시작 안 함) 생성 없이 멈춘다. A/B r2 실패가 이 경우였다.
+`scripts/install_comfyui_dora.py --update --restart`가 복사, 재시작, 해시 일치 확인을 한 번에 한다.
+실제 확인: 옛 복사본 상태에서 `create`는 `COMFYUI_CUSTOM_NODE_STALE`로 멈췄고, 설치 후 고블린 재생성은 A/B DoRA와 픽셀이 같다.
+
+고정 팔레트(2026-11-07): `create --palette-file`은 GIMP `.gpl`, Lospec `.hex`, Paint.NET `.txt`를 읽어 브리프
+`palette`를 채우고 파일 해시를 manifest `palette_source`에 남긴다(브리프 스키마 변경 없음, 프롬프트·라우팅 영향 없음).
+투명 납품 워크플로에서는 선언한 배경 거리 안의 픽셀을 배경색 그대로 두고 나머지만 가장 가까운 팔레트 색으로 바꾼다.
+불투명 후보의 게이트 팔레트는 팔레트+배경색이며 `gate_palette`로 기록해 검토·승인 게이트도 같은 집합을 쓴다.
+납품본은 `palette_conformance`로 팔레트 밖 색을 보고한다(남은 갇힌 배경이 여기에 잡힌다).
+실제 확인(PICO-8 16색, 시험용): 고블린 22→9색, 마법사 24→11색, 둘 다 Pixel Gate PASS. 다만 RGB 최근접 투영이라
+고블린의 올리브색 피부가 회색으로 바뀌었다. 팔레트에 맞는 색이 없으면 정체성 색이 바뀌므로 사람 검토 항목이다.
+
+2차 표본(2026-11-07): 안 해 본 경우 10개(측면 궁수·말, 어두운 죽음의 기사, 밝은 해골, 동전, 열쇠, 대각선 검,
+양손 도끼 드워프, 날개 편 박쥐, 3/4 성직자)를 seed 20261116–20261125로 한 번씩 생성했다(첫 시도는 실행 스크립트의
+CRLF 버그로 폴더 생성 전에 모두 실패했고 ComfyUI 제출은 없었다). 10장 모두 Pixel Gate PASS. 투명 납품은 PASS 2,
+갇힌 영역 검토 7, 박쥐는 날개가 프레임에 닿아 BLOCKED. 사용자 판정: 궁수 거절(유명 캐릭터와 닮음, 완전한 측면 아님),
+박쥐 거절(날개 잘림), 나머지 8장 채택 0분. 드워프는 도끼 하나 요청에 두 개가 나왔다.
+2차만의 기계 시간은 578초, 채택 1장당 72초다(장당 생성 평균 55초로 1차 약 30초보다 느렸고 원인은 미확인).
+장부 전체는 20장 중 18장 채택이다. 미리보기 자홍색이 눈·칼날·흰 옷 하이라이트까지 표시해 실제 구멍을 찾기 어렵다는
+사용자 지적이 있었다.
+
+미리보기 힌트(2026-11-07): 남은 갇힌 영역마다 표시 전용 힌트를 붙인다. 6픽셀 이상이고 4방향 둘레의 70% 이상이
+어두우면(밝기 < 100) 구멍 가능성(자홍색), 아니면 하이라이트 가능성(청록색)이다. 기준은 지금까지 표본에서 잰 값이다
+(지운 구멍은 둘레 어두운 비율 0.71–1.0, 남긴 하이라이트는 0.5 이하). 아무것도 자동으로 지우지 않으며 보고서에
+`hint`, `dark_ring_fraction`, `possible_holes`가 남는다. 18장에 다시 적용하면 자홍색은 다리·팔·지팡이 틈, 활 안쪽,
+고삐·다리 사이, 열쇠 고리에만 남고 눈·칼날·흰 옷은 청록색이 된다.
+
+승인 흐름(2026-11-08): `review-resolution`이 크기 선택 기록(보고서 해시 포함)을 만들어 손으로 JSON을 쓰지 않는다.
+`approve-static --transparent`는 투명 납품본을 승인 기록 `delivery`에 해시와 함께 넣는다. 조건은 같은 폴더 보고서가
+그 파일을 가리키고 해시가 같을 것, 상태가 PASS 또는 갇힌 영역 검토일 것, Aseprite 왕복 PASS, 불투명 픽셀이 승인
+마스터와 같고 지운 픽셀이 찾은 배경색일 것, 구멍 가능성 영역은 `--hole`로 지우거나 `--accept-possible-holes`로 명시할 것이다.
+힌트가 없는 옛 보고서는 남은 갇힌 영역을 모두 구멍 가능성으로 센다. `validate_approval`은 납품본 해시도 다시 확인한다.
+`pixel-edit`로 고친 납품본은 마스터와 달라 이 경로로 승인되지 않는다(별도 과제).
+실제 확인: 동전(구멍 없음)과 열쇠(고리를 `--hole 39,13`으로 지움)를 `review-resolution`·`export-static`까지 진행했고
+두 납품본 모두 승인 검사를 통과했다. 고리를 안 지운 열쇠의 옛 납품본은 거부됐다. `approve-static`은 사용자의
+Aseprite 확인이 필요해 실행하지 않았다. 2026-11-08 사용자가 Aseprite에서 확인한 뒤 두 장 모두 승인했다(`approval_record.json`).
+
+레지스트리 승격(2026-11-08): `krea2_pixel64`를 EXPERIMENTAL에서 VALIDATED로 올렸다. selection은 explicit_only 그대로라
+ID를 지정하면 `allow_experimental` 없이 쓰고, 자동 선택(ACTIVE)은 별도 결정이다. 근거는
+[KREA2_PIXEL64_VALIDATION_20261108.json](../research/KREA2_PIXEL64_VALIDATION_20261108.json): 지금 그래프(1.1.0)로
+레지스트리를 거친 10회 생성, Pixel Gate 10/10, 사용자 채택 8(편집 0분), 거절 2(궁수·박쥐), 승인 마스터 2(동전·열쇠),
+채택 1장당 기계 시간 72.3초. 로더는 VALIDATED ComfyUI 항목마다 이 기록의 그래프 해시·커스텀 노드 소스 해시·
+(PIXEL_STATIC이면) 승인 마스터 존재를 확인하고, 하나라도 어긋나면 그 항목만 EXPERIMENTAL로 내려 `evidence_check`에
+이유를 남긴다. 레지스트리 전체를 실패시키지 않는 것은 `config/`만 복사해 쓰는 환경의 다른 경로를 막지 않기 위해서다.
+`krea2_pixel64_stock`은 이전 배치 9장 채택 기록이 있지만 승인 마스터가 없어 EXPERIMENTAL로 둔다.
+
+MCP 노출(2026-11-08): 도구 여섯 개와 입력 스키마는 그대로다. 이미 `asset_build_brief(workflow_id=krea2_pixel64)` →
+`asset_generate`로 실행은 됐지만, 찾을 방법과 결과를 읽을 방법이 없었다. 응답만 늘렸다. `asset_capabilities`에
+`validated_workflows`(selection, presets, evidence_check)와 제약 한 줄, `asset_inspect_run`에 `transparent_delivery`
+(상태, 구멍 가능성 수), PIXEL_STATIC 검토 단계별 `next_human_steps`, run 폴더 승인 기록을 `validate_approval`로 다시 검증한
+`static_approval`을 넣었다. 실제 run으로 확인: 승인된 동전·열쇠는 `valid: true`이고 다음 단계가 없다. 해골은 크기 선택
+단계가 나온다. 사람 단계는 MCP로 대신하지 않는다. 공유 MCP 런타임 교체는 이 브랜치가 main에 들어간 뒤 별도 확인을 받는다.
+
+### P3. 64px 후처리와 부분 편집
+
+- **부분 편집:** 64px 좌표 마스크 안에서만 픽셀을 바꾼다. 마스크 밖 변경 픽셀은 0이어야 하고, 출력 색은 잠긴 팔레트 안에 있어야 한다. 손, 장비, 얼굴은 보호 영역으로 지정할 수 있다.
+- **후처리 비교:** Fixer의 `k_colors` 지정, PixelPipeline 등은 같은 입력과 사전 선언한 계획으로만 비교한다. 기본 경로는 근거 없이 바꾸지 않는다.
+
+수용 기준: 마스크 밖 무변경과 팔레트 준수를 테스트로 보장하고, 실제 수정 시간 감소는 P0 장부로 판단한다.
+
+부분 편집 구현(2026-11-07): `assetpipe pixel-edit --input <이진 알파 64px> --spec <JSON> --output <새 폴더>
+--created-by <이름> [--aseprite]` (`assetpipe.pixel.edit`). 명세(`PIXEL64_MASKED_EDIT_SPEC`)는 사유,
+연산(`erase_colors`, `replace_color`, `set_pixels`), 보호 사각형, 팔레트(기본 원본 불투명 색)를 담는다.
+보호 영역을 건드리거나 아무것도 바꾸지 않는 연산은 쓰기 전에 거부하고, 마스크 밖 변경 0·보호 영역 변경 0·
+팔레트 밖 색 0을 게이트로 확인한다. 첫 사용으로 고블린(77픽셀)과 슬라임(121픽셀)의 바닥 그림자를
+지웠고 두 결과 모두 게이트와 Aseprite RGBA 왕복을 통과했다.
+
+후처리 비교(2026-11-07, [요약](../research/PIXEL64_POSTPROCESS_AB_20261107.json)): 보존한 1024px 원본
+9장에 제작자 Refiner를 사전 선언한 네 설정(A 24색 기본, B 격자 먼저, C 16색, D 12색)으로 한 번씩
+실행했다. 36개 모두 Pixel Gate와 투명 납품을 통과했다. 에이전트 관찰로는 16색이 24색과 거의 같고
+12색은 음영이 뭉개진다(물약 코르크·라벨, 늑대 수인 옷). 저장된 원본에서 다시 돌린 A는 실행 당시
+결과와 비트 단위로 같지 않다. 기본값은 바꾸지 않았다. 바꾸려면 사람 검토에서 선호가 나와야 한다.
+Pixel Art Fixer `k_colors`는 소스가 이 PC에 없어 다운로드 허가가 필요해 실행하지 않았다.
+
+### P4. 픽셀 전용 생성기 비교
+
+- 후보 한 곳을 사용자가 고른다. 이 문서는 특정 서비스를 정하지 않는다.
+- P1과 같은 Brief, 같은 게이트, 같은 장부로 비교한다. 생성기를 고른 이유와 라이선스를 기록한다.
+- 유료라면 예산 승인을 먼저 받는다. 결과는 provider 승격 근거가 아니라 비교 근거다.
+
+## 하지 않는 것
+
+32px, 자동 provider 선택, 자동 재시도, 사람 승인 대행, Golden/SOT 변경, MCP 도구 추가.

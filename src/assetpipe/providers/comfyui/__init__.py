@@ -16,6 +16,11 @@ class ComfyUIProvider(ImageProvider):
         values = workflow_values(compiled, workflow, brief)
         from pathlib import Path
         reference = Path(brief['source']['paths'][0]) if brief['source']['type'] == 'REFERENCE_IMAGE' else None
+        # Repository custom nodes the graph needs must be loaded at the repository version before submit.
+        from .custom_nodes import require
+        comfy = self.config.section('comfyui')
+        client = ComfyClient(comfy.get('base_url', 'http://127.0.0.1:8188'), request_timeout=comfy.get('request_timeout_seconds', 30))
+        require(client._json, self.config.root, workflow['workflow_name'])
         try:
             return run_workflow(self.config, workflow_name=workflow['workflow_name'], prompt=compiled['positive'], negative_prompt=compiled['negative'], seed=seed, input_image=reference, output_dir=output, workflow_inputs=values, filename_prefix=f'assetpipe/{brief["asset_id"]}')
         finally:

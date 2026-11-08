@@ -39,12 +39,17 @@ def _nearest(pixels, palette):
     return table[distances.argmin(axis=1)].astype(np.uint8)
 
 
-def quantize_candidate(source, directory, *, max_colors=32, allowed_palette=None):
+def quantize_candidate(source, directory, *, max_colors=32, allowed_palette=None, background=None):
     """Write ``quantized.png`` and a report under ``directory``; return (path, report).
 
     With an explicit brief palette every opaque pixel snaps to its nearest allowed color;
     otherwise colors are median-cut down to ``max_colors``. Candidates already within budget
     are copied unchanged (status NOT_NEEDED).
+
+    ``background=(rgb, tolerance)`` (palette mode only) is for transparent-delivery workflows: pixels
+    within ``tolerance`` of the declared background become exactly that color so the delivery step
+    can still key it out; every other pixel snaps to the palette. The background is the only color
+    allowed outside the palette, and it is removed from the delivered copy.
     """
     if max_colors < 1:
         raise ValueError('max_colors must be at least 1.')
@@ -60,9 +65,17 @@ def quantize_candidate(source, directory, *, max_colors=32, allowed_palette=None
     palette = sorted({_parse_color(color) for color in allowed_palette}) if allowed_palette else None
     if palette is not None and not palette:
         raise ValueError('Allowed palette must contain at least one color.')
+    if background is not None and palette is None:
+        raise ValueError('Background preservation requires an explicit palette.')
+    keep = np.zeros(len(pixels), dtype=bool)
+    if background is not None:
+        background_rgb = np.asarray([int(v) for v in background[0]], dtype=np.int32)
+        keep = np.sqrt(((pixels.astype(np.int32) - background_rgb) ** 2).sum(axis=1)) <= float(background[1])
     if palette is not None:
-        method = 'NEAREST_ALLOWED_PALETTE'
+        method = 'NEAREST_ALLOWED_PALETTE' if background is None else 'NEAREST_ALLOWED_PALETTE_KEEP_BACKGROUND'
         allowed = {tuple(color) for color in palette}
+        if background is not None:
+            allowed.add(tuple(int(v) for v in background[0]))
         needed = any(tuple(color) not in allowed for color in np.unique(pixels, axis=0)) if len(pixels) else False
     else:
         method = 'MEDIAN_CUT'
@@ -71,6 +84,8 @@ def quantize_candidate(source, directory, *, max_colors=32, allowed_palette=None
     changed = 0
     if needed:
         mapped = _nearest(pixels, palette) if palette is not None else _median_cut(pixels, max_colors)
+        if keep.any():
+            mapped[keep] = np.asarray([int(v) for v in background[0]], dtype=np.uint8)
         changed = int(np.any(mapped != pixels, axis=1).sum())
         rgba[opaque, :3] = mapped
         Image.fromarray(rgba, 'RGBA').save(output)
@@ -83,6 +98,8 @@ def quantize_candidate(source, directory, *, max_colors=32, allowed_palette=None
     report = {
         'step': 'palette_quantize', 'status': 'APPLIED' if needed else 'NOT_NEEDED', 'method': method,
         'max_colors': max_colors, 'allowed_palette': [f'#{r:02X}{g:02X}{b:02X}' for r, g, b in palette] if palette else None,
+        'background_kept': None if background is None else {
+            'rgb': [int(v) for v in background[0]], 'tolerance': background[1], 'pixels': int(keep.sum())},
         'dither': 'NONE', 'alpha': 'PRESERVED_EXACTLY', 'dimensions': 'PRESERVED_EXACTLY',
         'unique_colors_before': before, 'unique_colors_after': after, 'changed_pixels': changed,
         'opaque_pixels': int(opaque.sum()), 'result_palette': result_palette,

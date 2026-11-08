@@ -61,7 +61,7 @@ def revalidate_static_candidate(brief, candidate, root, output):
     return path
 
 def create(brief, root, output=None, seed=None, *, resolver=None, clip=None, expected_workflow=None,
-           motion_job=None, motion_plan_sha256=None, authorization=None, authorize_generation=False):
+           motion_job=None, motion_plan_sha256=None, authorization=None, authorize_generation=False, palette_source=None):
     # 생성 CLI 안에서 다시 시작된 assetpipe 실행(재귀·무한 호출)은 어떤 작업도 하기 전에 거부한다.
     assert_not_nested()
     if motion_job is not None:
@@ -88,6 +88,10 @@ def create(brief, root, output=None, seed=None, *, resolver=None, clip=None, exp
     manifest = {'schema_version': 1, 'project_id': project_id, 'asset_id': brief['asset_id'], 'input_type': brief['source']['type'], 'asset_brief': brief,
         'output_class': brief['output_class'], 'workflow': {}, 'generation': {}, 'pipeline_steps': [], 'qa_results': [],
         'outputs': [], 'timestamps': {'started': now()}, 'status': 'RUNNING', 'game_ready': False}
+    if palette_source is not None:
+        if brief['constraints']['palette'] != palette_source['colors']:
+            raise ValueError('PALETTE_SOURCE_MISMATCH: brief palette differs from the pinned palette file')
+        manifest['palette_source'] = {k: palette_source[k] for k in ('path', 'sha256', 'format', 'color_count')}
     path = directory / 'run_manifest.json'
     write(path, manifest)
     try:

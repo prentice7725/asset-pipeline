@@ -7,6 +7,19 @@ from ..router import route
 from ..pipelines import create
 from ..manifests import write, now
 
+def _pixel_aseprite(args, output, result):
+    """Optional exact-RGBA Aseprite round trip for a Pixel64 delivery or edit output."""
+    if not args.aseprite:
+        return
+    from .._ported.config import load_config
+    from ..manifests import write_new
+    from ..providers.aseprite import AsepriteProvider
+    export = AsepriteProvider(load_config(args.root / 'config/pipeline.yaml')).export(
+        [Path(result['output'])], output / 'aseprite', output.name)
+    write_new(output / 'aseprite_roundtrip.json', export)
+    result['aseprite'] = {'status': export['status'], 'master': export['master']}
+
+
 def main(argv=None):
     # 권장 진입점과 저수준 모션 도구를 도움말에서 구분한다. 기존 명령은 호환을 위해 모두 유지한다.
     parser = argparse.ArgumentParser(
@@ -73,6 +86,39 @@ def main(argv=None):
     library_approve = library_commands.add_parser('approve', help='Approve a CANDIDATE from a run that rendered it and has a PASS listening record')
     library_approve.add_argument('--id', required=True)
     library_approve.add_argument('--run', required=True, type=Path)
+    pixel_ledger = commands.add_parser('pixel-ledger', help='Pixel64 adoption-time ledger; human review minutes are entered by the reviewer, never inferred')
+    pixel_ledger_commands = pixel_ledger.add_subparsers(dest='ledger_command', required=True)
+    for name in ('init', 'add', 'review', 'summary'):
+        sub = pixel_ledger_commands.add_parser(name)
+        sub.add_argument('--ledger', required=True, type=Path)
+        if name in {'add', 'review'}:
+            sub.add_argument('--id', required=True)
+            sub.add_argument('--candidate', required=True, type=Path)
+    ledger_add = pixel_ledger_commands.choices['add']
+    ledger_add.add_argument('--path-id', required=True)
+    ledger_add.add_argument('--brief', required=True)
+    ledger_add.add_argument('--generation-seconds', type=float, help='Omit when not measured')
+    ledger_add.add_argument('--postprocess-seconds', type=float, help='Omit when not measured')
+    ledger_add.add_argument('--added-by', required=True)
+    ledger_review = pixel_ledger_commands.choices['review']
+    ledger_review.add_argument('--decision', required=True, choices=['ADOPTED', 'REJECTED'])
+    ledger_review.add_argument('--edit-minutes', required=True, type=float, help='Your actual Aseprite minutes on this candidate')
+    ledger_review.add_argument('--reviewer', required=True)
+    ledger_review.add_argument('--note', default='')
+    pixel_transparent = commands.add_parser('pixel-transparent', help='Pixel64 binary-alpha delivery copy; enclosed background is cleared only at explicit --hole seeds')
+    pixel_transparent.add_argument('--input', required=True, type=Path, help='Opaque generated candidate (left unchanged)')
+    pixel_transparent.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    pixel_transparent.add_argument('--created-by', required=True)
+    pixel_transparent.add_argument('--hole', action='append', default=[], metavar='X,Y', help='Seed inside an enclosed background region to clear')
+    pixel_transparent.add_argument('--background', default='255,255,255', metavar='R,G,B')
+    pixel_transparent.add_argument('--tolerance', type=float, default=10.0)
+    pixel_transparent.add_argument('--aseprite', action='store_true', help='Also build an Aseprite master and require an exact RGBA round trip')
+    pixel_edit = commands.add_parser('pixel-edit', help='Pixel64 masked edit from an explicit JSON spec; no pixel outside the mask may change')
+    pixel_edit.add_argument('--input', required=True, type=Path, help='64px image with binary alpha (left unchanged)')
+    pixel_edit.add_argument('--spec', required=True, type=Path, help='PIXEL64_MASKED_EDIT_SPEC JSON')
+    pixel_edit.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    pixel_edit.add_argument('--created-by', required=True)
+    pixel_edit.add_argument('--aseprite', action='store_true', help='Also build an Aseprite master and require an exact RGBA round trip')
     music_review = commands.add_parser('bgm-review',help='Record explicit BGM listening observations; no generation or game approval')
     music_review.add_argument('--run',required=True,type=Path)
     music_review.add_argument('--review',required=True,type=Path)
@@ -160,6 +206,7 @@ def main(argv=None):
     run.add_argument('--preset')
     run.add_argument('--seed', type=int, help='ComfyUI only; CLI providers (codex_cli, grok_cli) record seed as unsupported')
     run.add_argument('--allow-experimental', action='store_true', help='Allow an EXPERIMENTAL workflow that was requested explicitly by --workflow')
+    run.add_argument('--palette-file', type=Path, help='PIXEL_STATIC: explicit project palette (.gpl, .hex, .txt); fills the brief palette and pins the file hash')
     run.add_argument('--output', type=Path)
     run.add_argument('--motion-job', type=Path, help='Explicit NONPIXEL_ANIMATION Factory job; no prompt-based video routing')
     run.add_argument('--motion-plan-sha256', help='Expected hash from factory motion-plan')
@@ -185,6 +232,13 @@ def main(argv=None):
     approve.add_argument('--reviewed-by', required=True)
     approve.add_argument('--reason', required=True)
     approve.add_argument('--aseprite-reviewed', action='store_true', required=True)
+    approve.add_argument('--transparent', type=Path, help='Also approve this transparent delivery copy (transparent.png beside its report)')
+    approve.add_argument('--accept-possible-holes', action='store_true', help='Reviewer accepts enclosed regions hinted as possible holes')
+    resolution_review = commands.add_parser('review-resolution', help='Record the human resolution selection that export-static needs (not art approval)')
+    resolution_review.add_argument('--run', required=True, type=Path)
+    resolution_review.add_argument('--resolution', required=True, type=int)
+    resolution_review.add_argument('--reviewed-by', required=True)
+    resolution_review.add_argument('--reason', required=True)
     mining = commands.add_parser('mining', help='Offline prompt research; no generation, downloads or approval')
     mining_commands = mining.add_subparsers(dest='mining_command', required=True)
     mining_validate = mining_commands.add_parser('validate')
@@ -251,6 +305,42 @@ def main(argv=None):
                 from ..paths import RootResolver
                 resolver = RootResolver([args.root], base=args.root)
                 result = rfx_library.approve(args.root, args.id, resolver(args.run), resolver=resolver)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel-ledger':
+            from ..paths import RootResolver
+            from ..pixel import ledger
+            resolver = RootResolver([args.root], base=args.root)
+            book = resolver(args.ledger, strict=args.ledger_command != 'init')
+            if args.ledger_command == 'init':
+                result = ledger.create(book)
+            elif args.ledger_command == 'add':
+                result = ledger.add_candidate(book, args.id, resolver(args.candidate), path_id=args.path_id,
+                                              brief=args.brief, generation_seconds=args.generation_seconds,
+                                              postprocess_seconds=args.postprocess_seconds, added_by=args.added_by)
+            elif args.ledger_command == 'review':
+                result = ledger.record_review(book, args.id, resolver(args.candidate), decision=args.decision,
+                                              edit_minutes=args.edit_minutes, reviewer=args.reviewer, note=args.note)
+            else:
+                result = ledger.summarize(book)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel-transparent':
+            from ..paths import RootResolver
+            from ..pixel.transparent import make_transparent
+            resolver = RootResolver([args.root], base=args.root)
+            output = resolver(args.output, strict=False)
+            seeds = [tuple(int(v) for v in item.split(',')) for item in args.hole]
+            result = make_transparent(resolver(args.input), output, created_by=args.created_by, hole_seeds=seeds,
+                                      background_rgb=tuple(int(v) for v in args.background.split(',')),
+                                      tolerance=args.tolerance)
+            _pixel_aseprite(args, output, result)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel-edit':
+            from ..paths import RootResolver
+            from ..pixel.edit import apply_edit
+            resolver = RootResolver([args.root], base=args.root)
+            output = resolver(args.output, strict=False)
+            result = apply_edit(resolver(args.input), resolver(args.spec), output, created_by=args.created_by)
+            _pixel_aseprite(args, output, result)
             print(json.dumps(result, ensure_ascii=False, indent=2))
         elif args.command in {'sfx-review', 'bgm-review'}:
             from ..paths import RootResolver
@@ -374,7 +464,11 @@ def main(argv=None):
             print(json.dumps(decision, indent=2))
         elif args.command == 'approve-static':
             from ..pipelines.pixel_static.approval import approve_static
-            print(approve_static(args.run, reviewed_by=args.reviewed_by, reason=args.reason, aseprite_reviewed=args.aseprite_reviewed))
+            print(approve_static(args.run, reviewed_by=args.reviewed_by, reason=args.reason, aseprite_reviewed=args.aseprite_reviewed,
+                                 transparent=args.transparent, accept_possible_holes=args.accept_possible_holes))
+        elif args.command == 'review-resolution':
+            from ..pipelines.pixel_static.approval import write_resolution_review
+            print(write_resolution_review(args.run, resolution=args.resolution, reviewed_by=args.reviewed_by, reason=args.reason))
         elif args.command == 'export-static':
             from ..pipelines.pixel_static import export_reviewed
             from .._ported.config import load_config
@@ -394,7 +488,7 @@ def main(argv=None):
                 raise ValueError('--motion-job requires --type nonpixel-animation')
             if (any(value is not None for value in [args.brief, args.reference, args.action,
                     args.asset_id, args.project, args.workflow, args.style_id, args.model_profile,
-                    args.preset, args.seed, args.duration, args.lyrics, args.tempo_bpm, args.mood]) or args.prompt
+                    args.preset, args.seed, args.duration, args.lyrics, args.tempo_bpm, args.mood, args.palette_file]) or args.prompt
                     or args.allow_experimental or args.no_loop):
                 raise ValueError('Motion inputs and settings must come from the pinned job; direct overrides are unsupported')
             from ..paths import RootResolver
@@ -452,7 +546,20 @@ def main(argv=None):
                 brief['workflow_preferences']['preset'] = args.preset
             if args.allow_experimental:
                 brief['workflow_preferences']['allow_experimental'] = True
-            print(create(brief, args.root, args.output, args.seed))
+            palette_source = None
+            if args.palette_file is not None:
+                from ..pixel.palette import load_palette_file
+                if brief['output_class'] != 'PIXEL_STATIC':
+                    raise ValueError('--palette-file is only supported for PIXEL_STATIC')
+                palette_source = load_palette_file(args.palette_file)
+                current = brief['constraints']['palette']
+                if current and [c.upper() for c in current] != palette_source['colors']:
+                    raise ValueError('PALETTE_CONFLICT: the brief already declares a different palette')
+                brief['constraints']['palette'] = list(palette_source['colors'])
+                if 'palette' in brief.get('unspecified_elements', []):
+                    brief['unspecified_elements'].remove('palette')
+            extra = {'palette_source': palette_source} if palette_source is not None else {}
+            print(create(brief, args.root, args.output, args.seed, **extra))
         return 0
     except Exception as exc:
         print(f'assetpipe: {exc}', file=__import__('sys').stderr)

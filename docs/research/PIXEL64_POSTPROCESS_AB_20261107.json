@@ -1,0 +1,438 @@
+{
+ "kind": "PIXEL64_POSTPROCESS_COMPARISON_SUMMARY",
+ "date": "2026-11-07",
+ "status": "COMPARISON_EXECUTED / DEFAULT_UNCHANGED",
+ "evidence_dir": "workspace/pixel64-postprocess-ab-20261107 (git-ignored)",
+ "plan_sha256": "38afdcb9003a74ca4e80b14dc02444a9e9882b8e41ec27bc0a37479b7ef2b590",
+ "results_sha256": "d93bcae96c50acef6cb53ac171941b27b895393156e4f3fe0e3e830076c37909",
+ "comparison_png_sha256": "7b5acd4248fb7b31f18c7abe76ac0580b714046275d8a0a54fa0044ae74a5c10",
+ "node": "Krea2PixelArtRefiner (krea2-pixel-art-refiner 2.11.6, installed ComfyUI)",
+ "fixed": {
+  "width": 64,
+  "height": 64,
+  "scale_to_original": false
+ },
+ "arms": {
+  "A_default": {
+   "colors": 24,
+   "color_reduction_first": true
+  },
+  "B_collapse_first": {
+   "colors": 24,
+   "color_reduction_first": false
+  },
+  "C_16_colors": {
+   "colors": 16,
+   "color_reduction_first": true
+  },
+  "D_12_colors": {
+   "colors": 12,
+   "color_reduction_first": true
+  }
+ },
+ "decision_rule": "The default (A) changes only if an arm passes every gate on all 9 inputs AND the user prefers it in visual review. Agent observations alone never change the default.",
+ "not_in_scope": "Pixel Art Fixer k_colors (source not on this PC; downloading needs separate permission), ComfyUI-PixelPipeline (not installed)",
+ "inputs": [
+  {
+   "id": "archer64_ranger_s20261107",
+   "raw_sha256": "84358d1fc8791305b9274d311e9208c96334eb95fc9b8f4c304fd9c4b1dc538b"
+  },
+  {
+   "id": "chest64_s20261115",
+   "raw_sha256": "913b5c6036deb771928f6e22e5d1367b874b6234a6421a793bf3fd1ee8c5ab49"
+  },
+  {
+   "id": "fox64_s20261112",
+   "raw_sha256": "d8790f3df9ce15eb48debaaa8fd8f6ba3e223a2656a6996900595da54b3fe32e"
+  },
+  {
+   "id": "goblin64_s20261110",
+   "raw_sha256": "ab0a7c34d0841b4586c93c7dd04e0b7ad50fc648a23ac264172e8df5f2c7d5eb"
+  },
+  {
+   "id": "knight64_s20261108",
+   "raw_sha256": "c1ca8c1eb085bf113f0e1d9a89db289ef5b34ec0b516c426cf499dac5c114acc"
+  },
+  {
+   "id": "mage64_s20261109",
+   "raw_sha256": "12078f5962fca08a437501571bd01986ecbdda91c7bfb32eb81841e394f56c76"
+  },
+  {
+   "id": "potion64_s20261114",
+   "raw_sha256": "77f60b07906ebaa08cac5f7b9980b7f556bd3d7a0666ca781dfa252382669257"
+  },
+  {
+   "id": "slime64_s20261111",
+   "raw_sha256": "1690d14f3b28cde892ae751dad7bad0a7e2751fe56c25601919e1c233dd4cb4d"
+  },
+  {
+   "id": "wolfkin64_s20261113",
+   "raw_sha256": "84fdddc171d9e96ae6bb918cdb3b940cb3d3ba5323323b1fe5322fa647fd2309"
+  }
+ ],
+ "rows": [
+  {
+   "input": "archer64_ranger_s20261107",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 23,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 7,
+   "refiner_sha256": "f0acc214b428cdf4e5df24e10209e8eb8f4aeea93a728e4be468ebcfc4d2e778"
+  },
+  {
+   "input": "archer64_ranger_s20261107",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 1125,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 7,
+   "refiner_sha256": "d67bacb7469a16212c1a9c307877cc992188687d99a2cf027eb5477eac45489c"
+  },
+  {
+   "input": "archer64_ranger_s20261107",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 1396,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 7,
+   "refiner_sha256": "e53c2360aa8881d73bd27277f0c42a05df7beb57903de14e4f882a68aeaeded6"
+  },
+  {
+   "input": "archer64_ranger_s20261107",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 11,
+   "pixels_changed_vs_A": 1438,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 7,
+   "refiner_sha256": "712b60e5e4247b7b0ef9d98ee7694e091d28695a21d70f2a0a2d71a3ff806be6"
+  },
+  {
+   "input": "chest64_s20261115",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 22,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 2,
+   "refiner_sha256": "35b5ffb070489417442e2c617362791ada63adabe328aa50cb46c870afe137b8"
+  },
+  {
+   "input": "chest64_s20261115",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 2855,
+   "transparent_status": "PASS_REVIEW_REQUIRED",
+   "enclosed_regions": 0,
+   "refiner_sha256": "4fa9fda4084fb3def893edad47e63eb8211ed8f6438fe35462930e77b52351f8"
+  },
+  {
+   "input": "chest64_s20261115",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 1381,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 2,
+   "refiner_sha256": "4a4185de6772dcb16c59fe42095ef0854d73acbfa938df2acf0976e7b12822cf"
+  },
+  {
+   "input": "chest64_s20261115",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 12,
+   "pixels_changed_vs_A": 1768,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 2,
+   "refiner_sha256": "91f94d77ba807f789306fc5c7613ca22d3cb85af6d35fc0443f123ead0d8b26b"
+  },
+  {
+   "input": "fox64_s20261112",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 23,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 5,
+   "refiner_sha256": "2bf57b4a70762c279572081c0baa7ecdfed84262826bad7212f81341bf46ce57"
+  },
+  {
+   "input": "fox64_s20261112",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 1031,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 5,
+   "refiner_sha256": "025a6046721d0290e9f46ab052ac3573ad04a5fa5f935cf390b2261bed13774d"
+  },
+  {
+   "input": "fox64_s20261112",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 912,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 5,
+   "refiner_sha256": "1db40d83ff95adcaa24451cd0069d921708dcfdf35ba16ba2c44d45caf540500"
+  },
+  {
+   "input": "fox64_s20261112",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 11,
+   "pixels_changed_vs_A": 1301,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 5,
+   "refiner_sha256": "9a42211ca41c0fac000bf53ada7cd9ee9a6df51b557dbb3d20f20e26ff51f5f3"
+  },
+  {
+   "input": "goblin64_s20261110",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 23,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "9c2f91ff5ef044e0692753d4577435cb8fcc0e00038576a7c4d78a96c68fd5ca"
+  },
+  {
+   "input": "goblin64_s20261110",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 1007,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "c9f63c46369b6e9a77001e04abdc44fcf9a8ad0549f360119e010eab2d245ecf"
+  },
+  {
+   "input": "goblin64_s20261110",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 1004,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "ea272a10bab2330fc783ecf728ddc6e2bc9012ff8ab1aa4b7b83ce804b80dee4"
+  },
+  {
+   "input": "goblin64_s20261110",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 11,
+   "pixels_changed_vs_A": 1521,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "c24730da8dcda3b3fd7e5c8cf19a38469f79074c64a5b4aa41369e508d717402"
+  },
+  {
+   "input": "knight64_s20261108",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 23,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 12,
+   "refiner_sha256": "650057ff600e10c67b2da75e782c028f71bd59cf07d67700bd63d53898167553"
+  },
+  {
+   "input": "knight64_s20261108",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 1040,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 12,
+   "refiner_sha256": "772633004236cdabf9f4b02d068b40f34671c42396b207868f4a1ddf0c766887"
+  },
+  {
+   "input": "knight64_s20261108",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 1225,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 12,
+   "refiner_sha256": "07df8d486773c9a82bf02c0a2badfcb165edd212b1aa9f38b6c18f9a04eb0506"
+  },
+  {
+   "input": "knight64_s20261108",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 12,
+   "pixels_changed_vs_A": 3855,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 17,
+   "refiner_sha256": "1387ee5e0020f5283fce32bbc9e1efcd5e8d7b6b7cc2dfab66730062c78487fb"
+  },
+  {
+   "input": "mage64_s20261109",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 23,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 5,
+   "refiner_sha256": "15c9e4d0b98acd3e87388999d3491b50e94a43509f043651e6ad2fc80bb1b1e6"
+  },
+  {
+   "input": "mage64_s20261109",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 1124,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "a9edfb67cb82767aa68f6adddb0733db6f961a410796d592dad734e006aeca7d"
+  },
+  {
+   "input": "mage64_s20261109",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 16,
+   "pixels_changed_vs_A": 677,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 5,
+   "refiner_sha256": "39b4fa00c01fd086917a50b985e3886386594aea3d76dd829beda227c7997139"
+  },
+  {
+   "input": "mage64_s20261109",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 12,
+   "pixels_changed_vs_A": 903,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 5,
+   "refiner_sha256": "82666ce281f9c777dd95fab569e156299608027cc0aa3f3b2db8f92c4a250b5e"
+  },
+  {
+   "input": "potion64_s20261114",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 22,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 3,
+   "refiner_sha256": "dead2b394e91de43969edbbbccace41cbf38fe0f6bfb642761de8a83ca2afd8b"
+  },
+  {
+   "input": "potion64_s20261114",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 1305,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "11f543831ae242077776f8745680cf2678a704575a357800c55465eaca3e16aa"
+  },
+  {
+   "input": "potion64_s20261114",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 1167,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "0980cf8acc1a82f2ca3bc14bbc95659847c6397836c657f249674feefa4862b0"
+  },
+  {
+   "input": "potion64_s20261114",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 11,
+   "pixels_changed_vs_A": 1305,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 7,
+   "refiner_sha256": "b075e4fb7498ada5f37e47ca3d58cd8991edb6c50cfb7f2d7372eef5f9b6c555"
+  },
+  {
+   "input": "slime64_s20261111",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 20,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "ab5ec1c53fa482d3a32c686509ac1464e36404835db36a0d16f1dddc59b629c0"
+  },
+  {
+   "input": "slime64_s20261111",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 3124,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "19569fc88adb86f4c9954d686be15994b3f18402c41e05422e64ffff7a17cca4"
+  },
+  {
+   "input": "slime64_s20261111",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 841,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "e4e4d8c7c1d2077a386197be7d374fff47d202824137abe0f60d34c0d98d6abb"
+  },
+  {
+   "input": "slime64_s20261111",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 11,
+   "pixels_changed_vs_A": 844,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 4,
+   "refiner_sha256": "aecc795a7a84151026b6831a77069efeef85558099fea9324ea9bab27fe7c0df"
+  },
+  {
+   "input": "wolfkin64_s20261113",
+   "arm": "A_default",
+   "gate_status": "PASS",
+   "colors_final": 23,
+   "pixels_changed_vs_A": 0,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 1,
+   "refiner_sha256": "adf66c9d4bb28ccf3a6746dd7b7d8c4c5c0f03d9b8aec814e603d024277b0051"
+  },
+  {
+   "input": "wolfkin64_s20261113",
+   "arm": "B_collapse_first",
+   "gate_status": "PASS",
+   "colors_final": 24,
+   "pixels_changed_vs_A": 603,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 1,
+   "refiner_sha256": "2fe14e1bbbdbf1979d085ea4b09ce4372c15a22cd1d97474ad7bcf5f2eb4833d"
+  },
+  {
+   "input": "wolfkin64_s20261113",
+   "arm": "C_16_colors",
+   "gate_status": "PASS",
+   "colors_final": 15,
+   "pixels_changed_vs_A": 832,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 3,
+   "refiner_sha256": "98249695bfc7563eb8cfd7612481c70fdefb496f0754c2b13d43cf73240b19fa"
+  },
+  {
+   "input": "wolfkin64_s20261113",
+   "arm": "D_12_colors",
+   "gate_status": "PASS",
+   "colors_final": 11,
+   "pixels_changed_vs_A": 1196,
+   "transparent_status": "ENCLOSED_BACKGROUND_REVIEW_REQUIRED",
+   "enclosed_regions": 3,
+   "refiner_sha256": "02914c9e110e33b24d4323402a0a1fb35629ea664d1701a9b3954f4b520d5811"
+  }
+ ],
+ "replay_note": "A re-run from the saved 8-bit raw PNG is not bit-exact with the in-graph refiner output of each run (1072-4096 of 4096 pixels differ, max channel 12-73). The in-graph run received the decoded tensor directly; that cause is plausible but not tested.",
+ "agent_observation": "All 36 outputs pass Pixel Gate and transparent delivery. 16 colors looks close to 24; 12 colors flattens shading (potion cork/label, wolfkin clothing). Not human approval.",
+ "human_review": "REQUIRED for any default change"
+}

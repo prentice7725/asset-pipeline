@@ -12,7 +12,7 @@ Python CLI 도구입니다. ComfyUI 등 생성 provider, 후처리·검증, Asep
 
 **넌픽셀 정지 이미지 → 애니메이션 생산 경로**를 하나로 완성하는 것이 현재 목표입니다
 ([구현 순서와 수용 기준](docs/factory/NONPIXEL_PRODUCTION_PLAN_20261027.md)).
-픽셀 경로와 Krea2/Pixel64 연구는 보존하되 동결 상태입니다. 기여 범위는 [AGENTS.md](AGENTS.md)를 따릅니다.
+64px 픽셀(Krea2 Pixel64) 경로는 2026-11-07 재개되어 실험 경로로 사용할 수 있고, 32px은 동결 상태입니다. 기여 범위는 [AGENTS.md](AGENTS.md)를 따릅니다.
 날짜별 검증·실험 기록은 [Factory 문서 색인](docs/factory/README.md)에 모았습니다.
 
 ## 지원 기능과 현재 상태
@@ -439,34 +439,59 @@ assetpipe factory variant-run --job workspace/jobs/fox_surprised.json --plan-sha
 
 ## 픽셀 검증과 Static Master 승인
 
-> 픽셀 경로는 현재 연구 동결 상태입니다. 기존 기능은 그대로 동작하지만 새 개발은 하지 않습니다.
+> 32px 픽셀 연구는 동결 상태입니다. 64px(Krea2 Pixel64) 경로만 2026-11-07 재개되었습니다.
 
 PIXEL_STATIC 후보는 Pixel Gate 앞에서 색 수를 `pixel.max_colors`(기본 32색)로 줄입니다(디더 없음, 알파·크기 보존).
 브리프에 `palette`가 있으면 각 픽셀을 가장 가까운 허용 색으로 맞춥니다. 결과는 `035_quantize/`에 보고서와 함께 남고,
 양자화 전 분석의 실패 사유(그라데이션·안티에일리어스 의심)도 manifest에 그대로 기록됩니다. 색을 줄였다고 승인되지는 않습니다.
 끄려면 `config/pipeline.yaml`의 `pixel.quantize_to_budget: false`.
 
-Krea2 Pixel64는 실험 상태입니다. 설치된 로더에서 magnitude 키 120개 누락을
-CPU 실행으로 재현했습니다. [호환성 조사](docs/research/KREA2_LOADER_COMPATIBILITY_20261025.md)는
-파싱 검증이며, 실생성·미술 승인·가중치 변환은 수행하지 않았습니다.
-이어 진행한 [소스 기반 수치 비교](docs/research/KREA2_DORA_NUMERIC_20261025.md)에서
-FP32·FP64 후보는 허용 오차 내 일치했지만 BF16 병합은 불일치하여 운영 연결을 차단했습니다.
-[연산 순서 보존 후보](docs/research/KREA2_DORA_ORDERED_20261025.md)는 합성 CPU 960건에서
-정확히 일치했습니다. 실제 가중치·FP8 베이스 모델 호환성과 운영 연결은 여전히 미검증입니다.
-[실제 베이스 계약 검사](docs/research/KREA2_BASE_CONTRACT_20261025.md)에서 LoRA 대상 120개의
-키·shape를 확인하고 FP8 투영 2개를 격리 실행했습니다. 전체 모델·LoRA 적용은 아직 미검증입니다.
-[실제 텐서 격리 적용](docs/research/KREA2_FP8_LORA_ISOLATION_20261025.md)은 명시한 alpha 가정과
-통제한 오라클 기준 24건이 일치했습니다. 기본 로더와 전체 모델의 운영 호환성은 여전히 BLOCKED입니다.
-후속 [GPU 베이스 검사](docs/research/KREA2_GPU_BASE_20261027.md)에서 두 투영층의 CUDA 입력 8건을
-실행했고 기존 CPU 가설 24건도 동일하게 재현했습니다. `.magnitude` 120개 누락은 그대로여서
-GPU LoRA 적용·전체 모델·이미지 품질 검증과 운영 승격은 아직 수행하지 않았습니다.
-[배포·export 출처 조사](docs/research/KREA2_PIXEL64_PROVENANCE_20261027.md)는 로컬 파일이
-제작자의 HF·Civitai 배포본과 동일함을 확인했습니다. 해시 고정 공식 파서의 격리 실행에서도
-magnitude 120개가 누락됐으며, 학습 alpha·원본 베이스 해시가 확인되지 않아 호환성은 계속 차단합니다.
-[외부 로더 후보 격리 검증](docs/research/KREA2_LOADER_CANDIDATE_20261027.md)에서는
-120개 magnitude 보존을 확인했지만, 강도·dtype에 따른 기준 계산 불일치로 후보를 채택하지 않았습니다.
-[기존 이미지 후처리 비교](docs/research/PIXEL64_POSTPROCESS_AB_20261027.md)에서는
-외부 자동 격자 복원의 64px 탐지는 성공했으나 24색 Gate를 통과하지 못해 기존 Refiner 경로를 유지합니다.
+### 64px 픽셀 (Krea2 Pixel64)
+
+`krea2_pixel64`(VALIDATED, ID로 지정하면 `allow_experimental` 없이 사용)는 Krea2 Turbo FP8과 제작자 k2-pixel64 DoRA LoRA로 1024px를 만들고 제작자 Refiner로
+64×64·24색으로 정리합니다. LoRA의 `.magnitude`까지 적용하는 저장소 노드를 ComfyUI에 설치해야 합니다.
+`create`는 생성 전에 ComfyUI가 실제로 불러온 노드의 해시를 저장소 파일과 비교해, 설치가 안 됐거나
+업데이트 후 재시작하지 않았으면 `COMFYUI_CUSTOM_NODE_MISSING`/`STALE`로 멈춥니다.
+
+```powershell
+.venv/Scripts/python scripts/install_comfyui_dora.py --comfyui-root <ComfyUI 폴더> --update --restart
+```
+
+기존 로더(magnitude 미적용) 그래프는 `krea2_pixel64_stock`(EXPERIMENTAL)입니다. alpha/rank=1은 소스 근거 가설입니다.
+VALIDATED는 [검증 기록](docs/research/KREA2_PIXEL64_VALIDATION_20261108.json)의 그래프·노드 해시가 지금과 같을 때만
+유지됩니다. 그래프나 노드를 바꾸면 레지스트리가 이 항목을 EXPERIMENTAL로 내리고 `evidence_check`에 이유를 남깁니다.
+
+MCP에서는 기존 여섯 도구로 씁니다. `asset_capabilities`의 `validated_workflows`에 나오고, `asset_build_brief`에
+`workflow_id: krea2_pixel64`를 주면 `asset_generate`로 실행됩니다. `asset_inspect_run`은 투명 납품본 상태와 구멍 가능성 수,
+남은 사람 단계(`next_human_steps`), 승인 기록이 있으면 다시 검증한 결과(`static_approval`)를 돌려줍니다.
+크기 선택·Aseprite 확인·승인은 MCP로 하지 않고 위 CLI 명령으로 사람이 합니다.
+
+```powershell
+assetpipe create --brief brief.json --allow-experimental --seed 20261108 --output workspace/run
+assetpipe pixel-transparent --input workspace/run/035_quantize/quantized.png --output workspace/run/071_holes --created-by me --hole 29,6 --aseprite
+assetpipe pixel-edit --input <투명 PNG> --spec edit.json --output workspace/run/080_edit --created-by me --aseprite
+assetpipe pixel-ledger review --ledger workspace/pixel64_ledger.json --id knight --candidate <파일> --decision ADOPTED --edit-minutes 0 --reviewer me
+```
+
+`create`는 Pixel Gate 통과 후 `070_transparent/`에 이진 알파 납품본, 검토 미리보기, Aseprite 왕복 결과를 만듭니다.
+테두리가 흰 배경 한 색이 아니면(생성된 검은 띠 등) 납품본 없이 `BLOCKED_REVIEW_REQUIRED`로 이유를 남기고,
+캐릭터 안에 갇힌 배경은 표시만 합니다(자홍색 = 구멍 가능성, 청록색 = 하이라이트 가능성). 지울 곳은 `pixel-transparent --hole X,Y`로 새 폴더에 다시 만듭니다.
+프로젝트 고정 팔레트는 `create --palette-file <.gpl|.hex|.txt>`로 지정합니다. 파일 색이 브리프 `palette`가 되고
+manifest에 파일 경로·해시가 남습니다. 흰 배경 근처 픽셀은 흰색 그대로 두어 투명 처리에서 지우고, 나머지는 가장 가까운
+팔레트 색(RGB 거리)으로 바꿉니다. 팔레트에 비슷한 색이 없으면 피부·옷 색이 바뀔 수 있으니 결과를 꼭 확인하세요.
+결과는 모두 사람 검토가 필요합니다. 경위와 수치는 [Pixel64 계획](docs/factory/PIXEL64_PRODUCTION_PLAN_20261107.md)에 있습니다.
+
+채택한 스프라이트를 Static Master로 승인하는 순서입니다. 마지막 단계는 사람이 Aseprite에서 확인한 뒤에만 실행합니다.
+
+```powershell
+assetpipe review-resolution --run <run> --resolution 64 --reviewed-by me --reason "native 64px"
+assetpipe export-static --run <run> --resolution-review <run>/resolution_review.json
+assetpipe approve-static --run <run> --reviewed-by me --reason "checked in Aseprite" --aseprite-reviewed --transparent <run>/070_transparent/transparent.png
+```
+
+`--transparent`를 주면 투명 납품본도 승인 기록에 해시와 함께 들어갑니다. 납품본은 승인한 불투명 마스터에서 배경만 지운
+것이어야 하고 Aseprite 왕복이 PASS여야 합니다. 구멍 가능성 영역이 남아 있으면 `--hole`로 지우거나
+`--accept-possible-holes`로 명시해야 합니다. `pixel-edit`로 고친 납품본은 마스터와 픽셀이 달라 이 경로로 승인되지 않습니다.
 
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리
