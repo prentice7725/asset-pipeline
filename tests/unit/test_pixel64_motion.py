@@ -165,3 +165,22 @@ def test_video_submit_records_one_attempt_and_refuses_reuse(tmp_path, monkeypatc
         motion64.submit_video(tmp_path / 'ref', tmp_path / 'v2', seed=7, config=Config())
     assert json.loads((tmp_path / 'v2/video_run.json').read_text(encoding='utf-8'))['status'] == 'FAILED'
     assert len(calls) == 1
+
+
+def test_white_detail_inside_the_figure_stays_opaque(tmp_path):
+    """Eye whites match the background colour but are enclosed by the figure, so they are not background."""
+    master = _master(tmp_path)
+    image = np.asarray(Image.open(master).convert('RGB')).copy()
+    image[16:18, 30:32] = (250, 250, 250)
+    Image.fromarray(image, 'RGB').save(master)
+    frames = []
+    for i in range(2):
+        path = _video_frame(tmp_path, i, 0)
+        frame = np.asarray(Image.open(path).convert('RGB')).copy()
+        frame[16 * 12:18 * 12, 30 * 12:32 * 12] = (250, 250, 250)
+        Image.fromarray(frame, 'RGB').save(path)
+        frames.append(path)
+    report = motion64.pixelize(frames, master, tmp_path / 'out')
+    assert '#FAFAFA' in report['master_geometry']['palette']
+    rgba = np.asarray(Image.open(report['frames'][0]['path']).convert('RGBA'))
+    assert (rgba[16:18, 30:32, 3] == 255).all() and (rgba[16:18, 30:32, :3] == 250).all()

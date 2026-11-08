@@ -35,6 +35,13 @@ def _mask(rgb, background, tolerance):
     return np.abs(rgb - np.asarray(background, dtype=np.int16)).max(axis=2) > tolerance
 
 
+def _subject(rgb, background, tolerance):
+    """Subject = everything except background-coloured pixels connected to the image border, so white
+    details inside the figure (eye whites, highlights) stay opaque."""
+    from ..direct.ported import edge_connected
+    return ~edge_connected(~_mask(rgb, background, tolerance))
+
+
 def _bbox(mask):
     ys, xs = np.nonzero(mask)
     if not len(ys):
@@ -46,7 +53,7 @@ def master_geometry(master, tolerance=DEFAULT_TOLERANCE):
     """Subject box, baseline, palette and background of the approved opaque 64px master."""
     rgb = _rgb(master)
     background = _border_color(rgb)
-    mask = _mask(rgb, background, tolerance)
+    mask = _subject(rgb, background, tolerance)
     box = _bbox(mask)
     if box is None:
         raise ValueError('PIXEL64_MOTION_MASTER_EMPTY: master has no subject pixels')
@@ -112,11 +119,39 @@ def validate_selection(selection_path, video_sha256):
     return {**selection, 'fps': fps, 'sha256': _sha(selection_path)}
 
 
-def _snap(rgb, palette):
-    colors = np.asarray([[int(h[i:i + 2], 16) for i in (1, 3, 5)] for h in palette], dtype=np.int32)
-    flat = rgb.reshape(-1, 3).astype(np.int32)
-    nearest = ((flat[:, None, :] - colors[None, :, :]) ** 2).sum(axis=2).argmin(axis=1)
-    return colors[nearest].reshape(rgb.shape).astype(np.uint8)
+def _palette_rgb(palette):
+    return np.asarray([[int(h[i:i + 2], 16) for i in (1, 3, 5)] for h in palette], dtype=np.int32)
+
+
+def _nearest(pixels, colors):
+    flat = pixels.reshape(-1, 3).astype(np.int32)
+    return ((flat[:, None, :] - colors[None, :, :]) ** 2).sum(axis=2).argmin(axis=1)
+
+
+CELL_CORE = 0.5   # central fraction of each source cell that votes; edges straddle neighbouring source pixels
+
+
+def _downsample(rgb, subject, window, scale, colors):
+    """Per output pixel: opaque if most of the cell's central area is subject; colour is the most common
+    master-palette colour there. Averaging whole cells mixes the video's own pixel grid into new shades."""
+    left, top, right, bottom = window
+    width, height = right - left, bottom - top
+    rgba = np.zeros((height, width, 4), dtype=np.uint8)
+    cell = 1.0 / scale
+    margin = cell * (1 - CELL_CORE) / 2
+    for v in range(height):
+        y0, y1 = (top + v) * cell + margin, (top + v + 1) * cell - margin
+        ys = slice(max(0, int(np.floor(y0))), min(rgb.shape[0], max(int(np.floor(y0)) + 1, int(np.ceil(y1)))))
+        for u in range(width):
+            x0, x1 = (left + u) * cell + margin, (left + u + 1) * cell - margin
+            xs = slice(max(0, int(np.floor(x0))), min(rgb.shape[1], max(int(np.floor(x0)) + 1, int(np.ceil(x1)))))
+            core = subject[ys, xs]
+            if core.size == 0 or core.mean() < 0.5:
+                continue
+            votes = np.bincount(_nearest(rgb[ys, xs][core], colors), minlength=len(colors))
+            rgba[v, u, :3] = colors[votes.argmax()]
+            rgba[v, u, 3] = 255
+    return rgba
 
 
 def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE):
@@ -127,9 +162,10 @@ def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE):
     width, height = geometry['size']
     sources = [_rgb(p) for p in frame_paths]
     background = _border_color(sources[0])
+    subjects = [_subject(rgb, background, tolerance) for rgb in sources]
     boxes = []
-    for path, rgb in zip(frame_paths, sources):
-        box = _bbox(_mask(rgb, background, tolerance))
+    for path, subject in zip(frame_paths, subjects):
+        box = _bbox(subject)
         if box is None:
             raise ValueError(f'PIXEL64_MOTION_FRAME_EMPTY: {Path(path).name}')
         boxes.append(box)
@@ -140,20 +176,13 @@ def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE):
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=False)
     frames = []
-    for index, (path, rgb) in enumerate(zip(frame_paths, sources)):
-        scaled_size = (max(1, round(rgb.shape[1] * scale)), max(1, round(rgb.shape[0] * scale)))
-        image = Image.fromarray(rgb.astype(np.uint8), 'RGB').resize(scaled_size, Image.BOX)
-        coverage = Image.fromarray((_mask(rgb, background, tolerance) * 255).astype(np.uint8), 'L').resize(scaled_size, Image.BOX)
-        left = round(anchor_x * scale - geometry['center_x'])
-        top = round(anchor_y * scale - geometry['baseline'])
-        window = (left, top, left + width, top + height)
-        color = np.asarray(image.crop(window), dtype=np.int16)
-        alpha = np.asarray(coverage.crop(window)) >= 128
-        clipped = _touches_window(np.asarray(coverage) >= 128, window)
-        rgba = np.zeros((height, width, 4), dtype=np.uint8)
-        rgba[..., :3] = _snap(color, geometry['palette'])
-        rgba[..., 3] = np.where(alpha, 255, 0)
-        rgba[~alpha, :3] = 0
+    colors = _palette_rgb(geometry['palette'])
+    left = round(anchor_x * scale - geometry['center_x'])
+    top = round(anchor_y * scale - geometry['baseline'])
+    window = (left, top, left + width, top + height)
+    for index, (path, rgb, subject) in enumerate(zip(frame_paths, sources, subjects)):
+        rgba = _downsample(rgb, subject, window, scale, colors)
+        clipped = _touches_window(subject, tuple(v / scale for v in window))
         # Letter names: Aseprite opens a numbered file name as a whole image sequence.
         destination = output / f'walk_{chr(ord("a") + index)}.png'
         Image.fromarray(rgba, 'RGBA').save(destination)
@@ -162,7 +191,8 @@ def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE):
     report = {'kind': 'PIXEL64_MOTION_PIXELIZE', 'master': str(Path(master).resolve()), 'master_sha256': _sha(master),
               'master_geometry': geometry, 'source_background_rgb': list(background), 'tolerance': tolerance,
               'transform': {'scale': scale, 'median_source_height': median_height, 'anchor_source': [anchor_x, anchor_y],
-                            'resample': 'BOX', 'alpha_threshold': 0.5, 'color': 'NEAREST_MASTER_PALETTE'},
+                            'window_scaled': list(window), 'resample': 'CELL_CORE_MODE', 'cell_core': CELL_CORE,
+                            'alpha': 'BORDER_CONNECTED_BACKGROUND_ONLY', 'alpha_threshold': 0.5, 'color': 'NEAREST_MASTER_PALETTE_MODE'},
               'frames': frames, 'measurements': measure([f['path'] for f in frames], master, tolerance),
               'review': 'HUMAN_REQUIRED', 'created_at': now()}
     write(output / 'pixelize_report.json', report)
@@ -179,7 +209,7 @@ def measure(frame_paths, master, tolerance=DEFAULT_TOLERANCE):
     """Identity and stability numbers only; thresholds are set after the first real run."""
     geometry = master_geometry(master, tolerance)
     master_rgb = _rgb(master)
-    master_mask = _mask(master_rgb, geometry['background_rgb'], tolerance)
+    master_mask = _subject(master_rgb, geometry['background_rgb'], tolerance)
     usage_master = _usage(master_rgb[master_mask], geometry['palette'])
     rows, previous = [], None
     for path in frame_paths:
