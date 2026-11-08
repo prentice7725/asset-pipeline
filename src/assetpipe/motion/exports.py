@@ -34,11 +34,21 @@ def export_candidate(candidate, expected_sha256, output, root, *, action, asset_
     atlas = json.loads((candidate / 'atlas.json').read_text(encoding='utf-8'))
     frames = atlas['frames']
     fps = float(Fraction(atlas['fps']))
-    names = resource_names(action, asset_id)
     output.mkdir(parents=True, exist_ok=False)
     shutil.copyfile(candidate / 'sprites.png', output / 'sprites.png')
     if fingerprint(output / 'sprites.png') != fingerprint(candidate / 'sprites.png'):
         raise ValueError('MOTION_EXPORT_SOURCE_CHANGED')
+    write_engine_resources(output, frames, fps, action=action, asset_id=asset_id,
+                           placement={'candidate_manifest_sha256': expected_sha256})
+    inspect_recipe(candidate, root, expected_sha256=expected_sha256, allowed_roots=allowed_roots)
+    return [{'path': str(path), 'sha256': fingerprint(path)} for path in sorted(output.iterdir())]
+
+
+def write_engine_resources(output, frames, fps, *, action, asset_id, placement):
+    """output/sprites.png 옆에 Godot SpriteFrames, Phaser atlas·animation, placement.json을 쓴다.
+    frames: rect [x, y, w, h], pivot [x, y], original_source_frame_index."""
+    output = Path(output)
+    names = resource_names(action, asset_id)
     parts = [f'[gd_resource type="SpriteFrames" load_steps={len(frames)+2} format=3]',
              '[ext_resource type="Texture2D" path="sprites.png" id="1_sheet"]']
     native = {}
@@ -64,12 +74,9 @@ def export_candidate(candidate, expected_sha256, output, root, *, action, asset_
                                            'frameRate': fps, 'repeat': -1})
     pivot = frames[0]['pivot']
     size = frames[0]['rect'][2:]
-    write(output / 'placement.json', {'source_pivot': pivot, 'frame_size': size,
-        'candidate_manifest_sha256': expected_sha256,
+    write(output / 'placement.json', {'source_pivot': pivot, 'frame_size': size, **placement,
         'godot': {'centered': False, 'offset': [-v for v in pivot]},
         'animation': names,
         'phaser': {'texture_key': names['phaser_key'], 'origin': [pivot[0]/size[0], pivot[1]/size[1]]},
         'source_frame_indices': [row['original_source_frame_index'] for row in frames],
         'review_state': 'REVIEW_REQUIRED', 'game_ready': False})
-    inspect_recipe(candidate, root, expected_sha256=expected_sha256, allowed_roots=allowed_roots)
-    return [{'path': str(path), 'sha256': fingerprint(path)} for path in sorted(output.iterdir())]
