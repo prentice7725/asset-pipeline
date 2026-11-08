@@ -48,7 +48,8 @@ def test_selection_rules(tmp_path):
     path.write_text(json.dumps(good), encoding='utf-8')
     assert motion64.validate_selection(path, 'v')['fps'] == 8
     for change, code in [({'frames': [1, 2, 3]}, 'COUNT'), ({'frames': [4, 1, 7, 10]}, 'ORDER'),
-                         ({'reviewed_by': ''}, 'UNREVIEWED'), ({'action': 'idle'}, 'ACTION')]:
+                         ({'reviewed_by': ''}, 'UNREVIEWED'), ({'action': 'run'}, 'ACTION'),
+                         ({'durations_ms': [100, 100, 100]}, 'DURATIONS'), ({'durations_ms': [100, 100, 100, 5]}, 'DURATIONS')]:
         path.write_text(json.dumps({**good, **change}), encoding='utf-8')
         with pytest.raises(ValueError, match=code):
             motion64.validate_selection(path, 'v')
@@ -184,3 +185,29 @@ def test_white_detail_inside_the_figure_stays_opaque(tmp_path):
     assert '#FAFAFA' in report['master_geometry']['palette']
     rgba = np.asarray(Image.open(report['frames'][0]['path']).convert('RGBA'))
     assert (rgba[16:18, 30:32, 3] == 255).all() and (rgba[16:18, 30:32, :3] == 250).all()
+
+
+def test_idle_and_attack_rules(tmp_path):
+    path = tmp_path / 'selection.json'
+    base = {'reviewed_by': 'me', 'source_video_sha256': 'v', 'fps': 8}
+    path.write_text(json.dumps({**base, 'action': 'idle', 'frames': [0, 3, 6, 9]}), encoding='utf-8')
+    assert motion64.validate_selection(path, 'v')['action'] == 'idle'
+    path.write_text(json.dumps({**base, 'action': 'idle', 'frames': [0, 3, 6, 9, 12]}), encoding='utf-8')
+    with pytest.raises(ValueError, match='COUNT'):
+        motion64.validate_selection(path, 'v')
+    path.write_text(json.dumps({**base, 'action': 'attack', 'frames': [0, 4, 8, 12, 16],
+                                'durations_ms': [125, 125, 250, 125, 125]}), encoding='utf-8')
+    assert motion64.validate_selection(path, 'v')['durations_ms'][2] == 250
+    assert motion64.ACTIONS['attack']['loop'] is False and motion64.ACTIONS['idle']['loop'] is True
+
+
+def test_attack_engine_files_play_once_with_held_frame(tmp_path):
+    from assetpipe.motion.exports import write_engine_resources
+    frames = [_master(tmp_path)] * 3
+    rects = motion64.pack_sheet(frames, tmp_path / 'sprites.png', [0, 4, 8])
+    write_engine_resources(tmp_path, rects, 8.0, action='attack', asset_id='knight64', placement={},
+                           loop=False, durations_ms=[125, 250, 125])
+    godot = (tmp_path / 'attack.tres').read_text(encoding='utf-8')
+    assert '"loop":false' in godot and '"duration":2.0' in godot
+    phaser = json.loads((tmp_path / 'phaser-animation.json').read_text(encoding='utf-8'))
+    assert phaser['repeat'] == 0 and phaser['frames'][1]['duration'] == 125 and 'duration' not in phaser['frames'][0]

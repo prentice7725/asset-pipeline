@@ -1,4 +1,4 @@
-"""Pixel64 walk animation from one motion video: reference, contact sheet, reviewed selection,
+"""Pixel64 walk/idle/attack animation from one motion video: reference, contact sheet, reviewed selection,
 64px pixelization locked to the approved master palette, measurements and delivery.
 
 Machine steps only report; phase choice and art judgement stay with the human reviewer."""
@@ -11,7 +11,19 @@ from PIL import Image, ImageDraw
 
 from ...manifests import now, write
 
-PHASE_COUNTS = (4, 6, 8)
+_COMMON = ('full body visible, facing the same direction as the reference, fixed camera, no zoom, no camera movement, '
+           'plain white background, no other objects.')
+# Frame counts per action, whether the engine loops it, and the motion prompt for the reference-to-video model.
+ACTIONS = {
+    'walk': {'counts': (4, 6, 8), 'loop': True,
+             'prompt': 'The character from Picture 1 walks in place with a steady walk cycle, feet staying on the same ground line, ' + _COMMON},
+    'idle': {'counts': (4, 6, 8), 'loop': True,
+             'prompt': 'The character from Picture 1 stands still and breathes calmly in a relaxed idle pose, feet planted and not moving, '
+                       'only small natural body movement, ' + _COMMON},
+    'attack': {'counts': (4, 5, 6, 7, 8), 'loop': False,
+               'prompt': 'The character from Picture 1 performs one attack with the weapon already in hand: wind up, strike, '
+                         'then return to the starting pose, feet staying on the same ground line, ' + _COMMON},
+}
 REFERENCE_SIZE = 768
 DEFAULT_TOLERANCE = 24
 
@@ -100,23 +112,30 @@ def contact_sheet(frames_dir, output, *, columns=8, thumb=128):
 
 
 def validate_selection(selection_path, video_sha256):
-    """Reviewed walk selection: 4, 6 or 8 unique chronological source frames from this exact video."""
+    """Reviewed selection: frame count allowed for its action, unique chronological source frames from this exact video,
+    and optional per-frame display times."""
     selection = json.loads(Path(selection_path).read_text(encoding='utf-8'))
     frames = selection.get('frames')
-    if selection.get('action') != 'walk':
-        raise ValueError('PIXEL64_MOTION_SELECTION_ACTION: only walk is supported')
+    action = selection.get('action')
+    if action not in ACTIONS:
+        raise ValueError(f'PIXEL64_MOTION_SELECTION_ACTION: action must be one of {sorted(ACTIONS)}')
     if not str(selection.get('reviewed_by', '')).strip():
         raise ValueError('PIXEL64_MOTION_SELECTION_UNREVIEWED: reviewed_by is required')
     if selection.get('source_video_sha256') != video_sha256:
         raise ValueError('PIXEL64_MOTION_SELECTION_VIDEO_MISMATCH')
-    if not isinstance(frames, list) or len(frames) not in PHASE_COUNTS:
-        raise ValueError(f'PIXEL64_MOTION_SELECTION_COUNT: choose {PHASE_COUNTS} frames')
+    counts = ACTIONS[action]['counts']
+    if not isinstance(frames, list) or len(frames) not in counts:
+        raise ValueError(f'PIXEL64_MOTION_SELECTION_COUNT: {action} needs {counts} frames')
     if any(type(i) is not int or i < 0 for i in frames) or frames != sorted(set(frames)):
         raise ValueError('PIXEL64_MOTION_SELECTION_ORDER: frames must be unique chronological nonnegative integers')
     fps = selection.get('fps', 8)
     if type(fps) not in (int, float) or not 1 <= fps <= 30:
         raise ValueError('PIXEL64_MOTION_SELECTION_FPS: fps must be between 1 and 30')
-    return {**selection, 'fps': fps, 'sha256': _sha(selection_path)}
+    durations = selection.get('durations_ms')
+    if durations is not None and (not isinstance(durations, list) or len(durations) != len(frames)
+                                  or any(type(d) is not int or not 40 <= d <= 1000 for d in durations)):
+        raise ValueError('PIXEL64_MOTION_SELECTION_DURATIONS: one integer 40-1000 ms per frame')
+    return {**selection, 'fps': fps, 'durations_ms': durations, 'sha256': _sha(selection_path)}
 
 
 def _palette_rgb(palette):
@@ -154,7 +173,7 @@ def _downsample(rgb, subject, window, scale, colors):
     return rgba
 
 
-def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE):
+def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE, action='walk'):
     """One shared transform for every frame: scale from the median subject height to the master's,
     anchor the median baseline and centre to the master's, then snap colours to the master palette.
     Per-frame drift is measured, not corrected, so walking-in-place stays honest."""
@@ -184,7 +203,7 @@ def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE):
         rgba = _downsample(rgb, subject, window, scale, colors)
         clipped = _touches_window(subject, tuple(v / scale for v in window))
         # Letter names: Aseprite opens a numbered file name as a whole image sequence.
-        destination = output / f'walk_{chr(ord("a") + index)}.png'
+        destination = output / f'{action}_{chr(ord("a") + index)}.png'
         Image.fromarray(rgba, 'RGBA').save(destination)
         frames.append({'index': index, 'source': str(path), 'source_sha256': _sha(path), 'path': str(destination),
                        'sha256': _sha(destination), 'source_bbox': list(boxes[index]), 'clipped': clipped})
@@ -258,7 +277,7 @@ def pack_sheet(frame_paths, output, source_indices):
 
 
 def build_animation(*, master, approval_record, video, selection_path, output, config, asset_id):
-    """Approved master + one motion video + reviewed selection -> 64px walk candidate (REVIEW_REQUIRED)."""
+    """Approved master + one motion video + reviewed selection -> 64px animation candidate (REVIEW_REQUIRED)."""
     from ..._ported.pixel_gate.analyzer import analyze_image
     from ..._ported.pixel_gate.report import write_report
     from ...motion.exports import write_engine_resources
@@ -270,7 +289,9 @@ def build_animation(*, master, approval_record, video, selection_path, output, c
     video_sha = _sha(video)
     selection = validate_selection(selection_path, video_sha)
     output.mkdir(parents=True, exist_ok=False)
-    manifest = {'kind': 'PIXEL64_MOTION_ANIMATION', 'asset_id': asset_id, 'action': 'walk', 'status': 'RUNNING',
+    action = selection['action']
+    manifest = {'kind': 'PIXEL64_MOTION_ANIMATION', 'asset_id': asset_id, 'action': action, 'loop': ACTIONS[action]['loop'],
+                'durations_ms': selection['durations_ms'], 'status': 'RUNNING',
                 'master': str(master), 'master_sha256': _sha(master), 'approval_record': str(Path(approval_record).resolve()),
                 'approval_record_sha256': _sha(approval_record), 'video': str(video), 'video_sha256': video_sha,
                 'selection': str(Path(selection_path).resolve()), 'selection_sha256': selection['sha256'],
@@ -283,7 +304,7 @@ def build_animation(*, master, approval_record, video, selection_path, output, c
         if any(not p.is_file() for p in paths):
             raise ValueError('PIXEL64_MOTION_VIDEO_TOO_SHORT: selected frame beyond the decoded video')
         manifest['steps'].append({'step': 'decode', 'status': 'PASS', 'decoder': decode})
-        report = pixelize(paths, master, output / '020_pixel64')
+        report = pixelize(paths, master, output / '020_pixel64', action=action)
         manifest['steps'].append({'step': 'pixelize', 'status': 'PASS', 'report': str(output / '020_pixel64/pixelize_report.json'),
                                   'clipped_frames': [f['index'] for f in report['frames'] if f['clipped']]})
         frames = [Path(f['path']) for f in report['frames']]
@@ -298,13 +319,15 @@ def build_animation(*, master, approval_record, video, selection_path, output, c
         if any(g != 'PASS' for g in gates):
             raise ValueError('PIXEL64_MOTION_PIXEL_GATE_FAILED: not every frame passed')
         duration = round(1000 / selection['fps'])
-        export = AsepriteProvider(config).export(frames, output / '040_aseprite', asset_id, 'walk', duration=duration)
+        # The Aseprite master uses the base frame time; per-frame times go to the engine files.
+        export = AsepriteProvider(config).export(frames, output / '040_aseprite', asset_id, action, duration=duration)
         manifest['steps'].append({'step': 'aseprite', 'status': export['status'], 'master': export['master'],
                                   'exact_rgba_match': export['pixel_integrity']['exact_rgba_match']})
         engine = output / '050_engine'
         engine.mkdir()
         rects = pack_sheet(frames, engine / 'sprites.png', selection['frames'])
-        write_engine_resources(engine, rects, float(selection['fps']), action='walk', asset_id=asset_id,
+        write_engine_resources(engine, rects, float(selection['fps']), action=action, asset_id=asset_id,
+                               loop=ACTIONS[action]['loop'], durations_ms=selection['durations_ms'],
                                placement={'animation_manifest': str(output / 'animation_manifest.json')})
         manifest['steps'].append({'step': 'engine_export', 'status': 'PASS', 'output': str(engine)})
         manifest.update(status='EXPORT_READY_REVIEW_REQUIRED', review='HUMAN_REQUIRED', game_ready=False)
@@ -317,12 +340,10 @@ def build_animation(*, master, approval_record, video, selection_path, output, c
 
 
 VIDEO_WORKFLOW = 'deno_minimax_h3_r2v_8step'
-WALK_PROMPT = ('The character from Picture 1 walks in place with a steady walk cycle, full body visible, '
-               'facing the same direction as the reference, feet staying on the same ground line, fixed camera, no zoom, '
-               'no camera movement, plain white background, no other objects.')
+WALK_PROMPT = ACTIONS['walk']['prompt']
 
 
-def submit_video(reference_dir, output, *, seed, config, prompt=WALK_PROMPT):
+def submit_video(reference_dir, output, *, seed, config, action='walk'):
     """One local MiniMax H3 R2V submission from a recorded reference. No retry: the run folder is reserved
     first and a failure is recorded there; a new attempt needs a new folder and is a separate run."""
     from ..._ported.comfy_bridge.runner import run_workflow
@@ -333,18 +354,21 @@ def submit_video(reference_dir, output, *, seed, config, prompt=WALK_PROMPT):
         raise ValueError('PIXEL64_MOTION_REFERENCE_CHANGED: reference or master differs from reference.json')
     if type(seed) is not int or seed < 0:
         raise ValueError('PIXEL64_MOTION_SEED: an explicit nonnegative integer seed is required')
+    if action not in ACTIONS:
+        raise ValueError(f'PIXEL64_MOTION_ACTION: action must be one of {sorted(ACTIONS)}')
+    prompt = ACTIONS[action]['prompt']
     workflow = load_workflow(VIDEO_WORKFLOW, Path(config.root) / 'config/workflows')
     output.mkdir(parents=True, exist_ok=False)
     record = {'kind': 'PIXEL64_MOTION_VIDEO_RUN', 'status': 'RESERVED', 'attempt': 1, 'retry': 'NONE',
               'workflow': VIDEO_WORKFLOW, 'workflow_sha256': workflow.sha256, 'workflow_version': workflow.version,
-              'prompt': prompt, 'seed': seed, 'reference': reference['reference'], 'reference_sha256': reference['reference_sha256'],
+              'action': action, 'prompt': prompt, 'seed': seed, 'reference': reference['reference'], 'reference_sha256': reference['reference_sha256'],
               'master_sha256': reference['master_sha256'], 'reserved_at': now()}
     write(output / 'video_run.json', record)
     started = __import__('time').monotonic()
     try:
         paths = run_workflow(config, workflow_name=VIDEO_WORKFLOW, prompt=prompt, seed=seed,
                              input_image=Path(reference['reference']), output_dir=output / 'video',
-                             filename_prefix='assetpipe/pixel64_walk')
+                             filename_prefix=f'assetpipe/pixel64_{action}')
     except Exception as exc:
         record.update(status='FAILED', error=str(exc), seconds=round(__import__('time').monotonic() - started, 1))
         write(output / 'video_run.json', record)
@@ -379,7 +403,7 @@ def approve_animation(run, *, reviewed_by, reason, aseprite_reviewed):
     run = Path(run).resolve()
     manifest = json.loads((run / 'animation_manifest.json').read_text(encoding='utf-8'))
     if manifest.get('kind') != 'PIXEL64_MOTION_ANIMATION' or manifest.get('status') != 'EXPORT_READY_REVIEW_REQUIRED':
-        raise ValueError('PIXEL64_MOTION_APPROVAL_STATUS: only an export-ready walk candidate can be approved')
+        raise ValueError('PIXEL64_MOTION_APPROVAL_STATUS: only an export-ready animation candidate can be approved')
     if any(step.get('status') != 'PASS' for step in manifest['steps']):
         raise ValueError('PIXEL64_MOTION_APPROVAL_GATE: a recorded step did not pass')
     validate_approval(manifest['master'], manifest['approval_record'])

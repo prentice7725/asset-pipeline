@@ -113,23 +113,24 @@ def main(argv=None):
     pixel_transparent.add_argument('--background', default='255,255,255', metavar='R,G,B')
     pixel_transparent.add_argument('--tolerance', type=float, default=10.0)
     pixel_transparent.add_argument('--aseprite', action='store_true', help='Also build an Aseprite master and require an exact RGBA round trip')
-    motion_reference = commands.add_parser('pixel64-motion-reference', help='Pixel64 walk: nearest 12x reference image of an approved static master')
+    motion_reference = commands.add_parser('pixel64-motion-reference', help='Pixel64 animation: nearest 12x reference image of an approved static master')
     motion_reference.add_argument('--run', required=True, type=Path, help='Static run with a valid approval_record.json')
     motion_reference.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
-    motion_video = commands.add_parser('pixel64-motion-video', help='Pixel64 walk: one local MiniMax H3 R2V video from a recorded reference (no retry)')
+    motion_video = commands.add_parser('pixel64-motion-video', help='Pixel64 animation: one local MiniMax H3 R2V video from a recorded reference (no retry)')
     motion_video.add_argument('--reference', required=True, type=Path, help='Folder written by pixel64-motion-reference')
     motion_video.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
     motion_video.add_argument('--seed', required=True, type=int)
-    motion_approve = commands.add_parser('pixel64-motion-approve', help='Pixel64 walk: human approval after Aseprite review; pins every delivered file by hash')
+    motion_video.add_argument('--action', default='walk', choices=['walk', 'idle', 'attack'])
+    motion_approve = commands.add_parser('pixel64-motion-approve', help='Pixel64 animation: human approval after Aseprite review; pins every delivered file by hash')
     motion_approve.add_argument('--run', required=True, type=Path, help='Folder written by pixel64-motion-build')
     motion_approve.add_argument('--reviewed-by', required=True)
     motion_approve.add_argument('--reason', required=True)
     motion_approve.add_argument('--aseprite-reviewed', action='store_true', required=True)
-    motion_frames = commands.add_parser('pixel64-motion-frames', help='Pixel64 walk: decode a motion video and write a numbered contact sheet for human selection')
+    motion_frames = commands.add_parser('pixel64-motion-frames', help='Pixel64 animation: decode a motion video and write a numbered contact sheet for human selection')
     motion_frames.add_argument('--video', required=True, type=Path)
     motion_frames.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
     motion_frames.add_argument('--frames', type=int, default=56, help='Number of frames to decode')
-    motion_build = commands.add_parser('pixel64-motion-build', help='Pixel64 walk: reviewed selection -> 64px frames, Pixel Gate, Aseprite and engine files (REVIEW_REQUIRED)')
+    motion_build = commands.add_parser('pixel64-motion-build', help='Pixel64 animation: reviewed selection -> 64px frames, Pixel Gate, Aseprite and engine files (REVIEW_REQUIRED)')
     motion_build.add_argument('--run', required=True, type=Path, help='Static run with a valid approval_record.json')
     motion_build.add_argument('--video', required=True, type=Path)
     motion_build.add_argument('--selection', required=True, type=Path, help='Reviewed selection JSON (action walk, 4/6/8 frames, reviewed_by, source_video_sha256)')
@@ -361,7 +362,7 @@ def main(argv=None):
         elif args.command == 'pixel64-motion-video':
             from .._ported.config import load_config
             from ..pixel import motion64
-            print(json.dumps(motion64.submit_video(args.reference, args.output, seed=args.seed,
+            print(json.dumps(motion64.submit_video(args.reference, args.output, seed=args.seed, action=args.action,
                                                    config=load_config(args.root / 'config/pipeline.yaml')), ensure_ascii=False, indent=2))
         elif args.command == 'pixel64-motion-approve':
             from ..pixel import motion64
