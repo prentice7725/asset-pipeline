@@ -211,3 +211,26 @@ def test_attack_engine_files_play_once_with_held_frame(tmp_path):
     assert '"loop":false' in godot and '"duration":2.0' in godot
     phaser = json.loads((tmp_path / 'phaser-animation.json').read_text(encoding='utf-8'))
     assert phaser['repeat'] == 0 and phaser['frames'][1]['duration'] == 125 and 'duration' not in phaser['frames'][0]
+
+
+def test_motion_note_is_appended_and_recorded(tmp_path, monkeypatch):
+    import assetpipe._ported.comfy_bridge.runner as runner
+    from pathlib import Path as P
+    motion64.build_reference(_master(tmp_path), tmp_path / 'ref')
+    seen = []
+
+    def fake_run(config, **kwargs):
+        seen.append(kwargs['prompt'])
+        kwargs['output_dir'].mkdir(parents=True)
+        (kwargs['output_dir'] / 'a.mp4').write_bytes(b'v')
+        return [kwargs['output_dir'] / 'a.mp4']
+    monkeypatch.setattr(runner, 'run_workflow', fake_run)
+
+    class Config:
+        root = P(__file__).resolve().parents[2]
+    record = motion64.submit_video(tmp_path / 'ref', tmp_path / 'v', seed=1, config=Config(), action='attack',
+                                   motion_note='draws the sword from the belt with the right hand')
+    assert seen[0].endswith('Motion detail: draws the sword from the belt with the right hand')
+    assert 'no motion trails' in seen[0] and record['motion_note'].startswith('draws the sword')
+    with pytest.raises(ValueError, match='NOTE'):
+        motion64.submit_video(tmp_path / 'ref', tmp_path / 'v2', seed=1, config=Config(), action='attack', motion_note=' ')

@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw
 from ...manifests import now, write
 
 _COMMON = ('full body visible, facing the same direction as the reference, fixed camera, no zoom, no camera movement, '
-           'plain white background, no other objects.')
+           'plain white background, no other objects, no glow, no visual effects, no motion trails, no particles.')
 # Frame counts per action, whether the engine loops it, and the motion prompt for the reference-to-video model.
 ACTIONS = {
     'walk': {'counts': (4, 6, 8), 'loop': True,
@@ -343,7 +343,7 @@ VIDEO_WORKFLOW = 'deno_minimax_h3_r2v_8step'
 WALK_PROMPT = ACTIONS['walk']['prompt']
 
 
-def submit_video(reference_dir, output, *, seed, config, action='walk'):
+def submit_video(reference_dir, output, *, seed, config, action='walk', motion_note=None):
     """One local MiniMax H3 R2V submission from a recorded reference. No retry: the run folder is reserved
     first and a failure is recorded there; a new attempt needs a new folder and is a separate run."""
     from ..._ported.comfy_bridge.runner import run_workflow
@@ -357,11 +357,17 @@ def submit_video(reference_dir, output, *, seed, config, action='walk'):
     if action not in ACTIONS:
         raise ValueError(f'PIXEL64_MOTION_ACTION: action must be one of {sorted(ACTIONS)}')
     prompt = ACTIONS[action]['prompt']
+    if motion_note is not None:
+        # A per-character instruction, e.g. which hand holds the weapon. Recorded verbatim with the run.
+        note = str(motion_note).strip()
+        if not note or len(note) > 300:
+            raise ValueError('PIXEL64_MOTION_NOTE: 1-300 characters')
+        prompt = f'{prompt} Motion detail: {note}'
     workflow = load_workflow(VIDEO_WORKFLOW, Path(config.root) / 'config/workflows')
     output.mkdir(parents=True, exist_ok=False)
     record = {'kind': 'PIXEL64_MOTION_VIDEO_RUN', 'status': 'RESERVED', 'attempt': 1, 'retry': 'NONE',
               'workflow': VIDEO_WORKFLOW, 'workflow_sha256': workflow.sha256, 'workflow_version': workflow.version,
-              'action': action, 'prompt': prompt, 'seed': seed, 'reference': reference['reference'], 'reference_sha256': reference['reference_sha256'],
+              'action': action, 'motion_note': motion_note, 'prompt': prompt, 'seed': seed, 'reference': reference['reference'], 'reference_sha256': reference['reference_sha256'],
               'master_sha256': reference['master_sha256'], 'reserved_at': now()}
     write(output / 'video_run.json', record)
     started = __import__('time').monotonic()

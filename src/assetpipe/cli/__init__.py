@@ -121,6 +121,7 @@ def main(argv=None):
     motion_video.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
     motion_video.add_argument('--seed', required=True, type=int)
     motion_video.add_argument('--action', default='walk', choices=['walk', 'idle', 'attack'])
+    motion_video.add_argument('--motion-note', help='Per-character motion detail appended to the prompt, e.g. which hand draws which weapon')
     motion_approve = commands.add_parser('pixel64-motion-approve', help='Pixel64 animation: human approval after Aseprite review; pins every delivered file by hash')
     motion_approve.add_argument('--run', required=True, type=Path, help='Folder written by pixel64-motion-build')
     motion_approve.add_argument('--reviewed-by', required=True)
@@ -362,7 +363,7 @@ def main(argv=None):
         elif args.command == 'pixel64-motion-video':
             from .._ported.config import load_config
             from ..pixel import motion64
-            print(json.dumps(motion64.submit_video(args.reference, args.output, seed=args.seed, action=args.action,
+            print(json.dumps(motion64.submit_video(args.reference, args.output, seed=args.seed, action=args.action, motion_note=args.motion_note,
                                                    config=load_config(args.root / 'config/pipeline.yaml')), ensure_ascii=False, indent=2))
         elif args.command == 'pixel64-motion-approve':
             from ..pixel import motion64
