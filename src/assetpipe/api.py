@@ -44,6 +44,10 @@ def capabilities(root):
         for k, v in registry.items() if v.get('engine', 'comfyui') != 'comfyui'}
     return {'supported_output_classes': OUTPUT_CLASSES, 'input_types': ['DIRECT_PROMPT', 'REFERENCE_IMAGE', 'PROJECT_SOURCES'],
         'active_workflows': {k: {'output_class': v['output_class'], 'capabilities': v['capabilities'], 'tags': v['tags']} for k, v in registry.items() if v['status'] == 'ACTIVE'},
+        # VALIDATED: 실제 생성 증거가 지금 그래프와 맞는 워크플로. workflow id로 지정하면 allow_experimental 없이 쓴다.
+        'validated_workflows': {k: {'output_class': v['output_class'], 'capabilities': v['capabilities'], 'tags': v['tags'],
+            'selection': v.get('selection'), 'presets': sorted(v.get('presets', {})), 'evidence_check': v.get('evidence_check')}
+            for k, v in registry.items() if v['status'] == 'VALIDATED'},
         'providers': ['comfyui', 'aseprite', 'codex_cli', 'grok_cli'], 'provider_readiness': readiness, 'external_cli_workflows': external, 'animation_actions': {'PIXEL_ANIMATION': ['walk'], 'NONPIXEL_ANIMATION': []},
         'optional_recovery': {'pixel_art_fixer': 'OPTIONAL_RECOVERY_NOT_AUTO_DISPATCHED'},
         'nonpixel_motion': {'status': 'SUPPORTED_EXPERIMENTAL', 'entrypoint': 'create --type nonpixel-animation --motion-job',
@@ -52,7 +56,7 @@ def capabilities(root):
             'generation_requires': ['prepared generation job', 'existing authorization', 'explicit consent', 'existing video executor gates'],
             'review_state': 'REVIEW_REQUIRED', 'game_ready': False},
         'environment_readiness': {'comfyui': comfy, 'aseprite': aseprite, 'ffmpeg': {'ready': bool(shutil.which('ffmpeg'))}},
-        'limitations': ['codex_cli/grok_cli are EXPERIMENTAL, NONPIXEL_IMAGE only; request them by workflow id with allow_experimental. Seed, exact resolution, transparency and native negative prompts are unsupported; no automatic fallback between providers', 'NONPIXEL_ANIMATION requires an explicit pinned motion job; prompt/brief-only video execution remains unavailable', 'Eight reviewed blue-tunic/white-background walk phases only', 'Existing reviewed motion required; idle and attack are unsupported', 'BGM (audio_yue2_bgm) is EXPERIMENTAL with no real-generation evidence; request it by workflow id with allow_experimental. Instrumental by default; vocals, mood and loop seams require listening review', 'SFX synth (sfx_rfxgen) is EXPERIMENTAL with no real-execution evidence; it renders an explicit hash-pinned rfxgen .rfx (brief synth object, workflow id, allow_experimental), never interprets prompts, and still requires listening review']}
+        'limitations': ['codex_cli/grok_cli are EXPERIMENTAL, NONPIXEL_IMAGE only; request them by workflow id with allow_experimental. Seed, exact resolution, transparency and native negative prompts are unsupported; no automatic fallback between providers', 'NONPIXEL_ANIMATION requires an explicit pinned motion job; prompt/brief-only video execution remains unavailable', 'Eight reviewed blue-tunic/white-background walk phases only', 'Existing reviewed motion required; idle and attack are unsupported', 'krea2_pixel64 (VALIDATED, PIXEL_STATIC 64x64) needs the repository DoRA node installed in ComfyUI and is requested by workflow id; runs stop at RESOLUTION_REVIEW_REQUIRED, the transparent copy is a review candidate, and resolution review, Aseprite review and static approval are human CLI steps (review-resolution, export-static, approve-static)', 'BGM (audio_yue2_bgm) is EXPERIMENTAL with no real-generation evidence; request it by workflow id with allow_experimental. Instrumental by default; vocals, mood and loop seams require listening review', 'SFX synth (sfx_rfxgen) is EXPERIMENTAL with no real-execution evidence; it renders an explicit hash-pinned rfxgen .rfx (brief synth object, workflow id, allow_experimental), never interprets prompts, and still requires listening review']}
 
 def build_brief(*, request_text, output_class, asset_id='asset', source_documents=(), reference_image=None, action=None, prepared_brief=None, workflow_id=None):
     if prepared_brief is not None:
@@ -113,12 +117,59 @@ def inspect_manifest(path, resolver=None):
         'manifest': str(path), 'qa': qa, 'outputs': manifest.get('outputs', []), 'review_items': review,
         'route': json.loads(route_path.read_text(encoding='utf-8')) if route_path.exists() else None,
         'error': manifest.get('error'), 'error_code': manifest.get('error_code'), 'provider': provider_summary(manifest), 'game_ready': manifest.get('game_ready', False)}
+    delivery = transparent_summary(manifest, resolver)
+    if delivery is not None:
+        result['transparent_delivery'] = delivery
+    approval = static_approval_summary(path, resolver) if manifest['output_class'] == 'PIXEL_STATIC' else None
+    if approval is not None:
+        result['static_approval'] = approval
+    if manifest['output_class'] == 'PIXEL_STATIC' and status == 'REVIEW_REQUIRED' and not (approval or {}).get('valid'):
+        # 사람 단계는 MCP로 대신하지 않는다. 다음에 무엇을 해야 하는지만 알려 준다.
+        result['next_human_steps'] = {
+            'RESOLUTION_REVIEW_REQUIRED': ['assetpipe review-resolution --run <run> --resolution <px> --reviewed-by <name> --reason <text>',
+                                           'assetpipe export-static --run <run> --resolution-review <run>/resolution_review.json'],
+            'EXPORT_READY_REVIEW_REQUIRED': ['open 060_aseprite/master.aseprite in Aseprite',
+                                             'assetpipe approve-static --run <run> --reviewed-by <name> --reason <text> --aseprite-reviewed [--transparent <transparent.png>]'],
+        }.get(raw_status, [])
     if manifest.get('audio_clip_receipt_path'):
         receipt = resolve_path(manifest['audio_clip_receipt_path'],resolver,strict=False)
         if not receipt.is_relative_to(path.parent):
             raise ValueError('SFX receipt must remain inside its run')
         result['audio_clip_receipt'] = str(receipt)
     return result
+
+
+def static_approval_summary(manifest_path, resolver=None):
+    """run 폴더의 approval_record.json을 다시 검증해 요약한다. 기록이 없으면 None."""
+    from .pipelines.pixel_static.approval import validate_approval
+    record_path = resolve_path(Path(manifest_path).parent / 'approval_record.json', resolver, strict=False)
+    if not record_path.is_file():
+        return None
+    record = json.loads(record_path.read_text(encoding='utf-8'))
+    try:
+        validate_approval(record.get('approved_export', ''), record_path, resolver)
+    except (ValueError, OSError, KeyError) as exc:
+        return {'valid': False, 'record': str(record_path), 'error': str(exc)}
+    delivery = record.get('delivery') or {}
+    return {'valid': True, 'status': record['status'], 'record': str(record_path), 'approved_export': record['approved_export'],
+            'reviewed_by': record['reviewed_by'], 'approved_at': record['approved_at'],
+            'transparent': delivery.get('transparent'), 'transparent_possible_holes': delivery.get('possible_holes')}
+
+
+def transparent_summary(manifest, resolver=None):
+    """투명 납품본 상태와 구멍 가능성 수. 보고서는 같은 run 폴더 안의 것만 읽는다."""
+    record = manifest.get('transparent_delivery')
+    if not record:
+        return None
+    summary = {key: record[key] for key in ('status', 'reason', 'output', 'preview', 'aseprite_roundtrip', 'review') if key in record}
+    if record.get('output'):
+        report_path = resolve_path(Path(record['output']).parent / 'transparent_report.json', resolver, strict=False)
+        if report_path.is_file():
+            report = json.loads(report_path.read_text(encoding='utf-8'))
+            regions = report.get('unresolved_enclosed_regions') or []
+            summary['unresolved_enclosed_regions'] = len(regions)
+            summary['possible_holes'] = report.get('possible_holes', len(regions))
+    return summary
 
 
 def provider_summary(manifest):

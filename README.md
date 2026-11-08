@@ -461,6 +461,11 @@ PIXEL_STATIC 후보는 Pixel Gate 앞에서 색 수를 `pixel.max_colors`(기본
 VALIDATED는 [검증 기록](docs/research/KREA2_PIXEL64_VALIDATION_20261108.json)의 그래프·노드 해시가 지금과 같을 때만
 유지됩니다. 그래프나 노드를 바꾸면 레지스트리가 이 항목을 EXPERIMENTAL로 내리고 `evidence_check`에 이유를 남깁니다.
 
+MCP에서는 기존 여섯 도구로 씁니다. `asset_capabilities`의 `validated_workflows`에 나오고, `asset_build_brief`에
+`workflow_id: krea2_pixel64`를 주면 `asset_generate`로 실행됩니다. `asset_inspect_run`은 투명 납품본 상태와 구멍 가능성 수,
+남은 사람 단계(`next_human_steps`), 승인 기록이 있으면 다시 검증한 결과(`static_approval`)를 돌려줍니다.
+크기 선택·Aseprite 확인·승인은 MCP로 하지 않고 위 CLI 명령으로 사람이 합니다.
+
 ```powershell
 assetpipe create --brief brief.json --allow-experimental --seed 20261108 --output workspace/run
 assetpipe pixel-transparent --input workspace/run/035_quantize/quantized.png --output workspace/run/071_holes --created-by me --hole 29,6 --aseprite

@@ -15,6 +15,8 @@
   transparent delivery copy (master minus background only, Aseprite PASS, holes cleared or accepted).
 - `krea2_pixel64` is VALIDATED (explicit_only). A ComfyUI entry stays VALIDATED only while its evidence
   record matches the current graph and custom node hashes; otherwise the loader demotes it to EXPERIMENTAL.
+- MCP (same six tools and input schemas): `asset_capabilities` lists `validated_workflows`; `asset_inspect_run`
+  adds `transparent_delivery`, `next_human_steps` and a re-verified `static_approval` for PIXEL_STATIC runs.
 
 ## Unreleased — rfxgen preset library, 2026-11-03
 

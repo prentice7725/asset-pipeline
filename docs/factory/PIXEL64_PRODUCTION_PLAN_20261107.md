@@ -164,6 +164,13 @@ ID를 지정하면 `allow_experimental` 없이 쓰고, 자동 선택(ACTIVE)은 
 이유를 남긴다. 레지스트리 전체를 실패시키지 않는 것은 `config/`만 복사해 쓰는 환경의 다른 경로를 막지 않기 위해서다.
 `krea2_pixel64_stock`은 이전 배치 9장 채택 기록이 있지만 승인 마스터가 없어 EXPERIMENTAL로 둔다.
 
+MCP 노출(2026-11-08): 도구 여섯 개와 입력 스키마는 그대로다. 이미 `asset_build_brief(workflow_id=krea2_pixel64)` →
+`asset_generate`로 실행은 됐지만, 찾을 방법과 결과를 읽을 방법이 없었다. 응답만 늘렸다. `asset_capabilities`에
+`validated_workflows`(selection, presets, evidence_check)와 제약 한 줄, `asset_inspect_run`에 `transparent_delivery`
+(상태, 구멍 가능성 수), PIXEL_STATIC 검토 단계별 `next_human_steps`, run 폴더 승인 기록을 `validate_approval`로 다시 검증한
+`static_approval`을 넣었다. 실제 run으로 확인: 승인된 동전·열쇠는 `valid: true`이고 다음 단계가 없다. 해골은 크기 선택
+단계가 나온다. 사람 단계는 MCP로 대신하지 않는다. 공유 MCP 런타임 교체는 이 브랜치가 main에 들어간 뒤 별도 확인을 받는다.
+
 ### P3. 64px 후처리와 부분 편집
 
 - **부분 편집:** 64px 좌표 마스크 안에서만 픽셀을 바꾼다. 마스크 밖 변경 픽셀은 0이어야 하고, 출력 색은 잠긴 팔레트 안에 있어야 한다. 손, 장비, 얼굴은 보호 영역으로 지정할 수 있다.
