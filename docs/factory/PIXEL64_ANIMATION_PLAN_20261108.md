@@ -85,3 +85,17 @@
 - 영상 모델 교체나 유료 클라우드 영상.
 - 기존 PIXEL_ANIMATION 경로, 레거시 코드, 파란 튜닉 프로필 수정.
 - MCP 도구 추가, 공유 런타임 교체(별도 확인).
+
+## 진행
+
+오프라인 단계(2026-11-08, 생성 0회): `assetpipe.pixel.motion64`와 CLI 세 개를 추가했다.
+`pixel64-motion-reference`는 승인 기록을 다시 검증한 뒤 마스터를 12배 nearest로 키운다.
+`pixel64-motion-frames`는 영상을 FFmpeg로 풀고 번호 붙은 접촉 시트를 만든다.
+`pixel64-motion-build`는 선택 파일을 검증하고 64px 변환, 프레임별 Pixel Gate, Aseprite `walk`, 엔진 파일까지 만든 뒤
+`EXPORT_READY_REVIEW_REQUIRED`에서 멈춘다.
+변환은 모든 프레임에 같은 배율과 기준점(중앙값)을 쓰고 프레임별 이동은 고치지 않고 잰다. 창 밖으로 나간 피사체는
+`clipped`로 표시한다. 엔진 파일은 M3 `export_candidate`에서 분리한 `write_engine_resources`를 같이 쓴다.
+A0 준비: 사용자가 고른 기사(`pixel64-batch-20261107/knight64/run_seed20261108`, 이전 stock 그래프 run)와
+성직자(`pixel64-batch2-20261107/cleric_threequarter64/run_seed20261125`)를 `review-resolution`·`export-static`까지
+진행했다. 승인은 사용자의 Aseprite 확인을 기다린다. 손으로 고친 DoRA 기사는 레지스트리 run이 아니고 픽셀이
+편집돼 이 승인 경로로 들어갈 수 없다.

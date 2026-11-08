@@ -113,6 +113,18 @@ def main(argv=None):
     pixel_transparent.add_argument('--background', default='255,255,255', metavar='R,G,B')
     pixel_transparent.add_argument('--tolerance', type=float, default=10.0)
     pixel_transparent.add_argument('--aseprite', action='store_true', help='Also build an Aseprite master and require an exact RGBA round trip')
+    motion_reference = commands.add_parser('pixel64-motion-reference', help='Pixel64 walk: nearest 12x reference image of an approved static master')
+    motion_reference.add_argument('--run', required=True, type=Path, help='Static run with a valid approval_record.json')
+    motion_reference.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    motion_frames = commands.add_parser('pixel64-motion-frames', help='Pixel64 walk: decode a motion video and write a numbered contact sheet for human selection')
+    motion_frames.add_argument('--video', required=True, type=Path)
+    motion_frames.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    motion_frames.add_argument('--frames', type=int, default=56, help='Number of frames to decode')
+    motion_build = commands.add_parser('pixel64-motion-build', help='Pixel64 walk: reviewed selection -> 64px frames, Pixel Gate, Aseprite and engine files (REVIEW_REQUIRED)')
+    motion_build.add_argument('--run', required=True, type=Path, help='Static run with a valid approval_record.json')
+    motion_build.add_argument('--video', required=True, type=Path)
+    motion_build.add_argument('--selection', required=True, type=Path, help='Reviewed selection JSON (action walk, 4/6/8 frames, reviewed_by, source_video_sha256)')
+    motion_build.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
     pixel_edit = commands.add_parser('pixel-edit', help='Pixel64 masked edit from an explicit JSON spec; no pixel outside the mask may change')
     pixel_edit.add_argument('--input', required=True, type=Path, help='64px image with binary alpha (left unchanged)')
     pixel_edit.add_argument('--spec', required=True, type=Path, help='PIXEL64_MASKED_EDIT_SPEC JSON')
@@ -323,6 +335,27 @@ def main(argv=None):
             else:
                 result = ledger.summarize(book)
             print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command in ('pixel64-motion-reference', 'pixel64-motion-build'):
+            from ..pixel import motion64
+            from ..pipelines.pixel_static.approval import validate_approval
+            run = args.run.resolve()
+            record = json.loads((run / 'approval_record.json').read_text(encoding='utf-8'))
+            validate_approval(record['approved_export'], run / 'approval_record.json')
+            if args.command == 'pixel64-motion-reference':
+                result = motion64.build_reference(record['approved_export'], args.output)
+            else:
+                from .._ported.config import load_config
+                result = motion64.build_animation(master=record['approved_export'], approval_record=run / 'approval_record.json',
+                                                  video=args.video, selection_path=args.selection, output=args.output,
+                                                  config=load_config(args.root / 'config/pipeline.yaml'), asset_id=record['asset_id'])
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel64-motion-frames':
+            import hashlib
+            from ..motion.extractor import decode_direct_reference
+            from ..pixel import motion64
+            decode = decode_direct_reference(args.video, args.output / 'frames', args.frames - 1)
+            sheet = motion64.contact_sheet(args.output / 'frames', args.output / 'contact_sheet.png')
+            print(json.dumps({**sheet, 'decoder': decode, 'source_video_sha256': hashlib.sha256(args.video.read_bytes()).hexdigest()}, ensure_ascii=False, indent=2))
         elif args.command == 'pixel-transparent':
             from ..paths import RootResolver
             from ..pixel.transparent import make_transparent
