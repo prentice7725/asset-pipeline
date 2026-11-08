@@ -474,6 +474,18 @@ manifest에 파일 경로·해시가 남습니다. 흰 배경 근처 픽셀은 �
 팔레트 색(RGB 거리)으로 바꿉니다. 팔레트에 비슷한 색이 없으면 피부·옷 색이 바뀔 수 있으니 결과를 꼭 확인하세요.
 결과는 모두 사람 검토가 필요합니다. 경위와 수치는 [Pixel64 계획](docs/factory/PIXEL64_PRODUCTION_PLAN_20261107.md)에 있습니다.
 
+채택한 스프라이트를 Static Master로 승인하는 순서입니다. 마지막 단계는 사람이 Aseprite에서 확인한 뒤에만 실행합니다.
+
+```powershell
+assetpipe review-resolution --run <run> --resolution 64 --reviewed-by me --reason "native 64px"
+assetpipe export-static --run <run> --resolution-review <run>/resolution_review.json
+assetpipe approve-static --run <run> --reviewed-by me --reason "checked in Aseprite" --aseprite-reviewed --transparent <run>/070_transparent/transparent.png
+```
+
+`--transparent`를 주면 투명 납품본도 승인 기록에 해시와 함께 들어갑니다. 납품본은 승인한 불투명 마스터에서 배경만 지운
+것이어야 하고 Aseprite 왕복이 PASS여야 합니다. 구멍 가능성 영역이 남아 있으면 `--hole`로 지우거나
+`--accept-possible-holes`로 명시해야 합니다. `pixel-edit`로 고친 납품본은 마스터와 픽셀이 달라 이 경로로 승인되지 않습니다.
+
 ```text
 Brief → 라우터 → 생성 후보 → 분석 → 안전한 알파 처리
       → Pixel Gate → 해상도 검토 → Aseprite 내보내기 → 명시적 승인

@@ -11,6 +11,8 @@
   the repository (`scripts/install_comfyui_dora.py --update --restart` installs and verifies).
 - `create --palette-file` (.gpl/.hex/.txt) pins a project palette; transparent-delivery runs keep the
   declared background for keying and report delivery palette conformance.
+- `review-resolution` records the size selection; `approve-static --transparent` adds a verified
+  transparent delivery copy (master minus background only, Aseprite PASS, holes cleared or accepted).
 
 ## Unreleased — rfxgen preset library, 2026-11-03
 

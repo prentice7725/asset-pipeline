@@ -232,6 +232,13 @@ def main(argv=None):
     approve.add_argument('--reviewed-by', required=True)
     approve.add_argument('--reason', required=True)
     approve.add_argument('--aseprite-reviewed', action='store_true', required=True)
+    approve.add_argument('--transparent', type=Path, help='Also approve this transparent delivery copy (transparent.png beside its report)')
+    approve.add_argument('--accept-possible-holes', action='store_true', help='Reviewer accepts enclosed regions hinted as possible holes')
+    resolution_review = commands.add_parser('review-resolution', help='Record the human resolution selection that export-static needs (not art approval)')
+    resolution_review.add_argument('--run', required=True, type=Path)
+    resolution_review.add_argument('--resolution', required=True, type=int)
+    resolution_review.add_argument('--reviewed-by', required=True)
+    resolution_review.add_argument('--reason', required=True)
     mining = commands.add_parser('mining', help='Offline prompt research; no generation, downloads or approval')
     mining_commands = mining.add_subparsers(dest='mining_command', required=True)
     mining_validate = mining_commands.add_parser('validate')
@@ -457,7 +464,11 @@ def main(argv=None):
             print(json.dumps(decision, indent=2))
         elif args.command == 'approve-static':
             from ..pipelines.pixel_static.approval import approve_static
-            print(approve_static(args.run, reviewed_by=args.reviewed_by, reason=args.reason, aseprite_reviewed=args.aseprite_reviewed))
+            print(approve_static(args.run, reviewed_by=args.reviewed_by, reason=args.reason, aseprite_reviewed=args.aseprite_reviewed,
+                                 transparent=args.transparent, accept_possible_holes=args.accept_possible_holes))
+        elif args.command == 'review-resolution':
+            from ..pipelines.pixel_static.approval import write_resolution_review
+            print(write_resolution_review(args.run, resolution=args.resolution, reviewed_by=args.reviewed_by, reason=args.reason))
         elif args.command == 'export-static':
             from ..pipelines.pixel_static import export_reviewed
             from .._ported.config import load_config
