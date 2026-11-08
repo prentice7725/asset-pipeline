@@ -13,6 +13,8 @@
   declared background for keying and report delivery palette conformance.
 - `review-resolution` records the size selection; `approve-static --transparent` adds a verified
   transparent delivery copy (master minus background only, Aseprite PASS, holes cleared or accepted).
+- `krea2_pixel64` is VALIDATED (explicit_only). A ComfyUI entry stays VALIDATED only while its evidence
+  record matches the current graph and custom node hashes; otherwise the loader demotes it to EXPERIMENTAL.
 
 ## Unreleased — rfxgen preset library, 2026-11-03
 

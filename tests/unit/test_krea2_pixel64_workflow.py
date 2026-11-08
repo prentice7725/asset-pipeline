@@ -13,9 +13,9 @@ from assetpipe.registry import load_registry
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_entry_is_experimental_explicit_only_pixel_static():
+def test_entry_is_validated_explicit_only_pixel_static():
     entry = load_registry(ROOT)['krea2_pixel64']
-    assert entry['status'] == 'EXPERIMENTAL' and entry['selection'] == 'explicit_only'
+    assert entry['status'] == 'VALIDATED' and entry['selection'] == 'explicit_only'
     assert entry['output_class'] == 'PIXEL_STATIC' and entry['preserved_intermediate_outputs'] == 1
 
 

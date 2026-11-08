@@ -153,7 +153,16 @@ CRLF 버그로 폴더 생성 전에 모두 실패했고 ComfyUI 제출은 없었
 `pixel-edit`로 고친 납품본은 마스터와 달라 이 경로로 승인되지 않는다(별도 과제).
 실제 확인: 동전(구멍 없음)과 열쇠(고리를 `--hole 39,13`으로 지움)를 `review-resolution`·`export-static`까지 진행했고
 두 납품본 모두 승인 검사를 통과했다. 고리를 안 지운 열쇠의 옛 납품본은 거부됐다. `approve-static`은 사용자의
-Aseprite 확인이 필요해 실행하지 않았다.
+Aseprite 확인이 필요해 실행하지 않았다. 2026-11-08 사용자가 Aseprite에서 확인한 뒤 두 장 모두 승인했다(`approval_record.json`).
+
+레지스트리 승격(2026-11-08): `krea2_pixel64`를 EXPERIMENTAL에서 VALIDATED로 올렸다. selection은 explicit_only 그대로라
+ID를 지정하면 `allow_experimental` 없이 쓰고, 자동 선택(ACTIVE)은 별도 결정이다. 근거는
+[KREA2_PIXEL64_VALIDATION_20261108.json](../research/KREA2_PIXEL64_VALIDATION_20261108.json): 지금 그래프(1.1.0)로
+레지스트리를 거친 10회 생성, Pixel Gate 10/10, 사용자 채택 8(편집 0분), 거절 2(궁수·박쥐), 승인 마스터 2(동전·열쇠),
+채택 1장당 기계 시간 72.3초. 로더는 VALIDATED ComfyUI 항목마다 이 기록의 그래프 해시·커스텀 노드 소스 해시·
+(PIXEL_STATIC이면) 승인 마스터 존재를 확인하고, 하나라도 어긋나면 그 항목만 EXPERIMENTAL로 내려 `evidence_check`에
+이유를 남긴다. 레지스트리 전체를 실패시키지 않는 것은 `config/`만 복사해 쓰는 환경의 다른 경로를 막지 않기 위해서다.
+`krea2_pixel64_stock`은 이전 배치 9장 채택 기록이 있지만 승인 마스터가 없어 EXPERIMENTAL로 둔다.
 
 ### P3. 64px 후처리와 부분 편집
 

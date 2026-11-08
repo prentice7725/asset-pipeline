@@ -406,7 +406,8 @@ workflows:
     engine: comfyui
     workflow_file: config/workflows/krea2_pixel64_api.json
     workflow_name: krea2_pixel64_api
-    status: EXPERIMENTAL
+    # User decision 2026-11-08 (task 6): VALIDATED, still explicit_only; ACTIVE is a separate decision.
+    status: VALIDATED
     selection: explicit_only
     priority: 40
     tags:
@@ -451,11 +452,13 @@ workflows:
     - safe_refiner_binary_alpha_only
     # User decision 2026-11-07: default loader is the experimental ai-toolkit DoRA node
     # (integrations/comfyui_dora, installed into ComfyUI custom_nodes). Stock graph: krea2_pixel64_stock.
+    # The loader rejects VALIDATED unless the evidence record matches this graph hash and node source.
     validation:
-      status: EXPERIMENTAL_LOADER_AB
+      status: REAL_GENERATION_VERIFIED
+      evidence_record: docs/research/KREA2_PIXEL64_VALIDATION_20261108.json
       evidence_doc: docs/research/KREA2_DORA_LOADER_AB_20261107.json
       lora_compatibility: AITOOLKIT_DORA_NODE_360_TENSORS_ALPHA_RANK_HYPOTHESIS
-      real_generation: NOT_RUN_THROUGH_REGISTRY
+      real_generation: REGISTRY_BATCH_10_RUNS_8_ADOPTED_2_APPROVED_MASTERS
     installation_check:
       status: PENDING_LOCAL_HASH_RECHECK
       missing: []

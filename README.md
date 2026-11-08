@@ -446,9 +446,9 @@ PIXEL_STATIC 후보는 Pixel Gate 앞에서 색 수를 `pixel.max_colors`(기본
 양자화 전 분석의 실패 사유(그라데이션·안티에일리어스 의심)도 manifest에 그대로 기록됩니다. 색을 줄였다고 승인되지는 않습니다.
 끄려면 `config/pipeline.yaml`의 `pixel.quantize_to_budget: false`.
 
-### 64px 픽셀 (Krea2 Pixel64, 실험)
+### 64px 픽셀 (Krea2 Pixel64)
 
-`krea2_pixel64`는 Krea2 Turbo FP8과 제작자 k2-pixel64 DoRA LoRA로 1024px를 만들고 제작자 Refiner로
+`krea2_pixel64`(VALIDATED, ID로 지정하면 `allow_experimental` 없이 사용)는 Krea2 Turbo FP8과 제작자 k2-pixel64 DoRA LoRA로 1024px를 만들고 제작자 Refiner로
 64×64·24색으로 정리합니다. LoRA의 `.magnitude`까지 적용하는 저장소 노드를 ComfyUI에 설치해야 합니다.
 `create`는 생성 전에 ComfyUI가 실제로 불러온 노드의 해시를 저장소 파일과 비교해, 설치가 안 됐거나
 업데이트 후 재시작하지 않았으면 `COMFYUI_CUSTOM_NODE_MISSING`/`STALE`로 멈춥니다.
@@ -457,7 +457,9 @@ PIXEL_STATIC 후보는 Pixel Gate 앞에서 색 수를 `pixel.max_colors`(기본
 .venv/Scripts/python scripts/install_comfyui_dora.py --comfyui-root <ComfyUI 폴더> --update --restart
 ```
 
-기존 로더(magnitude 미적용) 그래프는 `krea2_pixel64_stock`입니다. alpha/rank=1은 소스 근거 가설입니다.
+기존 로더(magnitude 미적용) 그래프는 `krea2_pixel64_stock`(EXPERIMENTAL)입니다. alpha/rank=1은 소스 근거 가설입니다.
+VALIDATED는 [검증 기록](docs/research/KREA2_PIXEL64_VALIDATION_20261108.json)의 그래프·노드 해시가 지금과 같을 때만
+유지됩니다. 그래프나 노드를 바꾸면 레지스트리가 이 항목을 EXPERIMENTAL로 내리고 `evidence_check`에 이유를 남깁니다.
 
 ```powershell
 assetpipe create --brief brief.json --allow-experimental --seed 20261108 --output workspace/run
