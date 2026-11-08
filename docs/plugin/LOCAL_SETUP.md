@@ -1,6 +1,6 @@
 # 로컬 설치 및 연결 안내
 
-Python 3.11 이상을 사용해 `asset-pipeline` 저장소 폴더에서 설치합니다.
+Python 3.13을 권장하며(3.11 이상에서 설치 가능) `asset-pipeline` 저장소 폴더에서 설치합니다.
 아래 명령은 `.venv` 가상환경이 이미 준비돼 있다고 가정합니다.
 
 ```powershell

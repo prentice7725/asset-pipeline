@@ -65,7 +65,7 @@ assetpipe knowledge --models-root "C:/path/to/ComfyUI/models" --hash-models --di
 
 필요한 환경:
 
-- Python 3.11 이상
+- Python 3.13 권장(3.11 이상에서 설치 가능)
 - 설정된 주소에서 실행 중인 ComfyUI. 기본 주소는 `http://127.0.0.1:8188`
 - 선택한 workflow의 모델과 노드
 - 픽셀 마스터 제작·내보내기용 Aseprite
@@ -76,7 +76,7 @@ Windows PowerShell에서 설치합니다.
 ```powershell
 git clone https://github.com/prentice7725/asset-pipeline.git
 cd asset-pipeline
-py -3.11 -m venv .venv
+py -3.13 -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev,motion,mcp]"
 assetpipe --help
