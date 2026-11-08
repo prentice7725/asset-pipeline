@@ -135,7 +135,17 @@ def validate_selection(selection_path, video_sha256):
     if durations is not None and (not isinstance(durations, list) or len(durations) != len(frames)
                                   or any(type(d) is not int or not 40 <= d <= 1000 for d in durations)):
         raise ValueError('PIXEL64_MOTION_SELECTION_DURATIONS: one integer 40-1000 ms per frame')
-    return {**selection, 'fps': fps, 'durations_ms': durations, 'sha256': _sha(selection_path)}
+    lock = selection.get('master_lock')
+    if lock is not None:
+        boxes = lock.get('boxes') if isinstance(lock, dict) else None
+        shift = lock.get('max_shift', [3, 6]) if isinstance(lock, dict) else None
+        if (not isinstance(boxes, list) or not boxes
+                or any(not isinstance(b, list) or len(b) != 4 or any(type(v) is not int or v < 0 for v in b)
+                       or b[0] >= b[2] or b[1] >= b[3] for b in boxes)
+                or not isinstance(shift, list) or len(shift) != 2 or any(type(v) is not int or not 0 <= v <= 8 for v in shift)):
+            raise ValueError('PIXEL64_MOTION_SELECTION_LOCK: master_lock needs boxes [[x0,y0,x1,y1],...] and max_shift [dx,dy] 0-8')
+        lock = {'boxes': boxes, 'max_shift': shift}
+    return {**selection, 'fps': fps, 'durations_ms': durations, 'master_lock': lock, 'sha256': _sha(selection_path)}
 
 
 def _palette_rgb(palette):
@@ -219,6 +229,88 @@ def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE, action
               'frames': frames, 'measurements': measure([f['path'] for f in frames], master, tolerance),
               'review': 'HUMAN_REQUIRED', 'created_at': now()}
     write(output / 'pixelize_report.json', report)
+    return report
+
+
+def _master_rgba(master, tolerance=DEFAULT_TOLERANCE):
+    rgb = _rgb(master)
+    mask = _subject(rgb, _border_color(rgb), tolerance)
+    rgba = np.zeros(rgb.shape[:2] + (4,), dtype=np.uint8)
+    rgba[mask, :3] = rgb[mask].astype(np.uint8)
+    rgba[mask, 3] = 255
+    return rgba
+
+
+def _components_leaving_box(opaque, box, master_opaque):
+    """Mask of frame pixels inside box, where the master patch is empty, whose 4-connected opaque component
+    (searched through pixels outside the box and those master-empty pixels) reaches outside the box."""
+    x0, y0, x1, y1 = box
+    height, width = opaque.shape
+    inside = np.zeros_like(opaque)
+    inside[y0:y1, x0:x1] = True
+    free = opaque.copy()
+    free[y0:y1, x0:x1] &= ~master_opaque
+    seen = free & ~inside
+    stack = list(zip(*np.nonzero(seen)))
+    while stack:
+        y, x = stack.pop()
+        for ny, nx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
+            if 0 <= ny < height and 0 <= nx < width and free[ny, nx] and not seen[ny, nx]:
+                seen[ny, nx] = True
+                stack.append((ny, nx))
+    return seen & inside
+
+
+def lock_to_master(frame_paths, master, output, *, boxes, max_shift=(3, 6)):
+    """Paste rigid master regions (e.g. the head) over each pixelized frame at the integer offset that matches
+    that frame best. Re-pixelizing every video frame redraws parts that barely move with slightly different
+    outlines and eyes; locking them to the approved master removes that flicker and keeps only the motion offset."""
+    source = _master_rgba(master)
+    height, width = source.shape[:2]
+    output = Path(output).resolve()
+    output.mkdir(parents=True, exist_ok=False)
+    frames = []
+    for index, path in enumerate(frame_paths):
+        with Image.open(path) as image:
+            frame = np.asarray(image.convert('RGBA'), dtype=np.uint8).copy()
+        if frame.shape != source.shape:
+            raise ValueError('PIXEL64_MOTION_LOCK_SIZE: frame and master sizes differ')
+        regions = []
+        for box in boxes:
+            x0, y0, x1, y1 = (min(v, lim) for v, lim in zip(box, (width, height, width, height)))
+            patch = source[y0:y1, x0:x1]
+            best = None
+            for dy in range(-max_shift[1], max_shift[1] + 1):
+                for dx in range(-max_shift[0], max_shift[0] + 1):
+                    if x0 + dx < 0 or y0 + dy < 0 or x1 + dx > width or y1 + dy > height:
+                        continue
+                    target = frame[y0 + dy:y1 + dy, x0 + dx:x1 + dx]
+                    key = (int(np.all(target == patch, axis=2).sum()), -(abs(dx) + abs(dy)))
+                    if best is None or key > best[0]:
+                        best = (key, dx, dy)
+            if best is None:
+                raise ValueError(f'PIXEL64_MOTION_LOCK_BOX: box {box} cannot be placed inside the frame')
+            _, dx, dy = best
+            ty0, tx0 = y0 + dy, x0 + dx
+            before = frame.copy()
+            target = frame[ty0:ty0 + patch.shape[0], tx0:tx0 + patch.shape[1]]
+            target[...] = patch
+            # Moving parts that enter the box from outside (a mace, a raised hand) stay: frame pixels the master
+            # leaves empty are kept when their opaque component reaches outside the box; isolated redraw fuzz goes.
+            keep = _components_leaving_box(before[..., 3] > 0, (tx0, ty0, tx0 + patch.shape[1], ty0 + patch.shape[0]),
+                                           patch[..., 3] > 0)
+            frame[keep] = before[keep]
+            changed = int(np.any(frame != before, axis=2).sum())
+            regions.append({'box': box, 'offset': [dx, dy], 'matched_pixels_before': best[0][0],
+                            'replaced_pixels': changed, 'box_pixels': int(patch.shape[0] * patch.shape[1])})
+        destination = output / Path(path).name
+        Image.fromarray(frame, 'RGBA').save(destination)
+        frames.append({'index': index, 'source': str(Path(path).resolve()), 'path': str(destination),
+                       'sha256': _sha(destination), 'regions': regions})
+    report = {'kind': 'PIXEL64_MOTION_MASTER_LOCK', 'master': str(Path(master).resolve()), 'master_sha256': _sha(master),
+              'boxes': boxes, 'max_shift': list(max_shift), 'method': 'best integer offset by exact RGBA match, rigid paste',
+              'frames': frames, 'created_at': now()}
+    write(output / 'master_lock_report.json', report)
     return report
 
 
@@ -312,6 +404,12 @@ def build_animation(*, master, approval_record, video, selection_path, output, c
         manifest['steps'].append({'step': 'pixelize', 'status': 'PASS', 'report': str(output / '020_pixel64/pixelize_report.json'),
                                   'clipped_frames': [f['index'] for f in report['frames'] if f['clipped']]})
         frames = [Path(f['path']) for f in report['frames']]
+        if selection['master_lock']:
+            lock = lock_to_master(frames, master, output / '025_master_lock', **selection['master_lock'])
+            frames = [Path(f['path']) for f in lock['frames']]
+            manifest['steps'].append({'step': 'master_lock', 'status': 'PASS',
+                                      'report': str(output / '025_master_lock/master_lock_report.json'),
+                                      'offsets': [[r['offset'] for r in f['regions']] for f in lock['frames']]})
         palette = report['master_geometry']['palette']
         width, height = report['master_geometry']['size']
         gates = []

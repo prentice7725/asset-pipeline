@@ -246,3 +246,45 @@ def test_cells_outside_the_video_stay_transparent():
     rgba = motion64._downsample(rgb, subject, (-1, -1, 11, 11), 0.1, colors)
     assert not rgba[0, :, 3].any() and not rgba[:, 0, 3].any()
     assert rgba[5, 5, 3] == 255
+
+
+def test_master_lock_pastes_the_master_region_at_the_best_offset(tmp_path):
+    master = _master(tmp_path)
+    source = motion64._master_rgba(master)
+    frame = np.roll(source, 2, axis=0).copy()          # whole figure bobbed down 2px
+    frame[3:6, 20:24] = [9, 9, 9, 255]                   # redraw noise inside the head area
+    path = tmp_path / 'walk_a.png'
+    Image.fromarray(frame, 'RGBA').save(path)
+    box = [0, 0, source.shape[1], 30]
+    report = motion64.lock_to_master([path], master, tmp_path / 'lock', boxes=[box], max_shift=[2, 3])
+    region = report['frames'][0]['regions'][0]
+    assert region['offset'] == [0, 2] and region['replaced_pixels'] > 0
+    out = np.asarray(Image.open(report['frames'][0]['path']).convert('RGBA'))
+    assert np.array_equal(out[2:32], source[0:30])      # the master head, moved with the bob
+    assert np.array_equal(out[32:], frame[32:])         # moving parts below the box are untouched
+
+
+def test_master_lock_keeps_a_moving_part_entering_the_box(tmp_path):
+    master = _master(tmp_path)
+    source = motion64._master_rgba(master)
+    frame = source.copy()
+    frame[20:40, 50:52] = [9, 9, 9, 255]                 # a mace shaft rising from below into the box
+    frame[2:4, 10:12] = [9, 9, 9, 255]                   # isolated redraw fuzz inside the box
+    path = tmp_path / 'walk_a.png'
+    Image.fromarray(frame, 'RGBA').save(path)
+    report = motion64.lock_to_master([path], master, tmp_path / 'lock', boxes=[[0, 0, 64, 30]], max_shift=[0, 0])
+    out = np.asarray(Image.open(report['frames'][0]['path']).convert('RGBA'))
+    assert (out[20:30, 50:52, 3] == 255).all()           # shaft kept inside the box
+    assert (out[2:4, 10:12, 3] == 0).all()               # fuzz cleared
+
+
+def test_selection_lock_is_validated(tmp_path):
+    def sel(lock):
+        p = tmp_path / 'sel.json'
+        p.write_text(json.dumps({'action': 'walk', 'frames': [1, 2, 3, 4], 'reviewed_by': 'x',
+                                 'source_video_sha256': 'v', 'master_lock': lock}), encoding='utf-8')
+        return motion64.validate_selection(p, 'v')
+    assert sel({'boxes': [[1, 0, 10, 8]]})['master_lock'] == {'boxes': [[1, 0, 10, 8]], 'max_shift': [3, 6]}
+    for bad in ({'boxes': []}, {'boxes': [[5, 0, 5, 8]]}, {'boxes': [[0, 0, 4, 4]], 'max_shift': [9, 1]}, [1]):
+        with pytest.raises(ValueError, match='LOCK'):
+            sel(bad)
