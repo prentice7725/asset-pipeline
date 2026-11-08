@@ -43,6 +43,13 @@ EXPERIMENTAL explicit_only and paid cloud use needs a separate budget. One attem
 no retry/fallback, HUMAN_REQUIRED Aseprite review, six MCP tools. Path choice uses the measured
 total time per adopted sprite, including human edit minutes recorded by the user.
 
+Reopened by the user on 2026-11-08 (Pixel64 animation, walk only): read docs/factory/PIXEL64_ANIMATION_PLAN_20261108.md.
+An approved 64px Static Master → one local MiniMax H3 R2V motion video → human frame selection → new 64px
+pixelization locked to the master palette → per-frame Pixel Gate → Aseprite `walk` tag and existing Godot/Phaser
+export → HUMAN_REQUIRED review. New code only: do not modify legacy `_ported` code, the existing PIXEL_ANIMATION
+path or the blue-tunic direct profile, and never apply that profile to 64px characters. New registry entries stay
+EXPERIMENTAL explicit_only; one attempt per reserved run, no retry/fallback, six MCP tools. idle/attack stay closed.
+
 Change discipline:
 - One topic per branch/PR. Do not bundle research commits into a feature PR.
 - Prefer code plus tests over new dated reports. Add a dated validation document only when
