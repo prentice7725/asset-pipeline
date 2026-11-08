@@ -120,6 +120,11 @@ def main(argv=None):
     motion_video.add_argument('--reference', required=True, type=Path, help='Folder written by pixel64-motion-reference')
     motion_video.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
     motion_video.add_argument('--seed', required=True, type=int)
+    motion_approve = commands.add_parser('pixel64-motion-approve', help='Pixel64 walk: human approval after Aseprite review; pins every delivered file by hash')
+    motion_approve.add_argument('--run', required=True, type=Path, help='Folder written by pixel64-motion-build')
+    motion_approve.add_argument('--reviewed-by', required=True)
+    motion_approve.add_argument('--reason', required=True)
+    motion_approve.add_argument('--aseprite-reviewed', action='store_true', required=True)
     motion_frames = commands.add_parser('pixel64-motion-frames', help='Pixel64 walk: decode a motion video and write a numbered contact sheet for human selection')
     motion_frames.add_argument('--video', required=True, type=Path)
     motion_frames.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
@@ -358,6 +363,10 @@ def main(argv=None):
             from ..pixel import motion64
             print(json.dumps(motion64.submit_video(args.reference, args.output, seed=args.seed,
                                                    config=load_config(args.root / 'config/pipeline.yaml')), ensure_ascii=False, indent=2))
+        elif args.command == 'pixel64-motion-approve':
+            from ..pixel import motion64
+            record = motion64.approve_animation(args.run, reviewed_by=args.reviewed_by, reason=args.reason, aseprite_reviewed=args.aseprite_reviewed)
+            print(json.dumps({k: record[k] for k in ('status', 'asset_id', 'action', 'fps', 'frames_selected', 'reviewed_by')}, ensure_ascii=False, indent=2))
         elif args.command == 'pixel64-motion-frames':
             import hashlib
             from ..motion.extractor import decode_direct_reference

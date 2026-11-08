@@ -331,3 +331,57 @@ def submit_video(reference_dir, output, *, seed, config, prompt=WALK_PROMPT):
     if record['status'] != 'COMPLETED':
         raise ValueError(record['error'])
     return record
+
+
+def _delivery_files(run):
+    files = [run / 'animation_manifest.json', run / '020_pixel64/pixelize_report.json']
+    files += sorted((run / '040_aseprite').glob('*')) + sorted((run / '050_engine').glob('*'))
+    return files
+
+
+def approve_animation(run, *, reviewed_by, reason, aseprite_reviewed):
+    """Human approval of a 64px walk candidate. Re-checks the static approval, the frame hashes in the
+    pixelize report and that every gate passed, then pins every delivered file by hash."""
+    from ...manifests import write_new
+    from ...pipelines.pixel_static.approval import validate_approval
+    if not aseprite_reviewed or not str(reviewed_by).strip() or not str(reason).strip():
+        raise ValueError('PIXEL64_MOTION_APPROVAL_INCOMPLETE: Aseprite review, reviewer and reason are required')
+    run = Path(run).resolve()
+    manifest = json.loads((run / 'animation_manifest.json').read_text(encoding='utf-8'))
+    if manifest.get('kind') != 'PIXEL64_MOTION_ANIMATION' or manifest.get('status') != 'EXPORT_READY_REVIEW_REQUIRED':
+        raise ValueError('PIXEL64_MOTION_APPROVAL_STATUS: only an export-ready walk candidate can be approved')
+    if any(step.get('status') != 'PASS' for step in manifest['steps']):
+        raise ValueError('PIXEL64_MOTION_APPROVAL_GATE: a recorded step did not pass')
+    validate_approval(manifest['master'], manifest['approval_record'])
+    if _sha(manifest['master']) != manifest['master_sha256'] or _sha(manifest['approval_record']) != manifest['approval_record_sha256']:
+        raise ValueError('PIXEL64_MOTION_APPROVAL_MASTER_CHANGED')
+    report = json.loads((run / '020_pixel64/pixelize_report.json').read_text(encoding='utf-8'))
+    if any(_sha(frame['path']) != frame['sha256'] for frame in report['frames']):
+        raise ValueError('PIXEL64_MOTION_APPROVAL_FRAMES_CHANGED')
+    record = {'schema_version': 1, 'status': 'APPROVED_PIXEL64_ANIMATION', 'asset_id': manifest['asset_id'], 'action': manifest['action'],
+              'fps': manifest['fps'], 'frames_selected': manifest['frames_selected'],
+              'static_approval_record': manifest['approval_record'], 'static_approval_record_sha256': manifest['approval_record_sha256'],
+              'frames': [{'path': f['path'], 'sha256': f['sha256']} for f in report['frames']],
+              'files': [{'path': str(p), 'sha256': _sha(p)} for p in _delivery_files(run)],
+              'aseprite_reviewed': True, 'reviewed_by': str(reviewed_by).strip(), 'reason': str(reason).strip(),
+              'approved_at': now(), 'game_ready': False}
+    destination = run / 'animation_approval.json'
+    write_new(destination, record)
+    return record
+
+
+def validate_animation_approval(run):
+    """Every pinned file must still match; the static approval underneath must still validate."""
+    from ...pipelines.pixel_static.approval import validate_approval
+    run = Path(run).resolve()
+    record = json.loads((run / 'animation_approval.json').read_text(encoding='utf-8'))
+    if record.get('status') != 'APPROVED_PIXEL64_ANIMATION' or not record.get('aseprite_reviewed'):
+        raise ValueError('PIXEL64_MOTION_APPROVAL_INVALID')
+    for item in record['frames'] + record['files']:
+        if not Path(item['path']).is_file() or _sha(item['path']) != item['sha256']:
+            raise ValueError(f"PIXEL64_MOTION_APPROVAL_FILE_CHANGED: {item['path']}")
+    manifest = json.loads((run / 'animation_manifest.json').read_text(encoding='utf-8'))
+    validate_approval(manifest['master'], record['static_approval_record'])
+    if _sha(record['static_approval_record']) != record['static_approval_record_sha256']:
+        raise ValueError('PIXEL64_MOTION_APPROVAL_MASTER_CHANGED')
+    return record

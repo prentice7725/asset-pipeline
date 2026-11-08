@@ -122,6 +122,17 @@ def test_build_animation_stops_at_review_with_engine_files(tmp_path, monkeypatch
     assert placement['source_frame_indices'] == [0, 1, 2, 3] and placement['review_state'] == 'REVIEW_REQUIRED'
     with Image.open(engine / 'sprites.png') as sheet:
         assert sheet.size == (256, 64)
+    # Approval pins every delivered file; a later change is caught and a second approval is refused.
+    with pytest.raises(ValueError, match='INCOMPLETE'):
+        motion64.approve_animation(tmp_path / 'run', reviewed_by='me', reason='ok', aseprite_reviewed=False)
+    approved = motion64.approve_animation(tmp_path / 'run', reviewed_by='me', reason='walks', aseprite_reviewed=True)
+    assert approved['status'] == 'APPROVED_PIXEL64_ANIMATION' and approved['game_ready'] is False
+    assert motion64.validate_animation_approval(tmp_path / 'run')['asset_id'] == 'knight64'
+    with pytest.raises(FileExistsError):
+        motion64.approve_animation(tmp_path / 'run', reviewed_by='me', reason='again', aseprite_reviewed=True)
+    (engine / 'walk.tres').write_text('changed', encoding='utf-8')
+    with pytest.raises(ValueError, match='FILE_CHANGED'):
+        motion64.validate_animation_approval(tmp_path / 'run')
     # A second build into the same folder is refused rather than overwritten.
     with pytest.raises(FileExistsError):
         motion64.build_animation(master=master, approval_record=record, video=video, selection_path=selection,
