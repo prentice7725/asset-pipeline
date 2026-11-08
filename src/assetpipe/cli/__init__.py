@@ -116,6 +116,10 @@ def main(argv=None):
     motion_reference = commands.add_parser('pixel64-motion-reference', help='Pixel64 walk: nearest 12x reference image of an approved static master')
     motion_reference.add_argument('--run', required=True, type=Path, help='Static run with a valid approval_record.json')
     motion_reference.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    motion_video = commands.add_parser('pixel64-motion-video', help='Pixel64 walk: one local MiniMax H3 R2V video from a recorded reference (no retry)')
+    motion_video.add_argument('--reference', required=True, type=Path, help='Folder written by pixel64-motion-reference')
+    motion_video.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
+    motion_video.add_argument('--seed', required=True, type=int)
     motion_frames = commands.add_parser('pixel64-motion-frames', help='Pixel64 walk: decode a motion video and write a numbered contact sheet for human selection')
     motion_frames.add_argument('--video', required=True, type=Path)
     motion_frames.add_argument('--output', required=True, type=Path, help='New directory; must not exist')
@@ -349,6 +353,11 @@ def main(argv=None):
                                                   video=args.video, selection_path=args.selection, output=args.output,
                                                   config=load_config(args.root / 'config/pipeline.yaml'), asset_id=record['asset_id'])
             print(json.dumps(result, ensure_ascii=False, indent=2))
+        elif args.command == 'pixel64-motion-video':
+            from .._ported.config import load_config
+            from ..pixel import motion64
+            print(json.dumps(motion64.submit_video(args.reference, args.output, seed=args.seed,
+                                                   config=load_config(args.root / 'config/pipeline.yaml')), ensure_ascii=False, indent=2))
         elif args.command == 'pixel64-motion-frames':
             import hashlib
             from ..motion.extractor import decode_direct_reference

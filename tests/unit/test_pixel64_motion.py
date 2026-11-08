@@ -126,3 +126,31 @@ def test_build_animation_stops_at_review_with_engine_files(tmp_path, monkeypatch
     with pytest.raises(FileExistsError):
         motion64.build_animation(master=master, approval_record=record, video=video, selection_path=selection,
                                  output=tmp_path / 'run', config=None, asset_id='knight64')
+
+
+def test_video_submit_records_one_attempt_and_refuses_reuse(tmp_path, monkeypatch):
+    import assetpipe._ported.comfy_bridge.runner as runner
+    from pathlib import Path as P
+    reference = motion64.build_reference(_master(tmp_path), tmp_path / 'ref')
+    calls = []
+
+    def fake_run(config, **kwargs):
+        calls.append(kwargs)
+        kwargs['output_dir'].mkdir(parents=True)
+        video = kwargs['output_dir'] / 'walk.mp4'
+        video.write_bytes(b'mp4')
+        return [video]
+    monkeypatch.setattr(runner, 'run_workflow', fake_run)
+
+    class Config:
+        root = P(__file__).resolve().parents[2]
+    record = motion64.submit_video(tmp_path / 'ref', tmp_path / 'v1', seed=7, config=Config())
+    assert record['status'] == 'COMPLETED' and record['retry'] == 'NONE' and record['seed'] == 7
+    assert calls[0]['input_image'] == P(reference['reference']) and calls[0]['workflow_name'] == motion64.VIDEO_WORKFLOW
+    with pytest.raises(FileExistsError):
+        motion64.submit_video(tmp_path / 'ref', tmp_path / 'v1', seed=7, config=Config())
+    monkeypatch.setattr(runner, 'run_workflow', lambda config, **k: (_ for _ in ()).throw(RuntimeError('comfy down')))
+    with pytest.raises(RuntimeError):
+        motion64.submit_video(tmp_path / 'ref', tmp_path / 'v2', seed=7, config=Config())
+    assert json.loads((tmp_path / 'v2/video_run.json').read_text(encoding='utf-8'))['status'] == 'FAILED'
+    assert len(calls) == 1

@@ -154,7 +154,8 @@ def pixelize(frame_paths, master, output, *, tolerance=DEFAULT_TOLERANCE):
         rgba[..., :3] = _snap(color, geometry['palette'])
         rgba[..., 3] = np.where(alpha, 255, 0)
         rgba[~alpha, :3] = 0
-        destination = output / f'frame_{index:02d}.png'
+        # Letter names: Aseprite opens a numbered file name as a whole image sequence.
+        destination = output / f'walk_{chr(ord("a") + index)}.png'
         Image.fromarray(rgba, 'RGBA').save(destination)
         frames.append({'index': index, 'source': str(path), 'source_sha256': _sha(path), 'path': str(destination),
                        'sha256': _sha(destination), 'source_bbox': list(boxes[index]), 'clipped': clipped})
@@ -283,3 +284,50 @@ def build_animation(*, master, approval_record, video, selection_path, output, c
         raise
     write(output / 'animation_manifest.json', manifest)
     return manifest
+
+
+VIDEO_WORKFLOW = 'deno_minimax_h3_r2v_8step'
+WALK_PROMPT = ('The character from Picture 1 walks in place with a steady walk cycle, full body visible, '
+               'facing the same direction as the reference, feet staying on the same ground line, fixed camera, no zoom, '
+               'no camera movement, plain white background, no other objects.')
+
+
+def submit_video(reference_dir, output, *, seed, config, prompt=WALK_PROMPT):
+    """One local MiniMax H3 R2V submission from a recorded reference. No retry: the run folder is reserved
+    first and a failure is recorded there; a new attempt needs a new folder and is a separate run."""
+    from ..._ported.comfy_bridge.runner import run_workflow
+    from ..._ported.comfy_bridge.workflow_loader import load_workflow
+    reference_dir, output = Path(reference_dir).resolve(), Path(output).resolve()
+    reference = json.loads((reference_dir / 'reference.json').read_text(encoding='utf-8'))
+    if _sha(reference['reference']) != reference['reference_sha256'] or _sha(reference['master']) != reference['master_sha256']:
+        raise ValueError('PIXEL64_MOTION_REFERENCE_CHANGED: reference or master differs from reference.json')
+    if type(seed) is not int or seed < 0:
+        raise ValueError('PIXEL64_MOTION_SEED: an explicit nonnegative integer seed is required')
+    workflow = load_workflow(VIDEO_WORKFLOW, Path(config.root) / 'config/workflows')
+    output.mkdir(parents=True, exist_ok=False)
+    record = {'kind': 'PIXEL64_MOTION_VIDEO_RUN', 'status': 'RESERVED', 'attempt': 1, 'retry': 'NONE',
+              'workflow': VIDEO_WORKFLOW, 'workflow_sha256': workflow.sha256, 'workflow_version': workflow.version,
+              'prompt': prompt, 'seed': seed, 'reference': reference['reference'], 'reference_sha256': reference['reference_sha256'],
+              'master_sha256': reference['master_sha256'], 'reserved_at': now()}
+    write(output / 'video_run.json', record)
+    started = __import__('time').monotonic()
+    try:
+        paths = run_workflow(config, workflow_name=VIDEO_WORKFLOW, prompt=prompt, seed=seed,
+                             input_image=Path(reference['reference']), output_dir=output / 'video',
+                             filename_prefix='assetpipe/pixel64_walk')
+    except Exception as exc:
+        record.update(status='FAILED', error=str(exc), seconds=round(__import__('time').monotonic() - started, 1))
+        write(output / 'video_run.json', record)
+        raise
+    videos = [Path(p) for p in paths if Path(p).suffix.lower() in ('.mp4', '.webm', '.mov')]
+    record.update(status='COMPLETED' if len(videos) == 1 else 'FAILED', seconds=round(__import__('time').monotonic() - started, 1),
+                  outputs=[{'path': str(p), 'sha256': _sha(p)} for p in paths], completed_at=now())
+    if len(videos) != 1:
+        record['error'] = f'PIXEL64_MOTION_VIDEO_OUTPUT: expected one video, got {len(videos)}'
+    else:
+        record['video'] = str(videos[0])
+        record['video_sha256'] = _sha(videos[0])
+    write(output / 'video_run.json', record)
+    if record['status'] != 'COMPLETED':
+        raise ValueError(record['error'])
+    return record
