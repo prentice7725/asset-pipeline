@@ -160,9 +160,13 @@ def _downsample(rgb, subject, window, scale, colors):
     margin = cell * (1 - CELL_CORE) / 2
     for v in range(height):
         y0, y1 = (top + v) * cell + margin, (top + v + 1) * cell - margin
+        if y1 <= 0 or y0 >= rgb.shape[0]:
+            continue  # cell lies outside the video frame: transparent (a negative slice end would span the frame)
         ys = slice(max(0, int(np.floor(y0))), min(rgb.shape[0], max(int(np.floor(y0)) + 1, int(np.ceil(y1)))))
         for u in range(width):
             x0, x1 = (left + u) * cell + margin, (left + u + 1) * cell - margin
+            if x1 <= 0 or x0 >= rgb.shape[1]:
+                continue
             xs = slice(max(0, int(np.floor(x0))), min(rgb.shape[1], max(int(np.floor(x0)) + 1, int(np.ceil(x1)))))
             core = subject[ys, xs]
             if core.size == 0 or core.mean() < 0.5:

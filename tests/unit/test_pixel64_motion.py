@@ -234,3 +234,15 @@ def test_motion_note_is_appended_and_recorded(tmp_path, monkeypatch):
     assert 'no motion trails' in seen[0] and record['motion_note'].startswith('draws the sword')
     with pytest.raises(ValueError, match='NOTE'):
         motion64.submit_video(tmp_path / 'ref', tmp_path / 'v2', seed=1, config=Config(), action='attack', motion_note=' ')
+
+
+def test_cells_outside_the_video_stay_transparent():
+    # Window starting one cell above and left of the frame: those rows/columns must be empty,
+    # not a smear of the whole frame (a negative slice end used to span almost the full image).
+    rgb = np.full((120, 120, 3), 30, dtype=np.uint8)
+    subject = np.zeros((120, 120), dtype=bool)
+    subject[20:110, 20:100] = True
+    colors = np.array([[30, 30, 30]], dtype=np.uint8)
+    rgba = motion64._downsample(rgb, subject, (-1, -1, 11, 11), 0.1, colors)
+    assert not rgba[0, :, 3].any() and not rgba[:, 0, 3].any()
+    assert rgba[5, 5, 3] == 255
