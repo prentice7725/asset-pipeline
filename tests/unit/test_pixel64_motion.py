@@ -48,7 +48,8 @@ def test_selection_rules(tmp_path):
     path.write_text(json.dumps(good), encoding='utf-8')
     assert motion64.validate_selection(path, 'v')['fps'] == 8
     for change, code in [({'frames': [1, 2, 3]}, 'COUNT'), ({'frames': [4, 1, 7, 10]}, 'ORDER'),
-                         ({'reviewed_by': ''}, 'UNREVIEWED'), ({'action': 'idle'}, 'ACTION')]:
+                         ({'reviewed_by': ''}, 'UNREVIEWED'), ({'action': 'run'}, 'ACTION'),
+                         ({'durations_ms': [100, 100, 100]}, 'DURATIONS'), ({'durations_ms': [100, 100, 100, 5]}, 'DURATIONS')]:
         path.write_text(json.dumps({**good, **change}), encoding='utf-8')
         with pytest.raises(ValueError, match=code):
             motion64.validate_selection(path, 'v')
@@ -184,3 +185,106 @@ def test_white_detail_inside_the_figure_stays_opaque(tmp_path):
     assert '#FAFAFA' in report['master_geometry']['palette']
     rgba = np.asarray(Image.open(report['frames'][0]['path']).convert('RGBA'))
     assert (rgba[16:18, 30:32, 3] == 255).all() and (rgba[16:18, 30:32, :3] == 250).all()
+
+
+def test_idle_and_attack_rules(tmp_path):
+    path = tmp_path / 'selection.json'
+    base = {'reviewed_by': 'me', 'source_video_sha256': 'v', 'fps': 8}
+    path.write_text(json.dumps({**base, 'action': 'idle', 'frames': [0, 3, 6, 9]}), encoding='utf-8')
+    assert motion64.validate_selection(path, 'v')['action'] == 'idle'
+    path.write_text(json.dumps({**base, 'action': 'idle', 'frames': [0, 3, 6, 9, 12]}), encoding='utf-8')
+    with pytest.raises(ValueError, match='COUNT'):
+        motion64.validate_selection(path, 'v')
+    path.write_text(json.dumps({**base, 'action': 'attack', 'frames': [0, 4, 8, 12, 16],
+                                'durations_ms': [125, 125, 250, 125, 125]}), encoding='utf-8')
+    assert motion64.validate_selection(path, 'v')['durations_ms'][2] == 250
+    assert motion64.ACTIONS['attack']['loop'] is False and motion64.ACTIONS['idle']['loop'] is True
+
+
+def test_attack_engine_files_play_once_with_held_frame(tmp_path):
+    from assetpipe.motion.exports import write_engine_resources
+    frames = [_master(tmp_path)] * 3
+    rects = motion64.pack_sheet(frames, tmp_path / 'sprites.png', [0, 4, 8])
+    write_engine_resources(tmp_path, rects, 8.0, action='attack', asset_id='knight64', placement={},
+                           loop=False, durations_ms=[125, 250, 125])
+    godot = (tmp_path / 'attack.tres').read_text(encoding='utf-8')
+    assert '"loop":false' in godot and '"duration":2.0' in godot
+    phaser = json.loads((tmp_path / 'phaser-animation.json').read_text(encoding='utf-8'))
+    assert phaser['repeat'] == 0 and phaser['frames'][1]['duration'] == 125 and 'duration' not in phaser['frames'][0]
+
+
+def test_motion_note_is_appended_and_recorded(tmp_path, monkeypatch):
+    import assetpipe._ported.comfy_bridge.runner as runner
+    from pathlib import Path as P
+    motion64.build_reference(_master(tmp_path), tmp_path / 'ref')
+    seen = []
+
+    def fake_run(config, **kwargs):
+        seen.append(kwargs['prompt'])
+        kwargs['output_dir'].mkdir(parents=True)
+        (kwargs['output_dir'] / 'a.mp4').write_bytes(b'v')
+        return [kwargs['output_dir'] / 'a.mp4']
+    monkeypatch.setattr(runner, 'run_workflow', fake_run)
+
+    class Config:
+        root = P(__file__).resolve().parents[2]
+    record = motion64.submit_video(tmp_path / 'ref', tmp_path / 'v', seed=1, config=Config(), action='attack',
+                                   motion_note='draws the sword from the belt with the right hand')
+    assert seen[0].endswith('Motion detail: draws the sword from the belt with the right hand')
+    assert 'no motion trails' in seen[0] and record['motion_note'].startswith('draws the sword')
+    with pytest.raises(ValueError, match='NOTE'):
+        motion64.submit_video(tmp_path / 'ref', tmp_path / 'v2', seed=1, config=Config(), action='attack', motion_note=' ')
+
+
+def test_cells_outside_the_video_stay_transparent():
+    # Window starting one cell above and left of the frame: those rows/columns must be empty,
+    # not a smear of the whole frame (a negative slice end used to span almost the full image).
+    rgb = np.full((120, 120, 3), 30, dtype=np.uint8)
+    subject = np.zeros((120, 120), dtype=bool)
+    subject[20:110, 20:100] = True
+    colors = np.array([[30, 30, 30]], dtype=np.uint8)
+    rgba = motion64._downsample(rgb, subject, (-1, -1, 11, 11), 0.1, colors)
+    assert not rgba[0, :, 3].any() and not rgba[:, 0, 3].any()
+    assert rgba[5, 5, 3] == 255
+
+
+def test_master_lock_pastes_the_master_region_at_the_best_offset(tmp_path):
+    master = _master(tmp_path)
+    source = motion64._master_rgba(master)
+    frame = np.roll(source, 2, axis=0).copy()          # whole figure bobbed down 2px
+    frame[3:6, 20:24] = [9, 9, 9, 255]                   # redraw noise inside the head area
+    path = tmp_path / 'walk_a.png'
+    Image.fromarray(frame, 'RGBA').save(path)
+    box = [0, 0, source.shape[1], 30]
+    report = motion64.lock_to_master([path], master, tmp_path / 'lock', boxes=[box], max_shift=[2, 3])
+    region = report['frames'][0]['regions'][0]
+    assert region['offset'] == [0, 2] and region['replaced_pixels'] > 0
+    out = np.asarray(Image.open(report['frames'][0]['path']).convert('RGBA'))
+    assert np.array_equal(out[2:32], source[0:30])      # the master head, moved with the bob
+    assert np.array_equal(out[32:], frame[32:])         # moving parts below the box are untouched
+
+
+def test_master_lock_keeps_a_moving_part_entering_the_box(tmp_path):
+    master = _master(tmp_path)
+    source = motion64._master_rgba(master)
+    frame = source.copy()
+    frame[20:40, 50:52] = [9, 9, 9, 255]                 # a mace shaft rising from below into the box
+    frame[2:4, 10:12] = [9, 9, 9, 255]                   # isolated redraw fuzz inside the box
+    path = tmp_path / 'walk_a.png'
+    Image.fromarray(frame, 'RGBA').save(path)
+    report = motion64.lock_to_master([path], master, tmp_path / 'lock', boxes=[[0, 0, 64, 30]], max_shift=[0, 0])
+    out = np.asarray(Image.open(report['frames'][0]['path']).convert('RGBA'))
+    assert (out[20:30, 50:52, 3] == 255).all()           # shaft kept inside the box
+    assert (out[2:4, 10:12, 3] == 0).all()               # fuzz cleared
+
+
+def test_selection_lock_is_validated(tmp_path):
+    def sel(lock):
+        p = tmp_path / 'sel.json'
+        p.write_text(json.dumps({'action': 'walk', 'frames': [1, 2, 3, 4], 'reviewed_by': 'x',
+                                 'source_video_sha256': 'v', 'master_lock': lock}), encoding='utf-8')
+        return motion64.validate_selection(p, 'v')
+    assert sel({'boxes': [[1, 0, 10, 8]]})['master_lock'] == {'boxes': [[1, 0, 10, 8]], 'max_shift': [3, 6]}
+    for bad in ({'boxes': []}, {'boxes': [[5, 0, 5, 8]]}, {'boxes': [[0, 0, 4, 4]], 'max_shift': [9, 1]}, [1]):
+        with pytest.raises(ValueError, match='LOCK'):
+            sel(bad)

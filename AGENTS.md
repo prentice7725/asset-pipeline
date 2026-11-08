@@ -48,7 +48,8 @@ An approved 64px Static Master → one local MiniMax H3 R2V motion video → hum
 pixelization locked to the master palette → per-frame Pixel Gate → Aseprite `walk` tag and existing Godot/Phaser
 export → HUMAN_REQUIRED review. New code only: do not modify legacy `_ported` code, the existing PIXEL_ANIMATION
 path or the blue-tunic direct profile, and never apply that profile to 64px characters. New registry entries stay
-EXPERIMENTAL explicit_only; one attempt per reserved run, no retry/fallback, six MCP tools. idle/attack stay closed.
+EXPERIMENTAL explicit_only; one attempt per reserved run, no retry/fallback, six MCP tools.
+On 2026-11-08 the user also opened idle and attack on the same path (same rules; attack plays once, not looped).
 
 Change discipline:
 - One topic per branch/PR. Do not bundle research commits into a feature PR.

@@ -44,10 +44,15 @@ def export_candidate(candidate, expected_sha256, output, root, *, action, asset_
     return [{'path': str(path), 'sha256': fingerprint(path)} for path in sorted(output.iterdir())]
 
 
-def write_engine_resources(output, frames, fps, *, action, asset_id, placement):
+def write_engine_resources(output, frames, fps, *, action, asset_id, placement, loop=True, durations_ms=None):
     """output/sprites.png 옆에 Godot SpriteFrames, Phaser atlas·animation, placement.json을 쓴다.
-    frames: rect [x, y, w, h], pivot [x, y], original_source_frame_index."""
+    frames: rect [x, y, w, h], pivot [x, y], original_source_frame_index.
+    durations_ms(선택): 프레임별 표시 시간. Godot는 기본 간격의 배수, Phaser는 기본 간격에 더할 시간으로 쓴다."""
     output = Path(output)
+    base_ms = 1000 / fps
+    if durations_ms is not None and len(durations_ms) != len(frames):
+        raise ValueError('MOTION_EXPORT_DURATIONS: one duration per frame')
+    relative = [1.0] * len(frames) if durations_ms is None else [round(d / base_ms, 4) for d in durations_ms]
     names = resource_names(action, asset_id)
     parts = [f'[gd_resource type="SpriteFrames" load_steps={len(frames)+2} format=3]',
              '[ext_resource type="Texture2D" path="sprites.png" id="1_sheet"]']
@@ -61,17 +66,20 @@ def write_engine_resources(output, frames, fps, *, action, asset_id, placement):
         native[name] = {'frame': {'x': x, 'y': y, 'w': w, 'h': h}, 'rotated': False,
                         'trimmed': False, 'spriteSourceSize': {'x': 0, 'y': 0, 'w': w, 'h': h},
                         'sourceSize': {'w': w, 'h': h}}
-        animation.append({'key': names['phaser_key'], 'frame': name})
+        entry = {'key': names['phaser_key'], 'frame': name}
+        if durations_ms is not None and round(durations_ms[i] - base_ms) != 0:
+            entry['duration'] = round(durations_ms[i] - base_ms)
+        animation.append(entry)
     parts += ['[resource]', 'animations = [{"frames": [' + ','.join(
-        '{"duration":1.0,"texture":SubResource("Frame_'+str(i)+'")}' for i in range(len(frames)))
-        + f'],"loop":true,"name":&"{names["animation"]}","speed":{fps}}}]']
+        '{"duration":'+str(relative[i])+',"texture":SubResource("Frame_'+str(i)+'")}' for i in range(len(frames)))
+        + f'],"loop":{"true" if loop else "false"},"name":&"{names["animation"]}","speed":{fps}}}]']
     (output / names['godot_resource']).write_text('\n\n'.join(parts)+'\n', encoding='utf-8')
     with Image.open(output / 'sprites.png') as image:
         width, height = image.size
     write(output / 'phaser-atlas.json', {'frames': native,
           'meta': {'image': 'sprites.png', 'size': {'w': width, 'h': height}, 'scale': '1'}})
     write(output / 'phaser-animation.json', {'key': names['phaser_key'], 'frames': animation,
-                                           'frameRate': fps, 'repeat': -1})
+                                           'frameRate': fps, 'repeat': -1 if loop else 0})
     pivot = frames[0]['pivot']
     size = frames[0]['rect'][2:]
     write(output / 'placement.json', {'source_pivot': pivot, 'frame_size': size, **placement,
