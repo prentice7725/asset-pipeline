@@ -41,6 +41,10 @@ ComfyUI 같은 생성 도구를 부르고, 결과를 자동으로 검사한 뒤,
 
 전체 24종은 [STYLE MENU v1](research/style_catalog/style_menu_v1/STYLE_MENU_v1.md)에 있습니다.
 
+**일반 그림 애니메이션** (흰 배경 전신 1장 → 걷기 영상 1회 → 배경 제거 프레임. 사용자가 샘플로 수용함, 루프 구간 미선택·미술 승인 아님)
+
+<img src="docs/samples/nonpixel_walk.gif" width="200" alt="모험가 걷기">
+
 **64px 픽셀 캐릭터·소품** (Krea2 Pixel64, Aseprite 확인 후 승인, 4배 확대)
 
 <p>
@@ -67,7 +71,20 @@ ComfyUI 같은 생성 도구를 부르고, 결과를 자동으로 검사한 뒤,
 | :---: | :---: | :---: | :---: |
 | <img src="docs/samples/variant_base.png" width="150" alt="베이스"> | <img src="docs/samples/variant_expression_grok.png" width="150" alt="표정 변형 Grok"> | <img src="docs/samples/variant_expression_codex.png" width="150" alt="표정 변형 Codex"> | <img src="docs/samples/variant_pose_codex.png" width="150" alt="포즈 변형 Codex"> |
 
-**아직 샘플이 없는 것:** 일반 그림 애니메이션, 효과음, 배경음악. 승인된 결과가 생기면 추가합니다.
+**효과음** (Stable Audio 3 후보 중 사용자가 고른 것. 게임용 청취 승인은 아님. 링크를 누르면 재생/다운로드됩니다)
+
+| 소리 | 길이 | 프롬프트 요약 |
+| --- | --- | --- |
+| [성공](docs/samples/sfx_goal.mp3) | 1.5초 | 밝은 금관 종소리 두 번, 올라가는 음 |
+| [청원 완료](docs/samples/sfx_petition.mp3) | 1초 | 부드럽고 따뜻한 나무 차임 한 번 |
+| [설치](docs/samples/sfx_place.mp3) | 1초 | 돌기둥을 땅에 박는 둔탁한 소리와 약한 금속 울림 |
+| [연결](docs/samples/sfx_power_on.mp3) | 1초 | 올라가는 수정 같은 웅웅거림 |
+| [끊김](docs/samples/sfx_power_off.mp3) | 1초 | 내려가며 사그라드는 웅웅거림 |
+| [거절](docs/samples/sfx_reject.mp3) | 1초 | 낮고 부드러운 나무 노크 두 번 |
+| [도장](docs/samples/sfx_stamp.mp3) | 1초 | 두꺼운 종이에 도장을 찍는 묵직한 소리 |
+| [지도](docs/samples/sfx_territory.mp3) | 1초 | 양피지 지도가 움직이는 약한 바람 소리 |
+
+**아직 샘플이 없는 것:** 배경음악, rfxgen 합성 효과음. 실제 결과가 생기면 추가합니다.
 
 32px 픽셀 연구는 멈춰 둔 상태입니다. 무엇을 개발하는 중인지는 [AGENTS.md](AGENTS.md),
 날짜별 실험 기록은 [Factory 문서 색인](docs/factory/README.md)에 있습니다.
