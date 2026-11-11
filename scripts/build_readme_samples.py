@@ -154,6 +154,26 @@ for name, job, evidence in VARIANTS:
                      'sources': [{'path': str(src.relative_to(WS.parent)).replace('\\', '/'), 'sha256': h}],
                      'note': 'resized to 300px wide; identity preservation accepted by the user, not final art approval'})
 
+# --- Style menu representatives (selected by the user; asset review still REVIEW_REQUIRED)
+REPS = ['STYLE-101', 'STYLE-104', 'STYLE-106', 'STYLE-110', 'STYLE-113', 'STYLE-119', 'STYLE-123', 'STYLE-124']
+reps_record = ROOT / 'research' / 'style_catalog' / 'style_menu_v1' / 'selected_representatives.json'
+reps = {r['style_id']: r for r in json.loads(reps_record.read_text(encoding='utf-8'))['representatives']}
+for style_id in REPS:
+    r = reps[style_id]
+    assert r['selection'] == 'USER_SELECTED_MENU_REPRESENTATIVE', style_id
+    src = ROOT / r['path']
+    h = sha(src)
+    assert h == r['sha256'], style_id
+    im = Image.open(src).convert('RGB')
+    im = im.resize((240, round(im.height * 240 / im.width)), Image.LANCZOS)
+    name = style_id.lower().replace('-', '') + '.jpg'
+    out = OUT / name
+    im.save(out, quality=86, optimize=True)
+    manifest.append({'sample': name, 'bytes': out.stat().st_size, 'sha256': sha(out),
+                     'evidence': 'research/style_catalog/style_menu_v1/selected_representatives.json',
+                     'sources': [{'path': r['path'], 'sha256': h}],
+                     'note': f"{style_id} {r['name']}; menu representative selected by the user, resized to 240px JPEG; not an asset approval"})
+
 (OUT / 'samples.json').write_text(json.dumps({'schema_version': 1, 'samples': manifest}, indent=1, ensure_ascii=False) + '\n', encoding='utf-8')
 for m in manifest:
     print(f"{m['sample']:34} {m['bytes']:>8}")

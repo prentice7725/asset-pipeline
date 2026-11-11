@@ -26,6 +26,21 @@ ComfyUI 같은 생성 도구를 부르고, 결과를 자동으로 검사한 뒤,
 아래는 이 도구로 만든 뒤 **사람이 확인하고 승인하거나 수용한 결과만** 모은 것입니다. 골라낸 좋은 결과이며, 생성하면 매번 이렇게 나온다는 뜻은 아닙니다.
 원본 파일과 해시는 [samples.json](docs/samples/samples.json)에 기록돼 있습니다.
 
+**일반 그림: 화풍 메뉴** (STYLE MENU 24종 중 8종. 사용자가 고른 화풍 대표 이미지이며, 애셋 승인은 아님)
+
+<p>
+<img src="docs/samples/style101.jpg" width="120" alt="STYLE-101 90년대 야경 셀 애니">
+<img src="docs/samples/style104.jpg" width="120" alt="STYLE-104 모던 플랫 만화">
+<img src="docs/samples/style106.jpg" width="120" alt="STYLE-106 러버호스 카툰">
+<img src="docs/samples/style110.jpg" width="120" alt="STYLE-110 과슈 동화책">
+<img src="docs/samples/style113.jpg" width="120" alt="STYLE-113 빈티지 판화">
+<img src="docs/samples/style119.jpg" width="120" alt="STYLE-119 네온 사이버펑크">
+<img src="docs/samples/style123.jpg" width="120" alt="STYLE-123 점토 장난감">
+<img src="docs/samples/style124.jpg" width="120" alt="STYLE-124 복셀 디오라마">
+</p>
+
+전체 24종은 [STYLE MENU v1](research/style_catalog/style_menu_v1/STYLE_MENU_v1.md)에 있습니다.
+
 **64px 픽셀 캐릭터·소품** (Krea2 Pixel64, Aseprite 확인 후 승인, 4배 확대)
 
 <p>
