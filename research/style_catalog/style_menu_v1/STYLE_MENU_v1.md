@@ -1,6 +1,6 @@
 # STYLE MENU v1
 
-> **2026-10-29 대표 이미지 적용:** 아래 대표 이미지는 사용자가 선택한 새 후보입니다. 이미지는 [GitHub 릴리스](https://github.com/prentice7725/asset-pipeline/releases/tag/style-menu-v1-representatives)에 보관되어 GitHub에서도 볼 수 있으며, 원본은 로컬 `workspace/`에도 있습니다. [선택 목록과 SHA-256](selected_representatives.json). 기존 exemplar 설정, 실패 이미지와 실험 기록은 과거 증거로 유지합니다. 메뉴 선택은 게임 에셋 또는 Aseprite 승인이 아닙니다.
+> **2026-10-29 대표 이미지 적용:** 아래 대표 이미지는 사용자가 선택한 새 후보입니다. 이미지는 [GitHub 릴리스](https://github.com/prentice7725/asset-pipeline/releases/tag/style-menu-v1-representatives)에 보관되어 GitHub에서도 볼 수 있으며, 원본은 로컬 `workspace/`에도 있습니다. [선택 목록과 SHA-256](selected_representatives.json). 기존 exemplar 설정과 실험 기록은 과거 증거로 유지합니다. 이전 실험 이미지(합성 여행자 픽스처)는 2026-11-11 저장소에서 지웠고 경로와 SHA-256만 남아 있습니다. 메뉴 선택은 게임 에셋 또는 Aseprite 승인이 아닙니다.
 
 > 2026-10-28: 원본 216장·run records 등 `evidence/` 폴더(227개 파일)는 저장소 용량 정리를 위해 git 이력에서 제거하고 외부에 보관합니다.
 > 경로·크기·SHA256은 [external_evidence_manifest.json](external_evidence_manifest.json)과 [evidence_archive.json](evidence_archive.json)에 남아 있습니다.
@@ -38,7 +38,7 @@ Set `art_style: retro_sci_fi_anime` in a NONPIXEL_IMAGE Brief or project visual_
 
 Anima workflows remain EXPERIMENTAL in the registry. Selecting this user-authorized menu explicitly opts into its configured binding; no registry/recipe quality approvals are fabricated. Known defects become route warnings, not style holds.
 
-Historical preview paths and evidence metadata describe the original benchmark. Newly selected representatives are hosted as GitHub release assets outside Git history; local paths, public URLs and hashes are recorded in selected_representatives.json. The historical evidence archive is external and is not bundled in this checkout.
+Historical preview paths and evidence metadata describe the original benchmark. The historical best/failure preview PNGs (the synthetic traveler fixture) were removed from the repository on 2026-11-11; their paths and SHA-256 stay in config/styles/style_menu_v1.yaml as records. Newly selected representatives are hosted as GitHub release assets outside Git history; local paths, public URLs and hashes are recorded in selected_representatives.json. The historical evidence archive is external and is not bundled in this checkout.
 
 ## STYLE-101 90s nocturnal cel anime
 
@@ -48,10 +48,6 @@ Known limitations: None recorded in this small cohort; not guaranteed
 
 ![STYLE-101 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-101.png)
 
-[이전 실험 대표 이미지](previews/STYLE-101_best.png) (historical)
-
-![failure](previews/STYLE-101_failure.png)
-
 ## STYLE-102 90s gothic fantasy cel
 
 Indigo/magenta painted twilight; gothic architecture remains weak
@@ -59,10 +55,6 @@ Indigo/magenta painted twilight; gothic architecture remains weak
 Known limitations: None recorded in this small cohort; not guaranteed
 
 ![STYLE-102 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-102.png)
-
-[이전 실험 대표 이미지](previews/STYLE-102_best.png) (historical)
-
-![failure](previews/STYLE-102_failure.png)
 
 ## STYLE-103 retro sci-fi anime
 
@@ -72,10 +64,6 @@ Known limitations: WRONG_IMAGE_SIDE
 
 ![STYLE-103 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-103.png)
 
-[이전 실험 대표 이미지](previews/STYLE-103_best.png) (historical)
-
-![failure](previews/STYLE-103_failure.png)
-
 ## STYLE-104 modern flat manga
 
 Strong outlined flat manga treatment and saturated color field
@@ -83,10 +71,6 @@ Strong outlined flat manga treatment and saturated color field
 Known limitations: None recorded in this small cohort; not guaranteed
 
 ![STYLE-104 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-104.png)
-
-[이전 실험 대표 이미지](previews/STYLE-104_best.png) (historical)
-
-![failure](previews/STYLE-104_failure.png)
 
 ## STYLE-105 kawaii pop anime
 
@@ -96,10 +80,6 @@ Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
 ![STYLE-105 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-105.png)
 
-[이전 실험 대표 이미지](previews/STYLE-105_best.png) (historical)
-
-![failure](previews/STYLE-105_failure.png)
-
 ## STYLE-106 rubber-hose cartoon
 
 Rounded cartoon/sticker language closest to rubber-hose; classic pie-eye specificity partial
@@ -107,10 +87,6 @@ Rounded cartoon/sticker language closest to rubber-hose; classic pie-eye specifi
 Known limitations: VIEW_DRIFT, REAR_VIEW, ANATOMICAL_SIDE_NOT_VALIDATED
 
 ![STYLE-106 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-106.png)
-
-[이전 실험 대표 이미지](previews/STYLE-106_best.png) (historical)
-
-![failure](previews/STYLE-106_failure.png)
 
 ## STYLE-107 flat western action cartoon
 
@@ -120,10 +96,6 @@ Known limitations: FACE_READABILITY_FAILED, EQUIPMENT_CROPPED, BACKGROUND_STREAK
 
 ![STYLE-107 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-107.png)
 
-[이전 실험 대표 이미지](previews/STYLE-107_best.png) (historical)
-
-![failure](previews/STYLE-107_failure.png)
-
 ## STYLE-108 graphic novel ink
 
 Strong cross-hatched graphic ink scene and architecture
@@ -131,10 +103,6 @@ Strong cross-hatched graphic ink scene and architecture
 Known limitations: EXTRA_BACKGROUND_FIGURES
 
 ![STYLE-108 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-108.png)
-
-[이전 실험 대표 이미지](previews/STYLE-108_best.png) (historical)
-
-![failure](previews/STYLE-108_failure.png)
 
 ## STYLE-109 manga screentone noir
 
@@ -144,10 +112,6 @@ Known limitations: WRONG_IMAGE_SIDE, FACE_DETAIL_PARTIAL
 
 ![STYLE-109 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-109.png)
 
-[이전 실험 대표 이미지](previews/STYLE-109_best.png) (historical)
-
-![failure](previews/STYLE-109_failure.png)
-
 ## STYLE-110 cozy gouache storybook
 
 Opaque matte gouache brushwork shared by figure and background
@@ -155,10 +119,6 @@ Opaque matte gouache brushwork shared by figure and background
 Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
 ![STYLE-110 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-110.png)
-
-[이전 실험 대표 이미지](previews/STYLE-110_best.png) (historical)
-
-![failure](previews/STYLE-110_failure.png)
 
 ## STYLE-111 watercolor storybook
 
@@ -168,10 +128,6 @@ Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
 ![STYLE-111 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-111.png)
 
-[이전 실험 대표 이미지](previews/STYLE-111_best.png) (historical)
-
-![failure](previews/STYLE-111_failure.png)
-
 ## STYLE-112 folk fairytale gouache
 
 Folk gouache forest and warm magical glow
@@ -179,10 +135,6 @@ Folk gouache forest and warm magical glow
 Known limitations: ADULT_APPEARANCE_UNCERTAIN
 
 ![STYLE-112 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-112.png)
-
-[이전 실험 대표 이미지](previews/STYLE-112_best.png) (historical)
-
-![failure](previews/STYLE-112_failure.png)
 
 ## STYLE-113 vintage engraving
 
@@ -192,10 +144,6 @@ Known limitations: None recorded in this small cohort; not guaranteed
 
 ![STYLE-113 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-113.png)
 
-[이전 실험 대표 이미지](previews/STYLE-113_best.png) (historical)
-
-![failure](previews/STYLE-113_failure.png)
-
 ## STYLE-114 impasto painterly
 
 Heavy impasto ridges on coat and background, muted painterly light
@@ -203,10 +151,6 @@ Heavy impasto ridges on coat and background, muted painterly light
 Known limitations: None recorded in this small cohort; not guaranteed
 
 ![STYLE-114 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-114.png)
-
-[이전 실험 대표 이미지](previews/STYLE-114_best.png) (historical)
-
-![failure](previews/STYLE-114_failure.png)
 
 ## STYLE-115 duotone risograph
 
@@ -216,10 +160,6 @@ Known limitations: EQUIPMENT_GEOMETRY_AMBIGUOUS
 
 ![STYLE-115 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-115.png)
 
-[이전 실험 대표 이미지](previews/STYLE-115_best.png) (historical)
-
-![failure](previews/STYLE-115_failure.png)
-
 ## STYLE-116 punk photocopy zine
 
 Photocopy black/blue ink and distressed printed silhouette
@@ -227,10 +167,6 @@ Photocopy black/blue ink and distressed printed silhouette
 Known limitations: EXTRA_CHARACTER
 
 ![STYLE-116 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-116.png)
-
-[이전 실험 대표 이미지](previews/STYLE-116_best.png) (historical)
-
-![failure](previews/STYLE-116_failure.png)
 
 ## STYLE-117 flat vector editorial
 
@@ -240,10 +176,6 @@ Known limitations: FACE_READABILITY_FAILED
 
 ![STYLE-117 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-117.png)
 
-[이전 실험 대표 이미지](previews/STYLE-117_best.png) (historical)
-
-![failure](previews/STYLE-117_failure.png)
-
 ## STYLE-118 mixed-media collage
 
 Strongest layered cut-paper offset silhouette and texture
@@ -251,10 +183,6 @@ Strongest layered cut-paper offset silhouette and texture
 Known limitations: FACE_READABILITY_FAILED, BACKGROUND_FIGURE_AMBIGUOUS
 
 ![STYLE-118 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-118.png)
-
-[이전 실험 대표 이미지](previews/STYLE-118_best.png) (historical)
-
-![failure](previews/STYLE-118_failure.png)
 
 ## STYLE-119 graphic neon cyberpunk
 
@@ -264,10 +192,6 @@ Known limitations: WRONG_IMAGE_SIDE
 
 ![STYLE-119 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-119.png)
 
-[이전 실험 대표 이미지](previews/STYLE-119_best.png) (historical)
-
-![failure](previews/STYLE-119_failure.png)
-
 ## STYLE-120 inked dark fantasy
 
 Dark ink/wash fantasy atmosphere and background strongest
@@ -275,10 +199,6 @@ Dark ink/wash fantasy atmosphere and background strongest
 Known limitations: FACE_READABILITY_FAILED, HAIR_IDENTITY_DRIFT
 
 ![STYLE-120 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-120.png)
-
-[이전 실험 대표 이미지](previews/STYLE-120_best.png) (historical)
-
-![failure](previews/STYLE-120_failure.png)
 
 ## STYLE-121 clean dreamcore surreal
 
@@ -288,10 +208,6 @@ Known limitations: None recorded in this small cohort; not guaranteed
 
 ![STYLE-121 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-121.png)
 
-[이전 실험 대표 이미지](previews/STYLE-121_best.png) (historical)
-
-![failure](previews/STYLE-121_failure.png)
-
 ## STYLE-122 retro airbrush future
 
 Soft retro airbrush halo much clearer than hard rays/cel alternatives
@@ -299,10 +215,6 @@ Soft retro airbrush halo much clearer than hard rays/cel alternatives
 Known limitations: FACE_READABILITY_FAILED
 
 ![STYLE-122 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-122.png)
-
-[이전 실험 대표 이미지](previews/STYLE-122_best.png) (historical)
-
-![failure](previews/STYLE-122_failure.png)
 
 ## STYLE-123 clay toy character
 
@@ -312,10 +224,6 @@ Known limitations: None recorded in this small cohort; not guaranteed
 
 ![STYLE-123 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-123.png)
 
-[이전 실험 대표 이미지](previews/STYLE-123_best.png) (historical)
-
-![failure](previews/STYLE-123_failure.png)
-
 ## STYLE-124 voxel diorama
 
 Cubical voxel blocks clearly distinguish from triangular low-poly alternatives
@@ -323,10 +231,6 @@ Cubical voxel blocks clearly distinguish from triangular low-poly alternatives
 Known limitations: CAMERA_VIEW_DRIFT
 
 ![STYLE-124 사용자 선택 대표 이미지](https://github.com/prentice7725/asset-pipeline/releases/download/style-menu-v1-representatives/STYLE-124.png)
-
-[이전 실험 대표 이미지](previews/STYLE-124_best.png) (historical)
-
-![failure](previews/STYLE-124_failure.png)
 
 ## Local routing checks
 
@@ -337,6 +241,5 @@ assetpipe route --brief research/style_catalog/style_menu_v1/examples/retro_sci_
 ```
 
 Representative best/failure selections are editorial exemplars, not production approval. Run-record ZIP preserves all original JSON evidence. No game SOT has been rewritten.
-
 
 Final local checks: pytest 332 passed / 1 skipped (missing local migration benchmark); git diff --check, assetpipe --help, Anima family offline check PASS. SOT binding and five conflict checks PASS. Data/recipe approval statuses remain historical; operational menu authorization binds explicit model intent without manufacturing Golden or Aseprite approval.
