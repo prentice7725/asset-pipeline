@@ -34,3 +34,23 @@ def test_workspace_outputs_are_not_newly_tracked():
 
 def test_external_evidence_stays_out_of_git():
     assert [name for name in tracked_files() if name.startswith(EXTERNAL_EVIDENCE)] == []
+
+
+# README 샘플은 승인·수용된 결과만, samples.json에 원본 해시와 함께 기록한다.
+SAMPLES = 'docs/samples/'
+SAMPLES_BUDGET = 2 * 1024 * 1024
+
+
+def test_readme_samples_are_listed_and_small():
+    import hashlib
+    import json
+    tracked = [name for name in tracked_files() if name.startswith(SAMPLES)]
+    if not tracked:
+        return
+    listed = {s['sample']: s for s in json.loads((ROOT / SAMPLES / 'samples.json').read_text(encoding='utf-8'))['samples']}
+    images = [name for name in tracked if not name.endswith('samples.json')]
+    assert sorted(name[len(SAMPLES):] for name in images) == sorted(listed)
+    for name in images:
+        data = (ROOT / name).read_bytes()
+        assert hashlib.sha256(data).hexdigest() == listed[name[len(SAMPLES):]]['sha256'], name
+    assert sum((ROOT / name).stat().st_size for name in images) <= SAMPLES_BUDGET

@@ -21,6 +21,39 @@ ComfyUI 같은 생성 도구를 부르고, 결과를 자동으로 검사한 뒤,
 | 효과음(rfxgen 합성) | `SFX` | 계약만 있음, 실제 실행 전 |
 | 배경음악 | `BGM` | 계약만 있음, 실제 생성 전 |
 
+## 샘플
+
+아래는 이 도구로 만든 뒤 **사람이 확인하고 승인하거나 수용한 결과만** 모은 것입니다. 골라낸 좋은 결과이며, 생성하면 매번 이렇게 나온다는 뜻은 아닙니다.
+원본 파일과 해시는 [samples.json](docs/samples/samples.json)에 기록돼 있습니다.
+
+**64px 픽셀 캐릭터·소품** (Krea2 Pixel64, Aseprite 확인 후 승인, 4배 확대)
+
+<p>
+<img src="docs/samples/pixel64_knight.png" width="128" alt="기사">
+<img src="docs/samples/pixel64_sword_knight.png" width="128" alt="칼을 든 기사">
+<img src="docs/samples/pixel64_cleric.png" width="128" alt="성직자">
+<img src="docs/samples/pixel64_archer.png" width="128" alt="궁수">
+<img src="docs/samples/pixel64_sd_cleric.png" width="128" alt="SD 성직자">
+<img src="docs/samples/pixel64_coin.png" width="96" alt="동전">
+<img src="docs/samples/pixel64_key.png" width="96" alt="열쇠">
+</p>
+
+**64px 픽셀 애니메이션** (승인된 캐릭터 1장 → 동작 영상 → 프레임 선택 → 64px 변환, Aseprite 확인 후 승인)
+
+| 기사 걷기 | 성직자 걷기 | SD 성직자 걷기 | 기사 공격 |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/samples/pixel64_knight_walk.gif" width="160" alt="기사 걷기"> | <img src="docs/samples/pixel64_cleric_walk.gif" width="160" alt="성직자 걷기"> | <img src="docs/samples/pixel64_sd_cleric_walk.gif" width="160" alt="SD 성직자 걷기"> | <img src="docs/samples/pixel64_sword_knight_attack.gif" width="160" alt="기사 공격"> |
+
+공격은 게임에서는 한 번만 재생됩니다. GIF에서는 잠깐 멈췄다가 다시 반복됩니다.
+
+**동일 인물 변형** (사람이 고른 베이스 1장 → 참조 편집 1회. 사용자가 같은 인물로 수용함, 최종 미술 승인은 아님)
+
+| 베이스 | 표정 (Grok) | 표정 (Codex) | 포즈 (Codex) |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/samples/variant_base.png" width="150" alt="베이스"> | <img src="docs/samples/variant_expression_grok.png" width="150" alt="표정 변형 Grok"> | <img src="docs/samples/variant_expression_codex.png" width="150" alt="표정 변형 Codex"> | <img src="docs/samples/variant_pose_codex.png" width="150" alt="포즈 변형 Codex"> |
+
+**아직 샘플이 없는 것:** 일반 그림 애니메이션, 효과음, 배경음악. 승인된 결과가 생기면 추가합니다.
+
 32px 픽셀 연구는 멈춰 둔 상태입니다. 무엇을 개발하는 중인지는 [AGENTS.md](AGENTS.md),
 날짜별 실험 기록은 [Factory 문서 색인](docs/factory/README.md)에 있습니다.
 

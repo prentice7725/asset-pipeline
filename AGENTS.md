@@ -66,6 +66,9 @@ Change discipline:
 - Keep new run outputs, images, videos and zip evidence out of git (workspace/ is ignored; never
   force-add). Commit only small JSON/Markdown summaries with hashes. tests/unit/test_repository_size_guard.py
   rejects new tracked files over 1 MB and new tracked workspace paths.
+- Exception (user decision 2026-11-11): docs/samples/ holds small README sample images built by
+  scripts/build_readme_samples.py from human-approved or user-accepted results only, each listed with
+  its source hash in docs/samples/samples.json. Never add an unreviewed candidate there.
 
 ## Baseline rules
 
