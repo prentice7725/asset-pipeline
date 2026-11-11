@@ -197,22 +197,6 @@ manifest.append({'sample': out.name, 'bytes': out.stat().st_size, 'sha256': sha(
                  'sources': [{'path': str(Path(f['path']).relative_to(ROOT)).replace('\\', '/'), 'sha256': f['sha256']} for f in frames],
                  'note': 'every second of 56 frames, 12 fps, 200px on #ececec; accepted by the user as a README sample, not art approval'})
 
-# --- Sound effects (user picked the first candidate of each cue; not a game listening approval)
-import shutil
-import subprocess
-selection = WS / 'readme-samples-20261111' / 'sfx_readme_selection.json'
-for pick in json.loads(selection.read_text(encoding='utf-8'))['picks']:
-    wav = ROOT / pick['wav']
-    assert sha(wav) == pick['wav_sha256']
-    assert pick['wav_sha256'] in (ROOT / pick['run'] / 'run_manifest.json').read_text(encoding='utf-8')
-    out = OUT / (pick['cue'] + '.mp3')
-    subprocess.run([shutil.which('ffmpeg'), '-v', 'error', '-y', '-i', str(wav), '-map_metadata', '-1',
-                    '-codec:a', 'libmp3lame', '-b:a', '96k', '-bitexact', str(out)], check=True)
-    manifest.append({'sample': out.name, 'bytes': out.stat().st_size, 'sha256': sha(out),
-                     'evidence': str(selection.relative_to(ROOT)).replace('\\', '/'),
-                     'sources': [{'path': pick['wav'], 'sha256': pick['wav_sha256']}],
-                     'note': 'MP3 96 kbps from the candidate WAV; picked by the user for the README, not a game listening approval'})
-
 (OUT / 'samples.json').write_text(json.dumps({'schema_version': 1, 'samples': manifest}, indent=1, ensure_ascii=False) + '\n', encoding='utf-8')
 for m in manifest:
     print(f"{m['sample']:34} {m['bytes']:>8}")
