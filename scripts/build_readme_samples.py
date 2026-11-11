@@ -174,6 +174,29 @@ for style_id in REPS:
                      'sources': [{'path': r['path'], 'sha256': h}],
                      'note': f"{style_id} {r['name']}; menu representative selected by the user, resized to 240px JPEG; not an asset approval"})
 
+# --- Nonpixel walk (user accepted as README sample; REVIEW_REQUIRED, loop not selected)
+acceptance = WS / 'readme-samples-20261111' / 'readme_sample_acceptance.json'
+acc = json.loads(acceptance.read_text(encoding='utf-8'))
+assert acc['kind'] == 'README_SAMPLE_ACCEPTANCE'
+atlas_path = ROOT / acc['atlas']
+assert sha(atlas_path) == acc['atlas_sha256'] and sha(ROOT / acc['factory_motion']) == acc['factory_motion_sha256']
+atlas = json.loads(atlas_path.read_text(encoding='utf-8'))
+frames = atlas['frames'][::2]  # every second frame: 12 fps keeps the GIF small
+imgs = []
+for f in frames:
+    assert sha(f['path']) == f['sha256'], f['path']
+    im = Image.open(f['path']).convert('RGBA')
+    bg = Image.new('RGBA', im.size, (236, 236, 236, 255))
+    bg.alpha_composite(im)
+    bg = bg.resize((200, 200), Image.LANCZOS).convert('RGB')
+    imgs.append(bg.quantize(colors=128, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE))
+out = OUT / 'nonpixel_walk.gif'
+imgs[0].save(out, save_all=True, append_images=imgs[1:], duration=83, loop=0, optimize=True)
+manifest.append({'sample': out.name, 'bytes': out.stat().st_size, 'sha256': sha(out),
+                 'evidence': str(acceptance.relative_to(ROOT)).replace('\\', '/'),
+                 'sources': [{'path': str(Path(f['path']).relative_to(ROOT)).replace('\\', '/'), 'sha256': f['sha256']} for f in frames],
+                 'note': 'every second of 56 frames, 12 fps, 200px on #ececec; accepted by the user as a README sample, not art approval'})
+
 (OUT / 'samples.json').write_text(json.dumps({'schema_version': 1, 'samples': manifest}, indent=1, ensure_ascii=False) + '\n', encoding='utf-8')
 for m in manifest:
     print(f"{m['sample']:34} {m['bytes']:>8}")

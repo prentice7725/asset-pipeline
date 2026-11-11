@@ -411,6 +411,127 @@
     }
    ],
    "note": "STYLE-124 voxel diorama; menu representative selected by the user, resized to 240px JPEG; not an asset approval"
+  },
+  {
+   "sample": "nonpixel_walk.gif",
+   "bytes": 218731,
+   "sha256": "7a7e065da0671a2bf82a06fe2cbed5478da77a0413390e700be984d5c6b97382",
+   "evidence": "workspace/readme-samples-20261111/readme_sample_acceptance.json",
+   "sources": [
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0000.png",
+     "sha256": "251cb87edf0ed09670cfd7c2843419570127e59981be03929363e61a4164017c"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0002.png",
+     "sha256": "c5ea1669cd285a4a2afd36d217bcde9d47acb580322e67554d02ae301e48d46d"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0004.png",
+     "sha256": "67cdcb37782890983de6c76939099f691f35c0c659fb22d9c781488d87e91b1e"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0006.png",
+     "sha256": "f33b16b68233b475d1c5c2af7ce5c47d415cc62b3204a58deaf13ae443df1e8c"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0008.png",
+     "sha256": "b217e18811a0067e369a03b1881d77b0cfbef4907bc4fb6073304f3c70abc8b2"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0010.png",
+     "sha256": "aa7202334073c4f465359b8dc9af8820446d2ac1ebefb412d750c9e19a3bfeb1"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0012.png",
+     "sha256": "6640d398a50ee0571acd30976d51dc4c1b67f0fba55a345bd20dd6c3aef73a5f"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0014.png",
+     "sha256": "2fad8cd349aa0f8f9b1a0a6e5137c39c6bfe5bfc55cc7a4e54c1f472f99a6365"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0016.png",
+     "sha256": "d70d921583aca852d59c0369a4f00ee5288a87b44d8cc015c63cf42573d8c960"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0018.png",
+     "sha256": "ef02c0d886ac0e244b9b5648b505181b2cca53dc849e478a65d2f6ff8cfe7aae"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0020.png",
+     "sha256": "db521aee0093113acfc43c97403f6fbb1964396cf47d25af46dd78262a31ec35"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0022.png",
+     "sha256": "7df4a3a68869d7c21b9752dc377de952b5dac1e05c410b22fd387a17aa92667c"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0024.png",
+     "sha256": "16b661c0d20718016ff6df245641602777da40d2cd7ed4c1cd5fd9ccde695b16"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0026.png",
+     "sha256": "d74fcb6967891ee2b13dab474d40d213f32d4b2c0d961eaf8513002242023aa7"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0028.png",
+     "sha256": "796001c113c50c61624aefe1866861b757bdcb64e4d1df9672e3785637e7d120"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0030.png",
+     "sha256": "efa4618170bbd848c4035b423f6db4bd56ee84e58cd5143f9ae78a9c82647084"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0032.png",
+     "sha256": "66b364e1df1d73562e6d78838c0ce1ecf8b74b4c36e0bc3353b1541a5ee66c97"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0034.png",
+     "sha256": "6a4de095f8694ba21392ee080e4887b4e7730a3fd2b53c3ca8179710726adea0"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0036.png",
+     "sha256": "eb4d69c99411979de6fa1cda04bae4d408377d44af7417c7fe7a836815e1d84f"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0038.png",
+     "sha256": "5c8298db924156d413d980b988deda22ad47d2619ac5b1c7a2b1ba7f80969d89"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0040.png",
+     "sha256": "bfbacbba70965052571d30cd3df9ab6f7702e4c8e1a6e21820db3968964d176e"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0042.png",
+     "sha256": "ec1365dfa132d75c19e391ff758237db2036d29b5dbb487778b16c8abf5289d7"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0044.png",
+     "sha256": "e9a7a7e2462806586cc1ee44557d34acb36f5746e380ce4d16ce272649a340e7"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0046.png",
+     "sha256": "f26cd99ce716ec53d8328bb9c0e3b8b366c13086cdf70ab15cd8fa85aed132df"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0048.png",
+     "sha256": "f2541818079f264e24594d4856a11ab2fa7d86868e4c296def227ddcd1a34829"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0050.png",
+     "sha256": "5fa4455a2fafa7136d546a85427988dff4acf821da99c798efd4bca6fd0f4fb1"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0052.png",
+     "sha256": "8740233e8899c14c7122cf66fa76a1ec5215ffcc935e183dee000f660231f740"
+    },
+    {
+     "path": "workspace/readme-samples-20261111/motion_run_r2/candidate/final/0054.png",
+     "sha256": "7f2f57124b9a6129041cdf62686bf3409a2577c03dde40e12e4e559c85b8634f"
+    }
+   ],
+   "note": "every second of 56 frames, 12 fps, 200px on #ececec; accepted by the user as a README sample, not art approval"
   }
  ]
 }
