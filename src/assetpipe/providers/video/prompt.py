@@ -12,13 +12,40 @@ from ...styles.contracts import CONTRACT_FIELDS, contract_digest
 from ...router import satisfied
 
 
+# A one-word action lost to a still pose such as "standing relaxed" in the 2026-11-11 README walk run
+# (silhouette change under 1%). Known actions get a concrete body-motion description.
+ACTION_DETAILS = {
+    'walk': ('walking in place: the legs step one after the other, each foot lifts off and lands again, '
+             'the arms swing opposite to the legs and the body stays centered in the frame'),
+    'idle': ('idle loop: gentle breathing with a small rise and fall of the chest and shoulders, '
+             'a slight weight shift, feet stay planted'),
+    'run': ('running in place: knees lift high, feet push off and land in turn, arms pump opposite '
+            'to the legs and the body stays centered in the frame'),
+}
+
+
+def action_text(action):
+    detail = ACTION_DETAILS.get(action.strip().lower())
+    return action + (' — ' + detail if detail else '')
+
+
 def compile_reference_prompt(brief, workflow, root, parent_path, action):
     # Resolve SOT/menu locks even for legacy sources; never remove style fields.
     bound, menu = bind_menu(brief, root)
     selection = resolve_style(bound, root)
     styled = bool(menu or selection or bound.get('prompt_spec', {}).get('style_contract_id'))
     if not styled:
-        result = compile_prompt(brief, workflow, root)
+        source_pose = (brief.get('prompt_spec') or {}).get('pose')
+        if source_pose:
+            # The still pose would override the action; keep it only as initial context.
+            moving = copy.deepcopy(brief)
+            moving['prompt_spec']['pose'] = action_text(action)
+            result = compile_prompt(moving, workflow, root)
+            result['positive'] += ('\nReference still pose and camera (initial context; animate using the '
+                                   'requested motion): ' + source_pose)
+            result['source_pose'] = source_pose
+        else:
+            result = compile_prompt(brief, workflow, root)
     else:
         profiles = yaml.safe_load((root / 'config/model_profiles.yaml').read_text(encoding='utf-8'))
         profile = profiles['profiles'][workflow['model_profile']]
@@ -83,7 +110,7 @@ def compile_reference_prompt(brief, workflow, root, parent_path, action):
                   'negative': ', '.join(exclusions) if caps.get('negative_prompt') else '',
                   'negative_mode': 'NATIVE' if caps.get('negative_prompt') else 'INSTRUCTION_REVIEW_REQUIRED',
                   'style_transfer_quality': 'NOT_VERIFIED', 'review_state': 'REVIEW_REQUIRED'}
-    result['positive'] += '\nRequested motion (explicit): ' + action
+    result['positive'] += '\nRequested motion (explicit): ' + action_text(action)
     result['positive'] += '\nPreserve the referenced identity, clothing, equipment and silhouette.'
     result['motion_action'] = action
     return result

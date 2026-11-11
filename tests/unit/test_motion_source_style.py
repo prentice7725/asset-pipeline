@@ -86,3 +86,33 @@ def test_source_menu_lock_still_blocks(styled):
     brief['workflow_preferences']['id'] = 'nonpixel_motion_contract'
     with pytest.raises(ValueError, match='conflict'):
         compile_reference_prompt(brief, motion, root, parent, 'walk')
+
+
+def test_unstyled_source_pose_does_not_override_the_action(tmp_path):
+    # 2026-11-11: "standing relaxed" in the still Brief produced a near-static walk video.
+    shutil.copytree(ROOT / 'config', tmp_path / 'config')
+    brief = make(asset_id='fixture', output_class='NONPIXEL_IMAGE', prompt='one adventurer')
+    brief['project_id'] = 'test'
+    brief['prompt_spec'] = {'subject': 'one adventurer', 'pose': 'standing relaxed, weight on both feet',
+                            'style': ['gouache illustration']}
+    original = copy.deepcopy(brief)
+    motion = load_registry(tmp_path)['nonpixel_motion_contract']
+    result = compile_reference_prompt(brief, motion, tmp_path, tmp_path / 'unused.json', 'walk')
+    assert brief == original
+    pose_line = next(line for line in result['positive'].splitlines() if line.startswith('Pose:'))
+    assert 'standing' not in pose_line and 'walking in place' in pose_line
+    assert 'initial context' in result['positive'] and 'standing relaxed' in result['positive']
+    assert result['source_pose'] == 'standing relaxed, weight on both feet'
+    assert 'Requested motion (explicit): walk — walking in place' in result['positive']
+    assert result['motion_action'] == 'walk'
+
+
+def test_unknown_action_is_passed_through_unchanged(tmp_path):
+    shutil.copytree(ROOT / 'config', tmp_path / 'config')
+    brief = make(asset_id='fixture', output_class='NONPIXEL_IMAGE', prompt='one adventurer')
+    brief['project_id'] = 'test'
+    motion = load_registry(tmp_path)['nonpixel_motion_contract']
+    result = compile_reference_prompt(brief, motion, tmp_path, tmp_path / 'unused.json', 'wave hello')
+    assert result['positive'].endswith('Requested motion (explicit): wave hello\n'
+                                       'Preserve the referenced identity, clothing, equipment and silhouette.')
+    assert 'source_pose' not in result
