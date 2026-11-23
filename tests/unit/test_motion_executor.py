@@ -163,7 +163,8 @@ def test_factory_motion_generation_delegates_single_budget_and_exports(case, ent
     assert case['state']['uploads']==case['state']['queues']==1
 
 
-def test_factory_motion_invalid_child_receipt_is_still_recorded(case, monkeypatch):
+@pytest.mark.parametrize(('field', 'value'), [('uploads', 2), ('game_ready', True)])
+def test_factory_motion_invalid_child_receipt_is_still_recorded(case, monkeypatch, field, value):
     # 생성 요청이 나간 뒤 하위 영수증 검증이 실패해도 factory 영수증이 그 위치를 가리켜야 한다.
     from assetpipe.factory.motion import plan_job,run_job
     from assetpipe.providers.video import executor
@@ -171,7 +172,7 @@ def test_factory_motion_invalid_child_receipt_is_still_recorded(case, monkeypatc
     def tampered(*args,**kwargs):
         path=real(*args,**kwargs)
         data=json.loads(path.read_text())
-        data['uploads']=2
+        data[field]=value
         path.write_text(json.dumps(data))
         return path
     monkeypatch.setattr(executor,'execute_prepared',tampered)
@@ -186,6 +187,29 @@ def test_factory_motion_invalid_child_receipt_is_still_recorded(case, monkeypatc
     assert receipt['status']=='FAILED' and child.is_file()
     assert receipt['generation_receipt']['sha256']==fingerprint(child)
     assert case['state']['queues']==1
+
+
+@pytest.mark.parametrize(('field', 'value'), [('uploads', 2), ('game_ready', True)])
+def test_factory_inspection_rejects_repinned_invalid_child_receipt(case, field, value):
+    from assetpipe.factory.motion import inspect_job, plan_job, run_job
+
+    root = case['root']
+    job = factory_motion_job(case)
+    plan = plan_job(job, root)
+    output = root / 'workspace/factory_child'
+    manifest = run_job(job, plan['plan_sha256'], output, root,
+                       authorization=case['auth'], authorize_generation=True)
+    parent = json.loads(manifest.read_text(encoding='utf-8'))
+    child = Path(parent['generation_receipt']['path'])
+    data = json.loads(child.read_text(encoding='utf-8'))
+    data[field] = value
+    child.write_text(json.dumps(data), encoding='utf-8')
+    parent['generation_receipt']['sha256'] = fingerprint(child)
+    manifest.write_text(json.dumps(parent), encoding='utf-8')
+
+    with pytest.raises(ValueError, match='FACTORY_MOTION_GENERATION_RECEIPT_INVALID'):
+        inspect_job(output, fingerprint(manifest), root)
+    assert case['state']['uploads'] == case['state']['queues'] == 1
 
 
 def test_factory_motion_no_consent_never_dispatches(case):

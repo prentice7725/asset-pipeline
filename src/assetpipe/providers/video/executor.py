@@ -21,6 +21,22 @@ from ..._ported.comfy_bridge.runner import patch_workflow
 from ..._ported.comfy_bridge.workflow_loader import load_workflow
 
 
+def verified_package_manifest(receipt, execution_plan, authorization_sha256, outputs):
+    """Resolve the generated package only after verifying the executor's completion evidence."""
+    if (receipt.get('status') != 'CANDIDATE_REVIEW_REQUIRED'
+            or receipt.get('execution_plan') != execution_plan
+            or receipt.get('authorization_sha256') != authorization_sha256
+            or receipt.get('review_state') != 'REVIEW_REQUIRED'
+            or receipt.get('game_ready') is not False
+            or any(type(receipt.get(key)) is not int or receipt[key] != 1
+                   for key in ('queue_attempts', 'uploads'))):
+        raise ValueError('FACTORY_MOTION_GENERATION_RECEIPT_INVALID')
+    package_manifest = outputs(receipt['package_manifest_path'])
+    if fingerprint(package_manifest) != receipt.get('package_manifest_sha256'):
+        raise ValueError('FACTORY_MOTION_GENERATION_RECEIPT_INVALID')
+    return package_manifest
+
+
 def digest(value):
     import hashlib
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
